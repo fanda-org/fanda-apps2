@@ -35,16 +35,16 @@ https://hotchocolate.io/docs/dataloaders
 Serilog: https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/
 
 from Master to Transaction: Functionalities apart from Create/Edit/Delete
----------------------------------------------------------------------------------------
+
 https://crowdin.com/ - Agile localization for tech companies
 https://github.com/akaunting/akaunting
----------------------------------------------------------------------------------------
+
 FancyTree - Tree-view and list jquery control
 Selectize
 Select2
 bootstrap-table
 Two-Factor/Multi-factor Authentication (2FA/MFA)
----------------------------------------------------------------------------------------
+
 Clone / Duplicate
 Deep clone
 Merge
@@ -55,9 +55,8 @@ Warehouse management
 Branches
 Credit score
 Discounts & offers
-=======================================================================================
+
 Loader
 Breadcrumbs
 Reset option for add/edit
 HTML formatted description for **Goods and Services** & **Business Contacts** (parties)
----------------------------------------------------------------------------------------
