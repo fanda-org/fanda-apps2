@@ -1,0 +1,1 @@
+dotnet ef migrations add %1 --project Fanda.Models --startup-project Fanda.Ng

@@ -1,0 +1,1 @@
+dotnet ef database update --project Fanda.Models --startup-project Fanda.Ng
