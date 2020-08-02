@@ -50,33 +50,6 @@ namespace Fanda.Auth.Controllers
             }
         }
 
-        [HttpGet("all")]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(List<ApplicationListDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAll2()
-        {
-            try
-            {
-                NameValueCollection queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
-                var query = new Query(queryString["page"], queryString["pageSize"])
-                {
-                    Filter = queryString["filter"],
-                    FilterArgs = queryString["filterArgs"]?.Split(','),
-                    Search = queryString["search"],
-                    Sort = queryString["sort"],
-                };
-
-                //var response = await repository.GetData(Guid.Empty, query);
-                var response = await repository.GetAll(Guid.Empty)
-                    .ToListAsync();
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(MessageResponse.Failure(ex.Message));
-            }
-        }
-
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

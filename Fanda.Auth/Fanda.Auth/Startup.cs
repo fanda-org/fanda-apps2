@@ -62,7 +62,7 @@ namespace Fanda.Auth
 
             autoMapperConfigProvider.AssertConfigurationIsValid();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
