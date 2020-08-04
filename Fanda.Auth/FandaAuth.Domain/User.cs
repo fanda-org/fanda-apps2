@@ -18,6 +18,6 @@ namespace FandaAuth.Domain
         public DateTime? DateLastLogin { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<RefreshToken> RefreshTokens { get; set; }
+        public virtual ICollection<UserToken> RefreshTokens { get; set; }
     }
 }

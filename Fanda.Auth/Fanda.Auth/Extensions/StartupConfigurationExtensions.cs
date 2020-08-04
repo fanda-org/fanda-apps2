@@ -56,16 +56,14 @@ namespace Fanda.Auth.Extensions
 
         #region CORS
 
-        public static IServiceCollection AddCors(this IServiceCollection services)
+        public static IServiceCollection AddCustomCors(this IServiceCollection services)
         {
             return services.AddCors(options =>
                 {
                     var urls = new[]
                     {
-                    "http://localhost:5100",
-                    "https://localhost:5101",
-                    "http://localhost:5200",
-                    "https://localhost:5201",
+                        "http://localhost:4200",    // Frontend Angular app
+                        "http://localhost:5000",    // API Gateway
                         //Configuration["Fanda.Web.Url"],
                         //Configuration["Fanda.Ng.Url"]
                     };

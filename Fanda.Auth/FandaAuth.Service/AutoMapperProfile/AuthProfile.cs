@@ -26,9 +26,9 @@ namespace Fanda.Service.AutoMapperProfile
                 .ForMember(vm => vm.Password, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(x => x.Id, opt => opt.MapFrom(vm => vm.Id));
-            CreateMap<RefreshToken, RefreshTokenDto>()
+            CreateMap<UserToken, UserTokenDto>()
                 .ReverseMap();
-            CreateMap<RefreshToken, ActiveTokenDto>();
+            CreateMap<UserToken, ActiveTokenDto>();
             CreateMap<Role, RoleDto>()
                 .ForMember(vm => vm.Id, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap()

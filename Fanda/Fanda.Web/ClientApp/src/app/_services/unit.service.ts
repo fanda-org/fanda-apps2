@@ -9,38 +9,36 @@ import { Unit } from '../_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnitService {
-    private unitSubject: BehaviorSubject<Unit>;
-    public unit: Observable<Unit>;
+  private baseUrl = `${environment.apiUrl}/units`;
+  // private unitSubject: BehaviorSubject<Unit>;
+  // public unit: Observable<Unit>;
 
-    constructor(
-        private router: Router,
-        private http: HttpClient
-    ) {
-        this.unitSubject = new BehaviorSubject<Unit>(JSON.parse(localStorage.getItem('user')));
-        this.unit = this.unitSubject.asObservable();
-    }
+  constructor(private router: Router, private http: HttpClient) {
+    // this.unitSubject = new BehaviorSubject<Unit>(JSON.parse(localStorage.getItem('user')));
+    // this.unit = this.unitSubject.asObservable();
+  }
 
-    public get unitValue(): Unit {
-        return this.unitSubject.value;
-    }
+  // public get unitValue(): Unit {
+  //     return this.unitSubject.value;
+  // }
 
-    getAll() {
-        return this.http.get<Unit[]>(`${environment.apiUrl}/api/units?filterBy="Code==\"KGM\" OR Code==\"DEFAULT\""`);
-    }
+  getAll() {
+    return this.http.get<Unit[]>(`${this.baseUrl}`);
+  }
 
-    getById(id: string) {
-        return this.http.get<Unit>(`${environment.apiUrl}/api/units/${id}`);
-    }
+  getById(id: string) {
+    return this.http.get<Unit>(`${this.baseUrl}/${id}`);
+  }
 
-    create(unit: Unit) {
-        return this.http.post(`${environment.apiUrl}/api/units`, unit);
-    }
+  create(unit: Unit) {
+    return this.http.post(`${this.baseUrl}`, unit);
+  }
 
-    update(id, params) {
-        return this.http.put(`${environment.apiUrl}/api/units/${id}`, params);
-    }
+  update(id: string, unit: Unit) {
+    return this.http.put(`${this.baseUrl}/${id}`, unit);
+  }
 
-    delete(id: string) {
-        return this.http.delete(`${environment.apiUrl}/api/units/${id}`);
-    }
+  delete(id: string) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }

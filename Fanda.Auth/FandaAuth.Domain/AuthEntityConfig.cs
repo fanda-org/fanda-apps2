@@ -179,12 +179,12 @@ namespace FandaAuth.Domain
         }
     }
 
-    public class RefreshTokenConfig : IEntityTypeConfiguration<RefreshToken>
+    public class UserTokenConfig : IEntityTypeConfiguration<UserToken>
     {
-        public void Configure(EntityTypeBuilder<RefreshToken> builder)
+        public void Configure(EntityTypeBuilder<UserToken> builder)
         {
             // table
-            builder.ToTable("RefreshTokens");
+            builder.ToTable("UserTokens");
 
             // key
             builder.HasKey(u => new { u.Id });
@@ -210,13 +210,13 @@ namespace FandaAuth.Domain
             //builder.Property(o => o.DateCreated).ValueGeneratedOnAdd();
             //builder.Property(o => o.DateModified).ValueGeneratedOnUpdate();
 
+            // index
+
             // Foreign keys - Owns
             builder.HasOne(u => u.User)
                 .WithMany(t => t.RefreshTokens)
                 .HasForeignKey(u => new { u.UserId })
                 .OnDelete(DeleteBehavior.Cascade);
-
-            // index
         }
     }
 

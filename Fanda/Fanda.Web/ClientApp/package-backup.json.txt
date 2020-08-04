@@ -1,0 +1,7 @@
+    // "jquery": "^3.5.1"
+    // "oidc-client": "^1.9.1",
+    // "popper.js": "^1.16.1",
+
+  // "optionalDependencies": {
+  //    "node-sass": "^4.12.0"
+  // },

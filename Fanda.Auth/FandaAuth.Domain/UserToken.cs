@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace FandaAuth.Service.Dto
+namespace FandaAuth.Domain
 {
-    public class RefreshTokenDto
+    public class UserToken
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
@@ -15,5 +15,7 @@ namespace FandaAuth.Service.Dto
         public string RevokedByIp { get; set; }
         public string ReplacedByToken { get; set; }
         public bool IsActive => DateRevoked == null && !IsExpired;
+
+        public virtual User User { get; set; }
     }
 }

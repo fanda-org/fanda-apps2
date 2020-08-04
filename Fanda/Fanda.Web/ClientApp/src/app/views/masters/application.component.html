@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-edit"></i> Applications
+        <div class="card-header-actions">
+          <button type="button" class="card-header-action btn btn-link btn-setting">
+            <i class="icon-settings"></i>
+          </button>
+          <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()">
+            <i class="{{ iconCollapse }}"></i>
+          </button>
+          <button type="button" class="card-header-action btn btn-link btn-close"><i class="icon-close"></i></button>
+        </div>
+      </div>
+      <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label for="code">Application Code</label>
+              <input
+                type="text"
+                formControlName="code"
+                class="form-control"
+                placeholder="Enter application code"
+                autofocus
+              />
+            </div>
+            <div class="form-group col-sm-8">
+              <label for="name">Application Name</label>
+              <input type="text" formControlName="name" class="form-control" placeholder="Enter application name" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" formControlName="description" class="form-control" placeholder="Enter description" />
+          </div>
+          <div class="row align-middle align-items-center">
+            <div class="form-group col">
+              <label class="align-top" for="active">Active</label>
+              <label class="switch switch-label switch-pill switch-primary">
+                <input type="checkbox" formControlName="active" class="switch-input" checked />
+                <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+              </label>
+            </div>
+            <div class="form-group col-auto">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+              <button class="btn btn-secondary" type="button"><i class="fa fa-close"></i> Cancel</button>
+            </div>
+          </div>
+        </form>
+
+        <p *ngIf="!applications">Loading...</p>
+        <table class="table table-striped table-hover" aria-labelledby="tableLabel" *ngIf="applications">
+          <thead>
+            <tr>
+              <th>Application Code</th>
+              <th>Application Name</th>
+              <th>Description</th>
+              <th>Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of applications">
+              <td>{{ app.code }}</td>
+              <td>{{ app.name }}</td>
+              <td>{{ app.description }}</td>
+              <td>{{ app.active }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--/.col-->
+</div>
+<!--/.row-->

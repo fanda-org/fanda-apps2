@@ -39,6 +39,7 @@ namespace Fanda.Auth
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
             services.AddCustomDbContext<AuthContext>(appSettings, Assembly.GetAssembly(typeof(AuthContext)).GetName().Name);
+            services.AddCustomCors();
             services.AddAutoMapper(typeof(AuthProfile));
             services.AddJwtAuthentication(appSettings);
             services.AddSwagger("Fanda Authentication API");
@@ -63,6 +64,8 @@ namespace Fanda.Auth
             autoMapperConfigProvider.AssertConfigurationIsValid();
 
             //app.UseHttpsRedirection();
+
+            app.UseCors("_MyAllowedOrigins");
 
             app.UseRouting();
 
