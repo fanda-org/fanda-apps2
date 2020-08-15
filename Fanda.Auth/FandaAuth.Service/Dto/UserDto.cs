@@ -6,6 +6,9 @@ namespace FandaAuth.Service.Dto
 {
     public class UserDto : BaseUserDto
     {
+        [Required]
+        public Guid TenantId { get; set; }
+
         [StringLength(50)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }

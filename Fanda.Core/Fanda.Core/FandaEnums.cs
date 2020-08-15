@@ -236,7 +236,7 @@ namespace Fanda.Core
         AccountingYear
     }
 
-    public enum DuplicateField
+    public enum KeyField
     {
         Id = 1,
         Code = 2,

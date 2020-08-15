@@ -97,8 +97,8 @@ namespace Fanda.Core.Base
         public string Description { get; set; }
 
         public bool? Active { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime? DateModified { get; set; }
+        //public DateTime DateCreated { get; set; }
+        //public DateTime? DateModified { get; set; }
     }
 
     public class BaseYearDto

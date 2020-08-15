@@ -44,6 +44,7 @@ namespace FandaAuth.Service
             if (app != null)
             {
                 app.Active = status.Active;
+                app.DateModified = DateTime.UtcNow;
                 context.Applications.Update(app);
                 await context.SaveChangesAsync();
                 return true;
@@ -56,7 +57,12 @@ namespace FandaAuth.Service
             var app = mapper.Map<Application>(model);
             app.DateCreated = DateTime.UtcNow;
             app.DateModified = null;
-            app.Active = true;
+            // app.Active = true;
+            foreach (var ar in app.AppResources)
+            {
+                ar.DateCreated = DateTime.UtcNow;
+                ar.DateModified = null;
+            }
             await context.Applications.AddAsync(app);
             await context.SaveChangesAsync();
             return mapper.Map<ApplicationDto>(app);
@@ -80,8 +86,14 @@ namespace FandaAuth.Service
             return true;
         }
 
-        public async Task<bool> ExistsAsync(ParentDuplicate data)
+        public async Task<bool> ExistsAsync(KeyData data)
             => await context.ExistsAsync<Application>(data);
+
+        public async Task<ApplicationDto> GetByAsync(KeyData data)
+        {
+            var app = await context.GetByAsync<Application>(data);
+            return mapper.Map<ApplicationDto>(app);
+        }
 
         public IQueryable<ApplicationListDto> GetAll(Guid parentId)  // nullable
         {
@@ -97,6 +109,7 @@ namespace FandaAuth.Service
             {
                 throw new ArgumentNullException("id", "Id is missing");
             }
+
             var app = await context.Applications
                 //.Include(app => app.AppResources)
                 .AsNoTracking()
@@ -118,11 +131,7 @@ namespace FandaAuth.Service
                 .ProjectTo<AppResourceDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            if (app != null)
-            {
-                return app;
-            }
-            throw new NotFoundException("Application not found");
+            return app;
         }
 
         public async Task<AppChildrenDto> GetChildrenByIdAsync(Guid id)
@@ -132,7 +141,7 @@ namespace FandaAuth.Service
                 throw new ArgumentNullException("Id", "Id is missing");
             }
 
-            var app = new AppChildrenDto
+            var appResources = new AppChildrenDto
             {
                 AppResources = await context.Set<AppResource>()
                     .AsNoTracking()
@@ -141,7 +150,7 @@ namespace FandaAuth.Service
                     .ProjectTo<AppResourceDto>(mapper.ConfigurationProvider)
                     .ToListAsync()
             };
-            return app;
+            return appResources;
         }
 
         public async Task UpdateAsync(Guid id, ApplicationDto model)
@@ -196,18 +205,18 @@ namespace FandaAuth.Service
             {
                 if (pair.db != null)
                 {
-                    // context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    // context.Resources.Update(pair.db);
+                    context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
+                    context.Set<AppResource>().Update(pair.db);
                 }
                 else
                 {
-                    var appResource = new AppResource
-                    {
-                        ApplicationId = app.Id,
-                        //ResourceId = pair.curr.Id,
-                    };
-                    //dbApp.AppResources.Add(appResource);
-                    context.Set<AppResource>().Add(appResource);
+                    //var appResource = new AppResource
+                    //{
+                    //    ApplicationId = app.Id,
+                    //    //ResourceId = pair.curr.Id,
+                    //};
+                    //dbApp.AppResources.Add(pair.curr);
+                    context.Set<AppResource>().Add(pair.curr);
                 }
             }
 
@@ -232,13 +241,13 @@ namespace FandaAuth.Service
             #region Validation: Duplicate
 
             // Check email duplicate
-            var duplCode = new Duplicate { Field = DuplicateField.Code, Value = model.Code, Id = model.Id };
+            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
             if (await ExistsAsync(duplCode))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
             // Check name duplicate
-            var duplName = new Duplicate { Field = DuplicateField.Name, Value = model.Name, Id = model.Id };
+            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
             if (await ExistsAsync(duplName))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");

@@ -205,7 +205,7 @@ namespace Fanda.Authentication.Controllers
         {
             try
             {
-                bool success = await repository.ExistsAsync(new ParentDuplicate
+                bool success = await repository.ExistsAsync(new KeyData
                 {
                     Id = id,
                     Field = exists.Field,

@@ -27,9 +27,9 @@ namespace FandaAuth.Service.Base
         [StringLength(255)]
         public string Email { get; set; }
 
-        [Required]
-        [Display(Name = "Tenant ID")]
-        public Guid TenantId { get; set; }
+        //[Required]
+        //[Display(Name = "Tenant ID")]
+        //public Guid TenantId { get; set; }
 
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }
@@ -40,6 +40,6 @@ namespace FandaAuth.Service.Base
 
         public bool IsValid() => Errors.Count == 0;
 
-        public virtual TenantDto Tenant { get; set; }
+        //public virtual TenantDto Tenant { get; set; }
     }
 }

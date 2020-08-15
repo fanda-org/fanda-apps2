@@ -5,7 +5,6 @@ using FandaAuth.Service;
 using FandaAuth.Service.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -206,7 +205,7 @@ namespace Fanda.Auth.Controllers
         {
             try
             {
-                bool success = await repository.ExistsAsync(new ParentDuplicate
+                bool success = await repository.ExistsAsync(new KeyData
                 {
                     Id = id,
                     Field = exists.Field,

@@ -1,21 +1,32 @@
 ﻿using Fanda.Core;
-using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using FandaAuth.Domain.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace FandaAuth.Service.Extensions
 {
+    public class TenantKeyData : KeyData
+    {
+        public Guid TenantId { get; set; } //= default;
+    }
+
+    public class UserKeyData : KeyData
+    {
+        public Guid TenantId { get; set; } //= default;
+    }
+
     public static class DuplicateExtensions
     {
-        public static async Task<bool> ExistsAsync<TModel>(this DbContext context, ParentDuplicate data)
-            where TModel : UserEntity
+        public static async Task<bool> ExistsAsync<TModel>(this DbContext context, TenantKeyData data)
+            where TModel : TenantEntity
         {
             bool result = true;
             switch (data.Field)
             {
-                case DuplicateField.Id:
+                case KeyField.Id:
                     if (data.Id != Guid.Empty)
                     {
                         return await context.Set<TModel>()
@@ -23,7 +34,117 @@ namespace FandaAuth.Service.Extensions
                     }
                     return result;
 
-                case DuplicateField.Email:
+                case KeyField.Code:
+                    if (data.TenantId == null || data.TenantId == Guid.Empty)
+                    {
+                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                    }
+
+                    if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Code == data.Value && pc.TenantId == data.TenantId);
+                    }
+                    else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Code == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                    }
+                    return result;
+
+                case KeyField.Name:
+                    if (data.TenantId == null || data.TenantId == Guid.Empty)
+                    {
+                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                    }
+
+                    if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Name == data.Value && pc.TenantId == data.TenantId);
+                    }
+                    else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Name == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                    }
+                    return result;
+
+                default:
+                    return result;
+            }
+        }
+
+        public static async Task<TModel> GetByAsync<TModel>(this DbContext context, TenantKeyData data)
+            where TModel : TenantEntity
+        {
+            TModel result = default;
+            switch (data.Field)
+            {
+                case KeyField.Id:
+                    if (data.Id != Guid.Empty)
+                    {
+                        return await context.Set<TModel>()
+                            .FirstOrDefaultAsync(pc => pc.Id == data.Id);
+                    }
+                    return result;
+
+                case KeyField.Code:
+                    if (data.TenantId == null || data.TenantId == Guid.Empty)
+                    {
+                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                    }
+
+                    if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .FirstOrDefaultAsync(pc => pc.Code == data.Value && pc.TenantId == data.TenantId);
+                    }
+                    else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .FirstOrDefaultAsync(pc => pc.Code == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                    }
+                    return result;
+
+                case KeyField.Name:
+                    if (data.TenantId == null || data.TenantId == Guid.Empty)
+                    {
+                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                    }
+
+                    if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .FirstOrDefaultAsync(pc => pc.Name == data.Value && pc.TenantId == data.TenantId);
+                    }
+                    else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .FirstOrDefaultAsync(pc => pc.Name == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                    }
+                    return result;
+
+                default:
+                    return result;
+            }
+        }
+
+        public static async Task<bool> ExistsAsync<TModel>(this DbContext context, UserKeyData data)
+            where TModel : UserEntity
+        {
+            bool result = true;
+            switch (data.Field)
+            {
+                case KeyField.Id:
+                    if (data.Id != Guid.Empty)
+                    {
+                        return await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Id == data.Id);
+                    }
+                    return result;
+
+                case KeyField.Email:
                     if (data.Id == Guid.Empty)
                     {
                         result = await context.Set<TModel>()
@@ -36,7 +157,7 @@ namespace FandaAuth.Service.Extensions
                     }
                     return result;
 
-                case DuplicateField.Name:
+                case KeyField.Name:
                     if (data.Id == Guid.Empty)
                     {
                         result = await context.Set<TModel>()
@@ -50,7 +171,52 @@ namespace FandaAuth.Service.Extensions
                     return result;
 
                 default:
-                    return true;
+                    return result;
+            }
+        }
+
+        public static async Task<bool> GetByAsync<TModel>(this DbContext context, UserKeyData data)
+            where TModel : UserEntity
+        {
+            bool result = true;
+            switch (data.Field)
+            {
+                case KeyField.Id:
+                    if (data.Id != Guid.Empty)
+                    {
+                        return await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Id == data.Id);
+                    }
+                    return result;
+
+                case KeyField.Email:
+                    if (data.Id == Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Email == data.Value);
+                    }
+                    else if (data.Id != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.Email == data.Value && pc.Id != data.Id);
+                    }
+                    return result;
+
+                case KeyField.Name:
+                    if (data.Id == Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.UserName == data.Value);
+                    }
+                    else if (data.Id != Guid.Empty)
+                    {
+                        result = await context.Set<TModel>()
+                            .AnyAsync(pc => pc.UserName == data.Value && pc.Id != data.Id);
+                    }
+                    return result;
+
+                default:
+                    return result;
             }
         }
 

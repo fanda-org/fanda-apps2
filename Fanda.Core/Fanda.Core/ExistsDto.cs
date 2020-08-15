@@ -5,7 +5,7 @@ namespace Fanda.Core
     public class ExistsDto
     {
         [Required]
-        public DuplicateField Field { get; set; }
+        public KeyField Field { get; set; }
 
         [Required]
         public string Value { get; set; }

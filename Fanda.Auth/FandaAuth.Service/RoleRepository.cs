@@ -4,16 +4,20 @@ using Fanda.Core;
 using Fanda.Core.Base;
 using Fanda.Core.Extensions;
 using FandaAuth.Domain;
+using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
+using FandaAuth.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace FandaAuth.Service
 {
     public interface IRoleRepository :
-        IRepository<RoleDto>,
+        ITenantRepository<RoleDto>,
+        IRepositoryChildData<RoleChildrenDto>,
         IListRepository<RoleListDto>
     {
         //Task<bool> AddPrivilege(PrivilegeDto model);
@@ -43,6 +47,7 @@ namespace FandaAuth.Service
             if (role != null)
             {
                 role.Active = status.Active;
+                role.DateModified = DateTime.UtcNow;
                 context.Roles.Update(role);
                 await context.SaveChangesAsync();
                 return true;
@@ -84,8 +89,14 @@ namespace FandaAuth.Service
             return true;
         }
 
-        public async Task<bool> ExistsAsync(Duplicate data)
+        public async Task<bool> ExistsAsync(TenantKeyData data)
             => await context.ExistsAsync<Role>(data);
+
+        public async Task<RoleDto> GetByAsync(TenantKeyData data)
+        {
+            var role = await context.GetByAsync<Role>(data);
+            return mapper.Map<RoleDto>(role);
+        }
 
         public IQueryable<RoleListDto> GetAll(Guid tenantId)
         {
@@ -106,26 +117,119 @@ namespace FandaAuth.Service
             {
                 throw new ArgumentNullException("id", "Id is missing");
             }
+
             var role = await context.Roles
                 .AsNoTracking()
                 .ProjectTo<RoleDto>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(t => t.Id == id);
-            if (role != null)
+            if (role == null)
+            {
+                throw new NotFoundException("Role not found");
+            }
+            else if (!includeChildren)
             {
                 return role;
             }
-            throw new NotFoundException("Role not found");
+
+            role.Privileges = await context.Set<RolePrivilege>()
+                .AsNoTracking()
+                .Where(m => m.RoleId == id)
+                //.SelectMany(oc => oc.AppResources.Select(c => c.Resource))
+                .ProjectTo<RolePrivilegeDto>(mapper.ConfigurationProvider)
+                .ToListAsync();
+            return role;
+        }
+
+        public async Task<RoleChildrenDto> GetChildrenByIdAsync(Guid id)
+        {
+            if (id == null || id == Guid.Empty)
+            {
+                throw new ArgumentNullException("Id", "Id is missing");
+            }
+
+            var rolePrivileges = new RoleChildrenDto
+            {
+                Privileges = await context.Set<RolePrivilege>()
+                    .AsNoTracking()
+                    .Where(m => m.RoleId == id)
+                    //.SelectMany(oc => oc.AppResources.Select(c => c.Resource))
+                    .ProjectTo<RolePrivilegeDto>(mapper.ConfigurationProvider)
+                    .ToListAsync()
+            };
+            return rolePrivileges;
         }
 
         public async Task UpdateAsync(Guid id, RoleDto model)
         {
             if (id != model.Id)
             {
-                throw new ArgumentException("Role id mismatch");
+                throw new BadRequestException("Role id mismatch");
             }
-            var role = mapper.Map<Role>(model);
+
+            Role role = mapper.Map<Role>(model);
+            Role dbRole = await context.Roles
+                .Where(o => o.Id == role.Id)
+                .Include(o => o.Privileges)   //.ThenInclude(oc => oc.Resource)
+                .FirstOrDefaultAsync();
+
+            if (dbRole == null)
+            {
+                //org.DateCreated = DateTime.UtcNow;
+                //org.DateModified = null;
+                //await _context.Organizations.AddAsync(org);
+                throw new NotFoundException("Role not found");
+            }
+
+            try
+            {
+                // delete all app-resource that are no longer exists
+                foreach (RolePrivilege dbRolePrivilege in dbRole.Privileges)
+                {
+                    //Resource dbResource = dbAppResource.Resource;
+                    //if (app.AppResources.All(oc => oc.Resource.Id != dbAppResource.Resource.Id))
+                    if (role.Privileges.All(ar => ar.RoleId != dbRolePrivilege.RoleId)) // && ar.AppResourceId != dbRolePrivilege.AppResourceId
+                    {
+                        //context.Resources.Remove(dbResource);
+                        context.Set<RolePrivilege>().Remove(dbRolePrivilege);
+                    }
+                }
+            }
+            catch { }
+
+            // copy current (incoming) values to db
             role.DateModified = DateTime.UtcNow;
-            context.Roles.Update(role);
+            context.Entry(dbRole).CurrentValues.SetValues(role);
+
+            #region Resources
+
+            var resourcePairs = from curr in role.Privileges   //.Select(oc => oc.Resource)
+                                join db in dbRole.Privileges   //.Select(oc => oc.Resource)
+                                     on curr.RoleId equals db.RoleId into grp
+                                from db in grp.DefaultIfEmpty()
+                                select new { curr, db };
+            foreach (var pair in resourcePairs)
+            {
+                if (pair.db != null)
+                {
+                    context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
+                    context.Set<RolePrivilege>().Update(pair.db);
+                }
+                else
+                {
+                    //var appResource = new RolePrivilege
+                    //{
+                    //    RoleId = role.Id,
+                    //    AppResourceId =
+                    //    //ResourceId = pair.curr.Id,
+                    //};
+                    //dbRole.Privileges.Add(appResource);
+                    context.Set<RolePrivilege>().Add(pair.curr);
+                }
+            }
+
+            #endregion Resources
+
+            context.Roles.Update(dbRole);
             await context.SaveChangesAsync();
         }
 
@@ -144,13 +248,13 @@ namespace FandaAuth.Service
             #region Validation: Duplicate
 
             // Check email duplicate
-            var duplCode = new Duplicate { Field = DuplicateField.Code, Value = model.Code, Id = model.Id, ParentId = tenantId };
+            var duplCode = new TenantKeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id, TenantId = tenantId };
             if (await ExistsAsync(duplCode))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
             // Check name duplicate
-            var duplName = new Duplicate { Field = DuplicateField.Name, Value = model.Name, Id = model.Id, ParentId = tenantId };
+            var duplName = new TenantKeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id, TenantId = tenantId };
             if (await ExistsAsync(duplName))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");

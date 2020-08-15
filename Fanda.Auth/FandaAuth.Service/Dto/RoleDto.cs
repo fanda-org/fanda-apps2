@@ -7,10 +7,7 @@ namespace FandaAuth.Service.Dto
 {
     public class RoleDto : BaseDto
     {
-        [Required]
-        public Guid TenantId { get; set; }
-
-        public ICollection<RolePrivilegeDto> Privileges { get; set; }
+        public List<RolePrivilegeDto> Privileges { get; set; }
     }
 
     public class RoleListDto : BaseListDto
@@ -19,6 +16,6 @@ namespace FandaAuth.Service.Dto
 
     public class RoleChildrenDto
     {
-        public ICollection<RolePrivilegeDto> Privileges { get; set; }
+        public List<RolePrivilegeDto> Privileges { get; set; }
     }
 }

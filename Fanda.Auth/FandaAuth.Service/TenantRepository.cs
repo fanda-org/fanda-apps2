@@ -41,6 +41,7 @@ namespace FandaAuth.Service
             if (tenant != null)
             {
                 tenant.Active = status.Active;
+                tenant.DateModified = DateTime.UtcNow;
                 context.Tenants.Update(tenant);
                 await context.SaveChangesAsync();
                 return true;
@@ -76,8 +77,14 @@ namespace FandaAuth.Service
             return true;
         }
 
-        public async Task<bool> ExistsAsync(ParentDuplicate data)
+        public async Task<bool> ExistsAsync(KeyData data)
             => await context.ExistsAsync<Tenant>(data);
+
+        public async Task<TenantDto> GetByAsync(KeyData data)
+        {
+            var tenant = await context.ExistsAsync<Tenant>(data);
+            return mapper.Map<TenantDto>(tenant);
+        }
 
         public IQueryable<TenantListDto> GetAll(Guid parentId)  // nullable
         {
@@ -145,13 +152,13 @@ namespace FandaAuth.Service
             #region Validation: Duplicate
 
             // Check email duplicate
-            var duplCode = new Duplicate { Field = DuplicateField.Code, Value = model.Code, Id = model.Id };
+            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
             if (await ExistsAsync(duplCode))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
             // Check name duplicate
-            var duplName = new Duplicate { Field = DuplicateField.Name, Value = model.Name, Id = model.Id };
+            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
             if (await ExistsAsync(duplName))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");

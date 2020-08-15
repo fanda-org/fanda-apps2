@@ -7,7 +7,7 @@ namespace FandaAuth.Service.Dto
     public class AppResourceDto : BaseDto
     {
         public ResourceType ResourceType { get; set; }
-        public Guid ApplicationId { get; set; }
+        //public Guid ApplicationId { get; set; }
 
         #region Action fields
 

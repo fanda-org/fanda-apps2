@@ -1,16 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+// import { first } from 'rxjs/operators';
 
 import { UnitService, AlertService } from '../../_services';
+import { Unit } from '../../_models';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-units',
   templateUrl: 'units.component.html'
 })
 export class UnitsComponent implements OnInit {
-  units = null;
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
   form: FormGroup;
@@ -18,6 +19,7 @@ export class UnitsComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+  units: Observable<Unit[]> = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,25 +41,17 @@ export class UnitsComponent implements OnInit {
     });
 
     if (!this.isAddMode) {
-      this.unitService
-        .getById(this.id)
-        .pipe(first())
-        .subscribe((x) => {
-          this.f.code.setValue(x.code);
-          this.f.name.setValue(x.name);
-          this.f.description.setValue(x.description);
-          this.f.active.setValue(x.active);
-        });
+      const x: Unit = this.unitService.get(this.id);
+      // .pipe(first())
+      // .subscribe((x) => {
+      this.f.code.setValue(x.code);
+      this.f.name.setValue(x.name);
+      this.f.description.setValue(x.description);
+      this.f.active.setValue(x.active);
+      // });
     }
 
-    this.unitService
-      .getAll()
-      .pipe(first())
-      .subscribe((units) => (this.units = units));
-
-    // this.http.get<Unit[]>(this.baseUrl + 'api/units').subscribe(result => {
-    //    this.units = result;
-    // }, error => console.error(error));
+    this.units = this.unitService.getUnits;
   }
 
   // convenience getter for easy access to form fields
@@ -78,53 +72,68 @@ export class UnitsComponent implements OnInit {
 
     this.loading = true;
     if (this.isAddMode) {
-      this.createUser();
+      this.createUnit();
     } else {
-      this.updateUser();
+      this.updateUnit();
     }
   }
 
-  private createUser(): void {
-    this.unitService
-      .create(this.form.value)
-      .pipe(first())
-      .subscribe(
-        (data) => {
-          this.alertService.success('Unit added successfully', { keepAfterRouteChange: true });
-          this.router.navigate(['.', { relativeTo: this.route }]);
-        },
-        (error) => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      );
+  private createUnit(): void {
+    const success = this.unitService.create(this.form.value);
+    if (success) {
+      this.alertService.success('Unit added successfully', { keepAfterRouteChange: true });
+      this.router.navigate(['.', { relativeTo: this.route }]);
+    } else {
+      this.alertService.error('Error adding unit');
+      this.loading = false;
+    }
+    // .pipe(first())
+    // .subscribe(
+    //   (data) => {
+    //     this.alertService.success('Unit added successfully', { keepAfterRouteChange: true });
+    //     this.router.navigate(['.', { relativeTo: this.route }]);
+    //   },
+    //   (error) => {
+    //     this.alertService.error(error);
+    //     this.loading = false;
+    //   }
+    // );
   }
 
-  private updateUser(): void {
-    this.unitService
-      .update(this.id, this.form.value)
-      .pipe(first())
-      .subscribe(
-        (data) => {
-          this.alertService.success('Update successful', { keepAfterRouteChange: true });
-          this.router.navigate(['..', { relativeTo: this.route }]);
-        },
-        (error) => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      );
+  private updateUnit(): void {
+    const success = this.unitService.update(this.id, this.form.value);
+    if (success) {
+      this.alertService.success('Update successful', { keepAfterRouteChange: true });
+      this.router.navigate(['..', { relativeTo: this.route }]);
+    } else {
+      this.alertService.error('Error updating unit');
+      this.loading = false;
+    }
+    // .pipe(first())
+    // .subscribe(
+    //   (data) => {
+    //     this.alertService.success('Update successful', { keepAfterRouteChange: true });
+    //     this.router.navigate(['..', { relativeTo: this.route }]);
+    //   },
+    //   (error) => {
+    //     this.alertService.error(error);
+    //     this.loading = false;
+    //   }
+    // );
   }
 
-  deleteUser(id: string): void {
-    const unit = this.units.find((x) => x.id === id);
-    unit.isDeleting = true;
-    this.unitService
-      .delete(id)
-      .pipe(first())
-      .subscribe(() => {
-        this.units = this.units.filter((x) => x.id !== id);
-      });
+  deleteUnit(id: string): void {
+    // const unit = this.units.find((x) => x.id === id);
+    // unit.isDeleting = true;
+    const success = this.unitService.delete(id);
+    if (success) {
+      // this.units.subscribe((u) => (this.units = u.filter((x) => x.id !== id)));
+      this.units = this.unitService.getUnits;
+    }
+    // .pipe(first())
+    // .subscribe(() => {
+    //   this.units = this.units.filter((x) => x.id !== id);
+    // });
   }
 
   collapsed(event: any): void {

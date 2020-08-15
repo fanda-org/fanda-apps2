@@ -64,7 +64,7 @@ namespace Fanda.Auth.Extensions
                     {
                         "http://localhost:4200",    // Frontend Angular app
                         "http://localhost:5000",    // API Gateway
-                        //Configuration["Fanda.Web.Url"],
+                        //Configuration["Fanda.Gateway.Url"],
                         //Configuration["Fanda.Ng.Url"]
                     };
                     options.AddPolicy("_MyAllowedOrigins", builder =>

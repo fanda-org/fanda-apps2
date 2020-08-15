@@ -54,6 +54,8 @@ namespace FandaAuth.Domain
             builder.HasKey(ar => ar.Id);
             builder.Property(ar => ar.Id).ValueGeneratedOnAdd();
 
+            builder.Ignore(ar => ar.ResourceTypeString);
+
             // index
             builder.HasIndex(ar => new { ar.ApplicationId, ar.Code })
                 .IsUnique();

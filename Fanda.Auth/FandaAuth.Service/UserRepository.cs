@@ -2,7 +2,9 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Fanda.Core;
 using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using FandaAuth.Domain;
+using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.Extensions;
 using FandaAuth.Service.ViewModels;
@@ -24,7 +26,7 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IUserRepository :
-        IRepository<UserDto>,
+        IUserRepository<UserDto>,
         IListRepository<UserListDto>
     {
         Task<ValidationResultModel> ValidateAsync(Guid tenantId, RegisterViewModel model);
@@ -114,7 +116,8 @@ namespace FandaAuth.Service
                 user.DateModified = null;
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
-                user.Active = true;
+                // user.Active = true;
+
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
                 userModel = _mapper.Map<UserDto>(user);
@@ -160,7 +163,7 @@ namespace FandaAuth.Service
             await _context.SaveChangesAsync();
 
             var userDto = _mapper.Map<UserDto>(user);
-            return new AuthenticateResponse(userDto, jwtToken, refreshToken.Token);
+            return new AuthenticateResponse(userDto, user.TenantId, jwtToken, refreshToken.Token);
         }
 
         public async Task<AuthenticateResponse> RefreshToken(string token, string ipAddress)
@@ -196,7 +199,7 @@ namespace FandaAuth.Service
             var jwtToken = GenerateJwtToken(user);
 
             var userDto = _mapper.Map<UserDto>(user);
-            return new AuthenticateResponse(userDto, jwtToken, newRefreshToken.Token);
+            return new AuthenticateResponse(userDto, user.TenantId, jwtToken, newRefreshToken.Token);
         }
 
         public async Task<bool> RevokeToken(string token, string ipAddress)
@@ -499,6 +502,7 @@ namespace FandaAuth.Service
             if (user != null)
             {
                 user.Active = status.Active;
+                user.DateModified = DateTime.UtcNow;
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
                 return true;
@@ -506,8 +510,14 @@ namespace FandaAuth.Service
             throw new KeyNotFoundException("User not found");
         }
 
-        public async Task<bool> ExistsAsync(Duplicate data)
+        public async Task<bool> ExistsAsync(UserKeyData data)
             => await _context.ExistsAsync<User>(data);
+
+        public async Task<UserDto> GetByAsync(UserKeyData data)
+        {
+            var user = await _context.ExistsAsync<User>(data);
+            return _mapper.Map<UserDto>(user);
+        }
 
         public async Task<ValidationResultModel> ValidateAsync(Guid tenantId, RegisterViewModel model)
         {
@@ -538,11 +548,11 @@ namespace FandaAuth.Service
                 //throw new ArgumentNullException(nameof(tenantId), "Tenant id is missing");
                 model.Errors.AddError(nameof(tenantId), "Tenant id is missing");
             }
-            if (tenantId != model.TenantId)
-            {
-                //throw new ArgumentException("Tenant id is mismatch");
-                model.Errors.AddError(nameof(tenantId), "Tenant id is mismatch");
-            }
+            //if (tenantId != model.TenantId)
+            //{
+            //    //throw new ArgumentException("Tenant id is mismatch");
+            //    model.Errors.AddError(nameof(tenantId), "Tenant id is mismatch");
+            //}
             var dbTenant = await _context.Tenants
                 .FindAsync(tenantId);
             if (dbTenant == null)
@@ -555,13 +565,13 @@ namespace FandaAuth.Service
             #region Validation: Duplicate
 
             // Check email duplicate
-            var duplEmail = new Duplicate { Field = DuplicateField.Email, Value = model.Email, Id = model.Id, ParentId = tenantId };
+            var duplEmail = new UserKeyData { Field = KeyField.Email, Value = model.Email, Id = model.Id, TenantId = tenantId };
             if (await ExistsAsync(duplEmail))
             {
                 model.Errors.AddError(nameof(model.Email), $"{nameof(model.Email)} '{model.Email}' already exists");
             }
             // Check name duplicate
-            var duplName = new Duplicate { Field = DuplicateField.Name, Value = model.UserName, Id = model.Id, ParentId = tenantId };
+            var duplName = new UserKeyData { Field = KeyField.Name, Value = model.UserName, Id = model.Id, TenantId = tenantId };
             if (await ExistsAsync(duplName))
             {
                 model.Errors.AddError(nameof(model.UserName), $"{nameof(model.UserName)} '{model.UserName}' already exists");

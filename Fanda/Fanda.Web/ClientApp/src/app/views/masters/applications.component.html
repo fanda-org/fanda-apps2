@@ -1,0 +1,118 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-edit"></i> Application List
+        <div class="card-header-actions">
+          <button type="button" class="card-header-action btn btn-link btn-setting">
+            <i class="icon-settings"></i>
+          </button>
+          <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()">
+            <i class="{{ iconCollapse }}"></i>
+          </button>
+          <button type="button" class="card-header-action btn btn-link btn-close"><i class="icon-close"></i></button>
+        </div>
+      </div>
+      <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
+        <p *ngIf="!applications">Loading...</p>
+        <div class="row align-items-center">
+          <div class="col form-group">
+            <div class="btn-group" dropdown>
+              <button dropdownToggle type="button" class="btn btn-ghost-dark dropdown-toggle">
+                Filter by Status <span class="caret"></span>
+              </button>
+              <ul *dropdownMenu class="dropdown-menu" role="menu">
+                <li role="menuitem"><a class="dropdown-item" href="#">Active</a></li>
+                <li role="menuitem"><a class="dropdown-item" href="#">Inactive</a></li>
+                <li class="divider dropdown-divider"></li>
+                <li role="menuitem"><a class="dropdown-item" href="#">Both</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col form-group">
+            <input type="text" class="form-control" placeholder="Search..." />
+          </div>
+          <div class="col-auto form-group">
+            <button type="button" class="btn btn-danger"><i class="fa fa-minus-circle"></i> Delete</button>
+            <button type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</button>
+          </div>
+        </div>
+        <table class="table table-bordered table-striped table-sm" aria-labelledby="tableLabel" *ngIf="applications">
+          <thead>
+            <tr class="align-items-center">
+              <th class="align-middle" style="text-align: center;"><input type="checkbox" /></th>
+              <th>Application Code</th>
+              <th>Application Name</th>
+              <th>Description</th>
+              <th>Edition</th>
+              <th>Version</th>
+              <th style="text-align: center;">Status</th>
+              <th style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of applications">
+              <td class="align-middle" style="text-align: center;"><input type="checkbox" /></td>
+              <td class="align-middle" style="width: 200px;">{{ app.code }}</td>
+              <td class="align-middle">{{ app.name }}</td>
+              <td class="align-middle">{{ app.description }}</td>
+              <td class="align-middle">{{ app.edition }}</td>
+              <td class="align-middle">{{ app.version }}</td>
+              <td class="align-middle" style="width: 75px; text-align: center;">
+                <label class="switch switch-label switch-pill switch-primary switch-sm mb-0">
+                  <input type="checkbox" class="switch-input" [(ngModel)]="app.active" />
+                  <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                </label>
+              </td>
+              <td class="align-middle align-items-center p-0 m-0" style="width: 75px; text-align: center;">
+                <!-- <div class="btn-group btn-block p-0 m-0" role="group" aria-label="Actions"> -->
+                <button
+                  type="button"
+                  class="btn btn-link btn-lg text-warning p-0 m-0 mr-1"
+                  role="button"
+                  tooltip="Edit"
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-link btn-lg text-danger p-0 m-0" role="button" tooltip="Delete">
+                  <i class="fa fa-trash"></i>
+                </button>
+                <!-- </div> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row mb-0 align-items-center">
+          <div class="col">
+            <label>Showing 1 to 5 of 14 entries</label>
+          </div>
+          <div class="col-auto">
+            <div class="form-inline">
+              <label class="mr-2">Show</label>
+              <select class="form-control mr-2">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <label>items</label>
+            </div>
+          </div>
+          <div class="col-auto">
+            <ul class="pagination mb-0">
+              <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.col-->
+</div>
+<!--/.row-->

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { UnitsComponent } from './units.component';
-import { ApplicationComponent } from './application.component';
+import { ApplicationsComponent } from './applications.component';
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'applications',
-    component: ApplicationComponent,
+    component: ApplicationsComponent,
     data: { title: 'Applications' }
   }
 ];

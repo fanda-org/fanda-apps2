@@ -6,8 +6,8 @@ namespace FandaAuth.Service.Dto
     public class RolePrivilegeDto
     {
         // Role
-        [Required]
-        public Guid RoleId { get; set; }
+        //[Required]
+        //public Guid RoleId { get; set; }
 
         // AppResource
         [Required]

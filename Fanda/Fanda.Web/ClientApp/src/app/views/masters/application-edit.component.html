@@ -2,7 +2,7 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <i class="fa fa-edit"></i> Applications
+        <i class="fa fa-edit"></i> Application - Edit
         <div class="card-header-actions">
           <button type="button" class="card-header-action btn btn-link btn-setting">
             <i class="icon-settings"></i>
@@ -14,17 +14,12 @@
         </div>
       </div>
       <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
+        <p *ngIf="!applications">Loading...</p>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="row">
             <div class="form-group col-sm-4">
               <label for="code">Application Code</label>
-              <input
-                type="text"
-                formControlName="code"
-                class="form-control"
-                placeholder="Enter application code"
-                autofocus
-              />
+              <input type="text" formControlName="code" class="form-control" placeholder="Enter application code" />
             </div>
             <div class="form-group col-sm-8">
               <label for="name">Application Name</label>
@@ -35,40 +30,24 @@
             <label for="description">Description</label>
             <input type="text" formControlName="description" class="form-control" placeholder="Enter description" />
           </div>
-          <div class="row align-middle align-items-center">
+          <div class="row">
             <div class="form-group col">
-              <label class="align-top" for="active">Active</label>
-              <label class="switch switch-label switch-pill switch-primary">
-                <input type="checkbox" formControlName="active" class="switch-input" checked />
-                <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
-              </label>
+              <div class="form-inline align-items-center">
+                <label for="active">Active</label>
+                <label class="switch switch-label switch-pill switch-primary switch-sm ml-2">
+                  <input type="checkbox" formControlName="active" class="switch-input" checked />
+                  <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                </label>
+              </div>
             </div>
             <div class="form-group col-auto">
-              <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-              <button class="btn btn-secondary" type="button"><i class="fa fa-close"></i> Cancel</button>
+              <div class="form-inline">
+                <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save"></i> Save</button>
+                <button type="button" class="btn btn-secondary"><i class="fa fa-close"></i> Cancel</button>
+              </div>
             </div>
           </div>
         </form>
-
-        <p *ngIf="!applications">Loading...</p>
-        <table class="table table-striped table-hover" aria-labelledby="tableLabel" *ngIf="applications">
-          <thead>
-            <tr>
-              <th>Application Code</th>
-              <th>Application Name</th>
-              <th>Description</th>
-              <th>Active</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let app of applications">
-              <td>{{ app.code }}</td>
-              <td>{{ app.name }}</td>
-              <td>{{ app.description }}</td>
-              <td>{{ app.active }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>

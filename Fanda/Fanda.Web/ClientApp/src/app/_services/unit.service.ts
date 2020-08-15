@@ -1,8 +1,11 @@
+import { ApiResponse } from './../_models/api-response';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
+// import { map, first } from 'rxjs/operators';
+import { List } from 'immutable';
+import { asObservable } from './asObservable';
 
 import { environment } from '../../environments/environment';
 import { Unit } from '../_models';
@@ -10,35 +13,76 @@ import { Unit } from '../_models';
 @Injectable({ providedIn: 'root' })
 export class UnitService {
   private baseUrl = `${environment.apiUrl}/units`;
-  // private unitSubject: BehaviorSubject<Unit>;
-  // public unit: Observable<Unit>;
+  private units: BehaviorSubject<List<Unit>>;
 
   constructor(private router: Router, private http: HttpClient) {
-    // this.unitSubject = new BehaviorSubject<Unit>(JSON.parse(localStorage.getItem('user')));
-    // this.unit = this.unitSubject.asObservable();
+    // this.loadInitialData();
   }
 
-  // public get unitValue(): Unit {
-  //     return this.unitSubject.value;
-  // }
-
-  getAll() {
-    return this.http.get<Unit[]>(`${this.baseUrl}`);
+  get getUnits(): Observable<Unit[]> {
+    return asObservable<Unit[]>(this.units);
   }
 
-  getById(id: string) {
-    return this.http.get<Unit>(`${this.baseUrl}/${id}`);
+  loadInitialData(): void {
+    this.http.get<ApiResponse>(`${this.baseUrl}`).subscribe(
+      (res) => {
+        this.units = new BehaviorSubject<List<Unit>>(res.data);
+      },
+      (err) => console.log('Error retrieving units')
+    );
   }
 
-  create(unit: Unit) {
-    return this.http.post(`${this.baseUrl}`, unit);
+  get(id: string): Unit {
+    return this.units.getValue().find((unit: Unit) => unit.id === id);
   }
 
-  update(id: string, unit: Unit) {
-    return this.http.put(`${this.baseUrl}/${id}`, unit);
+  create(unit: Unit): boolean {
+    let success;
+    this.http.post<ApiResponse>(`${this.baseUrl}`, unit).subscribe(
+      (res) => {
+        this.units.next(this.units.getValue().push(res.data));
+        success = true;
+      },
+      (err) => {
+        console.log('Error adding unit');
+        success = false;
+      }
+    );
+    return success;
   }
 
-  delete(id: string) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  update(id: string, updated: Unit): boolean {
+    let success;
+    this.http.put<ApiResponse>(`${this.baseUrl}/${id}`, updated).subscribe(
+      (res) => {
+        const units = this.units.getValue();
+        const index = units.findIndex((u: Unit) => u.id === id);
+        // const unit: Unit = units.get(index);
+        this.units.next(units.set(index, updated));
+        success = true;
+      },
+      (err) => {
+        console.log('Error updating unit');
+        success = false;
+      }
+    );
+    return success;
+  }
+
+  delete(id: string): boolean {
+    let success;
+    this.http.delete(`${this.baseUrl}/${id}`).subscribe(
+      (res) => {
+        const units: List<Unit> = this.units.getValue();
+        const index = units.findIndex((todo) => todo.id === id);
+        this.units.next(units.delete(index));
+        success = true;
+      },
+      (err) => {
+        console.log('Error deleting unit');
+        success = false;
+      }
+    );
+    return success;
   }
 }

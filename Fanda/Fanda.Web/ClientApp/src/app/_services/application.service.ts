@@ -1,9 +1,10 @@
+import { ApiResponse } from './../_models/api-response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Application, ApiResponse } from '../_models';
-import { Observable } from 'rxjs';
+import { Application } from '../_models';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
@@ -15,19 +16,19 @@ export class ApplicationService {
     return this.http.get<ApiResponse>(`${this.baseUrl}`);
   }
 
-  getById(id: string): any {
-    return this.http.get<Application>(`${this.baseUrl}/${id}`);
+  getById(id: string): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${this.baseUrl}/${id}`);
   }
 
-  create(app: Application): any {
-    return this.http.post(`${this.baseUrl}`, app);
+  create(application: Application): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(`${this.baseUrl}`, application);
   }
 
-  update(id: string, app: Application): any {
-    return this.http.put(`${this.baseUrl}/${id}`, app);
+  update(id: string, updated: Application): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(`${this.baseUrl}/${id}`, updated);
   }
 
-  delete(id: string): any {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  delete(id: string): Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>(`${this.baseUrl}/${id}`);
   }
 }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Fanda.Core.Extensions;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public interface IRepositoryBase<TModel>
+    public interface IParentRepositoryBase<TModel>
     {
         // PUT
         Task UpdateAsync(Guid id, TModel model);
@@ -19,26 +20,28 @@ namespace Fanda.Core.Base
         Task<bool> ChangeStatusAsync(ActiveStatus status);
     }
 
-    public interface IParentRepository<TModel> : IRepositoryBase<TModel>
+    public interface IRepositoryBase<TModel> : IParentRepositoryBase<TModel>
+    {
+        // POST
+        Task<TModel> CreateAsync(Guid parentId, TModel model);
+
+        // OPTOINS: INTERNAL
+        Task<ValidationResultModel> ValidateAsync(Guid parentId, TModel model);
+    }
+
+    public interface IParentRepository<TModel> : IParentRepositoryBase<TModel>
     {
         // POST
         Task<TModel> CreateAsync(TModel model);
 
         // GET
-        Task<bool> ExistsAsync(ParentDuplicate data);
+        Task<bool> ExistsAsync(KeyData data);
 
+        //GET
+        Task<TModel> GetByAsync(KeyData data);
+
+        // OPTIONS: INTERNAL
         Task<ValidationResultModel> ValidateAsync(TModel model);
-    }
-
-    public interface IRepository<TModel> : IRepositoryBase<TModel>
-    {
-        // POST
-        Task<TModel> CreateAsync(Guid parentId, TModel model);
-
-        // GET
-        Task<bool> ExistsAsync(Duplicate data);
-
-        Task<ValidationResultModel> ValidateAsync(Guid parentId, TModel model);
     }
 
     #region Get data of children
