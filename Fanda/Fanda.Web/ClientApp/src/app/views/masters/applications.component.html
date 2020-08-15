@@ -34,7 +34,7 @@
           </div>
           <div class="col-auto form-group">
             <button type="button" class="btn btn-danger"><i class="fa fa-minus-circle"></i> Delete</button>
-            <button type="button" class="btn btn-success" routerLink="add/">
+            <button type="button" class="btn btn-success" (click)="onClick('add', '')">
               <i class="fa fa-plus-circle"></i> Add New
             </button>
           </div>
@@ -57,7 +57,7 @@
               <td class="align-middle" style="text-align: center;"><input type="checkbox" /></td>
               <td class="align-middle" style="width: 200px;">{{ app.code }}</td>
               <td class="align-middle">
-                <a routerLink="view/{{ app.id }}">{{ app.name }}</a>
+                <a [routerLink]="" (click)="onClick('view', app.id)"> {{ app.name }} </a>
               </td>
               <td class="align-middle">{{ app.description }}</td>
               <td class="align-middle">{{ app.edition }}</td>
@@ -70,24 +70,24 @@
               </td>
               <td class="align-middle align-items-center p-0 m-0" style="width: 75px; text-align: center;">
                 <!-- <div class="btn-group btn-block p-0 m-0" role="group" aria-label="Actions"> -->
-                <a
+                <button
                   type="button"
                   class="btn btn-link btn-lg text-warning p-0 m-0 mr-1"
                   role="button"
                   tooltip="Edit"
-                  routerLink="edit/{{ app.id }}"
+                  (click)="onClick('edit', app.id)"
                 >
                   <i class="fa fa-edit"></i>
-                </a>
-                <a
+                </button>
+                <button
                   type="button"
                   class="btn btn-link btn-lg text-danger p-0 m-0"
                   role="button"
                   tooltip="Delete"
-                  routerLink="delete/{{ app.id }}"
+                  (click)="onClick('delete', app.id)"
                 >
                   <i class="fa fa-trash"></i>
-                </a>
+                </button>
                 <!-- </div> -->
               </td>
             </tr>

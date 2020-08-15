@@ -18,10 +18,6 @@ const routes: Routes = [
     data: { title: 'Applications' }
   },
   {
-    path: 'applications/:mode/:id',
-    component: ApplicationEditComponent
-  },
-  {
     path: 'applications/:mode',
     component: ApplicationEditComponent
   }

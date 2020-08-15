@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ApplicationService, AlertService } from '../../_services';
-import { Application } from '../../_models';
-
+import { ApplicationService, AlertService, HiddenDataService } from '../../_services';
 import { capitalize } from '../../_utils';
 
 @Component({
@@ -17,24 +15,21 @@ export class ApplicationEditComponent implements OnInit {
   form: FormGroup;
   mode: string;
   id: string;
-  // isAddMode: boolean;
   loading = false;
   submitted = false;
-
-  // applications: Application[] = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private applicationService: ApplicationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private hiddenService: HiddenDataService
   ) {}
 
   ngOnInit(): void {
     this.mode = capitalize(this.route.snapshot.params['mode']);
-    this.id = this.route.snapshot.params['id'];
-    // this.isAddMode = !this.id;
+    this.id = this.hiddenService.id;
 
     this.form = this.formBuilder.group({
       code: ['', Validators.required],
@@ -51,11 +46,6 @@ export class ApplicationEditComponent implements OnInit {
         this.f.active.setValue(x.data.active);
       });
     }
-
-    // this.applicationService.getAll().subscribe((res) => {
-    //   this.applications = res.data;
-    //   this.alertService.success('Create successful', { keepAfterRouteChange: true });
-    // });
   }
 
   // convenience getter for easy access to form fields

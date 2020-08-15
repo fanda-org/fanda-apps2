@@ -12,6 +12,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { MastersRoutingModule } from './masters-routing.module';
 
+// import { HiddenDataService } from '../../_services';
+
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationEditComponent } from './application-edit.component';
 import { UnitsComponent } from './units.component';
@@ -26,6 +28,7 @@ import { UnitEditComponent } from './unit-edit.component';
     TooltipModule.forRoot(),
     BsDropdownModule,
     MastersRoutingModule
+    // HiddenDataService
   ],
   declarations: [ApplicationsComponent, ApplicationEditComponent, UnitsComponent, UnitEditComponent]
 })
