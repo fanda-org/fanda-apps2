@@ -1,6 +1,6 @@
 import { ResourceType } from '../_enums';
 
-export class AppResource {
+export interface AppResource {
   id: string;
   code: string;
   name: string;

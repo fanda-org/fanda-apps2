@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApplicationService, AlertService } from '../../_services';
 import { Application } from '../../_models';
 
+import { capitalize } from '../../_utils';
+
 @Component({
   selector: 'app-application-edit',
   templateUrl: './application-edit.component.html'
@@ -13,11 +15,13 @@ export class ApplicationEditComponent implements OnInit {
   isCollapsed: boolean = false;
   iconCollapse: string = 'icon-arrow-up';
   form: FormGroup;
+  mode: string;
   id: string;
-  isAddMode: boolean;
+  // isAddMode: boolean;
   loading = false;
   submitted = false;
-  applications: Application[] = null;
+
+  // applications: Application[] = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,8 +32,9 @@ export class ApplicationEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.mode = capitalize(this.route.snapshot.params['mode']);
     this.id = this.route.snapshot.params['id'];
-    this.isAddMode = !this.id;
+    // this.isAddMode = !this.id;
 
     this.form = this.formBuilder.group({
       code: ['', Validators.required],
@@ -38,7 +43,7 @@ export class ApplicationEditComponent implements OnInit {
       active: ['true']
     });
 
-    if (!this.isAddMode) {
+    if (this.id) {
       this.applicationService.getById(this.id).subscribe((x) => {
         this.f.code.setValue(x.data.code);
         this.f.name.setValue(x.data.name);
@@ -47,10 +52,10 @@ export class ApplicationEditComponent implements OnInit {
       });
     }
 
-    this.applicationService.getAll().subscribe((res) => {
-      this.applications = res.data;
-      this.alertService.success('Create successful', { keepAfterRouteChange: true });
-    });
+    // this.applicationService.getAll().subscribe((res) => {
+    //   this.applications = res.data;
+    //   this.alertService.success('Create successful', { keepAfterRouteChange: true });
+    // });
   }
 
   // convenience getter for easy access to form fields
@@ -70,7 +75,7 @@ export class ApplicationEditComponent implements OnInit {
     }
 
     this.loading = true;
-    if (this.isAddMode) {
+    if (!this.id) {
       this.createApplication();
     } else {
       this.updateApplication();
@@ -109,7 +114,7 @@ export class ApplicationEditComponent implements OnInit {
     this.applicationService.delete(id).subscribe(
       () => {
         this.alertService.success('Delete successful', { keepAfterRouteChange: true });
-        this.applications = this.applications.filter((x) => x.id !== id);
+        // this.applications = this.applications.filter((x) => x.id !== id);
       },
       (error) => {
         this.alertService.error(error);

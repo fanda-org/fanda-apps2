@@ -1,4 +1,4 @@
-export class ApiResponse {
+export interface ApiResponse {
   data: any;
   success: boolean;
 }

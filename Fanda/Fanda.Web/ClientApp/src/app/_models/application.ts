@@ -1,6 +1,6 @@
 import { AppResource } from './app-resource';
 
-export class Application {
+export interface Application {
   id: string;
   code: string;
   name: string;

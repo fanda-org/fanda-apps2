@@ -34,7 +34,9 @@
           </div>
           <div class="col-auto form-group">
             <button type="button" class="btn btn-danger"><i class="fa fa-minus-circle"></i> Delete</button>
-            <button type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</button>
+            <button type="button" class="btn btn-success" routerLink="add/">
+              <i class="fa fa-plus-circle"></i> Add New
+            </button>
           </div>
         </div>
         <table class="table table-bordered table-striped table-sm" aria-labelledby="tableLabel" *ngIf="applications">
@@ -54,7 +56,9 @@
             <tr *ngFor="let app of applications">
               <td class="align-middle" style="text-align: center;"><input type="checkbox" /></td>
               <td class="align-middle" style="width: 200px;">{{ app.code }}</td>
-              <td class="align-middle">{{ app.name }}</td>
+              <td class="align-middle">
+                <a routerLink="view/{{ app.id }}">{{ app.name }}</a>
+              </td>
               <td class="align-middle">{{ app.description }}</td>
               <td class="align-middle">{{ app.edition }}</td>
               <td class="align-middle">{{ app.version }}</td>
@@ -66,17 +70,24 @@
               </td>
               <td class="align-middle align-items-center p-0 m-0" style="width: 75px; text-align: center;">
                 <!-- <div class="btn-group btn-block p-0 m-0" role="group" aria-label="Actions"> -->
-                <button
+                <a
                   type="button"
                   class="btn btn-link btn-lg text-warning p-0 m-0 mr-1"
                   role="button"
                   tooltip="Edit"
+                  routerLink="edit/{{ app.id }}"
                 >
                   <i class="fa fa-edit"></i>
-                </button>
-                <button type="button" class="btn btn-link btn-lg text-danger p-0 m-0" role="button" tooltip="Delete">
+                </a>
+                <a
+                  type="button"
+                  class="btn btn-link btn-lg text-danger p-0 m-0"
+                  role="button"
+                  tooltip="Delete"
+                  routerLink="delete/{{ app.id }}"
+                >
                   <i class="fa fa-trash"></i>
-                </button>
+                </a>
                 <!-- </div> -->
               </td>
             </tr>

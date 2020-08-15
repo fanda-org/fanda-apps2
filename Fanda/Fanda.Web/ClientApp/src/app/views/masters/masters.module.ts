@@ -12,9 +12,9 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { MastersRoutingModule } from './masters-routing.module';
 
-import { UnitsComponent } from './units.component';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationEditComponent } from './application-edit.component';
+import { UnitsComponent } from './units.component';
 import { UnitEditComponent } from './unit-edit.component';
 
 @NgModule({
