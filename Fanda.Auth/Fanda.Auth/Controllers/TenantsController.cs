@@ -17,6 +17,7 @@ namespace Fanda.Authentication.Controllers
 {
     public class TenantsController : BaseController
     {
+        private const string ModuleName = "Tenant";
         private readonly ITenantRepository repository;
 
         public TenantsController(ITenantRepository repository)
@@ -45,7 +46,7 @@ namespace Fanda.Authentication.Controllers
             }
             catch (Exception ex)
             {
-                return InternalServerError(MessageResponse.Failure(ex.Message));
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -59,15 +60,15 @@ namespace Fanda.Authentication.Controllers
             try
             {
                 var tenant = await repository.GetByIdAsync(id, include);
-                if (tenant != null)
+                if (tenant == null)
                 {
-                    return Ok(DataResponse<TenantDto>.Succeeded(tenant));
+                    return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
                 }
-                return NotFound(MessageResponse.Failure($"Tenant id '{id}' not found"));
+                return Ok(DataResponse<TenantDto>.Succeeded(tenant));
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Tenant");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -89,8 +90,6 @@ namespace Fanda.Authentication.Controllers
                 if (validationResult.IsValid)
                 {
                     var tenant = await repository.CreateAsync(model);
-                    //return CreatedAtAction(nameof(GetById), new { id = model.Id, include = false },
-                    //    DataResponse<TenantDto>.Succeeded(tenant));
                     return CreatedAtAction(nameof(GetById), new { id = tenant.Id },
                         DataResponse<TenantDto>.Succeeded(tenant));
                 }
@@ -101,7 +100,7 @@ namespace Fanda.Authentication.Controllers
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Tenant");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -115,7 +114,7 @@ namespace Fanda.Authentication.Controllers
             {
                 if (id != model.Id)
                 {
-                    return BadRequest(MessageResponse.Failure("Tenant id mismatch"));
+                    return BadRequest(MessageResponse.Failure($"{ModuleName} id mismatch"));
                 }
 
                 #region Validation
@@ -136,7 +135,7 @@ namespace Fanda.Authentication.Controllers
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Tenant");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -159,12 +158,12 @@ namespace Fanda.Authentication.Controllers
                 }
                 else
                 {
-                    return NotFound(MessageResponse.Failure("Tenant not found"));
+                    return NotFound(MessageResponse.Failure($"{ModuleName} not found"));
                 }
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Tenant");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -187,11 +186,11 @@ namespace Fanda.Authentication.Controllers
                 {
                     return Ok(MessageResponse.Succeeded("Status changed successfully"));
                 }
-                return NotFound(MessageResponse.Failure($"Tenant id '{id}' not found"));
+                return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Tenant");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -219,18 +218,7 @@ namespace Fanda.Authentication.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid input"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Not found"));
-                }
-                else
-                {
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fanda.Core
@@ -9,5 +10,7 @@ namespace Fanda.Core
 
         [Required]
         public string Value { get; set; }
+
+        public Guid ParentId { get; set; }
     }
 }

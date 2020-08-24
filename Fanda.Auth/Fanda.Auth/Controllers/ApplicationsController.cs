@@ -17,6 +17,7 @@ namespace Fanda.Auth.Controllers
 {
     public class ApplicationsController : BaseController
     {
+        private const string ModuleName = "Application";
         private readonly IApplicationRepository repository;
 
         public ApplicationsController(IApplicationRepository repository)
@@ -45,7 +46,7 @@ namespace Fanda.Auth.Controllers
             }
             catch (Exception ex)
             {
-                return InternalServerError(MessageResponse.Failure(ex.Message));
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -61,13 +62,13 @@ namespace Fanda.Auth.Controllers
                 var app = await repository.GetByIdAsync(id, include);
                 if (app == null)
                 {
-                    return NotFound(MessageResponse.Failure($"Application id '{id}' not found"));
+                    return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
                 }
                 return Ok(DataResponse<ApplicationDto>.Succeeded(app));
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Application");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -75,7 +76,7 @@ namespace Fanda.Auth.Controllers
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(DataResponse<ApplicationDto>), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> Create(ApplicationDto model)
         {
             try
@@ -89,8 +90,6 @@ namespace Fanda.Auth.Controllers
                 if (validationResult.IsValid)
                 {
                     var app = await repository.CreateAsync(model);
-                    //return CreatedAtAction(nameof(GetById), new { id = model.Id, include = false },
-                    //    DataResponse<ApplicationDto>.Succeeded(app));
                     return CreatedAtAction(nameof(GetById), new { id = app.Id },
                         DataResponse<ApplicationDto>.Succeeded(app));
                 }
@@ -101,21 +100,21 @@ namespace Fanda.Auth.Controllers
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Application");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Update(Guid id, ApplicationDto model)
         {
             try
             {
                 if (id != model.Id)
                 {
-                    return BadRequest(MessageResponse.Failure("Application id mismatch"));
+                    return BadRequest(MessageResponse.Failure($"{ModuleName} id mismatch"));
                 }
 
                 #region Validation
@@ -136,21 +135,21 @@ namespace Fanda.Auth.Controllers
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Application");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
                 if (id == null || id == Guid.Empty)
                 {
-                    return BadRequest(MessageResponse.Failure("Application id is missing"));
+                    return BadRequest(MessageResponse.Failure($"{ModuleName} id is missing"));
                 }
                 var success = await repository.DeleteAsync(id);
                 if (success)
@@ -159,12 +158,12 @@ namespace Fanda.Auth.Controllers
                 }
                 else
                 {
-                    return NotFound(MessageResponse.Failure("Application not found"));
+                    return NotFound(MessageResponse.Failure($"{ModuleName} not found"));
                 }
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Application");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -187,11 +186,11 @@ namespace Fanda.Auth.Controllers
                 {
                     return Ok(MessageResponse.Succeeded("Status changed successfully"));
                 }
-                return NotFound(MessageResponse.Failure($"Application id '{id}' not found"));
+                return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, "Application");
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -219,18 +218,7 @@ namespace Fanda.Auth.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid input"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Not found"));
-                }
-                else
-                {
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
 

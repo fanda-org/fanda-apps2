@@ -13,7 +13,7 @@ namespace Fanda.Core.Base
     public class BaseController : ControllerBase
     {
         [NonAction]
-        public virtual InternalServerErrorResult InternalServerError(IMessageResponse value)   // [ActionResultObjectValueAttribute]
+        private InternalServerErrorResult InternalServerError(IMessageResponse value)   // [ActionResultObjectValueAttribute]
         {
             return new InternalServerErrorResult(value);
         }
