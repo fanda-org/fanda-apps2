@@ -1,13 +1,14 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core.Base;
 using System;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class AccountYearDto : BaseDto
     {
         //public Guid Id { get; set; }
         //public string YearCode { get; set; }
         public DateTime YearBegin { get; set; }
+
         public DateTime YearEnd { get; set; }
     }
 

@@ -1,8 +1,8 @@
-using Fanda.Shared;
+using Fanda.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class AddressDto
     {

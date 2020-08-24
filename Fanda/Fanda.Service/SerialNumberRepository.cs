@@ -1,9 +1,10 @@
-﻿using Fanda.Domain.Context;
-using Fanda.Shared;
+﻿using Fanda.Core;
+using Fanda.Domain.Context;
+
 using System;
 using System.Text;
 
-namespace Fanda.Infrastructure
+namespace Fanda.Service
 {
     public interface ISerialNumberRepository
     {
@@ -14,6 +15,7 @@ namespace Fanda.Infrastructure
     {
         //private static volatile SerialNumberRepository _instance;
         private static readonly object syncRoot = new object();
+
         //private readonly AppSettings _settings;
         private readonly FandaContext _context;
 
@@ -21,6 +23,7 @@ namespace Fanda.Infrastructure
         {
             _context = context;
         }
+
         //public SerialNumberRepository(AppSettings settings)
         //{
         //    _settings = settings;
@@ -72,6 +75,7 @@ namespace Fanda.Infrastructure
                                 nextNumber = 1;
                             }
                             break;
+
                         case SerialNumberReset.Daily:
                             if (serialNumber.LastDate.Day != DateTime.Today.Day)
                             {
@@ -79,6 +83,7 @@ namespace Fanda.Infrastructure
                                 nextNumber = 1;
                             }
                             break;
+
                         case SerialNumberReset.Monthly:
                             if (serialNumber.LastDate.Month != DateTime.Today.Month)
                             {
@@ -86,6 +91,7 @@ namespace Fanda.Infrastructure
                                 nextNumber = 1;
                             }
                             break;
+
                         case SerialNumberReset.CalendarYear:
                             if (DateTime.Today.Year > serialNumber.LastDate.Year)
                             {
@@ -93,6 +99,7 @@ namespace Fanda.Infrastructure
                                 nextNumber = 1;
                             }
                             break;
+
                         case SerialNumberReset.AccountingYear:  // 01/04/2019 - 31/03/2020
                                                                 //var accountYear = await context.AccountYears
                                                                 //    .FindAsync(yearId);

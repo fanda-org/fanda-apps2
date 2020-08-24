@@ -1,30 +1,30 @@
-namespace Fanda.Infrastructure.Extensions
-{
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Net.Mime;
-    using System.Reflection;
-    using System.Text;
-    using System.Text.Json;
-    using System.Text.Json.Serialization;
-    using Fanda.Infrastructure.Helpers;
-    using Fanda.Shared;
-    using global::AutoMapper;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.DataProtection;
-    using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
-    using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.ResponseCompression;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.IdentityModel.Tokens;
-    using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Linq;
+using System.Net.Mime;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Fanda.Core;
+using Fanda.Core.Extensions;
+using global::AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
+namespace Fanda.Service.Extensions
+{
     public static class ServiceExtensions
     {
         public static void ConfigureStartupServices<TDbContext>(this IServiceCollection services,
@@ -32,20 +32,27 @@ namespace Fanda.Infrastructure.Extensions
             where TDbContext : DbContext
         {
             #region Health checks
+
             services.AddHealthChecks()
                 .AddDbContextCheck<TDbContext>();
-            #endregion
+
+            #endregion Health checks
 
             #region AppSettings
+
             services.Configure<AppSettings>(configuration);
             AppSettings appSettings = configuration.Get<AppSettings>();
-            #endregion
+
+            #endregion AppSettings
 
             #region DbContext
+
             services.AddFandaDbContextPool<TDbContext>(appSettings, migrationAssemblyName);
-            #endregion
+
+            #endregion DbContext
 
             #region CORS
+
             services.AddCors(options =>
             {
                 var urls = new[]
@@ -94,13 +101,17 @@ namespace Fanda.Infrastructure.Extensions
             //    .AllowAnyMethod();
             //});
             //});
-            #endregion
+
+            #endregion CORS
 
             #region Commented - Response Caching
+
             //services.AddResponseCaching();
-            #endregion
+
+            #endregion Commented - Response Caching
 
             #region Response compression
+
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<GzipCompressionProvider>();
@@ -110,9 +121,11 @@ namespace Fanda.Infrastructure.Extensions
             {
                 options.Level = System.IO.Compression.CompressionLevel.Fastest;
             });
+
             #endregion Response compression
 
             #region Commented - DistributedMemoryCache, DataProtection and Session
+
             // Adds a default in-memory implementation of IDistributedCache.
             //services.AddDistributedMemoryCache(options =>
             //{
@@ -125,13 +138,15 @@ namespace Fanda.Infrastructure.Extensions
             //services.AddSingleton<IWebCache, WebCache>();
 
             #region DataProtection
+
             services.AddDataProtection()
                 .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration()
                 {
                     EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
                 });
-            #endregion
+
+            #endregion DataProtection
 
             //services.AddSession(options =>
             //{
@@ -144,17 +159,23 @@ namespace Fanda.Infrastructure.Extensions
             //    //options.Cookie.IsEssential = true;
             //    //options.Cookie.Path = "/";
             //});
-            #endregion
+
+            #endregion Commented - DistributedMemoryCache, DataProtection and Session
 
             #region AutoMapper
-            services.AddAutoMapper(typeof(Fanda.Infrastructure.AutoMapperProfiles.AutoMapperProfile));
-            #endregion
+
+            services.AddAutoMapper(typeof(AutoMapperProfiles.AutoMapperProfile));
+
+            #endregion AutoMapper
 
             #region Commented - Authorization
+
             //services.AddAuthorization();
-            #endregion
+
+            #endregion Commented - Authorization
 
             #region JWT Authentication
+
             var key = Encoding.ASCII.GetBytes(appSettings.FandaSettings.Secret);
             services.AddAuthentication(x =>
             {
@@ -190,7 +211,8 @@ namespace Fanda.Infrastructure.Extensions
                     ClockSkew = TimeSpan.Zero
                 };
             });
-            #endregion
+
+            #endregion JWT Authentication
 
             // #region Repositories
             // services.AddTransient<IEmailSender, EmailSender>();
@@ -202,6 +224,7 @@ namespace Fanda.Infrastructure.Extensions
             // #endregion
 
             #region AddControllers
+
             services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
                 {
@@ -234,7 +257,7 @@ namespace Fanda.Infrastructure.Extensions
                 .AddDataAnnotationsLocalization();
             //.AddRazorRuntimeCompilation();
 
-            #endregion
+            #endregion AddControllers
 
             //services.Configure<ApiBehaviorOptions>(options =>
             //{
@@ -254,6 +277,7 @@ namespace Fanda.Infrastructure.Extensions
             //});
 
             #region Swagger
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -303,12 +327,13 @@ namespace Fanda.Infrastructure.Extensions
                                 }
                             },
                             new string[] {}
-
                     }
                 });
             });
-            #endregion
+
+            #endregion Swagger
         }
+
         public static void ConfigureStartup(this IApplicationBuilder app, IWebHostEnvironment env,
             AutoMapper.IConfigurationProvider autoMapperConfigProvider)
         {
@@ -326,13 +351,17 @@ namespace Fanda.Infrastructure.Extensions
             autoMapperConfigProvider.AssertConfigurationIsValid();
             app.UseHttpsRedirection();
             //app.UseSerilogRequestLogging();
+
             #region Angular SPA
+
             //app.UseStaticFiles();
             //if (!env.IsDevelopment())
             //{
             //    app.UseSpaStaticFiles();
             //}
-            #endregion
+
+            #endregion Angular SPA
+
             app.UseRouting();
             //app.UseResponseCaching();
             app.UseResponseCompression();
@@ -358,6 +387,7 @@ namespace Fanda.Infrastructure.Extensions
             });
 
             #region Angular SPA
+
             //app.UseSpa(spa =>
             //{
             //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -370,9 +400,11 @@ namespace Fanda.Infrastructure.Extensions
             //        spa.UseAngularCliServer(npmScript: "start");
             //    }
             //});
-            #endregion
+
+            #endregion Angular SPA
 
             #region Swagger
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -383,7 +415,8 @@ namespace Fanda.Infrastructure.Extensions
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fanda API V1");
                 //c.RoutePrefix = string.Empty;
             });
-            #endregion
+
+            #endregion Swagger
         }
     }
 }

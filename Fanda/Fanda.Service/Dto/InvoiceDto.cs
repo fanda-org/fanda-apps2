@@ -1,9 +1,9 @@
-﻿using Fanda.Core.Base;
-using Fanda.Shared;
+﻿using Fanda.Core;
+using Fanda.Core.Base;
 using System;
 using System.Collections.Generic;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class InvoiceDto : BaseYearDto
     {
@@ -11,10 +11,12 @@ namespace Fanda.Core.Models
         {
             InvoiceItems = new HashSet<InvoiceItemDto>();
         }
+
         //public Guid Id { get; set; }
         //public string InvoiceNumber { get; set; }
         //public DateTime InvoiceDate { get; set; }
         public Guid CategoryId { get; set; }
+
         public InvoiceType InvoiceType { get; set; }
         public StockInvoiceType StockInvoiceType { get; set; }
         public Guid PartyId { get; set; }

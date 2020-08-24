@@ -1,9 +1,9 @@
-using Fanda.Shared;
+using Fanda.Core.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class OrganizationDto : BaseDto
     {

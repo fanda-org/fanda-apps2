@@ -1,9 +1,10 @@
+using Fanda.Domain.Base;
 using System;
 using System.Collections.Generic;
 
 namespace Fanda.Domain
 {
-    public class ProductCategory : BaseOrgEntity
+    public class ProductCategory : OrgEntity
     {
         public Guid? ParentId { get; set; }
 

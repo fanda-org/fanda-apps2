@@ -1,22 +1,22 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Fanda.Core.Models;
+using Fanda.Core;
 using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
-using Fanda.Infrastructure.Base;
-using Fanda.Infrastructure.Extensions;
-using Fanda.Shared;
+using Fanda.Service.Base;
+using Fanda.Service.Dto;
+using Fanda.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Fanda.Infrastructure
+namespace Fanda.Service
 {
     public interface IUnitRepository :
-        IRepository<UnitDto>,
+        IOrgRepository<UnitDto>,
         IListRepository<UnitListDto>
     { }
 
@@ -129,7 +129,13 @@ namespace Fanda.Infrastructure
             throw new KeyNotFoundException("Unit not found");
         }
 
-        public async Task<bool> ExistsAsync(Duplicate data) => await _context.ExistsAsync<Unit>(data);
+        public async Task<bool> ExistsAsync(OrgKeyData data) => await _context.ExistsAsync<Unit>(data);
+
+        public async Task<UnitDto> GetByAsync(OrgKeyData data)
+        {
+            var unit = await _context.GetByAsync<Unit>(data);
+            return _mapper.Map<UnitDto>(unit);
+        }
 
         public async Task<ValidationResultModel> ValidateAsync(Guid orgId, UnitDto model)
         {
@@ -137,25 +143,29 @@ namespace Fanda.Infrastructure
             model.Errors.Clear();
 
             #region Formatting: Cleansing and formatting
+
             model.Code = model.Code.ToUpper();
             model.Name = model.Name.TrimExtraSpaces();
             model.Description = model.Description.TrimExtraSpaces();
-            #endregion
+
+            #endregion Formatting: Cleansing and formatting
 
             #region Validation: Duplicate
+
             // Check code duplicate
-            var duplCode = new Duplicate { Field = DuplicateField.Code, Value = model.Code, Id = model.Id, ParentId = orgId };
+            var duplCode = new OrgKeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id, OrgId = orgId };
             if (await ExistsAsync(duplCode))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
             // Check name duplicate
-            var duplName = new Duplicate { Field = DuplicateField.Name, Value = model.Name, Id = model.Id, ParentId = orgId };
+            var duplName = new OrgKeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id, OrgId = orgId };
             if (await ExistsAsync(duplName))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
             }
-            #endregion
+
+            #endregion Validation: Duplicate
 
             return model.Errors;
         }

@@ -1,4 +1,4 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core;
 using System;
 
 namespace Fanda.Domain
@@ -10,12 +10,15 @@ namespace Fanda.Domain
         // N, NNN
         // HH, MI, SS, -- MS
         public Guid YearId { get; set; }
+
         public SerialNumberModule Module { get; set; }
+
         public string ModuleString
         {
             get { return Module.ToString(); }
             set { Module = (SerialNumberModule)Enum.Parse(typeof(SerialNumberModule), value, true); }
         }
+
         public string Prefix { get; set; }
         public string SerialFormat { get; set; }
         public string Suffix { get; set; }
@@ -23,6 +26,7 @@ namespace Fanda.Domain
         public int LastNumber { get; set; }
         public DateTime LastDate { get; set; }
         public SerialNumberReset Reset { get; set; }
+
         public string ResetString
         {
             get { return Reset.ToString(); }

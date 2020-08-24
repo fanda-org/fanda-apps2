@@ -58,9 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\libs\core\Fanda.Core.csproj" />
-		<ProjectReference Include="..\libs\infrastructure\Fanda.Infrastructure.csproj" />
-		<ProjectReference Include="..\libs\shared\Fanda.Shared.csproj" />
+	  <ProjectReference Include="..\Fanda.Service\Fanda.Service.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

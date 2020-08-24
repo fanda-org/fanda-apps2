@@ -1,6 +1,6 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core.Base;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class InvoiceCategoryDto : BaseDto
     {
@@ -11,5 +11,9 @@ namespace Fanda.Core.Models
         //public bool Active { get; set; }
         //public DateTime DateCreated { get; set; }
         //public DateTime? DateModified { get; set; }
+    }
+
+    public class InvoiceCategoryListDto : BaseListDto
+    {
     }
 }

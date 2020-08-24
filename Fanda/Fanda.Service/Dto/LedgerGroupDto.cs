@@ -1,8 +1,8 @@
-﻿using Fanda.Core.Base;
-using Fanda.Shared;
+﻿using Fanda.Core;
+using Fanda.Core.Base;
 using System;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class LedgerGroupDto : BaseDto
     {
@@ -11,6 +11,7 @@ namespace Fanda.Core.Models
         //public string GroupName { get; set; }
         //public string Description { get; set; }
         public LedgerGroupType GroupType { get; set; }
+
         public Guid? ParentId { get; set; }
         public bool IsSystem { get; set; }
         //public bool Active { get; set; }

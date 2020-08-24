@@ -1,4 +1,4 @@
-namespace Fanda.Core.Base
+namespace Fanda.Service.Base
 {
     public class ErrorViewModel
     {

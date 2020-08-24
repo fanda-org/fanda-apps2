@@ -1,19 +1,20 @@
-namespace Fanda.Infrastructure.Helpers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Threading.Tasks;
-    using Fanda.Domain;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Fanda.Core.Base;
+using Fanda.Domain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
+namespace Fanda.Service.Helpers
+{
     public static class DbUpdateHelper
     {
         public static async Task<int> UpdateAsync<T>(DbContext dbContext,
             T entity, params Expression<Func<T, object>>[] navigation)
-            where T : RootEntity
+            where T : BaseEntity
         {
             var dbEntity = await dbContext.FindAsync<T>(entity.Id);
 

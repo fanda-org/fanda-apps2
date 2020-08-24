@@ -1,9 +1,9 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class PartyDto
     {
@@ -12,6 +12,7 @@ namespace Fanda.Core.Models
             Contacts = new HashSet<ContactDto>();
             Addresses = new HashSet<AddressDto>();
         }
+
         public Guid LedgerId { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please select contact category")]

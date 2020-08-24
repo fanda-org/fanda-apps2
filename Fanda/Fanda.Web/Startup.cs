@@ -1,33 +1,18 @@
-using AutoMapper;
-using Fanda.Infrastructure.Helpers;
-using Fanda.Infrastructure;
-using Fanda.Infrastructure.Extensions;
-using Fanda.Shared;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Fanda.Core;
+using Fanda.Domain.Context;
+using Fanda.Service;
+using Fanda.Service.Extensions;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Serilog;
-using System;
-using System.IO;
-using System.Linq;
-using System.Net.Mime;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 [assembly: ApiController]
+
 namespace Fanda.Web
 {
     public class Startup
@@ -45,23 +30,27 @@ namespace Fanda.Web
             services.ConfigureStartupServices<FandaContext>(Configuration, Assembly.GetAssembly(typeof(Startup)).GetName().Name);
 
             #region Repositories
+
             services.AddTransient<IEmailSender, EmailSender>();
 
             //services.AddScoped<ISerialNumberRepository, SerialNumberRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();
-            #endregion
+
+            #endregion Repositories
 
             #region Angular SPA
+
             services.AddControllersWithViews();
-                //.AddRazorRuntimeCompilation();
+            //.AddRazorRuntimeCompilation();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-               configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "ClientApp/dist";
             });
-            #endregion
+
+            #endregion Angular SPA
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,12 +60,14 @@ namespace Fanda.Web
             app.ConfigureStartup(env, autoMapperConfigProvider);
 
             #region Angular SPA
+
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
-               app.UseSpaStaticFiles();
+                app.UseSpaStaticFiles();
             }
-            #endregion
+
+            #endregion Angular SPA
 
             // app.UseEndpoints(endpoints =>
             // {
@@ -86,19 +77,21 @@ namespace Fanda.Web
             // });
 
             #region Angular SPA
+
             app.UseSpa(spa =>
             {
-               // To learn more about options for serving an Angular SPA from ASP.NET Core,
-               // see https://go.microsoft.com/fwlink/?linkid=864501
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
 
-               spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "ClientApp";
 
-               if (env.IsDevelopment())
-               {
-                   spa.UseAngularCliServer(npmScript: "start");
-               }
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
-            #endregion
+
+            #endregion Angular SPA
         }
     }
 }

@@ -1,7 +1,9 @@
+using Fanda.Core.Base;
+using System;
+using System.Collections.Generic;
+
 namespace Fanda.Domain
 {
-    using System;
-    using System.Collections.Generic;
     public class Organization : BaseEntity
     {
         //public Guid Id { get; set; }
@@ -9,6 +11,7 @@ namespace Fanda.Domain
         //public string OrgName { get; set; }
         //public string Description { get; set; }
         public Guid TenantId { get; set; }
+
         public string RegdNum { get; set; }
         public string PAN { get; set; }
         public string TAN { get; set; }

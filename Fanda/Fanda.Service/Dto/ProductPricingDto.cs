@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class ProductPricingDto
     {
@@ -9,6 +9,7 @@ namespace Fanda.Core.Models
         {
             PricingRanges = new HashSet<ProductPricingRangeDto>();
         }
+
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }
         public Guid PartyCategoryId { get; set; }

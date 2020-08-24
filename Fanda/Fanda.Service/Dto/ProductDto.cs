@@ -1,9 +1,9 @@
 ﻿using Fanda.Core.Base;
-using Fanda.Shared;
+using Fanda.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class ProductDto : BaseDto
     {
@@ -13,6 +13,7 @@ namespace Fanda.Core.Models
         //    ProductPricings = new HashSet<ProductPricingDto>();
         //}
         public ProductType ProductType { get; set; }
+
         public Guid CategoryId { get; set; }
         public Guid BrandId { get; set; }
         public Guid SegmentId { get; set; }

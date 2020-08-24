@@ -1,13 +1,15 @@
 ﻿using System;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class InvoiceItemDto
     {
         public Guid InvoiceItemId { get; set; }
         public string Description { get; set; }
+
         //public Guid StockId { get; set; }
         public Guid UnitId { get; set; }
+
         public decimal Qty { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Price { get; set; }

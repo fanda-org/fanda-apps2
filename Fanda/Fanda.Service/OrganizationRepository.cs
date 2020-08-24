@@ -1,20 +1,18 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Fanda.Core.Models;
+using Fanda.Core;
 using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using Fanda.Domain;
 using Fanda.Domain.Context;
-using Fanda.Infrastructure.Base;
-using Fanda.Infrastructure.Extensions;
-using Fanda.Shared;
+using Fanda.Service.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-//using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
-namespace Fanda.Infrastructure
+namespace Fanda.Service
 {
     public interface IOrganizationRepository :
         IParentRepository<OrganizationDto>,
@@ -29,13 +27,13 @@ namespace Fanda.Infrastructure
     {
         private readonly FandaContext _context;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
+        // private readonly IUserRepository _userRepository;
 
-        public OrganizationRepository(FandaContext context, IMapper mapper, IUserRepository userRepository)
+        public OrganizationRepository(FandaContext context, IMapper mapper /*, IUserRepository userRepository*/)
         {
             _context = context;
             _mapper = mapper;
-            _userRepository = userRepository;
+            // _userRepository = userRepository;
         }
 
         public async Task<OrganizationDto> GetByIdAsync(Guid id, bool includeChildren = false)
@@ -156,6 +154,7 @@ namespace Fanda.Infrastructure
             _context.Entry(dbOrg).CurrentValues.SetValues(org);
 
             #region Contacts
+
             var contactPairs = from curr in org.OrgContacts.Select(oc => oc.Contact)
                                join db in dbOrg.OrgContacts.Select(oc => oc.Contact)
                                     on curr.Id equals db.Id into grp
@@ -180,9 +179,11 @@ namespace Fanda.Infrastructure
                     dbOrg.OrgContacts.Add(orgContact);
                 }
             }
-            #endregion
+
+            #endregion Contacts
 
             #region Addresses
+
             var addressPairs = from curr in org.OrgAddresses.Select(oa => oa.Address)
                                join db in dbOrg.OrgAddresses.Select(oa => oa.Address)
                                     on curr.Id equals db.Id into grp
@@ -209,7 +210,8 @@ namespace Fanda.Infrastructure
             }
 
             _context.Organizations.Update(dbOrg);
-            #endregion
+
+            #endregion Addresses
 
             await _context.SaveChangesAsync();
             //model = _mapper.Map<OrganizationDto>(org);
@@ -222,25 +224,29 @@ namespace Fanda.Infrastructure
             model.Errors.Clear();
 
             #region Formatting: Cleansing and formatting
+
             model.Code = model.Code.ToUpper();
             model.Name = model.Name.TrimExtraSpaces();
             model.Description = model.Description.TrimExtraSpaces();
-            #endregion
+
+            #endregion Formatting: Cleansing and formatting
 
             #region Validation: Duplicate
+
             // Check code duplicate
-            var duplCode = new ParentDuplicate { Field = DuplicateField.Code, Value = model.Code, Id = model.Id };
+            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
             if (await ExistsAsync(duplCode))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
             // Check name duplicate
-            var duplName = new ParentDuplicate { Field = DuplicateField.Name, Value = model.Name, Id = model.Id };
+            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
             if (await ExistsAsync(duplName))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
             }
-            #endregion
+
+            #endregion Validation: Duplicate
 
             return model.Errors;
         }
@@ -292,9 +298,16 @@ namespace Fanda.Infrastructure
             throw new NotFoundException("Organization not found");
         }
 
-        public Task<bool> ExistsAsync(ParentDuplicate data) => _context.ExistsAsync<Organization>(data);
+        public Task<bool> ExistsAsync(KeyData data) => _context.ExistsAsync<Organization>(data);
+
+        public async Task<OrganizationDto> GetByAsync(KeyData data)
+        {
+            var org = await _context.GetByAsync<Organization>(data);
+            return _mapper.Map<OrganizationDto>(org);
+        }
 
         #region List
+
         //public IQueryable<OrgListDto> GetAll(Guid userId)
         //{
         //    if (userId == null || userId == Guid.Empty)
@@ -322,6 +335,7 @@ namespace Fanda.Infrastructure
                 .ProjectTo<OrgYearListDto>(_mapper.ConfigurationProvider);
             return GetAll(query);
         }
+
         private IQueryable<T> GetAll<T>(IQueryable<T> query)
             where T : BaseListDto
         {
@@ -332,6 +346,7 @@ namespace Fanda.Infrastructure
         // public async Task<bool> MapUserAsync(Guid orgId, Guid userId) => await _userRepository.MapOrgAsync(userId, orgId);
 
         // public async Task<bool> UnmapUserAsync(Guid orgId, Guid userId) => await _userRepository.UnmapOrgAsync(userId, orgId);
-        #endregion
+
+        #endregion List
     }
 }

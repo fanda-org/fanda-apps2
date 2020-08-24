@@ -1,8 +1,9 @@
+using Fanda.Domain.Base;
 using System.Collections.Generic;
 
 namespace Fanda.Domain
 {
-    public class Unit : BaseOrgEntity
+    public class Unit : OrgEntity
     {
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }

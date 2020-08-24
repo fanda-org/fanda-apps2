@@ -1,4 +1,4 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core;
 using System;
 
 namespace Fanda.Domain
@@ -12,11 +12,13 @@ namespace Fanda.Domain
         public decimal AdjustPct { get; set; }
         public decimal AdjustAmt { get; set; }
         public RoundOffOption RoundOffOption { get; set; }
+
         public string RoundOffOptionString
         {
             get { return RoundOffOption.ToString(); }
             set { RoundOffOption = (RoundOffOption)Enum.Parse(typeof(RoundOffOption), value, true); }
         }
+
         public decimal FinalPrice { get; set; }
 
         public virtual ProductPricing ProductPricing { get; set; }

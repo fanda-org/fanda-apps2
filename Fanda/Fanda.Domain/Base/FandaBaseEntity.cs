@@ -1,19 +1,15 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanda.Domain.Base
 {
-    public class BaseOrgEntity : BaseEntity
+    public class OrgEntity : BaseEntity
     {
         public Guid OrgId { get; set; }
         public virtual Organization Organization { get; set; }
     }
 
-    public class BaseYearEntity
+    public class YearEntity
     {
         public Guid Id { get; set; }
         public string Number { get; set; }

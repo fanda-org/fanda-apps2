@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class StockDto
     {

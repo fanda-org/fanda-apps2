@@ -1,6 +1,6 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core.Base;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class UnitDto : BaseDto { }
 

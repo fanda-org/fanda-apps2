@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { ApplicationService, AlertService, HiddenDataService } from '../../_services';
 import { Application } from '../../_models';
+import { capitalize } from 'src/app/_utils';
 
 @Component({
   selector: 'app-applications',
@@ -13,6 +14,17 @@ export class ApplicationsComponent implements OnInit {
   iconCollapse: string = 'icon-arrow-up';
   loading = false;
   submitted = false;
+
+  //#region  Filter
+  searchString = '';
+  activeFilter = 'Both';
+  //#endregion
+
+  //#region  Pagination
+  page = 1;
+  pageSize = 10;
+  //#endregion
+
   applications: Application[] = null;
 
   constructor(
@@ -24,16 +36,24 @@ export class ApplicationsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
     this.applicationService.getAll().subscribe((res) => {
       this.applications = res.data;
       this.alertService.success('Create successful', { keepAfterRouteChange: true });
     });
   }
 
-  onClick(mode: string, id: string): void {
-    console.log(mode, id);
+  onItemClick(mode: string, id: string): void {
+    // console.log(mode, id);
     this.hiddenService.id = id;
     this.router.navigate([`/masters/applications/${mode}`]);
+  }
+
+  onStatusFilterClick(status: string): void {
+    this.activeFilter = capitalize(status);
   }
 
   collapsed(event: any): void {

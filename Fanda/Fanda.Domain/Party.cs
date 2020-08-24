@@ -1,4 +1,4 @@
-using Fanda.Shared;
+using Fanda.Core;
 using System;
 using System.Collections.Generic;
 
@@ -12,17 +12,21 @@ namespace Fanda.Domain
         public string TAN { get; set; }
         public string GSTIN { get; set; }
         public PartyType PartyType { get; set; }
+
         public string PartyTypeString
         {
             get { return PartyType.ToString(); }
             set { PartyType = (PartyType)Enum.Parse(typeof(PartyType), value, true); }
         }
+
         public PaymentTerm PaymentTerm { get; set; }
+
         public string PaymentTermString
         {
             get { return PaymentTerm.ToString(); }
             set { PaymentTerm = (PaymentTerm)Enum.Parse(typeof(PaymentTerm), value, true); }
         }
+
         public decimal CreditLimit { get; set; }
         public Guid CategoryId { get; set; }
 

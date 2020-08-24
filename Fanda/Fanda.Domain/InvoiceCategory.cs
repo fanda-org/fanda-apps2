@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Fanda.Domain.Base;
+using System.Collections.Generic;
 
 namespace Fanda.Domain
 {
-    public class InvoiceCategory : BaseOrgEntity
+    public class InvoiceCategory : OrgEntity
     {
         //public Guid Id { get; set; }
         //public string Code { get; set; }
@@ -15,6 +16,7 @@ namespace Fanda.Domain
 
         //public virtual Organization Organization { get; set; }
         public virtual ICollection<ProductPricing> ProductPricings { get; set; }
+
         public virtual ICollection<Invoice> Invoices { get; set; }
     }
 }

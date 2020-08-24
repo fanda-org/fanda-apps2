@@ -109,18 +109,39 @@ namespace Fanda.Core.Base
     public class PagedResponse<TModel> : DataResponse<TModel>, IPagedResponse<TModel>
     {
         public int PageSize { get; set; }
+
         public int Page { get; set; }
+
         public int ItemsCount { get; set; }
 
         public int PageCount
-            => ItemsCount < PageSize ? 1 : (int)(((double)ItemsCount / PageSize) + 1);
+        {
+            get
+            {
+                return ItemsCount < PageSize ? 1 : (int)((double)ItemsCount / PageSize);
+            }
+        }
 
         public int FirstRowOnPage
-            => Math.Min(ItemsCount, ((Page - 1) * PageSize) + 1);
+        {
+            get
+            {
+                if (Page > PageCount)
+                    return 0;
+                return Math.Min(ItemsCount, ((Page - 1) * PageSize) + 1);
+            }
+        }
 
         //=> Math.Min((int)(((PageNumber - 1) * PageSize) + 1), (int)LastRowOnPage);
         public int LastRowOnPage
-            => Math.Min(ItemsCount, FirstRowOnPage + PageSize - 1);
+        {
+            get
+            {
+                if (Page > PageCount)
+                    return 0;
+                return Math.Min(ItemsCount, FirstRowOnPage + PageSize - 1);
+            }
+        }
 
         //=> Math.Min((int)PageNumber * (int)PageSize, (int)ItemsCount);
 

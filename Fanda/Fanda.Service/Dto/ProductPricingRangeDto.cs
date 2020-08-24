@@ -1,7 +1,7 @@
-﻿using Fanda.Shared;
+﻿using Fanda.Core;
 using System;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class ProductPricingRangeDto
     {

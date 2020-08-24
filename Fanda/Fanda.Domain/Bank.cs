@@ -1,4 +1,4 @@
-using Fanda.Shared;
+using Fanda.Core;
 using System;
 
 namespace Fanda.Domain
@@ -8,11 +8,13 @@ namespace Fanda.Domain
         public Guid LedgerId { get; set; }
         public string AccountNumber { get; set; }
         public BankAccountType AccountType { get; set; }
+
         public string AccountTypeString
         {
             get { return AccountType.ToString(); }
             set { AccountType = (BankAccountType)Enum.Parse(typeof(BankAccountType), value, true); }
         }
+
         public string IfscCode { get; set; }
         public string MicrCode { get; set; }
         public string BranchCode { get; set; }

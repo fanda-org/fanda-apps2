@@ -25,8 +25,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\core\Fanda.Core.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\entities\Fanda.Domain.csproj" />
-		<ProjectReference Include="..\shared\Fanda.Shared.csproj" PrivateAssets="All" />
+	  <ProjectReference Include="..\Fanda.Domain\Fanda.Domain.csproj" />
 	</ItemGroup>
 </Project>

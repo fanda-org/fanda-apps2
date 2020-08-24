@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using Fanda.Core.Models;
+using Fanda.Domain;
+using Fanda.Service.Dto;
 using System.Linq;
 
-namespace Fanda.Infrastructure.AutoMapperProfiles
+namespace Fanda.Service.AutoMapperProfiles
 {
     public class AutoMapperProfile : Profile
     {
@@ -168,6 +169,7 @@ namespace Fanda.Infrastructure.AutoMapperProfiles
                 .ReverseMap();
 
             #region List mappings
+
             CreateMap<AccountYear, YearListDto>();
             CreateMap<Organization, OrgListDto>();
             CreateMap<Organization, OrgYearListDto>()
@@ -177,7 +179,8 @@ namespace Fanda.Infrastructure.AutoMapperProfiles
             CreateMap<ProductCategory, ProductCategoryListDto>();
             CreateMap<Unit, UnitListDto>();
             CreateMap<ProductBrand, ProductBrandListDto>();
-            #endregion
+
+            #endregion List mappings
         }
     }
 

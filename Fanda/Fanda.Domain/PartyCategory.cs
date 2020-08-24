@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Fanda.Domain.Base;
+using System.Collections.Generic;
 
 namespace Fanda.Domain
 {
-    public class PartyCategory : BaseOrgEntity
+    public class PartyCategory : OrgEntity
     {
         //public Guid Id { get; set; }
         //public string Code { get; set; }
@@ -15,6 +16,7 @@ namespace Fanda.Domain
 
         //public virtual Organization Organization { get; set; }
         public virtual ICollection<Party> Parties { get; set; }
+
         public virtual ICollection<ProductPricing> ProductPricings { get; set; }
     }
 }

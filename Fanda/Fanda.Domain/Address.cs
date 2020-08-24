@@ -1,5 +1,4 @@
-using Fanda.Shared;
-using Microsoft.EntityFrameworkCore;
+using Fanda.Core;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +17,7 @@ namespace Fanda.Domain
         public string Phone { set; get; }
         public string Fax { set; get; }
         public AddressType AddressType { get; set; }
+
         public string AddressTypeString
         {
             get { return AddressType.ToString(); }

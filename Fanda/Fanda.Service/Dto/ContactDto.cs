@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fanda.Core.Models
+namespace Fanda.Service.Dto
 {
     public class ContactDto
     {

@@ -1,17 +1,23 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Fanda.Core.Models;
-using Fanda.Shared;
+using Fanda.Core;
+using Fanda.Core.Base;
+using Fanda.Core.Extensions;
+using Fanda.Domain;
+using Fanda.Domain.Context;
+using Fanda.Service.Base;
+using Fanda.Service.Dto;
+using Fanda.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Fanda.Infrastructure
+namespace Fanda.Service
 {
     public interface IAccountYearRepository :
-        IRepository<AccountYearDto>,
+        IOrgRepository<AccountYearDto>,
         IListRepository<YearListDto>
     { }
 
@@ -122,7 +128,13 @@ namespace Fanda.Infrastructure
             throw new KeyNotFoundException("Account year not found");
         }
 
-        public Task<bool> ExistsAsync(Duplicate data) => _context.ExistsAsync<AccountYear>(data);
+        public async Task<bool> ExistsAsync(OrgKeyData data) => await _context.ExistsAsync<AccountYear>(data);
+
+        public async Task<AccountYearDto> GetByAsync(OrgKeyData data)
+        {
+            var year = await _context.GetByAsync<AccountYear>(data);
+            return _mapper.Map<AccountYearDto>(year);
+        }
 
         public Task<ValidationResultModel> ValidateAsync(Guid orgId, AccountYearDto model) => throw new NotImplementedException();
     }
