@@ -82,7 +82,7 @@ namespace Fanda.Auth
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fanda Authentication API v1");
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Authentication API v1");
                 c.RoutePrefix = "openapi";
             });
         }

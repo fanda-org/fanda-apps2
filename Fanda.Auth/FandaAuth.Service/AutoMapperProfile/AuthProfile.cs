@@ -28,11 +28,17 @@ namespace Fanda.Service.AutoMapperProfile
                 .ForMember(x => x.Id, opt => opt.MapFrom(vm => vm.Id));
             CreateMap<UserToken, UserTokenDto>()
                 .ReverseMap();
-            CreateMap<UserToken, ActiveTokenDto>();
+            CreateMap<UserToken, ActiveTokenViewModel>();
             CreateMap<Role, RoleDto>()
                 .ForMember(vm => vm.Id, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap()
                 .ForMember(x => x.Id, opt => opt.MapFrom(vm => vm.Id));
+            //CreateMap<Role, RoleBaseDto>()
+            //    .ReverseMap()
+            //    .ForMember(src => src.Privileges, opt => opt.Ignore());
+            //CreateMap<RoleBaseDto, RoleDto>()
+            //    .ForMember(vm => vm.Privileges, opt => opt.Ignore())
+            //    .ReverseMap();
 
             #endregion Tenant models
 
@@ -57,6 +63,13 @@ namespace Fanda.Service.AutoMapperProfile
             //     .ReverseMap();
             // CreateMap<Action, ActionDto>()
             //     .ReverseMap();
+
+            //CreateMap<Application, ApplicationBaseDto>()
+            //    .ReverseMap()
+            //    .ForMember(src => src.AppResources, opt => opt.Ignore());
+            //CreateMap<ApplicationBaseDto, ApplicationDto>()
+            //    .ForMember(vm => vm.AppResources, opt => opt.Ignore())
+            //    .ReverseMap();
 
             #endregion Application models
 

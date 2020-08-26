@@ -2,7 +2,7 @@ namespace FandaAuth.Service.ViewModels
 {
     using System;
 
-    public class ActiveTokenDto
+    public class ActiveTokenViewModel
     {
         public Guid Id { get; set; }
         public string Token { get; set; }

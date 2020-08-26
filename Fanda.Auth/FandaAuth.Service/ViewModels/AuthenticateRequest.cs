@@ -1,7 +1,7 @@
-﻿namespace FandaAuth.Service.ViewModels
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace FandaAuth.Service.ViewModels
+{
     public class AuthenticateRequest
     {
         [Required]

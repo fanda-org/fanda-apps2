@@ -55,11 +55,11 @@ namespace Fanda.Authentication.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(DataResponse<TenantDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetById([Required, FromRoute] Guid id, [FromQuery] bool include)
+        public async Task<IActionResult> GetById([Required, FromRoute] Guid id/*, [FromQuery] bool include*/)
         {
             try
             {
-                var tenant = await repository.GetByIdAsync(id, include);
+                var tenant = await repository.GetByIdAsync(id/*, include*/);
                 if (tenant == null)
                 {
                     return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));

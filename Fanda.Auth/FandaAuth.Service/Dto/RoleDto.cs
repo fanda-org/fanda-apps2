@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FandaAuth.Service.Dto
 {
+    //public class RoleBaseDto : BaseDto
+    //{
+    //}
+
     public class RoleDto : BaseDto
     {
         public List<RolePrivilegeDto> Privileges { get; set; }
@@ -14,8 +18,8 @@ namespace FandaAuth.Service.Dto
     {
     }
 
-    public class RoleChildrenDto
-    {
-        public List<RolePrivilegeDto> Privileges { get; set; }
-    }
+    //public class RoleChildrenDto
+    //{
+    //    public List<RolePrivilegeDto> Privileges { get; set; }
+    //}
 }

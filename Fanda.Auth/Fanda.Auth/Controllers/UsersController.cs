@@ -3,6 +3,7 @@ using Fanda.Core.Base;
 using Fanda.Core.Extensions;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
+using FandaAuth.Service.Extensions;
 using FandaAuth.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,140 +30,6 @@ namespace Fanda.Authentication.Controllers
         public UsersController(IUserRepository repository)
         {
             _repository = repository;
-        }
-
-        [HttpPost("authenticate")]
-        [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<AuthenticateResponse>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest model)
-        {
-            try
-            {
-                var response = await _repository.Authenticate(model, IpAddress());
-                if (response == null)
-                {
-                    return BadRequest(MessageResponse.Failure("Username or password is incorrect"));
-                }
-
-                SetTokenCookie(response.RefreshToken);
-                return Ok(DataResponse<AuthenticateResponse>.Succeeded(response));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
-
-        [HttpPost("refresh-token")]
-        [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<AuthenticateResponse>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> RefreshToken()
-        {
-            try
-            {
-                var refreshToken = Request.Cookies["refreshToken"];
-                if (string.IsNullOrEmpty(refreshToken))
-                {
-                    return BadRequest(MessageResponse.Failure("Token is required"));
-                }
-                var response = await _repository.RefreshToken(refreshToken, IpAddress());
-                if (response == null)
-                {
-                    return Unauthorized(MessageResponse.Failure("Invalid token"));
-                }
-
-                SetTokenCookie(response.RefreshToken);
-                return Ok(DataResponse<AuthenticateResponse>.Succeeded(response));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
-
-        [HttpPost("revoke-token")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenRequest model)
-        {
-            try
-            {
-                // accept token from request body or cookie
-                var token = model.Token ?? Request.Cookies["refreshToken"];
-                if (string.IsNullOrEmpty(token))
-                {
-                    return BadRequest(MessageResponse.Failure(errorMessage: "Token is required"));
-                }
-                var response = await _repository.RevokeToken(token, IpAddress());
-                if (!response)
-                {
-                    return NotFound(MessageResponse.Failure(errorMessage: "Invalid token"));
-                }
-                return Ok(MessageResponse.Succeeded(message: "Token revoked"));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
-
-        [HttpPost("register")]
-        [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<UserDto>), (int)HttpStatusCode.Created)]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            try
-            {
-                var validationResult = await _repository.ValidateAsync(model.TenantId, model);
-                if (validationResult.IsValid)
-                {
-                    string token = Guid.NewGuid().ToString();
-                    string callbackUrl = Url.Page(
-                        pageName: "/Users/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userName = model.UserName, code = token },
-                        protocol: Request.Scheme
-                    );
-
-                    // save
-                    var userDto = await _repository.RegisterAsync(model, callbackUrl);
-                    return CreatedAtAction(nameof(GetById), new { id = userDto.Id },
-                        DataResponse<UserDto>.Succeeded(userDto));
-                }
-                else
-                {
-                    return BadRequest(MessageResponse.Failure(validationResult));
-                }
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
-
-        [HttpGet("{id}/refresh-tokens")]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<List<ActiveTokenDto>>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetRefreshTokens([Required] Guid id)
-        {
-            try
-            {
-                var tokens = await _repository.GetRefreshTokens(id);
-                return Ok(DataResponse<IEnumerable<ActiveTokenDto>>.Succeeded(tokens));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
         }
 
         // users/all/5
@@ -197,11 +64,11 @@ namespace Fanda.Authentication.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(DataResponse<UserDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetById([Required, FromRoute] Guid id, [FromQuery] bool include)
+        public async Task<IActionResult> GetById([Required, FromRoute] Guid id/*, [FromQuery] bool include*/)
         {
             try
             {
-                var user = await _repository.GetByIdAsync(id, include);
+                var user = await _repository.GetByIdAsync(id/*, include*/);
                 if (user == null)
                 {
                     return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
@@ -308,30 +175,60 @@ namespace Fanda.Authentication.Controllers
             }
         }
 
-        #region helper methods
-
-        private void SetTokenCookie(string token)
+        [HttpPatch("active/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Active([Required, FromRoute] Guid id, [Required, FromQuery] bool active)
         {
-            var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions
+            try
             {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
-            };
-            Response.Cookies.Append("refreshToken", token, cookieOptions);
+                bool success = await _repository.ChangeStatusAsync(new ActiveStatus
+                {
+                    Id = id,
+                    Active = active
+                });
+                if (success)
+                {
+                    return Ok(MessageResponse.Succeeded("Status changed successfully"));
+                }
+                return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
+            }
+            catch (Exception ex)
+            {
+                return ExceptionResult(ex, ModuleName);
+            }
         }
 
-        private string IpAddress()
+        [HttpGet("exists/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Exists([Required, FromRoute] Guid id, ExistsDto exists)
         {
-            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+            try
             {
-                return Request.Headers["X-Forwarded-For"];
+                bool success = await _repository.ExistsAsync(new UserKeyData
+                {
+                    Id = id,
+                    Field = exists.Field,
+                    Value = exists.Value,
+                    TenantId = exists.ParentId
+                });
+                if (success)
+                {
+                    return Ok(MessageResponse.Succeeded("Found"));
+                }
+                return NotFound(MessageResponse.Failure("Not found"));
             }
-            else
+            catch (Exception ex)
             {
-                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                return ExceptionResult(ex, ModuleName);
             }
         }
-
-        #endregion helper methods
     }
 }

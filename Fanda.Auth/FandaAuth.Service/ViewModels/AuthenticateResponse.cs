@@ -17,6 +17,10 @@ namespace FandaAuth.Service.ViewModels
         [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
 
+        public AuthenticateResponse()
+        {
+        }
+
         public AuthenticateResponse(UserDto user, Guid tenantId, string jwtToken, string refreshToken)
         {
             Id = user.Id;

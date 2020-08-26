@@ -219,8 +219,8 @@ namespace Fanda.Auth
         {
             IApplicationRepository appRepo = _provider.GetRequiredService<IApplicationRepository>();
             var app = await appRepo.GetByAsync(new KeyData { Field = KeyField.Code, Value = "FANDA" });
-            var appChildren = await appRepo.GetChildrenByIdAsync(app.Id);
-            var allResource = appChildren.AppResources.FirstOrDefault(ar => ar.Code == "*");
+            //var appChildren = await appRepo.GetChildrenByIdAsync(app.Id);
+            var allResource = app.AppResources.FirstOrDefault(ar => ar.Code == "*");
 
             return new List<RolePrivilegeDto>()
             {

@@ -1,8 +1,6 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Fanda.Core.Base;
 using Fanda.Core;
-using Fanda.Core.Extensions;
+using Fanda.Core.Base;
 using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -14,156 +12,110 @@ namespace FandaAuth.Service
 {
     public interface IApplicationRepository :
         IParentRepository<ApplicationDto>,
-        IRepositoryChildData<AppChildrenDto>,
         IListRepository<ApplicationListDto>
     {
-        //Task<bool> MapResource(AppResourceDto model);
-        //Task<bool> UnmapResource(AppResourceDto model);
     }
 
-    public class ApplicationRepository : IApplicationRepository
+    public class ApplicationRepository :
+        RepositoryBase<Application, ApplicationDto, ApplicationListDto>,
+        IApplicationRepository
     {
         private readonly AuthContext context;
         private readonly IMapper mapper;
 
         public ApplicationRepository(AuthContext context, IMapper mapper)
+            : base(context, mapper)
         {
             this.mapper = mapper;
             this.context = context;
         }
 
-        public async Task<bool> ChangeStatusAsync(ActiveStatus status)
-        {
-            if (status.Id == null || status.Id == Guid.Empty)
-            {
-                throw new ArgumentNullException("Id", "Id is missing");
-            }
+        //public IQueryable<ApplicationListDto> GetAll(Guid parentId)  // nullable
+        //{
+        //    IQueryable<ApplicationListDto> qry = context.Applications
+        //        .AsNoTracking()
+        //        .ProjectTo<ApplicationListDto>(mapper.ConfigurationProvider);
+        //    return qry;
+        //}
 
-            var app = await context.Applications
-                .FindAsync(status.Id);
-            if (app != null)
-            {
-                app.Active = status.Active;
-                app.DateModified = DateTime.UtcNow;
-                context.Applications.Update(app);
-                await context.SaveChangesAsync();
-                return true;
-            }
-            throw new NotFoundException("Application not found");
-        }
+        //public async Task<ApplicationDto> GetByIdAsync(Guid id/*, bool includeChildren = false*/)
+        //{
+        //    if (id == null || id == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException("id", "Id is missing");
+        //    }
 
-        public async Task<ApplicationDto> CreateAsync(ApplicationDto model)
-        {
-            var app = mapper.Map<Application>(model);
-            app.DateCreated = DateTime.UtcNow;
-            app.DateModified = null;
-            // app.Active = true;
-            foreach (var ar in app.AppResources)
-            {
-                ar.DateCreated = DateTime.UtcNow;
-                ar.DateModified = null;
-            }
-            await context.Applications.AddAsync(app);
-            await context.SaveChangesAsync();
-            return mapper.Map<ApplicationDto>(app);
-        }
+        //    var app = await context.Applications
+        //        .AsNoTracking()
+        //        .ProjectTo<ApplicationDto>(mapper.ConfigurationProvider)
+        //        .FirstOrDefaultAsync(t => t.Id == id);
+        //    //var app = mapper.Map<ApplicationDto>(appBase);
 
-        public async Task<bool> DeleteAsync(Guid id)
-        {
-            if (id == null || id == Guid.Empty)
-            {
-                throw new ArgumentNullException("Id", "Id is missing");
-            }
-            var app = await context.Applications
-                .FindAsync(id);
-            if (app == null)
-            {
-                throw new NotFoundException("Application not found");
-            }
+        //    if (app == null)
+        //    {
+        //        throw new NotFoundException("Application not found");
+        //    }
+        //    //else if (!includeChildren)
+        //    //{
+        //    return app;
+        //    //}
 
-            context.Applications.Remove(app);
-            await context.SaveChangesAsync();
-            return true;
-        }
+        //    //app.AppResources = await context.Set<AppResource>()
+        //    //    .AsNoTracking()
+        //    //    .Where(m => m.ApplicationId == id)
+        //    //    //.SelectMany(oc => oc.AppResources.Select(c => c.Resource))
+        //    //    .ProjectTo<AppResourceDto>(mapper.ConfigurationProvider)
+        //    //    .ToListAsync();
 
-        public async Task<bool> ExistsAsync(KeyData data)
-            => await context.ExistsAsync<Application>(data);
+        //    //return app;
+        //}
 
-        public async Task<ApplicationDto> GetByAsync(KeyData data)
-        {
-            var app = await context.GetByAsync<Application>(data);
-            return mapper.Map<ApplicationDto>(app);
-        }
+        //public async Task<AppChildrenDto> GetChildrenByIdAsync(Guid id)
+        //{
+        //    if (id == null || id == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException("Id", "Id is missing");
+        //    }
 
-        public IQueryable<ApplicationListDto> GetAll(Guid parentId)  // nullable
-        {
-            IQueryable<ApplicationListDto> qry = context.Applications
-                .AsNoTracking()
-                .ProjectTo<ApplicationListDto>(mapper.ConfigurationProvider);
-            return qry;
-        }
+        //    var appResources = new AppChildrenDto
+        //    {
+        //        AppResources = await context.Set<AppResource>()
+        //            .AsNoTracking()
+        //            .Where(m => m.ApplicationId == id)
+        //            //.SelectMany(oc => oc.AppResources.Select(c => c.Resource))
+        //            .ProjectTo<AppResourceDto>(mapper.ConfigurationProvider)
+        //            .ToListAsync()
+        //    };
+        //    return appResources;
+        //}
 
-        public async Task<ApplicationDto> GetByIdAsync(Guid id, bool includeChildren = false)
-        {
-            if (id == null || id == Guid.Empty)
-            {
-                throw new ArgumentNullException("id", "Id is missing");
-            }
+        //public async Task<ApplicationDto> CreateAsync(ApplicationDto model)
+        //{
+        //    var app = mapper.Map<Application>(model);
+        //    app.DateCreated = DateTime.UtcNow;
+        //    app.DateModified = null;
+        //    // app.Active = true;
+        //    //foreach (var ar in app.AppResources)
+        //    //{
+        //    //    ar.DateCreated = DateTime.UtcNow;
+        //    //    ar.DateModified = null;
+        //    //}
+        //    await context.Applications.AddAsync(app);
+        //    await context.SaveChangesAsync();
+        //    return mapper.Map<ApplicationDto>(app);
+        //}
 
-            var app = await context.Applications
-                //.Include(app => app.AppResources)
-                .AsNoTracking()
-                .ProjectTo<ApplicationDto>(mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(t => t.Id == id);
-            if (app == null)
-            {
-                throw new NotFoundException("Application not found");
-            }
-            else if (!includeChildren)
-            {
-                return app;
-            }
-
-            app.AppResources = await context.Set<AppResource>()
-                .AsNoTracking()
-                .Where(m => m.ApplicationId == id)
-                //.SelectMany(oc => oc.AppResources.Select(c => c.Resource))
-                .ProjectTo<AppResourceDto>(mapper.ConfigurationProvider)
-                .ToListAsync();
-
-            return app;
-        }
-
-        public async Task<AppChildrenDto> GetChildrenByIdAsync(Guid id)
-        {
-            if (id == null || id == Guid.Empty)
-            {
-                throw new ArgumentNullException("Id", "Id is missing");
-            }
-
-            var appResources = new AppChildrenDto
-            {
-                AppResources = await context.Set<AppResource>()
-                    .AsNoTracking()
-                    .Where(m => m.ApplicationId == id)
-                    //.SelectMany(oc => oc.AppResources.Select(c => c.Resource))
-                    .ProjectTo<AppResourceDto>(mapper.ConfigurationProvider)
-                    .ToListAsync()
-            };
-            return appResources;
-        }
-
-        public async Task UpdateAsync(Guid id, ApplicationDto model)
+        public async override Task UpdateAsync(Guid id, ApplicationDto model)
         {
             if (id != model.Id)
             {
-                throw new BadRequestException("App id mismatch");
+                throw new BadRequestException("Appication id mismatch");
             }
 
             Application app = mapper.Map<Application>(model);
             Application dbApp = await context.Applications
                 .Where(o => o.Id == app.Id)
-                .Include(o => o.AppResources)   //.ThenInclude(oc => oc.Resource)
+                .Include(o => o.AppResources)
                 .FirstOrDefaultAsync();
 
             if (dbApp == null)
@@ -226,37 +178,84 @@ namespace FandaAuth.Service
             await context.SaveChangesAsync();
         }
 
-        public async Task<ValidationResultModel> ValidateAsync(ApplicationDto model)
-        {
-            // Reset validation errors
-            model.Errors.Clear();
+        //public async Task<bool> DeleteAsync(Guid id)
+        //{
+        //    if (id == null || id == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException("Id", "Id is missing");
+        //    }
+        //    var app = await context.Applications
+        //        .FindAsync(id);
+        //    if (app == null)
+        //    {
+        //        throw new NotFoundException("Application not found");
+        //    }
 
-            #region Formatting: Cleansing and formatting
+        //    context.Applications.Remove(app);
+        //    await context.SaveChangesAsync();
+        //    return true;
+        //}
 
-            model.Code = model.Code.TrimExtraSpaces().ToUpper();
-            model.Name = model.Name.TrimExtraSpaces();
+        //public async Task<bool> ChangeStatusAsync(ActiveStatus status)
+        //{
+        //    if (status.Id == null || status.Id == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException("Id", "Id is missing");
+        //    }
 
-            #endregion Formatting: Cleansing and formatting
+        //    var app = await context.Applications
+        //        .FindAsync(status.Id);
+        //    if (app != null)
+        //    {
+        //        app.Active = status.Active;
+        //        app.DateModified = DateTime.UtcNow;
+        //        context.Applications.Update(app);
+        //        await context.SaveChangesAsync();
+        //        return true;
+        //    }
+        //    throw new NotFoundException("Application not found");
+        //}
 
-            #region Validation: Duplicate
+        //public async Task<bool> ExistsAsync(KeyData data)
+        //    => await context.ExistsAsync<Application>(data);
 
-            // Check email duplicate
-            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
-            if (await ExistsAsync(duplCode))
-            {
-                model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
-            }
-            // Check name duplicate
-            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
-            if (await ExistsAsync(duplName))
-            {
-                model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
-            }
+        //public async Task<ApplicationDto> GetByAsync(KeyData data)
+        //{
+        //    var app = await context.GetByAsync<Application>(data);
+        //    return mapper.Map<ApplicationDto>(app);
+        //}
 
-            #endregion Validation: Duplicate
+        //public async Task<ValidationResultModel> ValidateAsync(ApplicationDto model)
+        //{
+        //    // Reset validation errors
+        //    model.Errors.Clear();
 
-            return model.Errors;
-        }
+        //    #region Formatting: Cleansing and formatting
+
+        //    model.Code = model.Code.TrimExtraSpaces().ToUpper();
+        //    model.Name = model.Name.TrimExtraSpaces();
+
+        //    #endregion Formatting: Cleansing and formatting
+
+        //    #region Validation: Duplicate
+
+        //    // Check email duplicate
+        //    var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
+        //    if (await ExistsAsync(duplCode))
+        //    {
+        //        model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
+        //    }
+        //    // Check name duplicate
+        //    var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
+        //    if (await ExistsAsync(duplName))
+        //    {
+        //        model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
+        //    }
+
+        //    #endregion Validation: Duplicate
+
+        //    return model.Errors;
+        //}
 
         // public async Task<bool> MapResource(AppResourceDto model)
         // {

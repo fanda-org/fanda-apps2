@@ -59,11 +59,11 @@ namespace Fanda.Auth.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(DataResponse<RoleDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetById([Required, FromRoute] Guid id, [FromQuery] bool include)
+        public async Task<IActionResult> GetById([Required, FromRoute] Guid id/*, [FromQuery] bool include*/)
         {
             try
             {
-                var role = await repository.GetByIdAsync(id, include);
+                var role = await repository.GetByIdAsync(id/*, include*/);
                 if (role == null)
                 {
                     return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
