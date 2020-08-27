@@ -36,19 +36,19 @@ namespace Fanda.Core.Extensions
             }
         }
 
-        private static async Task<DataResponse<IEnumerable<TModel>>> GetList<TModel>(this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput)
-        {
-            var (list, _) = await listRepository.GetModelList(parentId, queryInput);
-            var response = DataResponse<IEnumerable<TModel>>.Succeeded(list);
-            return response;
-        }
-
         private static async Task<PagedResponse<IEnumerable<TModel>>> GetPaged<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput)
         {
             var (list, itemsCount) = await listRepository.GetModelList(parentId, queryInput);
             var response = PagedResponse<IEnumerable<TModel>>.Succeeded(list, itemsCount, queryInput.Page, queryInput.PageSize);
+            return response;
+        }
+
+        private static async Task<DataResponse<IEnumerable<TModel>>> GetList<TModel>(this IListRepository<TModel> listRepository,
+            Guid parentId, Query queryInput)
+        {
+            var (list, _) = await listRepository.GetModelList(parentId, queryInput);
+            var response = DataResponse<IEnumerable<TModel>>.Succeeded(list);
             return response;
         }
 

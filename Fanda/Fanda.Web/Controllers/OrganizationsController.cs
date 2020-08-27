@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fanda.Web.Controllers
 {
-    public class OrganizationsController : BaseController
+    public class OrganizationsController : RootControllerBase
     {
         private const string ModuleName = "Organization";
         private readonly IOrganizationRepository repository;

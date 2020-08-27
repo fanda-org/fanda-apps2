@@ -15,7 +15,7 @@ using System.Web;
 
 namespace Fanda.Auth.Controllers
 {
-    public class RolesController : BaseController
+    public class RolesController : RootControllerBase
     {
         private const string ModuleName = "Role";
         private readonly IRoleRepository repository;

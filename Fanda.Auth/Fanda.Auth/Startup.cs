@@ -43,12 +43,16 @@ namespace Fanda.Auth
 
             services.AddJwtAuthentication(appSettings);
 
+            #region DI - Repositories and services
+
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            #endregion DI - Repositories and services
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

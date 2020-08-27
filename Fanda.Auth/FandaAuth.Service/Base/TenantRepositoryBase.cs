@@ -27,7 +27,7 @@ namespace FandaAuth.Service.Base
             _mapper = mapper;
         }
 
-        public override IQueryable<TListModel> GetAll(Guid tenantId)  // nullable
+        public override IQueryable<TListModel> GetAll(Guid tenantId)
         {
             if (tenantId == null || tenantId == Guid.Empty)
             {

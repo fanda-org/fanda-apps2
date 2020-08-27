@@ -47,8 +47,7 @@ namespace Fanda.Web
             //{
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
-            services.AddCustomDbContext<FandaContext>(appSettings,
-                Assembly.GetAssembly(typeof(FandaContext)).GetName().Name)
+            services.AddCustomDbContext<FandaContext>(appSettings, Assembly.GetAssembly(typeof(FandaContext)).GetName().Name)
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AutoMapperProfile))
                 .AddSwagger("Fanda Application API");
@@ -56,7 +55,7 @@ namespace Fanda.Web
 
             #endregion Startup configure services
 
-            #region Repositories
+            #region DI Repositories and services
 
             services.AddTransient<IEmailSender, EmailSender>();
 
@@ -65,7 +64,7 @@ namespace Fanda.Web
             //services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();
 
-            #endregion Repositories
+            #endregion DI Repositories and services
 
             #region Angular SPA
 

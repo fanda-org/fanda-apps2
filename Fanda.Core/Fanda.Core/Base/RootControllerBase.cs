@@ -10,7 +10,7 @@ namespace Fanda.Core.Base
     //[Authorize]
     [Produces(MediaTypeNames.Application.Json)]
     [ApiController]
-    public class BaseController : ControllerBase
+    public abstract class RootControllerBase : ControllerBase
     {
         [NonAction]
         private InternalServerErrorResult InternalServerError(IMessageResponse value)   // [ActionResultObjectValueAttribute]

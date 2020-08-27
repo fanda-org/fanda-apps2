@@ -16,7 +16,7 @@ namespace Fanda.Auth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : BaseController
+    public class AuthController : RootControllerBase
     {
         private const string ModuleName = "User";
         private readonly IAuthRepository _repository;

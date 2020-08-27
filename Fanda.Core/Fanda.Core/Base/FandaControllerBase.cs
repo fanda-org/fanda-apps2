@@ -1,10 +1,4 @@
-﻿using Fanda.Core;
-using Fanda.Core.Base;
-using Fanda.Core.Extensions;
-using FandaAuth.Service;
-using FandaAuth.Service.Dto;
-using FandaAuth.Service.Extensions;
-using FandaAuth.Service.ViewModels;
+﻿using Fanda.Core.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,32 +6,30 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Fanda.Authentication.Controllers
+namespace Fanda.Core.Base
 {
-    //[EnableCors("_MyAllowedOrigins")]
-    //[Authorize]
-    //[Produces(MediaTypeNames.Application.Json)]
-    //[ApiController]
-    //[Route("api/[controller]")]
-    public class UsersController : RootControllerBase
+    public class FandaControllerBase<TRepository, TModel, TListModel> : RootControllerBase
+        where TRepository : IParentRepository<TModel>, IListRepository<TListModel>
+        where TModel : BaseDto
+        where TListModel : BaseListDto
     {
-        private const string ModuleName = "User";
-        private readonly IUserRepository _repository;
+        private readonly string _moduleName;
+        private readonly TRepository _repository;
 
-        public UsersController(IUserRepository repository)
+        public FandaControllerBase(TRepository repository, string moduleName)
         {
-            _repository = repository;
+            this._repository = repository;
+            _moduleName = moduleName;
         }
 
-        // users/all/5
-        [HttpGet("all/{tenantId}")]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<List<UserListDto>>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAll([Required] Guid tenantId)
+        [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<List<TListModel>>)
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -50,56 +42,57 @@ namespace Fanda.Authentication.Controllers
                     Sort = queryString["sort"],
                 };
 
-                var response = await _repository.GetData(tenantId, query);
+                var response = await _repository.GetData(Guid.Empty, query);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, ModuleName);
+                return ExceptionResult(ex, _moduleName);
             }
         }
 
-        // users/5
         [HttpGet("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<UserDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<TModel>)
         public async Task<IActionResult> GetById([Required, FromRoute] Guid id/*, [FromQuery] bool include*/)
         {
             try
             {
-                var user = await _repository.GetByIdAsync(id/*, include*/);
-                if (user == null)
+                var app = await _repository.GetByIdAsync(id/*, include*/);
+                if (app == null)
                 {
-                    return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
+                    return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
                 }
-                return Ok(DataResponse<UserDto>.Succeeded(user));
+                return Ok(DataResponse<TModel>.Succeeded(app));
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, ModuleName);
+                return ExceptionResult(ex, _moduleName);
             }
         }
 
-        [HttpPost("{tenantId}")]
+        [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<UserDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Create(Guid tenantId, UserDto model)
+        [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)
+        public async Task<IActionResult> Create(TModel model)
         {
             try
             {
                 #region Validation
 
-                var validationResult = await _repository.ValidateAsync(tenantId, model);
+                var validationResult = await _repository.ValidateAsync(model);
 
                 #endregion Validation
 
                 if (validationResult.IsValid)
                 {
-                    var userDto = await _repository.CreateAsync(tenantId, model);
-                    return CreatedAtAction(nameof(GetById), new { id = model.Id },
-                        DataResponse<UserDto>.Succeeded(userDto));
+                    var app = await _repository.CreateAsync(model);
+                    return CreatedAtAction(nameof(GetById), new { id = app.Id },
+                        DataResponse<TModel>.Succeeded(app));
                 }
                 else
                 {
@@ -108,7 +101,7 @@ namespace Fanda.Authentication.Controllers
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, ModuleName);
+                return ExceptionResult(ex, _moduleName);
             }
         }
 
@@ -116,18 +109,18 @@ namespace Fanda.Authentication.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Update(Guid id, UserDto model)
+        public async Task<IActionResult> Update(Guid id, TModel model)
         {
             try
             {
                 if (id != model.Id)
                 {
-                    return BadRequest(MessageResponse.Failure($"{ModuleName} Id mismatch"));
+                    return BadRequest(MessageResponse.Failure($"{_moduleName} id mismatch"));
                 }
 
                 #region Validation
 
-                var validationResult = await _repository.ValidateAsync(id, model);
+                var validationResult = await _repository.ValidateAsync(model);
 
                 #endregion Validation
 
@@ -143,7 +136,7 @@ namespace Fanda.Authentication.Controllers
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, ModuleName);
+                return ExceptionResult(ex, _moduleName);
             }
         }
 
@@ -157,7 +150,7 @@ namespace Fanda.Authentication.Controllers
             {
                 if (id == null || id == Guid.Empty)
                 {
-                    return BadRequest(MessageResponse.Failure($"{ModuleName} id is missing"));
+                    return BadRequest(MessageResponse.Failure($"{_moduleName} id is missing"));
                 }
                 var success = await _repository.DeleteAsync(id);
                 if (success)
@@ -166,12 +159,12 @@ namespace Fanda.Authentication.Controllers
                 }
                 else
                 {
-                    return NotFound(MessageResponse.Failure($"{ModuleName} not found"));
+                    return NotFound(MessageResponse.Failure($"{_moduleName} not found"));
                 }
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, ModuleName);
+                return ExceptionResult(ex, _moduleName);
             }
         }
 
@@ -194,11 +187,11 @@ namespace Fanda.Authentication.Controllers
                 {
                     return Ok(MessageResponse.Succeeded("Status changed successfully"));
                 }
-                return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
+                return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, ModuleName);
+                return ExceptionResult(ex, _moduleName);
             }
         }
 
@@ -212,12 +205,11 @@ namespace Fanda.Authentication.Controllers
         {
             try
             {
-                bool success = await _repository.ExistsAsync(new UserKeyData
+                bool success = await _repository.ExistsAsync(new KeyData
                 {
                     Id = id,
                     Field = exists.Field,
-                    Value = exists.Value,
-                    TenantId = exists.ParentId
+                    Value = exists.Value
                 });
                 if (success)
                 {
@@ -227,7 +219,7 @@ namespace Fanda.Authentication.Controllers
             }
             catch (Exception ex)
             {
-                return ExceptionResult(ex, ModuleName);
+                return ExceptionResult(ex, _moduleName);
             }
         }
     }
