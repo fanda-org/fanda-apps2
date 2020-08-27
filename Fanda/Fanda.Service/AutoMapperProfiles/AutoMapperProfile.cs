@@ -171,7 +171,7 @@ namespace Fanda.Service.AutoMapperProfiles
             #region List mappings
 
             CreateMap<AccountYear, YearListDto>();
-            CreateMap<Organization, OrgListDto>();
+            //CreateMap<Organization, OrgListDto>();
             CreateMap<Organization, OrgYearListDto>()
                 .ForMember(vm => vm.SelectedYearId, opt => opt.Ignore())
                 .ForMember(vm => vm.IsSelected, opt => opt.Ignore());

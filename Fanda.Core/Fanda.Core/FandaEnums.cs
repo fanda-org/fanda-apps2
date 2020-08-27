@@ -249,7 +249,8 @@ namespace Fanda.Core
     {
         Master = 1,
         Transaction = 2,
-        Configuration = 3,
-        Report = 4
+        Configuration = 4,
+        Report = 8,
+        All = 15
     }
 }

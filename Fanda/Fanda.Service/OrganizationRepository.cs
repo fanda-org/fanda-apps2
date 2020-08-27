@@ -16,27 +16,22 @@ namespace Fanda.Service
 {
     public interface IOrganizationRepository :
         IParentRepository<OrganizationDto>,
-        IRepositoryChildData<OrgChildrenDto>,
         IListRepository<OrgYearListDto>
     {
-        // Task<bool> MapUserAsync(Guid orgId, Guid userId);
-        // Task<bool> UnmapUserAsync(Guid orgId, Guid userId);
     }
 
     public class OrganizationRepository : IOrganizationRepository
     {
         private readonly FandaContext _context;
         private readonly IMapper _mapper;
-        // private readonly IUserRepository _userRepository;
 
-        public OrganizationRepository(FandaContext context, IMapper mapper /*, IUserRepository userRepository*/)
+        public OrganizationRepository(FandaContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            // _userRepository = userRepository;
         }
 
-        public async Task<OrganizationDto> GetByIdAsync(Guid id, bool includeChildren = false)
+        public async Task<OrganizationDto> GetByIdAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {
@@ -47,55 +42,51 @@ namespace Fanda.Service
                 .AsNoTracking()
                 .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(o => o.Id == id);
-
             if (org == null)
             {
                 throw new NotFoundException("Organization not found");
             }
-            else if (!includeChildren)
-            {
-                return org;
-            }
-
-            org.Contacts = await _context.Organizations
-                .AsNoTracking()
-                .Where(m => m.Id == id)
-                .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
-                .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-            org.Addresses = await _context.Organizations
-                .AsNoTracking()
-                .Where(m => m.Id == id)
-                .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
-                .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
             return org;
+
+            //org.Contacts = await _context.Organizations
+            //    .AsNoTracking()
+            //    .Where(m => m.Id == id)
+            //    .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
+            //    .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+            //org.Addresses = await _context.Organizations
+            //    .AsNoTracking()
+            //    .Where(m => m.Id == id)
+            //    .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
+            //    .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+            //return org;
         }
 
-        public async Task<OrgChildrenDto> GetChildrenByIdAsync(Guid id)
-        {
-            if (id == null || id == Guid.Empty)
-            {
-                throw new ArgumentNullException("Id", "Id is missing");
-            }
+        //public async Task<OrgChildrenDto> GetChildrenByIdAsync(Guid id)
+        //{
+        //    if (id == null || id == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException("Id", "Id is missing");
+        //    }
 
-            var org = new OrgChildrenDto
-            {
-                Contacts = await _context.Organizations
-                    .AsNoTracking()
-                    .Where(m => m.Id == id)
-                    .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
-                    .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync(),
-                Addresses = await _context.Organizations
-                    .AsNoTracking()
-                    .Where(m => m.Id == id)
-                    .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
-                    .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync()
-            };
-            return org;
-        }
+        //    var org = new OrgChildrenDto
+        //    {
+        //        Contacts = await _context.Organizations
+        //            .AsNoTracking()
+        //            .Where(m => m.Id == id)
+        //            .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
+        //            .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
+        //            .ToListAsync(),
+        //        Addresses = await _context.Organizations
+        //            .AsNoTracking()
+        //            .Where(m => m.Id == id)
+        //            .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
+        //            .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
+        //            .ToListAsync()
+        //    };
+        //    return org;
+        //}
 
         public async Task<OrganizationDto> CreateAsync(OrganizationDto model)
         {
@@ -218,39 +209,6 @@ namespace Fanda.Service
             //return model;
         }
 
-        public async Task<ValidationResultModel> ValidateAsync(OrganizationDto model)
-        {
-            // Reset validation errors
-            model.Errors.Clear();
-
-            #region Formatting: Cleansing and formatting
-
-            model.Code = model.Code.ToUpper();
-            model.Name = model.Name.TrimExtraSpaces();
-            model.Description = model.Description.TrimExtraSpaces();
-
-            #endregion Formatting: Cleansing and formatting
-
-            #region Validation: Duplicate
-
-            // Check code duplicate
-            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
-            if (await ExistsAsync(duplCode))
-            {
-                model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
-            }
-            // Check name duplicate
-            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
-            if (await ExistsAsync(duplName))
-            {
-                model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
-            }
-
-            #endregion Validation: Duplicate
-
-            return model.Errors;
-        }
-
         public async Task<bool> DeleteAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
@@ -320,6 +278,7 @@ namespace Fanda.Service
         //        .ProjectTo<OrgListDto>(_mapper.ConfigurationProvider);
         //    return GetAll(query);
         //}
+
         IQueryable<OrgYearListDto> IListRepository<OrgYearListDto>.GetAll(Guid userId)
         {
             if (userId == null || userId == Guid.Empty)
@@ -348,5 +307,38 @@ namespace Fanda.Service
         // public async Task<bool> UnmapUserAsync(Guid orgId, Guid userId) => await _userRepository.UnmapOrgAsync(userId, orgId);
 
         #endregion List
+
+        public async Task<ValidationResultModel> ValidateAsync(OrganizationDto model)
+        {
+            // Reset validation errors
+            model.Errors.Clear();
+
+            #region Formatting: Cleansing and formatting
+
+            model.Code = model.Code.ToUpper();
+            model.Name = model.Name.TrimExtraSpaces();
+            model.Description = model.Description.TrimExtraSpaces();
+
+            #endregion Formatting: Cleansing and formatting
+
+            #region Validation: Duplicate
+
+            // Check code duplicate
+            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
+            if (await ExistsAsync(duplCode))
+            {
+                model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
+            }
+            // Check name duplicate
+            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
+            if (await ExistsAsync(duplName))
+            {
+                model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
+            }
+
+            #endregion Validation: Duplicate
+
+            return model.Errors;
+        }
     }
 }

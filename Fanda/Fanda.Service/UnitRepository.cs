@@ -45,7 +45,7 @@ namespace Fanda.Service
             return units;
         }
 
-        public async Task<UnitDto> GetByIdAsync(Guid id, bool includeChildren = false)
+        public async Task<UnitDto> GetByIdAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {

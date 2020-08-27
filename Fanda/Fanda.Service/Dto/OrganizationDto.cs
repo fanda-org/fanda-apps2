@@ -27,11 +27,11 @@ namespace Fanda.Service.Dto
             StringLength(25, ErrorMessage = "Maximum allowed length is 25")]
         public string GSTIN { get; set; }
 
-        public virtual ICollection<ContactDto> Contacts { get; set; }
-        public virtual ICollection<AddressDto> Addresses { get; set; }
+        public virtual List<ContactDto> Contacts { get; set; }
+        public virtual List<AddressDto> Addresses { get; set; }
     }
 
-    public class OrgListDto : BaseListDto { }
+    //public class OrgListDto : BaseListDto { }
 
     public class OrgYearListDto : BaseListDto
     {
@@ -39,12 +39,12 @@ namespace Fanda.Service.Dto
         public Guid SelectedYearId { get; set; }
 
         [Display(Name = "Accounting Years")]
-        public ICollection<YearListDto> AccountYears { get; set; }
+        public virtual List<YearListDto> AccountYears { get; set; }
     }
 
-    public class OrgChildrenDto
-    {
-        public ICollection<ContactDto> Contacts { get; set; }
-        public ICollection<AddressDto> Addresses { get; set; }
-    }
+    //public class OrgChildrenDto
+    //{
+    //    public ICollection<ContactDto> Contacts { get; set; }
+    //    public ICollection<AddressDto> Addresses { get; set; }
+    //}
 }

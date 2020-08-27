@@ -15,7 +15,8 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
+
+//using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,9 +59,8 @@ namespace Fanda.Service.Extensions
                 var urls = new[]
                 {
                     "http://localhost:5100",
-                    "https://localhost:5101",
                     "http://localhost:5200",
-                    "https://localhost:5201",
+                    "http://localhost:4200",
                    //Configuration["Fanda.Web.Url"],
                    //Configuration["Fanda.Ng.Url"]
                 };
@@ -112,15 +112,15 @@ namespace Fanda.Service.Extensions
 
             #region Response compression
 
-            services.AddResponseCompression(options =>
-            {
-                options.Providers.Add<GzipCompressionProvider>();
-                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/svg+xml" });
-            });
-            services.Configure<GzipCompressionProviderOptions>(options =>
-            {
-                options.Level = System.IO.Compression.CompressionLevel.Fastest;
-            });
+            //services.AddResponseCompression(options =>
+            //{
+            //    options.Providers.Add<GzipCompressionProvider>();
+            //    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/svg+xml" });
+            //});
+            //services.Configure<GzipCompressionProviderOptions>(options =>
+            //{
+            //    options.Level = System.IO.Compression.CompressionLevel.Fastest;
+            //});
 
             #endregion Response compression
 
@@ -349,7 +349,7 @@ namespace Fanda.Service.Extensions
             // }
 
             autoMapperConfigProvider.AssertConfigurationIsValid();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             //app.UseSerilogRequestLogging();
 
             #region Angular SPA

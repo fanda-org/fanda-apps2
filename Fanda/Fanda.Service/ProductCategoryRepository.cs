@@ -45,7 +45,7 @@ namespace Fanda.Service
             return items;
         }
 
-        public async Task<ProductCategoryDto> GetByIdAsync(Guid id, bool includeChildren = false)
+        public async Task<ProductCategoryDto> GetByIdAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {

@@ -1,5 +1,6 @@
 ﻿using Fanda.Core.Base;
-using Microsoft.AspNetCore.Mvc.Internal;
+
+// using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;

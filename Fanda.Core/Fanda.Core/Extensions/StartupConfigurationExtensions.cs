@@ -1,6 +1,4 @@
-﻿using Fanda.Core;
-using Fanda.Core.Extensions;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +13,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Fanda.Auth.Extensions
+namespace Fanda.Core.Extensions
 {
     public static class StartupConfigurationExtensions
     {
@@ -33,11 +31,12 @@ namespace Fanda.Auth.Extensions
 
         #region AppSettings
 
-        public static IServiceCollection ConfigureAppSettings(this IServiceCollection services,
+        public static AppSettings ConfigureAppSettings(this IServiceCollection services,
             IConfiguration configuration)
         {
-            var sc = services.Configure<AppSettings>(configuration);
-            return sc;
+            services.Configure<AppSettings>(configuration);
+            AppSettings appSettings = configuration.Get<AppSettings>();
+            return appSettings;
         }
 
         #endregion AppSettings

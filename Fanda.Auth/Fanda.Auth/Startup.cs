@@ -1,5 +1,5 @@
 using AutoMapper;
-using Fanda.Auth.Extensions;
+using Fanda.Core.Extensions;
 using Fanda.Core;
 using Fanda.Service.AutoMapperProfile;
 using FandaAuth.Domain;
@@ -27,22 +27,21 @@ namespace Fanda.Auth
         {
             services.AddCustomHealthChecks<AuthContext>();
 
-            //services.Configure<AppSettings>(Configuration);
             //AppSettings appSettings = Configuration.Get<AppSettings>();
-            var appSettings = services.ConfigureAppSettings(Configuration);
+            AppSettings appSettings = services.ConfigureAppSettings(Configuration);
 
-            //services.AddControllers();
             services.AddCustomControllers();
 
             //services.AddDbContext<AuthContext>(options =>
             //{
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
-            services.AddCustomDbContext<AuthContext>(appSettings, Assembly.GetAssembly(typeof(AuthContext)).GetName().Name);
-            services.AddCustomCors();
-            services.AddAutoMapper(typeof(AuthProfile));
+            services.AddCustomDbContext<AuthContext>(appSettings, Assembly.GetAssembly(typeof(AuthContext)).GetName().Name)
+                .AddCustomCors()
+                .AddAutoMapper(typeof(AuthProfile))
+                .AddSwagger("Fanda Authentication API");
+
             services.AddJwtAuthentication(appSettings);
-            services.AddSwagger("Fanda Authentication API");
 
             services.AddTransient<IEmailSender, EmailSender>();
 

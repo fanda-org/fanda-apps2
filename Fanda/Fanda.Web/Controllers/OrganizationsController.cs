@@ -16,6 +16,7 @@ namespace Fanda.Web.Controllers
 {
     public class OrganizationsController : BaseController
     {
+        private const string ModuleName = "Organization";
         private readonly IOrganizationRepository repository;
 
         public OrganizationsController(IOrganizationRepository repository)
@@ -44,7 +45,7 @@ namespace Fanda.Web.Controllers
             }
             catch (Exception ex)
             {
-                return InternalServerError(MessageResponse.Failure(ex.Message));
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -53,11 +54,11 @@ namespace Fanda.Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetById([Required, FromRoute] Guid id, [FromQuery] bool include)
+        public async Task<IActionResult> GetById([Required, FromRoute] Guid id)
         {
             try
             {
-                var org = await repository.GetByIdAsync(id, include);
+                var org = await repository.GetByIdAsync(id);
                 if (org != null)
                 {
                     return Ok(DataResponse<OrganizationDto>.Succeeded(org));
@@ -66,54 +67,43 @@ namespace Fanda.Web.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid org id"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Organization not found"));
-                }
-                else
-                {
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
-        [HttpGet("children/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Get([Required, FromRoute] Guid id)
-        {
-            try
-            {
-                var orgChildren = await repository.GetChildrenByIdAsync(id);
-                if (orgChildren != null)
-                {
-                    return Ok(DataResponse<OrgChildrenDto>.Succeeded(orgChildren));
-                }
-                return NotFound(MessageResponse.Failure($"Org id '{id}' not found"));
-            }
-            catch (Exception ex)
-            {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid org id"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Organization not found"));
-                }
-                else
-                {
-                    //return StatusCode(StatusCodes.Status500InternalServerError, DataResponse.Failure(ex.Message));
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
-            }
-        }
+        //[HttpGet("children/{id}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> Get([Required, FromRoute] Guid id)
+        //{
+        //    try
+        //    {
+        //        var orgChildren = await repository.GetChildrenByIdAsync(id);
+        //        if (orgChildren != null)
+        //        {
+        //            return Ok(DataResponse<OrgChildrenDto>.Succeeded(orgChildren));
+        //        }
+        //        return NotFound(MessageResponse.Failure($"Org id '{id}' not found"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
+        //        {
+        //            return BadRequest(MessageResponse.Failure("Invalid org id"));
+        //        }
+        //        else if (ex is NotFoundException)
+        //        {
+        //            return NotFound(MessageResponse.Failure("Organization not found"));
+        //        }
+        //        else
+        //        {
+        //            //return StatusCode(StatusCodes.Status500InternalServerError, DataResponse.Failure(ex.Message));
+        //            return InternalServerError(MessageResponse.Failure(ex.Message));
+        //        }
+        //    }
+        //}
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -146,18 +136,7 @@ namespace Fanda.Web.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid org id"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Organization not found"));
-                }
-                else
-                {
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -193,18 +172,7 @@ namespace Fanda.Web.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid org id"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Organization not found"));
-                }
-                else
-                {
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -233,19 +201,7 @@ namespace Fanda.Web.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid org id"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Organization not found"));
-                }
-                else
-                {
-                    //return StatusCode(StatusCodes.Status500InternalServerError, DataResponse.Failure(ex.Message));
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -339,19 +295,7 @@ namespace Fanda.Web.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid org id"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Organization not found"));
-                }
-                else
-                {
-                    //return StatusCode(StatusCodes.Status500InternalServerError, DataResponse.Failure(ex.Message));
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
 
@@ -378,19 +322,7 @@ namespace Fanda.Web.Controllers
             }
             catch (Exception ex)
             {
-                if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
-                {
-                    return BadRequest(MessageResponse.Failure("Invalid input"));
-                }
-                else if (ex is NotFoundException)
-                {
-                    return NotFound(MessageResponse.Failure("Not found"));
-                }
-                else
-                {
-                    //return StatusCode(StatusCodes.Status500InternalServerError, DataResponse.Failure(ex.Message));
-                    return InternalServerError(MessageResponse.Failure(ex.Message));
-                }
+                return ExceptionResult(ex, ModuleName);
             }
         }
     }

@@ -1,7 +1,9 @@
+using AutoMapper;
 using Fanda.Core;
+using Fanda.Core.Extensions;
 using Fanda.Domain.Context;
 using Fanda.Service;
-using Fanda.Service.Extensions;
+using Fanda.Service.AutoMapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +29,32 @@ namespace Fanda.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureStartupServices<FandaContext>(Configuration, Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+            //services.ConfigureStartupServices<FandaContext>(Configuration, Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+
+            #region Startup configure services
+
+            services.AddCustomHealthChecks<FandaContext>();
+
+            //services.Configure<AppSettings>(Configuration);
+            //AppSettings appSettings = Configuration.Get<AppSettings>();
+
+            AppSettings appSettings = services.ConfigureAppSettings(Configuration);
+
+            //services.AddControllers();
+            services.AddCustomControllers();
+
+            //services.AddDbContext<AuthContext>(options =>
+            //{
+            //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
+            //});
+            services.AddCustomDbContext<FandaContext>(appSettings,
+                Assembly.GetAssembly(typeof(FandaContext)).GetName().Name);
+            services.AddCustomCors();
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddJwtAuthentication(appSettings);
+            services.AddSwagger("Fanda Application API");
+
+            #endregion Startup configure services
 
             #region Repositories
 
@@ -57,7 +84,41 @@ namespace Fanda.Web
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             AutoMapper.IConfigurationProvider autoMapperConfigProvider)
         {
-            app.ConfigureStartup(env, autoMapperConfigProvider);
+            //app.ConfigureStartup(env, autoMapperConfigProvider);
+
+            #region Startup configure
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            autoMapperConfigProvider.AssertConfigurationIsValid();
+
+            //app.UseHttpsRedirection();
+
+            app.UseCors("_MyAllowedOrigins");
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Application API v1");
+                c.RoutePrefix = "openapi";
+            });
+
+            #endregion Startup configure
 
             #region Angular SPA
 

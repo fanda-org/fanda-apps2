@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Fanda.Auth
@@ -46,6 +47,10 @@ namespace Fanda.Auth
                     config
                         .MinimumLevel.Information()
                         .Enrich.FromLogContext()
+                        .Enrich.WithMachineName()
+                        .Enrich.WithProperty("Application", Assembly.GetExecutingAssembly().FullName)
+                        .Enrich.WithEnvironmentUserName()
+                        .Enrich.WithThreadId()
                         .WriteTo.Console();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

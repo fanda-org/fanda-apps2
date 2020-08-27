@@ -45,7 +45,7 @@ namespace Fanda.Service
             return categories;
         }
 
-        public async Task<PartyCategoryDto> GetByIdAsync(Guid id, bool includeChildren = false)
+        public async Task<PartyCategoryDto> GetByIdAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {
@@ -55,19 +55,18 @@ namespace Fanda.Service
                 .AsNoTracking()
                 .ProjectTo<PartyCategoryDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(pc => pc.Id == id);
-            if (category != null)
+            if (category == null)
             {
-                return category;
+                throw new NotFoundException("Party category not found");
             }
-            return null;
-            //throw new NotFoundException("Party category not found");
+            return category;
         }
 
         public async Task<PartyCategoryDto> CreateAsync(Guid orgId, PartyCategoryDto model)
         {
             if (orgId == null || orgId == Guid.Empty)
             {
-                throw new ArgumentNullException("orgId", "Org id is missing");
+                throw new ArgumentNullException("orgId", "Org id is required");
             }
 
             PartyCategory category = _mapper.Map<PartyCategory>(model);
@@ -97,7 +96,7 @@ namespace Fanda.Service
         {
             if (id == null || id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id", "Id is missing");
+                throw new ArgumentNullException("Id", "Id is required");
             }
 
             PartyCategory category = await _context.PartyCategories
