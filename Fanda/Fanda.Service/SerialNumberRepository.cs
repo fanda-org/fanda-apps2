@@ -1,6 +1,5 @@
 ﻿using Fanda.Core;
 using Fanda.Domain.Context;
-
 using System;
 using System.Text;
 

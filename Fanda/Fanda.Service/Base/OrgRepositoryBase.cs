@@ -2,54 +2,54 @@
 using AutoMapper.QueryableExtensions;
 using Fanda.Core;
 using Fanda.Core.Base;
-using FandaAuth.Domain;
-using FandaAuth.Domain.Base;
-using FandaAuth.Service.Extensions;
+using Fanda.Domain.Base;
+using Fanda.Domain.Context;
+using Fanda.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FandaAuth.Service.Base
+namespace Fanda.Service.Base
 {
-    public abstract class TenantRepositoryBase<TEntity, TModel, TListModel>
+    public abstract class OrgRepositoryBase<TEntity, TModel, TListModel>
         : RepositoryBase<TEntity, TModel, TListModel>
-        where TEntity : TenantEntity
+        where TEntity : OrgEntity
         where TModel : BaseDto
     {
-        private readonly AuthContext _context;
+        private readonly FandaContext _context;
         private readonly IMapper _mapper;
 
-        public TenantRepositoryBase(AuthContext context, IMapper mapper)
+        public OrgRepositoryBase(FandaContext context, IMapper mapper)
             : base(context, mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public override IQueryable<TListModel> GetAll(Guid tenantId)  // nullable
+        public override IQueryable<TListModel> GetAll(Guid orgId)  // nullable
         {
-            if (tenantId == null || tenantId == Guid.Empty)
+            if (orgId == null || orgId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(tenantId), $"{nameof(tenantId)} is required");
+                throw new ArgumentNullException(nameof(orgId), $"{nameof(orgId)} is required");
             }
 
             IQueryable<TListModel> qry = _context.Set<TEntity>()
                 .AsNoTracking()
-                .Where(t => t.TenantId == tenantId)
+                .Where(t => t.OrgId == orgId)
                 .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
             return qry;
         }
 
-        public virtual async Task<TModel> CreateAsync(Guid tenantId, TModel model)
+        public virtual async Task<TModel> CreateAsync(Guid orgId, TModel model)
         {
-            if (tenantId == null || tenantId == Guid.Empty)
+            if (orgId == null || orgId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(tenantId), "TenantId is required");
+                throw new ArgumentNullException(nameof(orgId), $"{nameof(orgId)} is required");
             }
 
             var entity = _mapper.Map<TEntity>(model);
-            entity.TenantId = tenantId;
+            entity.OrgId = orgId;
             entity.DateCreated = DateTime.UtcNow;
             entity.DateModified = null;
             await _context.Set<TEntity>().AddAsync(entity);
@@ -57,16 +57,16 @@ namespace FandaAuth.Service.Base
             return _mapper.Map<TModel>(entity);
         }
 
-        public virtual async Task<bool> ExistsAsync(TenantKeyData data)
+        public virtual async Task<bool> ExistsAsync(OrgKeyData data)
             => await _context.ExistsAsync<TEntity>(data);
 
-        public virtual async Task<TModel> GetByAsync(TenantKeyData data)
+        public virtual async Task<TModel> GetByAsync(OrgKeyData data)
         {
             var app = await _context.GetByAsync<TEntity>(data);
             return _mapper.Map<TModel>(app);
         }
 
-        public async Task<ValidationResultModel> ValidateAsync(Guid tenantId, TModel model)
+        public async Task<ValidationResultModel> ValidateAsync(Guid orgId, TModel model)
         {
             // Reset validation errors
             model.Errors.Clear();
@@ -81,13 +81,13 @@ namespace FandaAuth.Service.Base
             #region Validation: Duplicate
 
             // Check email duplicate
-            var duplCode = new TenantKeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id, TenantId = tenantId };
+            var duplCode = new OrgKeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id, OrgId = orgId };
             if (await ExistsAsync(duplCode))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
             // Check name duplicate
-            var duplName = new TenantKeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id, TenantId = tenantId };
+            var duplName = new OrgKeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id, OrgId = orgId };
             if (await ExistsAsync(duplName))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");

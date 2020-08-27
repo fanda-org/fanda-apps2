@@ -200,10 +200,10 @@ namespace Fanda.Core
         NearestTo1 = 1,
         NearestTo5 = 2,
         NearestTo10 = 3,
-        NearestTo50 = 4,
-        NearestTo100 = 5,
-        //Nearest500=5,
-        //Nearest1000=6
+        //NearestTo50 = 4,
+        //NearestTo100 = 5,
+        //Nearest500=6,
+        //Nearest1000=7
     }
 
     public enum LedgerGroupType
@@ -252,5 +252,12 @@ namespace Fanda.Core
         Configuration = 4,
         Report = 8,
         All = 15
+    }
+
+    public enum LedgerType
+    {
+        Customer = 1,
+        Supplier = 2,
+        Bank = 3
     }
 }

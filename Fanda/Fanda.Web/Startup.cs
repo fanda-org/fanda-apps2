@@ -48,11 +48,11 @@ namespace Fanda.Web
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
             services.AddCustomDbContext<FandaContext>(appSettings,
-                Assembly.GetAssembly(typeof(FandaContext)).GetName().Name);
-            services.AddCustomCors();
-            services.AddAutoMapper(typeof(AutoMapperProfile));
+                Assembly.GetAssembly(typeof(FandaContext)).GetName().Name)
+                .AddCustomCors()
+                .AddAutoMapper(typeof(AutoMapperProfile))
+                .AddSwagger("Fanda Application API");
             services.AddJwtAuthentication(appSettings);
-            services.AddSwagger("Fanda Application API");
 
             #endregion Startup configure services
 

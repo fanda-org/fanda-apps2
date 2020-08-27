@@ -42,7 +42,7 @@ namespace FandaAuth.Service
         {
             if (tenantId == null || tenantId == Guid.Empty)
             {
-                throw new ArgumentNullException("tenantId", "Tenant id is missing");
+                throw new ArgumentNullException("tenantId", "Tenant id is required");
             }
             IQueryable<UserListDto> userQry = _context.Users
                 .AsNoTracking()
@@ -55,7 +55,7 @@ namespace FandaAuth.Service
         {
             if (id == null || id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is missing");
+                throw new ArgumentNullException("id", "Id is required");
             }
             var user = await _context.Users
                 .AsNoTracking()
@@ -72,11 +72,11 @@ namespace FandaAuth.Service
         {
             if (tenantId == null || tenantId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(tenantId), "Tenant id is missing");
+                throw new ArgumentNullException(nameof(tenantId), "Tenant id is required");
             }
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
-                throw new ArgumentNullException("Password", "Password is missing");
+                throw new ArgumentNullException("Password", "Password is required");
             }
 
             PasswordStorage.CreatePasswordHash(dto.Password, out string passwordHash, out string passwordSalt);
@@ -100,7 +100,7 @@ namespace FandaAuth.Service
             }
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
-                throw new ArgumentNullException("Password", "Password is missing");
+                throw new ArgumentNullException("Password", "Password is required");
             }
 
             PasswordStorage.CreatePasswordHash(dto.Password, out string passwordHash, out string passwordSalt);
@@ -118,7 +118,7 @@ namespace FandaAuth.Service
         {
             if (id == null || id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id", "Id is missing");
+                throw new ArgumentNullException("Id", "Id is required");
             }
             var user = await _context.Users
                 .FindAsync(id);
@@ -138,11 +138,11 @@ namespace FandaAuth.Service
 
         //    // if (userId == null || userId == Guid.Empty)
         //    // {
-        //    //     throw new ArgumentNullException("userId", "User Id is missing");
+        //    //     throw new ArgumentNullException("userId", "User Id is required");
         //    // }
         //    // if (orgId == null || orgId == Guid.Empty)
         //    // {
-        //    //     throw new ArgumentNullException("orgId", "Org Id is missing");
+        //    //     throw new ArgumentNullException("orgId", "Org Id is required");
         //    // }
         //    // var OrgUsers = _context.Set<OrgUser>();
 
@@ -165,11 +165,11 @@ namespace FandaAuth.Service
         //    throw new NotImplementedException();
         //    // if (userId == null || userId == Guid.Empty)
         //    // {
-        //    //     throw new ArgumentNullException("userId", "User Id is missing");
+        //    //     throw new ArgumentNullException("userId", "User Id is required");
         //    // }
         //    // if (orgId == null || orgId == Guid.Empty)
         //    // {
-        //    //     throw new ArgumentNullException("orgId", "Org Id is missing");
+        //    //     throw new ArgumentNullException("orgId", "Org Id is required");
         //    // }
         //    // var OrgUsers = _context.Set<OrgUser>();
 
@@ -193,15 +193,15 @@ namespace FandaAuth.Service
         //    // {
         //    //     if (userId == null || userId == Guid.Empty)
         //    //     {
-        //    //         throw new ArgumentNullException("userId", "User Id is missing");
+        //    //         throw new ArgumentNullException("userId", "User Id is required");
         //    //     }
         //    //     if (string.IsNullOrEmpty(roleName))
         //    //     {
-        //    //         throw new ArgumentNullException("roleName", "Role Name is missing");
+        //    //         throw new ArgumentNullException("roleName", "Role Name is required");
         //    //     }
         //    //     if (orgId == null || orgId == Guid.Empty)
         //    //     {
-        //    //         throw new ArgumentNullException("orgId", "Role Id is missing");
+        //    //         throw new ArgumentNullException("orgId", "Role Id is required");
         //    //     }
 
         //    // Role role = await _context.Roles
@@ -231,15 +231,15 @@ namespace FandaAuth.Service
         //    throw new NotImplementedException();
         //    // if (userId == null || userId == Guid.Empty)
         //    // {
-        //    //     throw new ArgumentNullException("userId", "User Id is missing");
+        //    //     throw new ArgumentNullException("userId", "User Id is required");
         //    // }
         //    // if (roleId == null || roleId == Guid.Empty)
         //    // {
-        //    //     throw new ArgumentNullException("roleId", "Role Id is missing");
+        //    //     throw new ArgumentNullException("roleId", "Role Id is required");
         //    // }
         //    // if (orgId == null || orgId == Guid.Empty)
         //    // {
-        //    //     throw new ArgumentNullException("orgId", "Role Id is missing");
+        //    //     throw new ArgumentNullException("orgId", "Role Id is required");
         //    // }
         //    // var OrgUserRoles = _context.Set<OrgUserRole>();
 
@@ -260,7 +260,7 @@ namespace FandaAuth.Service
         {
             if (status.Id == null || status.Id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id", "Id is missing");
+                throw new ArgumentNullException("Id", "Id is required");
             }
 
             var user = await _context.Users
@@ -305,8 +305,8 @@ namespace FandaAuth.Service
 
             if (tenantId == null || tenantId == Guid.Empty)
             {
-                //throw new ArgumentNullException(nameof(tenantId), "Tenant id is missing");
-                model.Errors.AddError(nameof(tenantId), "Tenant id is missing");
+                //throw new ArgumentNullException(nameof(tenantId), "Tenant id is required");
+                model.Errors.AddError(nameof(tenantId), "Tenant id is required");
             }
             //if (tenantId != model.TenantId)
             //{

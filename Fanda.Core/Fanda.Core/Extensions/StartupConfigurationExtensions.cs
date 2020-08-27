@@ -62,6 +62,7 @@ namespace Fanda.Core.Extensions
                     var urls = new[]
                     {
                         "http://localhost:4200",    // Frontend Angular app
+                        "http://localhost:5100",    // Frontend Angular app
                         "http://localhost:5000",    // API Gateway
                         //Configuration["Fanda.Gateway.Url"],
                         //Configuration["Fanda.Ng.Url"]

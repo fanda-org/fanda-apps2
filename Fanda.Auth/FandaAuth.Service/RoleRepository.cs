@@ -35,7 +35,7 @@ namespace FandaAuth.Service
         //{
         //    if (tenantId == null || tenantId == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException(nameof(tenantId), "Tenant id is missing");
+        //        throw new ArgumentNullException(nameof(tenantId), "Tenant id is required");
         //    }
         //    IQueryable<RoleListDto> qry = context.Roles
         //        .AsNoTracking()
@@ -48,7 +48,7 @@ namespace FandaAuth.Service
         //{
         //    if (id == null || id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("id", "Id is missing");
+        //        throw new ArgumentNullException("id", "Id is required");
         //    }
 
         //    var roleBase = await context.Roles
@@ -79,7 +79,7 @@ namespace FandaAuth.Service
         //{
         //    if (id == null || id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("Id", "Id is missing");
+        //        throw new ArgumentNullException("Id", "Id is required");
         //    }
 
         //    var rolePrivileges = new RoleChildrenDto
@@ -98,7 +98,7 @@ namespace FandaAuth.Service
         //{
         //    if (tenantId == null || tenantId == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException(nameof(tenantId), "Tenant id is missing");
+        //        throw new ArgumentNullException(nameof(tenantId), "Tenant id is required");
         //    }
 
         //    var role = mapper.Map<Role>(model);
@@ -188,7 +188,7 @@ namespace FandaAuth.Service
         //{
         //    if (id == null || id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("Id", "Id is missing");
+        //        throw new ArgumentNullException("Id", "Id is required");
         //    }
         //    var role = await context.Roles
         //        .FindAsync(id);
@@ -206,7 +206,7 @@ namespace FandaAuth.Service
         //{
         //    if (status.Id == null || status.Id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("Id", "Id is missing");
+        //        throw new ArgumentNullException("Id", "Id is required");
         //    }
 
         //    var role = await context.Roles

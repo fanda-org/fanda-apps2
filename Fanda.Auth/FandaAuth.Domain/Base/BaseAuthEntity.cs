@@ -3,17 +3,15 @@ using System;
 
 namespace FandaAuth.Domain.Base
 {
-    public class UserEntity : RootEntity
+    public class UserEntity
     {
-        //public Guid Id { get; set; }
+        public Guid Id { get; set; }
         public string UserName { get; set; }
-
         public string Email { get; set; }
         public Guid TenantId { get; set; }
-        //public bool Active { get; set; }
-        //public DateTime DateCreated { get; set; }
-        //public DateTime? DateModified { get; set; }
-
+        public bool Active { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime? DateModified { get; set; }
         public virtual Tenant Tenant { get; set; }
     }
 

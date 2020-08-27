@@ -42,7 +42,7 @@ namespace FandaAuth.Service
         //{
         //    if (id == null || id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("id", "Id is missing");
+        //        throw new ArgumentNullException("id", "Id is required");
         //    }
 
         //    var app = await context.Applications
@@ -74,7 +74,7 @@ namespace FandaAuth.Service
         //{
         //    if (id == null || id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("Id", "Id is missing");
+        //        throw new ArgumentNullException("Id", "Id is required");
         //    }
 
         //    var appResources = new AppChildrenDto
@@ -182,7 +182,7 @@ namespace FandaAuth.Service
         //{
         //    if (id == null || id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("Id", "Id is missing");
+        //        throw new ArgumentNullException("Id", "Id is required");
         //    }
         //    var app = await context.Applications
         //        .FindAsync(id);
@@ -200,7 +200,7 @@ namespace FandaAuth.Service
         //{
         //    if (status.Id == null || status.Id == Guid.Empty)
         //    {
-        //        throw new ArgumentNullException("Id", "Id is missing");
+        //        throw new ArgumentNullException("Id", "Id is required");
         //    }
 
         //    var app = await context.Applications

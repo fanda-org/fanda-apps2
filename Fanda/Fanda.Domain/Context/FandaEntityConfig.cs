@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Fanda.Domain.Context
 {
     #region Global - Contact and Address
+
     public class ContactConfig : IEntityTypeConfiguration<Contact>
     {
         public void Configure(EntityTypeBuilder<Contact> builder)
@@ -34,6 +35,7 @@ namespace Fanda.Domain.Context
                 .HasMaxLength(25);
         }
     }
+
     public class AddressConfig : IEntityTypeConfiguration<Address>
     {
         public void Configure(EntityTypeBuilder<Address> builder)
@@ -65,16 +67,19 @@ namespace Fanda.Domain.Context
                 .HasMaxLength(25);
             builder.Ignore(a => a.AddressType);
             builder.Property(a => a.AddressTypeString)
-                .IsRequired()
                 .HasColumnName("AddressType")
+                .IsUnicode(false)
+                .IsRequired()
                 .HasMaxLength(25);
         }
     }
-    #endregion
+
+    #endregion Global - Contact and Address
 
     #region Organization
 
     #region Organization, Contact, Address, Role, User
+
     public class OrganizationConfig : IEntityTypeConfiguration<Organization>
     {
         public void Configure(EntityTypeBuilder<Organization> builder)
@@ -116,6 +121,7 @@ namespace Fanda.Domain.Context
                 .IsUnique();
         }
     }
+
     public class OrgContactConfig : IEntityTypeConfiguration<OrgContact>
     {
         public void Configure(EntityTypeBuilder<OrgContact> builder)
@@ -137,6 +143,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
+
     public class OrgAddressConfig : IEntityTypeConfiguration<OrgAddress>
     {
         public void Configure(EntityTypeBuilder<OrgAddress> builder)
@@ -159,6 +166,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
+
     // public class OrgUserConfig : IEntityTypeConfiguration<OrgUser>
     // {
     //     public void Configure(EntityTypeBuilder<OrgUser> builder)
@@ -201,9 +209,11 @@ namespace Fanda.Domain.Context
     //             .OnDelete(DeleteBehavior.Cascade);
     //     }
     // }
-    #endregion
+
+    #endregion Organization, Contact, Address, Role, User
 
     #region Unit and Unit conversion
+
     public class UnitConfig : IEntityTypeConfiguration<Unit>
     {
         public void Configure(EntityTypeBuilder<Unit> builder)
@@ -239,6 +249,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class UnitConversionConfig : IEntityTypeConfiguration<UnitConversion>
     {
         public void Configure(EntityTypeBuilder<UnitConversion> builder)
@@ -265,9 +276,11 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
-    #endregion
+
+    #endregion Unit and Unit conversion
 
     #region Product
+
     public class ProductCategoryConfig : IEntityTypeConfiguration<ProductCategory>
     {
         public void Configure(EntityTypeBuilder<ProductCategory> builder)
@@ -307,6 +320,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class ProductBrandConfig : IEntityTypeConfiguration<ProductBrand>
     {
         public void Configure(EntityTypeBuilder<ProductBrand> builder)
@@ -342,6 +356,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class ProductSegmentConfig : IEntityTypeConfiguration<ProductSegment>
     {
         public void Configure(EntityTypeBuilder<ProductSegment> builder)
@@ -377,6 +392,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class ProductVarietyConfig : IEntityTypeConfiguration<ProductVariety>
     {
         public void Configure(EntityTypeBuilder<ProductVariety> builder)
@@ -412,6 +428,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class ProductIngredientConfig : IEntityTypeConfiguration<ProductIngredient>
     {
         public void Configure(EntityTypeBuilder<ProductIngredient> builder)
@@ -443,6 +460,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class ProductPricingConfig : IEntityTypeConfiguration<ProductPricing>
     {
         public void Configure(EntityTypeBuilder<ProductPricing> builder)
@@ -476,6 +494,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class ProductPrincingRangeConfig : IEntityTypeConfiguration<ProductPricingRange>
     {
         public void Configure(EntityTypeBuilder<ProductPricingRange> builder)
@@ -499,6 +518,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
+
     public class ProductConfig : IEntityTypeConfiguration<Product>
     {
         public void Configure(EntityTypeBuilder<Product> builder)
@@ -521,6 +541,8 @@ namespace Fanda.Domain.Context
             builder.Ignore(p => p.ProductType);
             builder.Property(p => p.ProductTypeString)
                 .HasColumnName("ProductType")
+                .IsUnicode(false)
+                .IsRequired()
                 .HasMaxLength(16);
             builder.Ignore(p => p.TaxPreference);
             builder.Property(p => p.TaxPreferenceString)
@@ -562,9 +584,11 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
-    #endregion
+
+    #endregion Product
 
     #region Ledger
+
     public class LedgerGroupConfig : IEntityTypeConfiguration<LedgerGroup>
     {
         public void Configure(EntityTypeBuilder<LedgerGroup> builder)
@@ -587,6 +611,7 @@ namespace Fanda.Domain.Context
             builder.Ignore(g => g.GroupType);
             builder.Property(g => g.GroupTypeString)
                 .HasColumnName("GroupType")
+                .IsUnicode(false)
                 .IsRequired()
                 .HasMaxLength(20);
             //builder.Property(u => u.DateCreated).ValueGeneratedOnAdd();
@@ -610,6 +635,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class LedgerConfig : IEntityTypeConfiguration<Ledger>
     {
         public void Configure(EntityTypeBuilder<Ledger> builder)
@@ -629,6 +655,13 @@ namespace Fanda.Domain.Context
                 .HasMaxLength(50);
             builder.Property(u => u.Description)
                 .HasMaxLength(255);
+            builder.Ignore(l => l.LedgerType);
+            builder.Property(l => l.LedgerTypeString)
+                .HasColumnName("LedgerType")
+                .IsUnicode(false)
+                .IsRequired()
+                .HasMaxLength(20);
+
             //builder.Property(pc => pc.DateCreated).ValueGeneratedOnAdd();
             //builder.Property(pc => pc.DateModified).ValueGeneratedOnUpdate();
 
@@ -649,15 +682,17 @@ namespace Fanda.Domain.Context
                 .HasForeignKey(pc => pc.LedgerGroupId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(pc => pc.Parent)
-                .WithMany(p => p.Children)
-                .HasForeignKey(pc => pc.ParentId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(pc => pc.Parent)
+            //    .WithMany(p => p.Children)
+            //    .HasForeignKey(pc => pc.ParentId)
+            //    .OnDelete(DeleteBehavior.Restrict);
         }
     }
-    #endregion
+
+    #endregion Ledger
 
     #region Party
+
     public class PartyCategoryConfig : IEntityTypeConfiguration<PartyCategory>
     {
         public void Configure(EntityTypeBuilder<PartyCategory> builder)
@@ -693,6 +728,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class PartyConfig : IEntityTypeConfiguration<Party>
     {
         public void Configure(EntityTypeBuilder<Party> builder)
@@ -707,6 +743,8 @@ namespace Fanda.Domain.Context
             builder.Ignore(pc => pc.PartyType);
             builder.Property(pc => pc.PartyTypeString)
                 .HasColumnName("PartyType")
+                .IsUnicode(false)
+                .IsRequired()
                 .HasMaxLength(16);
             builder.Property(o => o.RegdNum)
                 .HasMaxLength(25);
@@ -735,6 +773,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class PartyContactConfig : IEntityTypeConfiguration<PartyContact>
     {
         public void Configure(EntityTypeBuilder<PartyContact> builder)
@@ -757,6 +796,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
+
     public class PartyAddressConfig : IEntityTypeConfiguration<PartyAddress>
     {
         public void Configure(EntityTypeBuilder<PartyAddress> builder)
@@ -779,7 +819,8 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
-    #endregion
+
+    #endregion Party
 
     public class BankConfig : IEntityTypeConfiguration<Bank>
     {
@@ -798,6 +839,8 @@ namespace Fanda.Domain.Context
             builder.Ignore(b => b.AccountType);
             builder.Property(b => b.AccountTypeString)
                 .HasColumnName("AccountType")
+                .IsUnicode(false)
+                .IsRequired()
                 .HasMaxLength(16);
             builder.Property(b => b.IfscCode)
                 .HasMaxLength(16);
@@ -928,9 +971,11 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
-    #endregion
+
+    #endregion Organization
 
     #region Accounting Year
+
     public class LedgerBalanceConfig : IEntityTypeConfiguration<LedgerBalance>
     {
         public void Configure(EntityTypeBuilder<LedgerBalance> builder)
@@ -960,6 +1005,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
+
     public class InvoiceConfig : IEntityTypeConfiguration<Invoice>
     {
         public void Configure(EntityTypeBuilder<Invoice> builder)
@@ -976,6 +1022,8 @@ namespace Fanda.Domain.Context
             builder.Ignore(i => i.InvoiceType);
             builder.Property(i => i.InvoiceTypeString)
                 .HasColumnName("InvoiceType")
+                .IsUnicode(false)
+                .IsRequired()
                 .HasMaxLength(16);
             builder.Property(i => i.Notes)
                 .HasMaxLength(255);
@@ -984,6 +1032,8 @@ namespace Fanda.Domain.Context
             builder.Ignore(i => i.StockInvoiceType);
             builder.Property(i => i.StockInvoiceTypeString)
                 .HasColumnName("StockInvoiceType")
+                .IsUnicode(false)
+                .IsRequired()
                 .HasMaxLength(16);
             builder.Ignore(i => i.GstTreatment);
             builder.Property(i => i.GstTreatmentString)
@@ -1023,6 +1073,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }
+
     public class InvoiceItemConfig : IEntityTypeConfiguration<InvoiceItem>
     {
         public void Configure(EntityTypeBuilder<InvoiceItem> builder)
@@ -1054,6 +1105,7 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
+
     public class StockConfig : IEntityTypeConfiguration<Stock>
     {
         public void Configure(EntityTypeBuilder<Stock> builder)
@@ -1122,5 +1174,6 @@ namespace Fanda.Domain.Context
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
-    #endregion
+
+    #endregion Accounting Year
 }

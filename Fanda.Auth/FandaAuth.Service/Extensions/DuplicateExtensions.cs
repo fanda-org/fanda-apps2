@@ -37,7 +37,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Code:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
@@ -55,7 +55,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Name:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
@@ -92,7 +92,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Code:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
@@ -110,7 +110,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Name:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is missing");
+                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
@@ -325,7 +325,7 @@ namespace FandaAuth.Service.Extensions
         //        case DuplicateField.Code:
         //            if (data.ParentId == null || data.ParentId == Guid.Empty)
         //            {
-        //                throw new ArgumentNullException("parentId", "Parent Id is missing");
+        //                throw new ArgumentNullException("parentId", "Parent Id is required");
         //            }
 
         //            if (data.Id == Guid.Empty && data.ParentId != Guid.Empty)
@@ -342,7 +342,7 @@ namespace FandaAuth.Service.Extensions
         //        case DuplicateField.Name:
         //            if (data.ParentId == null || data.ParentId == Guid.Empty)
         //            {
-        //                throw new ArgumentNullException("orgId", "Org Id is missing");
+        //                throw new ArgumentNullException("orgId", "Org Id is required");
         //            }
 
         //            if (data.Id == Guid.Empty && data.ParentId != Guid.Empty)
@@ -377,7 +377,7 @@ namespace FandaAuth.Service.Extensions
         //        case DuplicateField.Code:
         //            if (data.ParentId == null || data.ParentId == Guid.Empty)
         //            {
-        //                throw new ArgumentNullException("parentId", "Parent Id is missing");
+        //                throw new ArgumentNullException("parentId", "Parent Id is required");
         //            }
 
         //            if (data.Id == Guid.Empty && data.ParentId != Guid.Empty)
@@ -394,7 +394,7 @@ namespace FandaAuth.Service.Extensions
         //        case DuplicateField.Name:
         //            if (data.ParentId == null || data.ParentId == Guid.Empty)
         //            {
-        //                throw new ArgumentNullException("orgId", "Org Id is missing");
+        //                throw new ArgumentNullException("orgId", "Org Id is required");
         //            }
 
         //            if (data.Id == Guid.Empty && data.ParentId != Guid.Empty)
