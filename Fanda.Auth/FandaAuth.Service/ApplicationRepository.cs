@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IApplicationRepository :
-        IParentRepository<ApplicationDto>,
-        IListRepository<ApplicationListDto>
+        IParentRepository<ApplicationDto, ApplicationListDto>
     {
     }
 
@@ -24,7 +23,7 @@ namespace FandaAuth.Service
         private readonly IMapper mapper;
 
         public ApplicationRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, string.Empty)
         {
             this.mapper = mapper;
             this.context = context;

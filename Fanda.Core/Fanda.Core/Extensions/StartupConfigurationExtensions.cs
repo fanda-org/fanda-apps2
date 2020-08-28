@@ -168,9 +168,9 @@ namespace Fanda.Core.Extensions
         #region JWT Authentication
 
         public static AuthenticationBuilder AddJwtAuthentication(this IServiceCollection services,
-            AppSettings appSettings)
+            string secret)
         {
-            var key = Encoding.ASCII.GetBytes(appSettings.FandaSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(secret);
             return services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

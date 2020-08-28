@@ -8,8 +8,7 @@ using Fanda.Service.Dto;
 namespace Fanda.Service
 {
     public interface IProductVarietyRepository :
-        IOrgRepository<ProductVarietyDto>,
-        IListRepository<ProductVarietyListDto>
+        IOrgRepository<ProductVarietyDto, ProductVarietyListDto>
     {
     }
 

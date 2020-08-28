@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Net.Mime;
-using System.Text;
 
 namespace Fanda.Core.Base
 {
@@ -26,11 +24,13 @@ namespace Fanda.Core.Base
         {
             if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
             {
-                return BadRequest(MessageResponse.Failure($"Invalid {modelName.ToLower()} id"));
+                //return BadRequest(MessageResponse.Failure($"Invalid {modelName.ToLower()} id"));
+                return BadRequest(MessageResponse.Failure(ex.Message));
             }
             else if (ex is NotFoundException)
             {
-                return NotFound(MessageResponse.Failure($"{modelName} not found"));
+                //return NotFound(MessageResponse.Failure($"{modelName} not found"));
+                return NotFound(MessageResponse.Failure(ex.Message));
             }
             else
             {

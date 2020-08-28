@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
 using Fanda.Service.Base;
@@ -8,8 +7,7 @@ using Fanda.Service.Dto;
 namespace Fanda.Service
 {
     public interface IUnitRepository :
-        IOrgRepository<UnitDto>,
-        IListRepository<UnitListDto>
+        IOrgRepository<UnitDto, UnitListDto>
     {
     }
 

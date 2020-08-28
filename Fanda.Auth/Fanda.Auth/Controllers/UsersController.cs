@@ -4,8 +4,6 @@ using Fanda.Core.Extensions;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.Extensions;
-using FandaAuth.Service.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,11 +15,6 @@ using System.Web;
 
 namespace Fanda.Authentication.Controllers
 {
-    //[EnableCors("_MyAllowedOrigins")]
-    //[Authorize]
-    //[Produces(MediaTypeNames.Application.Json)]
-    //[ApiController]
-    //[Route("api/[controller]")]
     public class UsersController : BaseController
     {
         private const string ModuleName = "User";

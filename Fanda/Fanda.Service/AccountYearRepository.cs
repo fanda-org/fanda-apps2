@@ -8,8 +8,7 @@ using Fanda.Service.Dto;
 namespace Fanda.Service
 {
     public interface IAccountYearRepository :
-        IOrgRepository<AccountYearDto>,
-        IListRepository<YearListDto>
+        IOrgRepository<AccountYearDto, YearListDto>
     {
     }
 

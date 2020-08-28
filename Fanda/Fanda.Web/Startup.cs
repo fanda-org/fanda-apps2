@@ -19,12 +19,14 @@ namespace Fanda.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IConfiguration Configuration { get; }
+        private IWebHostEnvironment Env { get; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -47,11 +49,11 @@ namespace Fanda.Web
             //{
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
-            services.AddCustomDbContext<FandaContext>(appSettings, Assembly.GetAssembly(typeof(FandaContext)).GetName().Name)
+            services.AddCustomDbContext<FandaContext>(appSettings, Assembly.GetAssembly(typeof(FandaContext)).GetName().Name, Env.IsDevelopment())
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AutoMapperProfile))
                 .AddSwagger("Fanda Application API");
-            services.AddJwtAuthentication(appSettings);
+            services.AddJwtAuthentication(appSettings.FandaSettings.Secret);
 
             #endregion Startup configure services
 
@@ -59,10 +61,10 @@ namespace Fanda.Web
 
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             //services.AddScoped<ISerialNumberRepository, SerialNumberRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<IOrganizationRepository, OrganizationRepository>();
-            services.AddScoped<IUnitRepository, UnitRepository>();
+            //services.AddScoped<IUnitRepository, UnitRepository>();
 
             #endregion DI Repositories and services
 

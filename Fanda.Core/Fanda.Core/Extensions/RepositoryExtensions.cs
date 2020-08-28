@@ -39,7 +39,7 @@ namespace Fanda.Core.Extensions
         private static async Task<PagedResponse<IEnumerable<TModel>>> GetPaged<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput)
         {
-            var (list, itemsCount) = await listRepository.GetModelList(parentId, queryInput);
+            var (list, itemsCount) = await listRepository.Execute(parentId, queryInput);
             var response = PagedResponse<IEnumerable<TModel>>.Succeeded(list, itemsCount, queryInput.Page, queryInput.PageSize);
             return response;
         }
@@ -47,28 +47,28 @@ namespace Fanda.Core.Extensions
         private static async Task<DataResponse<IEnumerable<TModel>>> GetList<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput)
         {
-            var (list, _) = await listRepository.GetModelList(parentId, queryInput);
+            var (list, _) = await listRepository.Execute(parentId, queryInput, true);
             var response = DataResponse<IEnumerable<TModel>>.Succeeded(list);
             return response;
         }
 
-        private static async Task<(IEnumerable<TModel>, int)> GetModelList<TModel>(this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput)
+        private static async Task<(IEnumerable<TModel>, int)> Execute<TModel>(this IListRepository<TModel> listRepository,
+            Guid parentId, Query queryInput, bool ignoreCount = false)
         {
-            var (qry, itemsCount) = listRepository.GetModelQuery(parentId, queryInput);
+            var (qry, itemsCount) = listRepository.GenerateQuery(parentId, queryInput, ignoreCount);
             var list = await qry.ToListAsync();
             return (list, itemsCount);
         }
 
-        private static (IQueryable<TModel>, int) GetModelQuery<TModel>(this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput)
+        private static (IQueryable<TModel>, int) GenerateQuery<TModel>(this IListRepository<TModel> listRepository,
+            Guid parentId, Query queryInput, bool ignoreCount = false)
         {
             var dbQuery = listRepository.GetAll(parentId);
             if (!string.IsNullOrEmpty(queryInput.Filter))
             {
                 dbQuery = dbQuery.Where(queryInput.Filter, queryInput.FilterArgs);
             }
-            int itemsCount = dbQuery.Count();
+            int itemsCount = ignoreCount ? 0 : dbQuery.Count();
             if (!string.IsNullOrEmpty(queryInput.Sort))
             {
                 dbQuery = dbQuery.OrderBy(queryInput.Sort);

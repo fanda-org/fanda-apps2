@@ -5,7 +5,13 @@ using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public interface IRootRepository<TModel>
+    public interface IListRepository<TListModel>
+    {
+        // GET
+        IQueryable<TListModel> GetAll(Guid parentId);
+    }
+
+    public interface IRootRepository<TModel, TListModel> : IListRepository<TListModel>
     {
         // GET
         Task<TModel> GetByIdAsync(Guid id/*, bool includeChildren = false*/);
@@ -17,13 +23,7 @@ namespace Fanda.Core.Base
         Task<bool> ChangeStatusAsync(ActiveStatus status);
     }
 
-    public interface IListRepository<TListModel>
-    {
-        // GET
-        IQueryable<TListModel> GetAll(Guid parentId);
-    }
-
-    public interface IParentRepository<TModel> : IRootRepository<TModel>
+    public interface IParentRepository<TModel, TListModel> : IRootRepository<TModel, TListModel>
     {
         // POST
         Task<TModel> CreateAsync(TModel model);
@@ -41,7 +41,7 @@ namespace Fanda.Core.Base
         Task<ValidationResultModel> ValidateAsync(TModel model);
     }
 
-    public interface IRepository<TModel> : IRootRepository<TModel>
+    public interface IRepository<TModel, TListModel> : IRootRepository<TModel, TListModel>
     {
         // POST
         Task<TModel> CreateAsync(Guid parentId, TModel model);

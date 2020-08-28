@@ -1,6 +1,5 @@
 using AutoMapper;
 using Fanda.Core;
-using Fanda.Core.Base;
 using FandaAuth.Domain;
 using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
@@ -12,14 +11,12 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IRoleRepository :
-        ITenantRepository<RoleDto>,
-        IListRepository<RoleListDto>
+        ITenantRepository<RoleDto, RoleListDto>
     {
     }
 
     public class RoleRepository :
-        TenantRepositoryBase<Role, RoleDto, RoleListDto>,
-        IRoleRepository
+        TenantRepositoryBase<Role, RoleDto, RoleListDto>, IRoleRepository
     {
         private readonly AuthContext context;
         private readonly IMapper mapper;

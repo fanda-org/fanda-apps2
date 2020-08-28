@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Fanda.Service.Base
 {
-    public interface IOrgRepository<TModel> : IRepository<TModel>
+    public interface IOrgRepository<TModel, TListModel> : IRepository<TModel, TListModel>
     {
         // GET
         Task<bool> ExistsAsync(OrgKeyData data);
@@ -13,7 +13,7 @@ namespace Fanda.Service.Base
         Task<TModel> GetByAsync(OrgKeyData data);
     }
 
-    public interface IYearRepository<TModel> : IRepository<TModel>
+    public interface IYearRepository<TModel, TListModel> : IRepository<TModel, TListModel>
     {
         // GET
         Task<bool> ExistsAsync(YearKeyData data);

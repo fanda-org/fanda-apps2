@@ -8,14 +8,12 @@ using Fanda.Service.Dto;
 namespace Fanda.Service
 {
     public interface IProductBrandRepository :
-        IOrgRepository<ProductBrandDto>,
-        IListRepository<ProductBrandListDto>
+        IOrgRepository<ProductBrandDto, ProductBrandListDto>
     {
     }
 
     public class ProductBrandRepository :
-        OrgRepositoryBase<ProductBrand, ProductBrandDto, ProductBrandListDto>,
-        IProductBrandRepository
+        OrgRepositoryBase<ProductBrand, ProductBrandDto, ProductBrandListDto>, IProductBrandRepository
     {
         //private readonly FandaContext _context;
         //private readonly IMapper _mapper;

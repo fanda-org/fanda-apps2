@@ -1,36 +1,25 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Fanda.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
     public abstract class ParentRepositoryBase<TEntity, TModel, TListModel> :
-            RootRepositoryBase<TEntity, TModel, TListModel>, IParentRepository<TModel>
-            where TEntity : BaseEntity
-            where TModel : BaseDto
+        RootRepositoryBase<TEntity, TModel, TListModel>, IParentRepository<TModel, TListModel>
+        where TEntity : BaseEntity
+        where TModel : BaseDto
+        where TListModel : BaseListDto
     {
         private readonly DbContext _context;
         private readonly IMapper _mapper;
 
-        public ParentRepositoryBase(DbContext context, IMapper mapper)
-            : base(context, mapper)
+        public ParentRepositoryBase(DbContext context, IMapper mapper, string filterByParentId)
+            : base(context, mapper, filterByParentId)
         {
             _context = context;
             _mapper = mapper;
-        }
-
-        public virtual IQueryable<TListModel> GetAll(Guid parentId)  // nullable
-        {
-            IQueryable<TListModel> qry = _context.Set<TEntity>()
-                .AsNoTracking()
-                .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
-            return qry;
         }
 
         public virtual async Task<TModel> CreateAsync(TModel model)

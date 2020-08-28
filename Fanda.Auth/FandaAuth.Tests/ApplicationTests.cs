@@ -7,7 +7,6 @@ using FandaAuth.Service.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Xunit;
 
 namespace FandaAuth.Tests
@@ -16,7 +15,7 @@ namespace FandaAuth.Tests
     [TestCaseOrderer("FandaAuth.Tests.PriorityOrderer", "FandaAuth.Tests")]
     public class ApplicationTests
     {
-        private static ApplicationRepository repository;
+        private static readonly ApplicationRepository repository;
         public static DbContextOptions<AuthContext> dbContextOptions { get; }
         public static string connectionString = "Server=localhost;Database=fanda_auth_test;Port=3306;UID=tbala;PWD=tbm@123;";
 
@@ -49,11 +48,15 @@ namespace FandaAuth.Tests
         public async void Add_Ok()
         {
             //Arrange
-            var controller = new ApplicationsController(repository);
+            var controller = new ApplicationsController(repository)
+            {
 
-            // HttpContext
-            controller.ControllerContext = new ControllerContext();
-            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+                // HttpContext
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
 
             //Act
             var app = new ApplicationDto
@@ -75,11 +78,15 @@ namespace FandaAuth.Tests
         public async void GetAll_Ok()
         {
             //Arrange
-            var controller = new ApplicationsController(repository);
+            var controller = new ApplicationsController(repository)
+            {
 
-            // HttpContext
-            controller.ControllerContext = new ControllerContext();
-            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+                // HttpContext
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
 
             //Act
             var data = await controller.GetAll();

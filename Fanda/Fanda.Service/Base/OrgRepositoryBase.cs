@@ -13,15 +13,16 @@ using System.Threading.Tasks;
 namespace Fanda.Service.Base
 {
     public abstract class OrgRepositoryBase<TEntity, TModel, TListModel>
-        : RepositoryBase<TEntity, TModel, TListModel>
+        : RootRepositoryBase<TEntity, TModel, TListModel>
         where TEntity : OrgEntity
         where TModel : BaseDto
+        where TListModel : BaseListDto
     {
         private readonly FandaContext _context;
         private readonly IMapper _mapper;
 
         public OrgRepositoryBase(FandaContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "OrgId == '{0}'")
         {
             _context = context;
             _mapper = mapper;
@@ -55,6 +56,18 @@ namespace Fanda.Service.Base
             await _context.Set<TEntity>().AddAsync(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<TModel>(entity);
+        }
+
+        public virtual async Task UpdateAsync(Guid id, TModel model)
+        {
+            if (id != model.Id)
+            {
+                throw new ArgumentException("Id mismatch");
+            }
+            var entity = _mapper.Map<TEntity>(model);
+            entity.DateModified = DateTime.UtcNow;
+            _context.Set<TEntity>().Update(entity);
+            await _context.SaveChangesAsync();
         }
 
         public virtual async Task<bool> ExistsAsync(OrgKeyData data)

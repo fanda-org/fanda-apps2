@@ -1,6 +1,5 @@
 using Fanda.Core;
 using Fanda.Core.Base;
-using System;
 
 namespace FandaAuth.Service.Dto
 {

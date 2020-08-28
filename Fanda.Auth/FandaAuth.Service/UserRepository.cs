@@ -1,7 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Fanda.Core;
-using Fanda.Core.Base;
 using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service.Base;
@@ -18,8 +17,7 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IUserRepository :
-        IUserRepository<UserDto>,
-        IListRepository<UserListDto>
+        IUserRepository<UserDto, UserListDto>
     {
     }
 

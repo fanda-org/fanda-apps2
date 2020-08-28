@@ -1,45 +1,43 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Fanda.Core;
 using Fanda.Core.Base;
 using FandaAuth.Domain;
 using FandaAuth.Domain.Base;
 using FandaAuth.Service.Extensions;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FandaAuth.Service.Base
 {
     public abstract class TenantRepositoryBase<TEntity, TModel, TListModel>
-        : RootRepositoryBase<TEntity, TModel, TListModel>, IRepository<TModel>
+        : RootRepositoryBase<TEntity, TModel, TListModel>, ITenantRepository<TModel, TListModel>
         where TEntity : TenantEntity
         where TModel : BaseDto
+        where TListModel : BaseListDto
     {
         private readonly AuthContext _context;
         private readonly IMapper _mapper;
 
         public TenantRepositoryBase(AuthContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "TenantId == '{0}'")
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public virtual IQueryable<TListModel> GetAll(Guid tenantId)
-        {
-            if (tenantId == null || tenantId == Guid.Empty)
-            {
-                throw new ArgumentNullException(nameof(tenantId), $"{nameof(tenantId)} is required");
-            }
+        //public virtual IQueryable<TListModel> GetAll(Guid tenantId)
+        //{
+        //    if (tenantId == null || tenantId == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException(nameof(tenantId), $"{nameof(tenantId)} is required");
+        //    }
 
-            IQueryable<TListModel> qry = _context.Set<TEntity>()
-                .AsNoTracking()
-                .Where(t => t.TenantId == tenantId)
-                .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
-            return qry;
-        }
+        //    IQueryable<TListModel> qry = _context.Set<TEntity>()
+        //        .AsNoTracking()
+        //        .Where(t => t.TenantId == tenantId)
+        //        .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
+        //    return qry;
+        //}
 
         public virtual async Task<TModel> CreateAsync(Guid tenantId, TModel model)
         {

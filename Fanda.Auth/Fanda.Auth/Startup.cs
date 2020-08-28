@@ -1,6 +1,6 @@
 using AutoMapper;
-using Fanda.Core.Extensions;
 using Fanda.Core;
+using Fanda.Core.Extensions;
 using Fanda.Service.AutoMapperProfile;
 using FandaAuth.Domain;
 using FandaAuth.Service;
@@ -15,15 +15,17 @@ namespace Fanda.Auth
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IConfiguration Configuration { get; }
+        private IWebHostEnvironment Env { get; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomHealthChecks<AuthContext>();
 
@@ -37,12 +39,12 @@ namespace Fanda.Auth
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
             services.AddCustomDbContext<AuthContext>(appSettings,
-                Assembly.GetAssembly(typeof(AuthContext)).GetName().Name, env.IsDevelopment())
+                Assembly.GetAssembly(typeof(AuthContext)).GetName().Name, Env.IsDevelopment())
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AuthProfile))
                 .AddSwagger("Fanda Authentication API");
 
-            services.AddJwtAuthentication(appSettings);
+            services.AddJwtAuthentication(appSettings.FandaSettings.Secret);
 
             #region DI - Repositories and services
 

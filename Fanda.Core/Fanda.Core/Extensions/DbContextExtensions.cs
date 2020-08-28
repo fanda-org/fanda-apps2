@@ -160,12 +160,13 @@ namespace Fanda.Core.Extensions
             {
                 mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 mysqlOptions.ServerVersion(new ServerVersion(new Version(8, 0), ServerType.MySql));
-            });
-            // .UseInternalServiceProvider(sp);
-            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors(isDevelopmentEnvironment);
-            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
-            options.EnableServiceProviderCaching();
+            })
+                // .UseInternalServiceProvider(sp);
+                // .UseSnakeCaseNamingConvention()
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .EnableDetailedErrors(isDevelopmentEnvironment)
+                .EnableSensitiveDataLogging(isDevelopmentEnvironment)
+                .EnableServiceProviderCaching();
         }
 
         private static void MariaDbOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
@@ -175,12 +176,13 @@ namespace Fanda.Core.Extensions
             {
                 mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5), ServerType.MariaDb));
-            });
-            // .UseInternalServiceProvider(sp);
-            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors(isDevelopmentEnvironment);
-            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
-            options.EnableServiceProviderCaching();
+            })
+                // .UseInternalServiceProvider(sp);
+                // .UseSnakeCaseNamingConvention()
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .EnableDetailedErrors(isDevelopmentEnvironment)
+                .EnableSensitiveDataLogging(isDevelopmentEnvironment)
+                .EnableServiceProviderCaching();
         }
 
         private static void PgSqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
@@ -190,12 +192,13 @@ namespace Fanda.Core.Extensions
             {
                 pgsqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 pgsqlOptions.EnableRetryOnFailure();
-            });
-            // .UseInternalServiceProvider(sp);
-            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors(isDevelopmentEnvironment);
-            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
-            options.EnableServiceProviderCaching();
+            })
+                // .UseInternalServiceProvider(sp);
+                // .UseSnakeCaseNamingConvention()
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .EnableDetailedErrors(isDevelopmentEnvironment)
+                .EnableSensitiveDataLogging(isDevelopmentEnvironment)
+                .EnableServiceProviderCaching();
         }
 
         private static void MsSqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
@@ -206,12 +209,13 @@ namespace Fanda.Core.Extensions
                 //sqlOptions.EnableRetryOnFailure();
                 //sqlopt.UseRowNumberForPaging();
                 sqlOptions.MigrationsAssembly(migrationsAssemblyName);
-            });
-            // .UseInternalServiceProvider(sp);
-            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors(isDevelopmentEnvironment);
-            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
-            options.EnableServiceProviderCaching();
+            })
+                // .UseInternalServiceProvider(sp);
+                // .UseSnakeCaseNamingConvention()
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .EnableDetailedErrors(isDevelopmentEnvironment)
+                .EnableSensitiveDataLogging(isDevelopmentEnvironment)
+                .EnableServiceProviderCaching();
         }
 
         private static void SqliteOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
@@ -220,12 +224,13 @@ namespace Fanda.Core.Extensions
             options.UseSqlite(connectionString, sqlOptions =>
             {
                 sqlOptions.MigrationsAssembly(migrationsAssemblyName);
-            });
-            // .UseInternalServiceProvider(sp);
-            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors(isDevelopmentEnvironment);
-            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
-            options.EnableServiceProviderCaching();
+            })
+                // .UseInternalServiceProvider(sp);
+                // .UseSnakeCaseNamingConvention()
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .EnableDetailedErrors(isDevelopmentEnvironment)
+                .EnableSensitiveDataLogging(isDevelopmentEnvironment)
+                .EnableServiceProviderCaching();
         }
     }
 }

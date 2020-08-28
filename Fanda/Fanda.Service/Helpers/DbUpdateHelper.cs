@@ -1,12 +1,11 @@
+using Fanda.Core.Base;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Fanda.Core.Base;
-using Fanda.Domain;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Fanda.Service.Helpers
 {
@@ -36,7 +35,9 @@ namespace Fanda.Service.Helpers
                 foreach (var item in items)
                 {
                     if (!dbItemsMap.TryGetValue(item.Id, out var oldItem))
+                    {
                         accessor.Add(dbEntity, item, false);
+                    }
                     else
                     {
                         dbContext.Entry(oldItem).CurrentValues.SetValues(item);
@@ -45,7 +46,9 @@ namespace Fanda.Service.Helpers
                 }
 
                 foreach (var oldItem in dbItemsMap.Values)
+                {
                     accessor.Remove(dbEntity, oldItem);
+                }
             }
 
             return await dbContext.SaveChangesAsync();

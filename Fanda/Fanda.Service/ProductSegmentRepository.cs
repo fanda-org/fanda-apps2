@@ -4,13 +4,11 @@ using Fanda.Domain;
 using Fanda.Domain.Context;
 using Fanda.Service.Base;
 using Fanda.Service.Dto;
-using System.Drawing;
 
 namespace Fanda.Service
 {
     public interface IProductSegmentRepository :
-        IOrgRepository<ProductSegmentDto>,
-        IListRepository<ProductSegmentListDto>
+        IOrgRepository<ProductSegmentDto, ProductSegmentListDto>
     {
     }
 

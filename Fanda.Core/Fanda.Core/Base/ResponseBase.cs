@@ -127,7 +127,10 @@ namespace Fanda.Core.Base
             get
             {
                 if (Page > PageCount)
+                {
                     return 0;
+                }
+
                 return Math.Min(ItemsCount, ((Page - 1) * PageSize) + 1);
             }
         }
@@ -138,7 +141,10 @@ namespace Fanda.Core.Base
             get
             {
                 if (Page > PageCount)
+                {
                     return 0;
+                }
+
                 return Math.Min(ItemsCount, FirstRowOnPage + PageSize - 1);
             }
         }

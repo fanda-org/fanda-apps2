@@ -14,19 +14,18 @@ using System.Threading.Tasks;
 namespace Fanda.Service
 {
     public interface IOrganizationRepository :
-        IParentRepository<OrganizationDto>,
-        IListRepository<OrgYearListDto>
+        IParentRepository<OrganizationDto, OrgYearListDto>
     {
     }
 
     public class OrganizationRepository :
-        RepositoryBase<Organization, OrganizationDto, OrgYearListDto>, IOrganizationRepository
+        ParentRepositoryBase<Organization, OrganizationDto, OrgYearListDto>, IOrganizationRepository
     {
         private readonly FandaContext _context;
         private readonly IMapper _mapper;
 
         public OrganizationRepository(FandaContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "")
         {
             _context = context;
             _mapper = mapper;
@@ -282,10 +281,11 @@ namespace Fanda.Service
 
         IQueryable<OrgYearListDto> IListRepository<OrgYearListDto>.GetAll(Guid userId)
         {
-            if (userId == null || userId == Guid.Empty)
-            {
-                throw new ArgumentNullException("userId", "User id is required");
-            }
+            // TODO - to be fixed once org-user relationship established
+            //if (userId == null || userId == Guid.Empty)
+            //{
+            //    throw new ArgumentNullException("userId", "User id is required");
+            //}
 
             IQueryable<OrgYearListDto> query = _context.Organizations
                 .Include(o => o.AccountYears)

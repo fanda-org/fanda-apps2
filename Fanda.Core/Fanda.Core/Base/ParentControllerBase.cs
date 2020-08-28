@@ -10,8 +10,9 @@ using System.Web;
 
 namespace Fanda.Core.Base
 {
-    public abstract class ParentControllerBase<TRepository, TModel, TListModel> : RootControllerBase<TRepository, TModel, TListModel>
-        where TRepository : IParentRepository<TModel>, IListRepository<TListModel>
+    public abstract class ParentControllerBase<TRepository, TModel, TListModel> :
+        RootControllerBase<TRepository, TModel, TListModel>
+        where TRepository : IParentRepository<TModel, TListModel>
         where TModel : BaseDto
         where TListModel : BaseListDto
     {

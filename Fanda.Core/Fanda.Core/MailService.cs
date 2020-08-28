@@ -14,9 +14,9 @@ namespace Fanda.Core
     {
         private readonly MailSettings _mailSettings;
 
-        public MailService(IOptions<MailSettings> mailSettings)
+        public MailService(IOptions<AppSettings> options)
         {
-            _mailSettings = mailSettings.Value;
+            _mailSettings = options.Value.MailSettings;
         }
 
         public async Task SendEmailAsync(MailRequest mailRequest)

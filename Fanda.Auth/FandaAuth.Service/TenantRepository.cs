@@ -1,21 +1,12 @@
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Fanda.Core;
 using Fanda.Core.Base;
-using Fanda.Core.Extensions;
 using FandaAuth.Domain;
-using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FandaAuth.Service
 {
     public interface ITenantRepository :
-        IParentRepository<TenantDto>,
-        IListRepository<TenantListDto>
+        IParentRepository<TenantDto, TenantListDto>
     {
     }
 
@@ -23,7 +14,7 @@ namespace FandaAuth.Service
         ParentRepositoryBase<Tenant, TenantDto, TenantListDto>, ITenantRepository
     {
         public TenantRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, string.Empty)
         {
         }
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Fanda.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -9,14 +8,17 @@ using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public abstract class RootRepositoryBase<TEntity, TModel, TListModel> : IRootRepository<TModel>
+    public abstract class RootRepositoryBase<TEntity, TModel, TListModel> :
+        ListRepositoryBase<TEntity, TListModel>, IRootRepository<TModel, TListModel>
         where TEntity : BaseEntity
         where TModel : BaseDto
+        where TListModel : BaseListDto
     {
         private readonly DbContext _context;
         private readonly IMapper _mapper;
 
-        public RootRepositoryBase(DbContext context, IMapper mapper)
+        public RootRepositoryBase(DbContext context, IMapper mapper, string filterByParentId)
+            : base(context, mapper, filterByParentId)
         {
             _context = context;
             _mapper = mapper;

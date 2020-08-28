@@ -8,21 +8,21 @@ using Fanda.Service.Dto;
 namespace Fanda.Service
 {
     public interface IPartyCategoryRepository :
-        IOrgRepository<PartyCategoryDto>,
-        IListRepository<PartyCategoryListDto>
-    { }
+        IOrgRepository<PartyCategoryDto, PartyCategoryListDto>
+    {
+    }
 
     public class PartyCategoryRepository :
         OrgRepositoryBase<PartyCategory, PartyCategoryDto, PartyCategoryListDto>, IPartyCategoryRepository
     {
-        private readonly FandaContext _context;
-        private readonly IMapper _mapper;
+        //private readonly FandaContext _context;
+        //private readonly IMapper _mapper;
 
         public PartyCategoryRepository(FandaContext context, IMapper mapper)
             : base(context, mapper)
         {
-            _context = context;
-            _mapper = mapper;
+            //_context = context;
+            //_mapper = mapper;
         }
 
         //public IQueryable<PartyCategoryListDto> GetAll(Guid orgId)

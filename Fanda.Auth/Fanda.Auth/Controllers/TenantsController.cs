@@ -1,17 +1,6 @@
-using Fanda.Core;
 using Fanda.Core.Base;
-using Fanda.Core.Extensions;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Fanda.Authentication.Controllers
 {

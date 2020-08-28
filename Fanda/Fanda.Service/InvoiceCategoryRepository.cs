@@ -8,8 +8,7 @@ using Fanda.Service.Dto;
 namespace Fanda.Service
 {
     public interface IInvoiceCategoryRepository :
-        IOrgRepository<InvoiceCategoryDto>,
-        IListRepository<InvoiceCategoryListDto>
+        IOrgRepository<InvoiceCategoryDto, InvoiceCategoryListDto>
     {
     }
 
