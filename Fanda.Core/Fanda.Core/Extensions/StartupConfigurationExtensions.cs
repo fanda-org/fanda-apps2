@@ -44,10 +44,10 @@ namespace Fanda.Core.Extensions
         #region DbContext
 
         public static IServiceCollection AddCustomDbContext<TDbContext>(this IServiceCollection services,
-            AppSettings appSettings, string migrationAssemblyName)
+            AppSettings appSettings, string migrationAssemblyName, bool isDevelopmentEnvironment)
             where TDbContext : DbContext
         {
-            return services.AddFandaDbContextPool<TDbContext>(appSettings, migrationAssemblyName);
+            return services.AddFandaDbContextPool<TDbContext>(appSettings, migrationAssemblyName, isDevelopmentEnvironment);
         }
 
         #endregion DbContext

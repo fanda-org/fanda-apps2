@@ -17,7 +17,7 @@ namespace FandaAuth.Service
     }
 
     public class ApplicationRepository :
-        RepositoryBase<Application, ApplicationDto, ApplicationListDto>,
+        ParentRepositoryBase<Application, ApplicationDto, ApplicationListDto>,
         IApplicationRepository
     {
         private readonly AuthContext context;

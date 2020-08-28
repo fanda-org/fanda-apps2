@@ -2,6 +2,7 @@ using Fanda.Core;
 using Fanda.Core.Base;
 using Fanda.Core.Extensions;
 using FandaAuth.Service;
+using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,12 @@ using System.Web;
 
 namespace Fanda.Auth.Controllers
 {
-    public class RolesController : RootControllerBase
+    public class RolesController : TenantControllerBase<IRoleRepository, RoleDto, RoleListDto>
     {
         private const string ModuleName = "Role";
         private readonly IRoleRepository repository;
 
-        public RolesController(IRoleRepository repository)
+        public RolesController(IRoleRepository repository) : base(repository, ModuleName)
         {
             this.repository = repository;
         }
@@ -53,28 +54,28 @@ namespace Fanda.Auth.Controllers
         }
 
         // roles/5
-        [HttpGet("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<RoleDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetById([Required, FromRoute] Guid id/*, [FromQuery] bool include*/)
-        {
-            try
-            {
-                var role = await repository.GetByIdAsync(id/*, include*/);
-                if (role == null)
-                {
-                    return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
-                }
-                return Ok(DataResponse<RoleDto>.Succeeded(role));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
+        //[HttpGet("{id}")]
+        //[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        //[ProducesResponseType((int)HttpStatusCode.NotFound)]
+        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        //[ProducesResponseType(typeof(DataResponse<RoleDto>), (int)HttpStatusCode.OK)]
+        //public async Task<IActionResult> GetById([Required, FromRoute] Guid id/*, [FromQuery] bool include*/)
+        //{
+        //    try
+        //    {
+        //        var role = await repository.GetByIdAsync(id/*, include*/);
+        //        if (role == null)
+        //        {
+        //            return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
+        //        }
+        //        return Ok(DataResponse<RoleDto>.Succeeded(role));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ExceptionResult(ex, ModuleName);
+        //    }
+        //}
 
         [HttpPost("{tenantId}")]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -142,60 +143,60 @@ namespace Fanda.Auth.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            try
-            {
-                if (id == null || id == Guid.Empty)
-                {
-                    return BadRequest(MessageResponse.Failure($"{ModuleName} id is missing"));
-                }
-                var success = await repository.DeleteAsync(id);
-                if (success)
-                {
-                    return NoContent();
-                }
-                else
-                {
-                    return NotFound(MessageResponse.Failure($"{ModuleName} not found"));
-                }
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
+        //[HttpDelete("{id}")]
+        //[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        //[ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        //[ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
+        //public async Task<IActionResult> Delete(Guid id)
+        //{
+        //    try
+        //    {
+        //        if (id == null || id == Guid.Empty)
+        //        {
+        //            return BadRequest(MessageResponse.Failure($"{ModuleName} id is missing"));
+        //        }
+        //        var success = await repository.DeleteAsync(id);
+        //        if (success)
+        //        {
+        //            return NoContent();
+        //        }
+        //        else
+        //        {
+        //            return NotFound(MessageResponse.Failure($"{ModuleName} not found"));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ExceptionResult(ex, ModuleName);
+        //    }
+        //}
 
-        [HttpPatch("active/{id}")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Active([Required, FromRoute] Guid id, [Required, FromQuery] bool active)
-        {
-            try
-            {
-                bool success = await repository.ChangeStatusAsync(new ActiveStatus
-                {
-                    Id = id,
-                    Active = active
-                });
-                if (success)
-                {
-                    return Ok(MessageResponse.Succeeded("Status changed successfully"));
-                }
-                return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
+        //[HttpPatch("active/{id}")]
+        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        //[ProducesResponseType((int)HttpStatusCode.NotFound)]
+        //[ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        //[ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
+        //public async Task<IActionResult> Active([Required, FromRoute] Guid id, [Required, FromQuery] bool active)
+        //{
+        //    try
+        //    {
+        //        bool success = await repository.ChangeStatusAsync(new ActiveStatus
+        //        {
+        //            Id = id,
+        //            Active = active
+        //        });
+        //        if (success)
+        //        {
+        //            return Ok(MessageResponse.Succeeded("Status changed successfully"));
+        //        }
+        //        return NotFound(MessageResponse.Failure($"{ModuleName} id '{id}' not found"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ExceptionResult(ex, ModuleName);
+        //    }
+        //}
 
         [HttpGet("exists/{id}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

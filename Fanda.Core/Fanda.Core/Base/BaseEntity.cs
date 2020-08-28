@@ -2,7 +2,7 @@
 
 namespace Fanda.Core.Base
 {
-    //public class RootEntity
+    //public class RootEntityBase
     //{
     //    public Guid Id { get; set; }
     //    public bool Active { get; set; }

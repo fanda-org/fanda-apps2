@@ -23,15 +23,13 @@ namespace FandaAuth.Service
     {
     }
 
-    public class UserRepository :
-        IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly AuthContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(AuthContext context, IMapper mapper,
-            ILogger<UserRepository> logger)
+        public UserRepository(AuthContext context, IMapper mapper, ILogger<UserRepository> logger)
         {
             _context = context;
             _mapper = mapper;

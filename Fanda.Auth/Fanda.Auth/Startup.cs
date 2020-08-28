@@ -23,7 +23,7 @@ namespace Fanda.Auth
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
         {
             services.AddCustomHealthChecks<AuthContext>();
 
@@ -36,7 +36,8 @@ namespace Fanda.Auth
             //{
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
-            services.AddCustomDbContext<AuthContext>(appSettings, Assembly.GetAssembly(typeof(AuthContext)).GetName().Name)
+            services.AddCustomDbContext<AuthContext>(appSettings,
+                Assembly.GetAssembly(typeof(AuthContext)).GetName().Name, env.IsDevelopment())
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AuthProfile))
                 .AddSwagger("Fanda Authentication API");

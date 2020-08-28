@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service.Base
 {
     public abstract class TenantRepositoryBase<TEntity, TModel, TListModel>
-        : RepositoryBase<TEntity, TModel, TListModel>
+        : RootRepositoryBase<TEntity, TModel, TListModel>, IRepository<TModel>
         where TEntity : TenantEntity
         where TModel : BaseDto
     {
@@ -27,7 +27,7 @@ namespace FandaAuth.Service.Base
             _mapper = mapper;
         }
 
-        public override IQueryable<TListModel> GetAll(Guid tenantId)
+        public virtual IQueryable<TListModel> GetAll(Guid tenantId)
         {
             if (tenantId == null || tenantId == Guid.Empty)
             {
@@ -55,6 +55,18 @@ namespace FandaAuth.Service.Base
             await _context.Set<TEntity>().AddAsync(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<TModel>(entity);
+        }
+
+        public virtual async Task UpdateAsync(Guid id, TModel model)
+        {
+            if (id != model.Id)
+            {
+                throw new ArgumentException("Id mismatch");
+            }
+            var entity = _mapper.Map<TEntity>(model);
+            entity.DateModified = DateTime.UtcNow;
+            _context.Set<TEntity>().Update(entity);
+            await _context.SaveChangesAsync();
         }
 
         public virtual async Task<bool> ExistsAsync(TenantKeyData data)

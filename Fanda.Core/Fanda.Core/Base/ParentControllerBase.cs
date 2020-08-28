@@ -2,17 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
 namespace Fanda.Core.Base
 {
-    public class FandaControllerBase<TRepository, TModel, TListModel> : RootControllerBase
+    public abstract class ParentControllerBase<TRepository, TModel, TListModel> : RootControllerBase<TRepository, TModel, TListModel>
         where TRepository : IParentRepository<TModel>, IListRepository<TListModel>
         where TModel : BaseDto
         where TListModel : BaseListDto
@@ -20,9 +18,10 @@ namespace Fanda.Core.Base
         private readonly string _moduleName;
         private readonly TRepository _repository;
 
-        public FandaControllerBase(TRepository repository, string moduleName)
+        public ParentControllerBase(TRepository repository, string moduleName)
+            : base(repository, moduleName)
         {
-            this._repository = repository;
+            _repository = repository;
             _moduleName = moduleName;
         }
 
@@ -44,28 +43,6 @@ namespace Fanda.Core.Base
 
                 var response = await _repository.GetData(Guid.Empty, query);
                 return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, _moduleName);
-            }
-        }
-
-        [HttpGet("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<TModel>)
-        public async Task<IActionResult> GetById([Required, FromRoute] Guid id/*, [FromQuery] bool include*/)
-        {
-            try
-            {
-                var app = await _repository.GetByIdAsync(id/*, include*/);
-                if (app == null)
-                {
-                    return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
-                }
-                return Ok(DataResponse<TModel>.Succeeded(app));
             }
             catch (Exception ex)
             {
@@ -133,61 +110,6 @@ namespace Fanda.Core.Base
                 {
                     return BadRequest(MessageResponse.Failure(validationResult));
                 }
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, _moduleName);
-            }
-        }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            try
-            {
-                if (id == null || id == Guid.Empty)
-                {
-                    return BadRequest(MessageResponse.Failure($"{_moduleName} id is missing"));
-                }
-                var success = await _repository.DeleteAsync(id);
-                if (success)
-                {
-                    return NoContent();
-                }
-                else
-                {
-                    return NotFound(MessageResponse.Failure($"{_moduleName} not found"));
-                }
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, _moduleName);
-            }
-        }
-
-        [HttpPatch("active/{id}")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Active([Required, FromRoute] Guid id, [Required, FromQuery] bool active)
-        {
-            try
-            {
-                bool success = await _repository.ChangeStatusAsync(new ActiveStatus
-                {
-                    Id = id,
-                    Active = active
-                });
-                if (success)
-                {
-                    return Ok(MessageResponse.Succeeded("Status changed successfully"));
-                }
-                return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
             }
             catch (Exception ex)
             {

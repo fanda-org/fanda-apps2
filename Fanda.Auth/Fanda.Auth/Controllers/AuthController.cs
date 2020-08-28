@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Fanda.Core.Base;
+﻿using Fanda.Core.Base;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Fanda.Auth.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : RootControllerBase
+    public class AuthController : BaseController
     {
         private const string ModuleName = "User";
         private readonly IAuthRepository _repository;

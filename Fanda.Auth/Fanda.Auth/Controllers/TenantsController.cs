@@ -15,7 +15,7 @@ using System.Web;
 
 namespace Fanda.Authentication.Controllers
 {
-    public class TenantsController : FandaControllerBase<ITenantRepository, TenantDto, TenantListDto>
+    public class TenantsController : ParentControllerBase<ITenantRepository, TenantDto, TenantListDto>
     {
         private const string ModuleName = "Tenant";
         //private readonly ITenantRepository repository;

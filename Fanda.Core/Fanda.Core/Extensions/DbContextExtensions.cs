@@ -10,68 +10,70 @@ namespace Fanda.Core.Extensions
     public static class DbContextExtensions
     {
         public static IServiceCollection AddFandaDbContextPool<TDbContext>(this IServiceCollection services,
-            AppSettings settings, string migrationsAssemblyName)
+            AppSettings settings, string migrationsAssemblyName, bool isDevelopmentEnvironment)
             where TDbContext : DbContext
         {
             switch (settings.DatabaseType)
             {
                 case "MYSQL":
-                    return services.AddEntityFrameworkMySql()
-                        .AddDbContextPool<TDbContext>((sp, options) =>
+                    return services // .AddEntityFrameworkMySql()
+                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
                         {
-                            MySqlOptions(sp, options, settings.ConnectionStrings.MySqlConnection,
-                                migrationsAssemblyName);
+                            MySqlOptions(options, settings.ConnectionStrings.MySqlConnection,
+                                migrationsAssemblyName, isDevelopmentEnvironment);
                         })
                         .AddTransient<IDbClient>(_ => new MySqlClient(settings.ConnectionStrings.MySqlConnection));
                 case "MARIADB":
-                    return services.AddEntityFrameworkMySql()
-                        .AddDbContextPool<TDbContext>((sp, options) =>
+                    return services // .AddEntityFrameworkMySql()
+                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
                         {
-                            MariaDbOptions(sp, options, settings.ConnectionStrings.MariaDbConnection,
-                                migrationsAssemblyName);
+                            MariaDbOptions(options, settings.ConnectionStrings.MariaDbConnection,
+                                migrationsAssemblyName, isDevelopmentEnvironment);
                         })
                         .AddTransient<IDbClient>(_ => new MariaDbClient(settings.ConnectionStrings.MariaDbConnection));
                 case "PGSQL":
-                    return services.AddEntityFrameworkNpgsql()
-                        .AddDbContextPool<TDbContext>((sp, options) =>
+                    return services // .AddEntityFrameworkNpgsql()
+                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
                         {
-                            PgSqlOptions(sp, options, settings.ConnectionStrings.PgSqlConnection,
-                                migrationsAssemblyName);
+                            PgSqlOptions(options, settings.ConnectionStrings.PgSqlConnection,
+                                migrationsAssemblyName, isDevelopmentEnvironment);
                         })
                         .AddTransient<IDbClient>(_ => new PgSqlClient(settings.ConnectionStrings.PgSqlConnection));
                 case "MSSQL":
-                    return services.AddEntityFrameworkSqlServer()
-                        .AddDbContextPool<TDbContext>((sp, options) =>
+                    return services // .AddEntityFrameworkSqlServer()
+                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
                         {
-                            MsSqlOptions(sp, options, settings.ConnectionStrings.MsSqlConnection,
-                                migrationsAssemblyName);
+                            MsSqlOptions(options, settings.ConnectionStrings.MsSqlConnection,
+                                migrationsAssemblyName, isDevelopmentEnvironment);
                         })
                         .AddTransient<IDbClient>(_ => new MsSqlClient(settings.ConnectionStrings.MsSqlConnection));
                 case "SQLITE":
-                    return services.AddEntityFrameworkSqlite()
-                        .AddDbContextPool<TDbContext>((sp, options) =>
+                    return services // .AddEntityFrameworkSqlite()
+                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
                         {
-                            SqliteOptions(sp, options, settings.ConnectionStrings.SqliteConnection,
-                                migrationsAssemblyName);
+                            SqliteOptions(options, settings.ConnectionStrings.SqliteConnection,
+                                migrationsAssemblyName, isDevelopmentEnvironment);
                         })
                         .AddTransient<IDbClient>(_ => new SqliteClient(settings.ConnectionStrings.SqliteConnection));
                 case "SQLLOCALDB":
-                    return services.AddEntityFrameworkSqlServer()
-                        .AddDbContextPool<TDbContext>((sp, options) =>
+                    return services // .AddEntityFrameworkSqlServer()
+                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
                         {
-                            MsSqlOptions(sp, options, settings.ConnectionStrings.SqlLocalDbConnection,
-                                migrationsAssemblyName);
+                            MsSqlOptions(options, settings.ConnectionStrings.SqlLocalDbConnection,
+                                migrationsAssemblyName, isDevelopmentEnvironment);
                         })
                         .AddTransient<IDbClient>(_ => new MsSqlClient(settings.ConnectionStrings.SqlLocalDbConnection));
                 default:
-                    return services.AddEntityFrameworkMySql()
-                        .AddDbContextPool<TDbContext>((sp, options) =>
+                    return services // .AddEntityFrameworkMySql()
+                        .AddDbContextPool<TDbContext>(options =>   // (sp, options)
                         {
-                            MySqlOptions(sp, options, settings.ConnectionStrings.DefaultConnection,
-                                migrationsAssemblyName);
+                            MySqlOptions(options, settings.ConnectionStrings.DefaultConnection,
+                                migrationsAssemblyName, isDevelopmentEnvironment);
                         })
                         .AddTransient<IDbClient>(_ => new MySqlClient(settings.ConnectionStrings.DefaultConnection));
             }
+
+            #region Commented - Password policy, IdentityServer
 
             //services.AddIdentity<User, Role>(options =>
             //{
@@ -102,127 +104,127 @@ namespace Fanda.Core.Extensions
             //    .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
             //    .AddInMemoryClients(IdentityServerConfig.GetClients())
             //    .AddAspNetIdentity<User>();
+
+            #endregion Commented - Password policy, IdentityServer
         }
 
         public static DbContextOptionsBuilder CreateDbContextOptionsBuilder<TDbContext>(AppSettings settings,
-            string migrationsAssemblyName)
+            string migrationsAssemblyName, bool isDevelopmentEnvironment)
             where TDbContext : DbContext
         {
             var options = new DbContextOptionsBuilder<TDbContext>();
             switch (settings.DatabaseType)
             {
                 case "MYSQL":
-                    MySqlOptions(null, options, settings.ConnectionStrings.MySqlConnection,
-                        migrationsAssemblyName);
+                    MySqlOptions(options, settings.ConnectionStrings.MySqlConnection,
+                        migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
 
                 case "MARIADB":
-                    MariaDbOptions(null, options, settings.ConnectionStrings.MariaDbConnection,
-                        migrationsAssemblyName);
+                    MariaDbOptions(options, settings.ConnectionStrings.MariaDbConnection,
+                        migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
 
                 case "PGSQL":
-                    PgSqlOptions(null, options, settings.ConnectionStrings.PgSqlConnection,
-                        migrationsAssemblyName);
+                    PgSqlOptions(options, settings.ConnectionStrings.PgSqlConnection,
+                        migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
 
                 case "MSSQL":
-                    MsSqlOptions(null, options, settings.ConnectionStrings.MsSqlConnection,
-                        migrationsAssemblyName);
+                    MsSqlOptions(options, settings.ConnectionStrings.MsSqlConnection,
+                        migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
 
                 case "SQLITE":
-                    SqliteOptions(null, options, settings.ConnectionStrings.SqliteConnection,
-                        migrationsAssemblyName);
+                    SqliteOptions(options, settings.ConnectionStrings.SqliteConnection,
+                        migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
 
                 case "SQLLOCALDB":
-                    MsSqlOptions(null, options, settings.ConnectionStrings.SqlLocalDbConnection,
-                        migrationsAssemblyName);
+                    MsSqlOptions(options, settings.ConnectionStrings.SqlLocalDbConnection,
+                        migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
 
                 default:
-                    MySqlOptions(null, options, settings.ConnectionStrings.DefaultConnection,
-                        migrationsAssemblyName);
+                    MySqlOptions(options, settings.ConnectionStrings.DefaultConnection,
+                        migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
             }
             return options;
         }
 
-        private static void MySqlOptions(IServiceProvider sp, DbContextOptionsBuilder options,
-            string connectionString, string migrationsAssemblyName)
+        private static void MySqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+            string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseMySql(connectionString, mysqlOptions =>
             {
                 mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 mysqlOptions.ServerVersion(new ServerVersion(new Version(8, 0), ServerType.MySql));
-            })
-            .UseInternalServiceProvider(sp);
+            });
+            // .UseInternalServiceProvider(sp);
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors();
-            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors(isDevelopmentEnvironment);
+            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
             options.EnableServiceProviderCaching();
         }
 
-        private static void MariaDbOptions(IServiceProvider sp, DbContextOptionsBuilder options,
-            string connectionString, string migrationsAssemblyName)
+        private static void MariaDbOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+            string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseMySql(connectionString, mysqlOptions =>
             {
                 mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5), ServerType.MariaDb));
-            })
-            .UseInternalServiceProvider(sp);
+            });
+            // .UseInternalServiceProvider(sp);
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors();
-            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors(isDevelopmentEnvironment);
+            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
             options.EnableServiceProviderCaching();
         }
 
-        private static void PgSqlOptions(IServiceProvider sp, DbContextOptionsBuilder options,
-            string connectionString, string migrationsAssemblyName)
+        private static void PgSqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+            string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseNpgsql(connectionString, pgsqlOptions =>
             {
                 pgsqlOptions.MigrationsAssembly(migrationsAssemblyName);
                 pgsqlOptions.EnableRetryOnFailure();
-            })
-            .UseInternalServiceProvider(sp);
+            });
+            // .UseInternalServiceProvider(sp);
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors();
-            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors(isDevelopmentEnvironment);
+            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
             options.EnableServiceProviderCaching();
         }
 
-        private static void MsSqlOptions(IServiceProvider sp, DbContextOptionsBuilder options,
-            string connectionString, string migrationsAssemblyName)
+        private static void MsSqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+            string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseSqlServer(connectionString, sqlOptions =>
             {
                 //sqlOptions.EnableRetryOnFailure();
                 //sqlopt.UseRowNumberForPaging();
                 sqlOptions.MigrationsAssembly(migrationsAssemblyName);
-            })
-            .UseInternalServiceProvider(sp);
+            });
+            // .UseInternalServiceProvider(sp);
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors(true);
-            options.EnableSensitiveDataLogging(true);
+            options.EnableDetailedErrors(isDevelopmentEnvironment);
+            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
             options.EnableServiceProviderCaching();
         }
 
-        private static void SqliteOptions(IServiceProvider sp, DbContextOptionsBuilder options,
-            string connectionString, string migrationsAssemblyName)
+        private static void SqliteOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+            string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseSqlite(connectionString, sqlOptions =>
             {
-                //sqlOptions.EnableRetryOnFailure();
-                //sqlopt.UseRowNumberForPaging();
                 sqlOptions.MigrationsAssembly(migrationsAssemblyName);
-            })
-            .UseInternalServiceProvider(sp);
+            });
+            // .UseInternalServiceProvider(sp);
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.EnableDetailedErrors(true);
-            options.EnableSensitiveDataLogging(true);
+            options.EnableDetailedErrors(isDevelopmentEnvironment);
+            options.EnableSensitiveDataLogging(isDevelopmentEnvironment);
             options.EnableServiceProviderCaching();
         }
     }

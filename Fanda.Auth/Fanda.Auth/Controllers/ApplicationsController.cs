@@ -16,7 +16,7 @@ using System.Web;
 namespace Fanda.Auth.Controllers
 {
     public class ApplicationsController :
-        FandaControllerBase<IApplicationRepository, ApplicationDto, ApplicationListDto>
+        ParentControllerBase<IApplicationRepository, ApplicationDto, ApplicationListDto>
     {
         private const string ModuleName = "Application";
         //private readonly IApplicationRepository repository;

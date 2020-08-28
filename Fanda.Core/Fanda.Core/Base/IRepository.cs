@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public interface IParentRepositoryBase<TModel>
+    public interface IRootRepository<TModel>
     {
-        // PUT
-        Task UpdateAsync(Guid id, TModel model);
-
         // GET
         Task<TModel> GetByIdAsync(Guid id/*, bool includeChildren = false*/);
 
@@ -20,19 +17,19 @@ namespace Fanda.Core.Base
         Task<bool> ChangeStatusAsync(ActiveStatus status);
     }
 
-    public interface IRepositoryBase<TModel> : IParentRepositoryBase<TModel>
+    public interface IListRepository<TListModel>
     {
-        // POST
-        Task<TModel> CreateAsync(Guid parentId, TModel model);
-
-        // OPTOINS: INTERNAL
-        Task<ValidationResultModel> ValidateAsync(Guid parentId, TModel model);
+        // GET
+        IQueryable<TListModel> GetAll(Guid parentId);
     }
 
-    public interface IParentRepository<TModel> : IParentRepositoryBase<TModel>
+    public interface IParentRepository<TModel> : IRootRepository<TModel>
     {
         // POST
         Task<TModel> CreateAsync(TModel model);
+
+        // PUT
+        Task UpdateAsync(Guid id, TModel model);
 
         // GET
         Task<bool> ExistsAsync(KeyData data);
@@ -44,6 +41,18 @@ namespace Fanda.Core.Base
         Task<ValidationResultModel> ValidateAsync(TModel model);
     }
 
+    public interface IRepository<TModel> : IRootRepository<TModel>
+    {
+        // POST
+        Task<TModel> CreateAsync(Guid parentId, TModel model);
+
+        // PUT
+        Task UpdateAsync(Guid id, TModel model);
+
+        // OPTOINS: INTERNAL
+        Task<ValidationResultModel> ValidateAsync(Guid parentId, TModel model);
+    }
+
     //#region Get data of children
 
     //public interface IRepositoryChildData<TModel>
@@ -53,14 +62,4 @@ namespace Fanda.Core.Base
     //}
 
     //#endregion Get data of children
-
-    #region List Repository
-
-    public interface IListRepository<TModel>
-    {
-        // GET
-        IQueryable<TModel> GetAll(Guid parentId);
-    }
-
-    #endregion List Repository
 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FandaAuth.Service.Base
 {
-    public interface ITenantRepository<TModel> : IRepositoryBase<TModel>
+    public interface ITenantRepository<TModel> : IRepository<TModel>
     {
         // GET
         Task<bool> ExistsAsync(TenantKeyData data);
@@ -13,7 +13,7 @@ namespace FandaAuth.Service.Base
         Task<TModel> GetByAsync(TenantKeyData data);
     }
 
-    public interface IUserRepository<TModel> : IRepositoryBase<TModel>
+    public interface IUserRepository<TModel> : IRepository<TModel>
     {
         // GET
         Task<bool> ExistsAsync(UserKeyData data);

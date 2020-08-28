@@ -20,7 +20,7 @@ namespace FandaAuth.Service
     }
 
     public class TenantRepository :
-        RepositoryBase<Tenant, TenantDto, TenantListDto>, ITenantRepository
+        ParentRepositoryBase<Tenant, TenantDto, TenantListDto>, ITenantRepository
     {
         public TenantRepository(AuthContext context, IMapper mapper)
             : base(context, mapper)

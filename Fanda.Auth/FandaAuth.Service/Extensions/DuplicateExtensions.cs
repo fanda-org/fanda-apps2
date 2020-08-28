@@ -3,7 +3,6 @@ using Fanda.Core.Extensions;
 using FandaAuth.Domain.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace FandaAuth.Service.Extensions

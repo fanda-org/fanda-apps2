@@ -3,20 +3,23 @@ using AutoMapper.QueryableExtensions;
 using Fanda.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public abstract class RepositoryBase<TEntity, TModel, TListModel>
-        where TEntity : BaseEntity
-        where TModel : BaseDto
+    public abstract class ParentRepositoryBase<TEntity, TModel, TListModel> :
+            RootRepositoryBase<TEntity, TModel, TListModel>, IParentRepository<TModel>
+            where TEntity : BaseEntity
+            where TModel : BaseDto
     {
         private readonly DbContext _context;
         private readonly IMapper _mapper;
 
-        public RepositoryBase(DbContext context, IMapper mapper)
+        public ParentRepositoryBase(DbContext context, IMapper mapper)
+            : base(context, mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -28,26 +31,6 @@ namespace Fanda.Core.Base
                 .AsNoTracking()
                 .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
             return qry;
-        }
-
-        public virtual async Task<TModel> GetByIdAsync(Guid id)
-        {
-            if (id == null || id == Guid.Empty)
-            {
-                throw new ArgumentNullException("id", "Id is required");
-            }
-
-            var app = await _context.Set<TEntity>()
-                .AsNoTracking()
-                .Where(t => t.Id == id)
-                .ProjectTo<TModel>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
-
-            if (app == null)
-            {
-                throw new NotFoundException("Application not found");
-            }
-            return app;
         }
 
         public virtual async Task<TModel> CreateAsync(TModel model)
@@ -75,44 +58,6 @@ namespace Fanda.Core.Base
             entity.DateModified = DateTime.UtcNow;
             _context.Set<TEntity>().Update(entity);
             await _context.SaveChangesAsync();
-        }
-
-        public virtual async Task<bool> DeleteAsync(Guid id)
-        {
-            if (id == null || id == Guid.Empty)
-            {
-                throw new ArgumentNullException("Id", "Id is required");
-            }
-            var entity = await _context.Set<TEntity>()
-                .FindAsync(id);
-            if (entity == null)
-            {
-                throw new NotFoundException($"{nameof(TEntity)} not found");
-            }
-
-            _context.Set<TEntity>().Remove(entity);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public virtual async Task<bool> ChangeStatusAsync(ActiveStatus status)
-        {
-            if (status.Id == null || status.Id == Guid.Empty)
-            {
-                throw new ArgumentNullException("Id", "Id is required");
-            }
-
-            var entity = await _context.Set<TEntity>()
-                .FindAsync(status.Id);
-            if (entity == null)
-            {
-                throw new NotFoundException($"{nameof(TEntity)} not found");
-            }
-            entity.Active = status.Active;
-            entity.DateModified = DateTime.UtcNow;
-            _context.Set<TEntity>().Update(entity);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public virtual async Task<bool> ExistsAsync(KeyData data)

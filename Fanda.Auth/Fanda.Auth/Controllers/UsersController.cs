@@ -22,7 +22,7 @@ namespace Fanda.Authentication.Controllers
     //[Produces(MediaTypeNames.Application.Json)]
     //[ApiController]
     //[Route("api/[controller]")]
-    public class UsersController : RootControllerBase
+    public class UsersController : BaseController
     {
         private const string ModuleName = "User";
         private readonly IUserRepository _repository;
