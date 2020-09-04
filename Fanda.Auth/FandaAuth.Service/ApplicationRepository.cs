@@ -1,6 +1,7 @@
 using AutoMapper;
 using Fanda.Core;
 using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,12 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IApplicationRepository :
-        IParentRepository<ApplicationDto, ApplicationListDto>
+        IRepositoryBase<ApplicationDto, ApplicationListDto, KeyData>
     {
     }
 
     public class ApplicationRepository :
-        ParentRepositoryBase<Application, ApplicationDto, ApplicationListDto>,
+        RepositoryBase<Application, ApplicationDto, ApplicationListDto, KeyData>,
         IApplicationRepository
     {
         private readonly AuthContext context;
@@ -104,12 +105,12 @@ namespace FandaAuth.Service
         //    return mapper.Map<ApplicationDto>(app);
         //}
 
-        public async override Task UpdateAsync(Guid id, ApplicationDto model)
+        public async override Task UpdateAsync(ApplicationDto model, Guid parentId)
         {
-            if (id != model.Id)
-            {
-                throw new BadRequestException("Appication id mismatch");
-            }
+            //if (id != model.Id)
+            //{
+            //    throw new BadRequestException("Appication id mismatch");
+            //}
 
             Application app = mapper.Map<Application>(model);
             Application dbApp = await context.Applications
@@ -175,6 +176,16 @@ namespace FandaAuth.Service
 
             context.Applications.Update(dbApp);
             await context.SaveChangesAsync();
+        }
+
+        protected override void SetParentId(KeyData keyData, Guid parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void SetParentId(Application entity, Guid parentId)
+        {
+            throw new NotImplementedException();
         }
 
         //public async Task<bool> DeleteAsync(Guid id)

@@ -256,6 +256,7 @@ namespace Fanda.Core
 
     public enum LedgerType
     {
+        Default = 0,
         Customer = 1,
         Supplier = 2,
         Bank = 3

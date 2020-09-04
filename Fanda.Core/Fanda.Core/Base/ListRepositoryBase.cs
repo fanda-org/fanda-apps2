@@ -7,7 +7,7 @@ using System.Linq.Dynamic.Core;
 
 namespace Fanda.Core.Base
 {
-    public class ListRepositoryBase<TEntity, TListModel> : IListRepository<TListModel>
+    public abstract class ListRepositoryBase<TEntity, TListModel> : IListRepositoryBase<TListModel>
         where TEntity : BaseEntity
         where TListModel : BaseListDto
     {

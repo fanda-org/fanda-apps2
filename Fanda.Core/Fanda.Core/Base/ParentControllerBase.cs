@@ -12,7 +12,7 @@ namespace Fanda.Core.Base
 {
     public abstract class ParentControllerBase<TRepository, TModel, TListModel> :
         RootControllerBase<TRepository, TModel, TListModel>
-        where TRepository : IParentRepository<TModel, TListModel>
+        where TRepository : IParentRepositoryBase<TModel, TListModel>
         where TModel : BaseDto
         where TListModel : BaseListDto
     {

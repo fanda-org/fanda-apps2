@@ -7,6 +7,8 @@ namespace Fanda.Core
     // that can be caught and handled within the application
     public class BadRequestException : Exception
     {
+        public ValidationErrors ValidationErrors { get; }
+
         public BadRequestException() : base()
         {
         }
@@ -18,6 +20,11 @@ namespace Fanda.Core
         public BadRequestException(string message, params object[] args)
             : base(string.Format(CultureInfo.CurrentCulture, message, args))
         {
+        }
+
+        public BadRequestException(ValidationErrors validationErrors)
+        {
+            ValidationErrors = validationErrors;
         }
     }
 

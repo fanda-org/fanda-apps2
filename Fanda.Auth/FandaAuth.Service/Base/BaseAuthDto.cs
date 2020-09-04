@@ -11,7 +11,7 @@ namespace FandaAuth.Service.Base
     {
         public BaseUserDto()
         {
-            Errors = new ValidationResultModel();
+            Errors = new ValidationErrors();
         }
 
         public Guid Id { get; set; }
@@ -35,7 +35,7 @@ namespace FandaAuth.Service.Base
         public DateTime? DateModified { get; set; }
 
         [JsonIgnore(), IgnoreDataMember(), IgnoreMap()]
-        public ValidationResultModel Errors { get; set; }
+        public ValidationErrors Errors { get; set; }
 
         public bool IsValid() => Errors.Count == 0;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Fanda.Core.Base
 {
     public abstract class ParentRepositoryBase<TEntity, TModel, TListModel> :
-        RootRepositoryBase<TEntity, TModel, TListModel>, IParentRepository<TModel, TListModel>
+        RootRepositoryBase<TEntity, TModel, TListModel>, IParentRepositoryBase<TModel, TListModel>
         where TEntity : BaseEntity
         where TModel : BaseDto
         where TListModel : BaseListDto
@@ -15,8 +15,8 @@ namespace Fanda.Core.Base
         private readonly DbContext _context;
         private readonly IMapper _mapper;
 
-        public ParentRepositoryBase(DbContext context, IMapper mapper, string filterByParentId)
-            : base(context, mapper, filterByParentId)
+        public ParentRepositoryBase(DbContext context, IMapper mapper)
+            : base(context, mapper, string.Empty)
         {
             _context = context;
             _mapper = mapper;
@@ -24,6 +24,12 @@ namespace Fanda.Core.Base
 
         public virtual async Task<TModel> CreateAsync(TModel model)
         {
+            var validationResult = await ValidateAsync(model);
+            if (!validationResult.IsValid)
+            {
+                //return (null, validationResult);
+                throw new BadRequestException(validationResult);
+            }
             var entity = _mapper.Map<TEntity>(model);
             entity.DateCreated = DateTime.UtcNow;
             entity.DateModified = null;
@@ -37,57 +43,32 @@ namespace Fanda.Core.Base
             return _mapper.Map<TModel>(entity);
         }
 
-        public virtual async Task UpdateAsync(Guid id, TModel model)
-        {
-            if (id != model.Id)
-            {
-                throw new ArgumentException("Id mismatch");
-            }
-            var entity = _mapper.Map<TEntity>(model);
-            entity.DateModified = DateTime.UtcNow;
-            _context.Set<TEntity>().Update(entity);
-            await _context.SaveChangesAsync();
-        }
+        //public virtual async Task UpdateAsync(Guid id, TModel model)
+        //{
+        //    if (id != model.Id)
+        //    {
+        //        throw new ArgumentException("Id mismatch");
+        //    }
+        //    var validationResult = await ValidateAsync(model);
+        //    if (!validationResult.IsValid)
+        //    {
+        //        //return (null, validationResult);
+        //        throw new BadRequestException(validationResult);
+        //    }
+
+        //    var entity = _mapper.Map<TEntity>(model);
+        //    entity.DateModified = DateTime.UtcNow;
+        //    _context.Set<TEntity>().Update(entity);
+        //    await _context.SaveChangesAsync();
+        //}
 
         public virtual async Task<bool> ExistsAsync(KeyData data)
             => await _context.ExistsAsync<TEntity>(data);
 
-        public virtual async Task<TModel> GetByAsync(KeyData data)
-        {
-            var app = await _context.GetByAsync<TEntity>(data);
-            return _mapper.Map<TModel>(app);
-        }
-
-        public virtual async Task<ValidationResultModel> ValidateAsync(TModel model)
-        {
-            // Reset validation errors
-            model.Errors.Clear();
-
-            #region Formatting: Cleansing and formatting
-
-            model.Code = model.Code.TrimExtraSpaces().ToUpper();
-            model.Name = model.Name.TrimExtraSpaces();
-
-            #endregion Formatting: Cleansing and formatting
-
-            #region Validation: Duplicate
-
-            // Check email duplicate
-            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
-            if (await ExistsAsync(duplCode))
-            {
-                model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
-            }
-            // Check name duplicate
-            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
-            if (await ExistsAsync(duplName))
-            {
-                model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
-            }
-
-            #endregion Validation: Duplicate
-
-            return model.Errors;
-        }
+        //public virtual async Task<TModel> GetByAsync(KeyData data)
+        //{
+        //    var app = await _context.GetByAsync<TEntity>(data);
+        //    return _mapper.Map<TModel>(app);
+        //}
     }
 }

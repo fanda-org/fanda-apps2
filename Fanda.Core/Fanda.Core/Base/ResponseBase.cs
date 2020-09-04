@@ -7,7 +7,7 @@ namespace Fanda.Core.Base
         string Message { get; set; }
         bool Success { get; set; }
         string ErrorMessage { get; set; }
-        ValidationResultModel Errors { get; set; }
+        ValidationErrors Errors { get; set; }
     }
 
     public interface IDataResponse<TModel> : IMessageResponse
@@ -60,7 +60,7 @@ namespace Fanda.Core.Base
         public string Message { get; set; } = null;
         public bool Success { get; set; }
         public string ErrorMessage { get; set; } = null;
-        public ValidationResultModel Errors { get; set; } = null;
+        public ValidationErrors Errors { get; set; } = null;
 
         public static MessageResponse Succeeded(string message = null)
             => new MessageResponse
@@ -76,7 +76,7 @@ namespace Fanda.Core.Base
                 ErrorMessage = errorMessage
             };
 
-        public static MessageResponse Failure(ValidationResultModel errors, string errorMessage = null)
+        public static MessageResponse Failure(ValidationErrors errors, string errorMessage = null)
             => new MessageResponse
             {
                 Success = false,

@@ -1,6 +1,7 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Fanda.Core;
+using Fanda.Core.Base;
 using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service.Base;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IUserRepository :
-        IUserRepository<UserDto, UserListDto>
+        IRepositoryBase<UserDto, UserListDto, UserKeyData>
     {
     }
 
@@ -25,13 +26,11 @@ namespace FandaAuth.Service
     {
         private readonly AuthContext _context;
         private readonly IMapper _mapper;
-        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(AuthContext context, IMapper mapper, ILogger<UserRepository> logger)
+        public UserRepository(AuthContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _logger = logger;
         }
 
         public IQueryable<UserListDto> GetAll(Guid tenantId)
@@ -64,7 +63,7 @@ namespace FandaAuth.Service
             return user;
         }
 
-        public async Task<UserDto> CreateAsync(Guid tenantId, UserDto dto)
+        public async Task<UserDto> CreateAsync(UserDto dto, Guid tenantId)
         {
             if (tenantId == null || tenantId == Guid.Empty)
             {
@@ -88,12 +87,12 @@ namespace FandaAuth.Service
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task UpdateAsync(Guid userId, UserDto dto)
+        public async Task UpdateAsync(UserDto dto, Guid tenantId)
         {
-            if (userId != dto.Id)
-            {
-                throw new ArgumentException("User id mismatch");
-            }
+            //if (userId != dto.Id)
+            //{
+            //    throw new ArgumentException("User id mismatch");
+            //}
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
                 throw new ArgumentNullException("Password", "Password is required");
@@ -281,7 +280,7 @@ namespace FandaAuth.Service
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<ValidationResultModel> ValidateAsync(Guid tenantId, UserDto model)
+        public async Task<ValidationErrors> ValidateAsync(UserDto model, Guid tenantId)
         {
             // Reset validation errors
             model.Errors.Clear();

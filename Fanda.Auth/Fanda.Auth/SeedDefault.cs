@@ -16,13 +16,14 @@ namespace Fanda.Auth
     public class SeedDefault
     {
         private readonly IServiceProvider _provider;
-        private readonly AppSettings _settings;
+
+        //private readonly AppSettings _settings;
         private readonly ILogger<SeedDefault> _logger;
 
-        public SeedDefault(IServiceProvider provider, IOptions<AppSettings> options)
+        public SeedDefault(IServiceProvider provider /*, IOptions<AppSettings> options*/)
         {
             _provider = provider;
-            _settings = options.Value;
+            //_settings = options.Value;
             _logger = _provider.GetRequiredService<ILogger<SeedDefault>>();
         }
 
@@ -49,7 +50,7 @@ namespace Fanda.Auth
                         Version = "1.0.0",
                         AppResources = GetAppResources()
                     };
-                    var appOutput = await repository.CreateAsync(appInput);
+                    var appOutput = await repository.CreateAsync(appInput, Guid.Empty);
                 }
             }
             catch (Exception ex)
@@ -130,7 +131,7 @@ namespace Fanda.Auth
                 };
                 if (!await repository.ExistsAsync(new KeyData { Field = KeyField.Code, Value = tenantInput.Code }))
                 {
-                    var tenantOutput = await repository.CreateAsync(tenantInput);
+                    var tenantOutput = await repository.CreateAsync(tenantInput, Guid.Empty);
                     await CreateUsersAsync(tenantOutput);
                     await CreateRolesAsync(tenantOutput);
 
@@ -163,7 +164,7 @@ namespace Fanda.Auth
                     new UserKeyData { TenantId = tenant.Id, Field = KeyField.Name, Value = superAdmin.UserName })
                 )
                 {
-                    var user = await repository.CreateAsync(tenant.Id, superAdmin);
+                    var user = await repository.CreateAsync(superAdmin, tenant.Id);
                     // await repository.MapOrgAsync(user.Id, org.Id);
                     // await repository.MapRoleAsync(user.Id, "SuperAdmin", org.Id);
                 }
@@ -205,7 +206,7 @@ namespace Fanda.Auth
                             Active = true,
                             Privileges = await GetRolePrivileges()
                         };
-                        var roleOutput = await repository.CreateAsync(tenant.Id, roleInput);
+                        var roleOutput = await repository.CreateAsync(roleInput, tenant.Id);
                     }
                 }
             }

@@ -4,6 +4,14 @@
 		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>Fanda.pfx</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Base\IParentRepositoryBase.cs" />
+	  <Compile Remove="Base\IRootRepositoryBase.cs" />
+	  <Compile Remove="Base\ParentControllerBase.cs" />
+	  <Compile Remove="Base\ParentRepositoryBase.cs" />
+	  <Compile Remove="Base\RootControllerBase.cs" />
+	  <Compile Remove="Base\RootRepositoryBase.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="EFCore.NamingConventions" Version="1.1.0" />

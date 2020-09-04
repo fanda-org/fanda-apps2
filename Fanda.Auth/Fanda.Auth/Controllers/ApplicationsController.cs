@@ -1,11 +1,12 @@
 using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
 
 namespace Fanda.Auth.Controllers
 {
     public class ApplicationsController :
-        ParentControllerBase<IApplicationRepository, ApplicationDto, ApplicationListDto>
+        FandaControllerBase<IApplicationRepository, ApplicationDto, ApplicationListDto, KeyData>
     {
         private const string ModuleName = "Application";
         //private readonly IApplicationRepository repository;

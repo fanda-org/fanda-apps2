@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Fanda.Core.Base
 {
     public abstract class RootControllerBase<TRepository, TModel, TListModel> : BaseController
-        where TRepository : IRootRepository<TModel, TListModel>
+        where TRepository : IRootRepositoryBase<TModel, TListModel>
         where TModel : BaseDto
         where TListModel : BaseListDto
     {

@@ -1,17 +1,19 @@
+using Fanda.Core.Base;
 using FandaAuth.Service;
 using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
+using FandaAuth.Service.Extensions;
 
 namespace Fanda.Auth.Controllers
 {
-    public class RolesController : TenantControllerBase<IRoleRepository, RoleDto, RoleListDto>
+    public class RolesController : FandaControllerBase<IRoleRepository, RoleDto, RoleListDto, TenantKeyData>
     {
         private const string ModuleName = "Role";
-        private readonly IRoleRepository repository;
+        //private readonly IRoleRepository repository;
 
         public RolesController(IRoleRepository repository) : base(repository, ModuleName)
         {
-            this.repository = repository;
+            //this.repository = repository;
         }
 
         // roles/5

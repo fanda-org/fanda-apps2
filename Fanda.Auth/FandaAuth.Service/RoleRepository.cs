@@ -1,8 +1,9 @@
 using AutoMapper;
 using Fanda.Core;
+using Fanda.Core.Base;
 using FandaAuth.Domain;
-using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
+using FandaAuth.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -11,18 +12,18 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IRoleRepository :
-        ITenantRepository<RoleDto, RoleListDto>
+        IRepositoryBase<RoleDto, RoleListDto, TenantKeyData>
     {
     }
 
     public class RoleRepository :
-        TenantRepositoryBase<Role, RoleDto, RoleListDto>, IRoleRepository
+        RepositoryBase<Role, RoleDto, RoleListDto, TenantKeyData>, IRoleRepository
     {
         private readonly AuthContext context;
         private readonly IMapper mapper;
 
         public RoleRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "TenantId == '{0}'")
         {
             this.mapper = mapper;
             this.context = context;
@@ -107,12 +108,12 @@ namespace FandaAuth.Service
         //    return mapper.Map<RoleDto>(role);
         //}
 
-        public async override Task UpdateAsync(Guid id, RoleDto model)
+        public async override Task UpdateAsync(RoleDto model, Guid parentId)
         {
-            if (id != model.Id)
-            {
-                throw new BadRequestException("Role id mismatch");
-            }
+            //if (id != model.Id)
+            //{
+            //    throw new BadRequestException("Role id mismatch");
+            //}
 
             Role role = mapper.Map<Role>(model);
             Role dbRole = await context.Roles
@@ -179,6 +180,16 @@ namespace FandaAuth.Service
 
             context.Roles.Update(dbRole);
             await context.SaveChangesAsync();
+        }
+
+        protected override void SetParentId(TenantKeyData keyData, Guid parentId)
+        {
+            keyData.TenantId = parentId;
+        }
+
+        protected override void SetParentId(Role entity, Guid parentId)
+        {
+            entity.TenantId = parentId;
         }
 
         //public async Task<bool> DeleteAsync(Guid id)

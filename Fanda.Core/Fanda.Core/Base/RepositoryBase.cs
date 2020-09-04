@@ -4,21 +4,21 @@ using Fanda.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public abstract class RootRepositoryBase<TEntity, TModel, TListModel> :
-        ListRepositoryBase<TEntity, TListModel>, IRootRepositoryBase<TModel, TListModel>
+    public abstract class RepositoryBase<TEntity, TModel, TListModel, TKeyData> :
+        ListRepositoryBase<TEntity, TListModel>, IRepositoryBase<TModel, TListModel, TKeyData>
         where TEntity : BaseEntity
         where TModel : BaseDto
         where TListModel : BaseListDto
+        where TKeyData : KeyData, new()
     {
-        private readonly DbContext _context;
-        private readonly IMapper _mapper;
+        private DbContext _context;
+        private IMapper _mapper;
 
-        public RootRepositoryBase(DbContext context, IMapper mapper, string filterByParentId)
+        public RepositoryBase(DbContext context, IMapper mapper, string filterByParentId)
             : base(context, mapper, filterByParentId)
         {
             _context = context;
@@ -45,13 +45,53 @@ namespace Fanda.Core.Base
             return app;
         }
 
-        public virtual async Task UpdateAsync(Guid id, TModel model)
+        public virtual async Task<TModel> CreateAsync(TModel model, Guid parentId)
         {
-            if (id != model.Id)
+            var validationResult = await ValidateAsync(model, parentId);
+            if (!validationResult.IsValid)
             {
-                throw new ArgumentException("Id mismatch");
+                //return (null, validationResult);
+                throw new BadRequestException(validationResult);
             }
-            var validationResult = await ValidateAsync(model);
+            var entity = _mapper.Map<TEntity>(model);
+            if (parentId != null && parentId != Guid.Empty)
+            {
+                SetParentId(entity, parentId);
+            }
+            entity.DateCreated = DateTime.UtcNow;
+            entity.DateModified = null;
+            //foreach (var ar in app.AppResources)
+            //{
+            //    ar.DateCreated = DateTime.UtcNow;
+            //    ar.DateModified = null;
+            //}
+            await _context.Set<TEntity>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<TModel>(entity);
+        }
+
+        public virtual async Task UpdateAsync(TModel model, Guid parentId)
+        {
+            //if (id != model.Id)
+            //{
+            //    throw new ArgumentException("Id mismatch");
+            //}
+            var dbEntity = _context.Set<TEntity>().Find(model.Id);
+            if (dbEntity == null)
+            {
+                throw new NotFoundException($"{nameof(TEntity)} not found");
+            }
+
+            //ValidationErrors validationResult;
+            //if (parentId == null || parentId == Guid.Empty)
+            //{
+            var validationResult = await ValidateAsync(model, parentId);
+            //}
+            //else
+            //{
+            //    validationResult = await ValidateWithParentId(model, parentId);
+            //}
+
             if (!validationResult.IsValid)
             {
                 //return (null, validationResult);
@@ -59,10 +99,13 @@ namespace Fanda.Core.Base
             }
 
             var entity = _mapper.Map<TEntity>(model);
-            entity.DateModified = DateTime.UtcNow;
-            _context.Set<TEntity>().Update(entity);
+            _context.Entry(dbEntity).CurrentValues.SetValues(entity);
+            dbEntity.DateModified = DateTime.UtcNow;
+            _context.Set<TEntity>().Update(dbEntity);
             await _context.SaveChangesAsync();
         }
+
+        //protected abstract Task<ValidationErrors> ValidateWithParentId(TModel model, Guid parentId);
 
         public virtual async Task<bool> DeleteAsync(Guid id)
         {
@@ -102,7 +145,16 @@ namespace Fanda.Core.Base
             return true;
         }
 
-        protected async Task<ValidationErrors> ValidateAsync(TModel model)
+        public virtual async Task<bool> ExistsAsync(TKeyData data)
+            => await _context.ExistsAsync<TEntity>(data);
+
+        public virtual async Task<TModel> GetByAsync(TKeyData data)
+        {
+            var app = await _context.GetByAsync<TEntity>(data);
+            return _mapper.Map<TModel>(app);
+        }
+
+        public async Task<ValidationErrors> ValidateAsync(TModel model, Guid parentId)
         {
             // Reset validation errors
             model.Errors.Clear();
@@ -116,15 +168,19 @@ namespace Fanda.Core.Base
 
             #region Validation: Duplicate
 
-            // Check email duplicate
-            var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
-            if (await ExistsAsync(duplCode))
+            // Check code duplicate
+            TKeyData keyData = new TKeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
+            if (parentId != null && parentId != Guid.Empty)
+            {
+                SetParentId(keyData, parentId);
+            }
+            if (await ExistsAsync(keyData))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
             // Check name duplicate
-            var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
-            if (await ExistsAsync(duplName))
+            keyData.Field = KeyField.Name; keyData.Value = model.Name;
+            if (await ExistsAsync(keyData))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
             }
@@ -133,5 +189,9 @@ namespace Fanda.Core.Base
 
             return model.Errors;
         }
+
+        protected abstract void SetParentId(TEntity entity, Guid parentId);
+
+        protected abstract void SetParentId(TKeyData keyData, Guid parentId);
     }
 }

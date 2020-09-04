@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FandaAuth.Domain.Application">
+    <Position X="0.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAQAAAAAA=</HashCode>
+      <FileName>Application.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.AppResource">
+    <Position X="3" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABACEAAEAAAUAAAQAAAAAAAAAAAABAAAAIAAQA=</HashCode>
+      <FileName>AppResource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.Role">
+    <Position X="7.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.RolePrivilege" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAIAAAAAAAAAMAAABAAgAAEEAEAEAAAAAAAEAAA=</HashCode>
+      <FileName>RolePrivilege.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.Tenant">
+    <Position X="5.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAACAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tenant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.User">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EACAAEAAAAIAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.UserToken" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAIAAAAAQAAEAABgAgAAAAAAAABAAAEAAABBAA=</HashCode>
+      <FileName>UserToken.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.Base.UserEntity">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAQAAAAAAAAgAQAkAAAEAAA=</HashCode>
+      <FileName>Base\BaseAuthEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.Base.AppEntity">
+    <Position X="3.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\BaseAuthEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Domain.Base.TenantEntity">
+    <Position X="7.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAEAAA=</HashCode>
+      <FileName>Base\BaseAuthEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fanda.Core.Base.BaseEntity">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

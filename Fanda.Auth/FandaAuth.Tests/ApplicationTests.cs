@@ -7,6 +7,7 @@ using FandaAuth.Service.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Xunit;
 
 namespace FandaAuth.Tests
@@ -16,17 +17,17 @@ namespace FandaAuth.Tests
     public class ApplicationTests
     {
         private static readonly ApplicationRepository repository;
-        public static DbContextOptions<AuthContext> dbContextOptions { get; }
-        public static string connectionString = "Server=localhost;Database=fanda_auth_test;Port=3306;UID=tbala;PWD=tbm@123;";
+        public static DbContextOptions<AuthContext> DbContextOptions { get; }
+        public static string ConnectionString = "Server=localhost;Database=fanda_auth_test;Port=3306;UID=tbala;PWD=tbm@123;";
 
         static ApplicationTests()
         {
-            dbContextOptions = new DbContextOptionsBuilder<AuthContext>()
-                .UseMySql(connectionString)
+            DbContextOptions = new DbContextOptionsBuilder<AuthContext>()
+                .UseMySql(ConnectionString)
                 .Options;
 
             // DbContext
-            var context = new AuthContext(dbContextOptions);
+            var context = new AuthContext(DbContextOptions);
             DbInitializer db = new DbInitializer();
             db.Seed(context);
 
@@ -50,7 +51,6 @@ namespace FandaAuth.Tests
             //Arrange
             var controller = new ApplicationsController(repository)
             {
-
                 // HttpContext
                 ControllerContext = new ControllerContext
                 {
@@ -68,7 +68,7 @@ namespace FandaAuth.Tests
                 Version = "1.0.0",
                 Active = true
             };
-            var data = await controller.Create(app);
+            var data = await controller.Create(Guid.Empty, app);
 
             //Assert
             Assert.IsType<CreatedAtActionResult>(data);
@@ -80,7 +80,6 @@ namespace FandaAuth.Tests
             //Arrange
             var controller = new ApplicationsController(repository)
             {
-
                 // HttpContext
                 ControllerContext = new ControllerContext
                 {

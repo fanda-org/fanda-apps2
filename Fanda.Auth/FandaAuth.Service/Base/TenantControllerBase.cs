@@ -14,7 +14,7 @@ namespace FandaAuth.Service.Base
 {
     public abstract class TenantControllerBase<TRepository, TModel, TListModel> :
         RootControllerBase<TRepository, TModel, TListModel>
-        where TRepository : ITenantRepository<TModel, TListModel>
+        where TRepository : ITenantRepositoryBase<TModel, TListModel>
         where TModel : BaseDto
         where TListModel : BaseListDto
     {

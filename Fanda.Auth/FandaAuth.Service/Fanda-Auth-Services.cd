@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FandaAuth.Service.Dto.ApplicationDto">
+    <Position X="3" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAQAAAAAA=</HashCode>
+      <FileName>Dto\ApplicationDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.ApplicationListDto" Collapsed="true">
+    <Position X="4.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Dto\ApplicationDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.AppResourceDto">
+    <Position X="0.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACEAAEAAAEAAAQAAAAAAAAAAAABAAAAIAAQA=</HashCode>
+      <FileName>Dto\AppResourceDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.AppResourceListDto" Collapsed="true">
+    <Position X="8.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\AppResourceDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.RoleDto" Collapsed="true">
+    <Position X="6.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\RoleDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.RoleListDto" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\RoleDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.RolePrivilegeDto" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAIAAABAAgAAEEAEAAAAAAAAAEAAA=</HashCode>
+      <FileName>Dto\RolePrivilegeDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.TenantDto" Collapsed="true">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\TenantDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.TenantListDto" Collapsed="true">
+    <Position X="3" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Dto\TenantDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.UserDto" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAACAAAAACAAAgAAABAAg=</HashCode>
+      <FileName>Dto\UserDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.UserListDto" Collapsed="true">
+    <Position X="4.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAACAAAAAAAAAAAAQAAAAAAAAgAQAEAAAAAAg=</HashCode>
+      <FileName>Dto\UserDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Dto.UserTokenDto" Collapsed="true">
+    <Position X="6.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAIAAAAAQAAEAABgAgAAAAAAAABAAAEAAABBAA=</HashCode>
+      <FileName>Dto\UserTokenDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FandaAuth.Service.Base.BaseUserDto" Collapsed="true">
+    <Position X="0.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAQAAAAgAAAQAAAAAAAAgAQAEAAAAAAA=</HashCode>
+      <FileName>Base\BaseAuthDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

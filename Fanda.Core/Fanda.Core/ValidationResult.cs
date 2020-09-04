@@ -22,20 +22,20 @@ namespace Fanda.Core
         }
     }
 
-    public class ValidationResultModel : List<ValidationError>
+    public class ValidationErrors : List<ValidationError>
     {
         #region Constructors
 
-        public ValidationResultModel()
+        public ValidationErrors()
         {
         }
 
-        public ValidationResultModel(List<ValidationError> errors)
+        public ValidationErrors(List<ValidationError> errors)
         {
             AddRange(errors);
         }
 
-        public ValidationResultModel(ModelStateDictionary modelState)
+        public ValidationErrors(ModelStateDictionary modelState)
         {
             AddRange(modelState.Keys
                     .SelectMany(key => modelState[key].Errors.Select(x => new ValidationError(key, x.ErrorMessage)))

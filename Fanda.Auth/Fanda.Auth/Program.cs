@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Fanda.Auth
 {
-#pragma warning disable CS1591
+    //#pragma warning disable CS1591
 
     public class Program
     {
@@ -69,7 +69,7 @@ namespace Fanda.Auth
                     //var configuration = services.GetRequiredService<IConfiguration>();
                     var options = services.GetRequiredService<IOptions<AppSettings>>();
 
-                    SeedDefault seed = new SeedDefault(serviceProvider, options);
+                    SeedDefault seed = new SeedDefault(serviceProvider/*, options*/);
                     await seed.CreateFandaAppAsync();
                     await seed.CreateTenantAsync();
                 }
@@ -82,5 +82,5 @@ namespace Fanda.Auth
         }
     }
 
-#pragma warning restore CS1591
+    //#pragma warning restore CS1591
 }

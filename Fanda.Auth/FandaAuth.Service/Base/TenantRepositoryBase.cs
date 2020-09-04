@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service.Base
 {
     public abstract class TenantRepositoryBase<TEntity, TModel, TListModel>
-        : RootRepositoryBase<TEntity, TModel, TListModel>, ITenantRepository<TModel, TListModel>
+        : RootRepositoryBase<TEntity, TModel, TListModel>, ITenantRepositoryBase<TModel, TListModel>
         where TEntity : TenantEntity
         where TModel : BaseDto
         where TListModel : BaseListDto
@@ -76,7 +76,7 @@ namespace FandaAuth.Service.Base
             return _mapper.Map<TModel>(app);
         }
 
-        public async Task<ValidationResultModel> ValidateAsync(Guid tenantId, TModel model)
+        public async Task<ValidationErrors> ValidateAsync(Guid tenantId, TModel model)
         {
             // Reset validation errors
             model.Errors.Clear();

@@ -21,7 +21,7 @@ namespace FandaAuth.Service
 {
     public interface IAuthRepository
     {
-        Task<ValidationResultModel> ValidateAsync(Guid tenantId, RegisterViewModel model);
+        Task<ValidationErrors> ValidateAsync(Guid tenantId, RegisterViewModel model);
 
         Task<UserDto> LoginAsync(LoginViewModel model);
 
@@ -108,7 +108,7 @@ namespace FandaAuth.Service
             // Ignore if error occurred while sending email
             try
             {
-                await _emailSender.SendEmailAsync(model.Email, "Fanda: Confirm your email",
+                await _emailSender.SendGridEmailAsync(model.Email, "Fanda: Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
             }
             catch { }
@@ -245,10 +245,10 @@ namespace FandaAuth.Service
             return tokens; //_mapper.Map<IEnumerable<RefreshTokenDto>>(user.RefreshTokens.Where(t => t.Revoked == null && t.Expires >= DateTime.UtcNow));
         }
 
-        public async Task<ValidationResultModel> ValidateAsync(Guid tenantId, RegisterViewModel model)
+        public async Task<ValidationErrors> ValidateAsync(Guid tenantId, RegisterViewModel model)
         {
             var userDto = _mapper.Map<UserDto>(model);
-            return await _userRepository.ValidateAsync(tenantId, userDto);
+            return await _userRepository.ValidateAsync(userDto, tenantId);
         }
 
         #region Privates

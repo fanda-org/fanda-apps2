@@ -1,21 +1,36 @@
 using AutoMapper;
+using Fanda.Core;
 using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
+using FandaAuth.Service.Extensions;
+using System;
+using System.Threading.Tasks;
 
 namespace FandaAuth.Service
 {
     public interface ITenantRepository :
-        IParentRepository<TenantDto, TenantListDto>
+        IRepositoryBase<TenantDto, TenantListDto, KeyData>
     {
     }
 
     public class TenantRepository :
-        ParentRepositoryBase<Tenant, TenantDto, TenantListDto>, ITenantRepository
+        RepositoryBase<Tenant, TenantDto, TenantListDto, KeyData>, ITenantRepository
     {
         public TenantRepository(AuthContext context, IMapper mapper)
             : base(context, mapper, string.Empty)
         {
+        }
+
+        protected override void SetParentId(KeyData keyData, Guid parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void SetParentId(Tenant entity, Guid parentId)
+        {
+            throw new NotImplementedException();
         }
 
         //public IQueryable<TenantListDto> GetAll(Guid parentId)  // nullable

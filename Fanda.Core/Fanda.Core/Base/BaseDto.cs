@@ -35,7 +35,7 @@ namespace Fanda.Core.Base
     {
         public BaseDto()
         {
-            Errors = new ValidationResultModel();
+            Errors = new ValidationErrors();
         }
 
         [Required]
@@ -64,7 +64,7 @@ namespace Fanda.Core.Base
         public DateTime? DateModified { get; set; }
 
         [JsonIgnore(), IgnoreDataMember(), IgnoreMap()]
-        public ValidationResultModel Errors { get; set; }
+        public ValidationErrors Errors { get; set; }
 
         public bool IsValid() => Errors.Count == 0;
     }
