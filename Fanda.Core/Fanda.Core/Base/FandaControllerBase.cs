@@ -26,9 +26,11 @@ namespace Fanda.Core.Base
         }
 
         [HttpGet]
+        [Route("all")]
+        [Route("all/{parentId}")]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<List<TListModel>>)
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(Guid parentId)
         {
             try
             {
@@ -41,7 +43,7 @@ namespace Fanda.Core.Base
                     Sort = queryString["sort"],
                 };
 
-                var response = await _repository.GetAll(Guid.Empty, query);
+                var response = await _repository.GetAll(parentId, query);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -79,15 +81,15 @@ namespace Fanda.Core.Base
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)
-        public async Task<IActionResult> Create(TModel model, string parentId = "")
+        public async Task<IActionResult> Create(TModel model, Guid parentId = default)
         {
             try
             {
-                Guid parentGuid = Guid.Empty;
-                if (!string.IsNullOrEmpty(parentId))
-                {
-                    parentGuid = new Guid(parentId);
-                }
+                //Guid parentGuid = Guid.Empty;
+                //if (!string.IsNullOrEmpty(parentId))
+                //{
+                //    parentGuid = new Guid(parentId);
+                //}
 
                 //#region Validation
 
@@ -97,7 +99,7 @@ namespace Fanda.Core.Base
 
                 //if (validationResult.IsValid)
                 //{
-                var app = await _repository.CreateAsync(model, parentGuid);
+                var app = await _repository.CreateAsync(model, parentId); //parentGuid);
                 return CreatedAtAction(nameof(GetById), new { id = app.Id },
                     DataResponse<TModel>.Succeeded(app));
                 //}
@@ -112,19 +114,19 @@ namespace Fanda.Core.Base
             }
         }
 
-        [HttpPut("{parentId?}")]
+        [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Update(string parentId, TModel model)
+        public async Task<IActionResult> Update(Guid id, TModel model)
         {
             try
             {
-                Guid parentGuid = Guid.Empty;
-                if (!string.IsNullOrEmpty(parentId))
-                {
-                    parentGuid = new Guid(parentId);
-                }
+                //Guid parentGuid = Guid.Empty;
+                //if (!string.IsNullOrEmpty(parentId))
+                //{
+                //    parentGuid = new Guid(parentId);
+                //}
                 //if (id != model.Id)
                 //{
                 //    return BadRequest(MessageResponse.Failure($"{_moduleName} id mismatch"));
@@ -138,7 +140,7 @@ namespace Fanda.Core.Base
 
                 //if (validationResult.IsValid)
                 //{
-                await _repository.UpdateAsync(model, parentGuid);
+                await _repository.UpdateAsync(id, model); //parentGuid);
                 return NoContent();
                 //}
                 //else

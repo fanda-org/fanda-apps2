@@ -23,7 +23,7 @@ namespace FandaAuth.Service
         private readonly IMapper _mapper;
 
         public UserRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper, "TenantId == '{0}'")
+            : base(context, mapper, "TenantId == @0")
         {
             _context = context;
             _mapper = mapper;
@@ -46,7 +46,7 @@ namespace FandaAuth.Service
         {
             if (id == null || id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new BadRequestException("Id is required");
             }
             var user = await _context.Users
                 .AsNoTracking()
@@ -63,11 +63,11 @@ namespace FandaAuth.Service
         {
             if (tenantId == null || tenantId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(tenantId), "Tenant id is required");
+                throw new BadRequestException("Tenant id is required");
             }
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
-                throw new ArgumentNullException("Password", "Password is required");
+                throw new BadRequestException("Password is required");
             }
 
             PasswordStorage.CreatePasswordHash(dto.Password, out string passwordHash, out string passwordSalt);
@@ -83,18 +83,18 @@ namespace FandaAuth.Service
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task UpdateAsync(UserDto dto, Guid tenantId)
+        public async Task UpdateAsync(Guid id, UserDto dto)
         {
-            //if (userId != dto.Id)
-            //{
-            //    throw new ArgumentException("User id mismatch");
-            //}
+            if (id != dto.Id)
+            {
+                throw new BadRequestException("User id mismatch");
+            }
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
-                throw new ArgumentNullException("Password", "Password is required");
+                throw new BadRequestException("Password", "Password is required");
             }
 
-            var dbUser = await _context.Users.FindAsync(dto.Id);
+            var dbUser = await _context.Users.FindAsync(id);
             if (dbUser == null)
             {
                 throw new NotFoundException("User not found");
@@ -103,11 +103,12 @@ namespace FandaAuth.Service
             PasswordStorage.CreatePasswordHash(dto.Password, out string passwordHash, out string passwordSalt);
 
             var user = _mapper.Map<User>(dto);
+            user.TenantId = dbUser.TenantId;
             user.DateModified = DateTime.UtcNow;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            // _context.Users.Update(user);
             _context.Entry(dbUser).CurrentValues.SetValues(user);
+            // _context.Users.Update(user);
             await _context.SaveChangesAsync();
             //return _mapper.Map<UserDto>(user);
         }
@@ -116,7 +117,7 @@ namespace FandaAuth.Service
         {
             if (id == null || id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id", "Id is required");
+                throw new BadRequestException("Id is required");
             }
             var user = await _context.Users
                 .FindAsync(id);
@@ -258,7 +259,7 @@ namespace FandaAuth.Service
         {
             if (status.Id == null || status.Id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id", "Id is required");
+                throw new BadRequestException("Id is required");
             }
 
             var user = await _context.Users

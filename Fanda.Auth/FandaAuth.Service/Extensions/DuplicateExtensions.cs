@@ -28,7 +28,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Code:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
+                        throw new BadRequestException("Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
@@ -46,7 +46,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Name:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
+                        throw new BadRequestException("Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
@@ -75,7 +75,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Code:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
+                        throw new BadRequestException("Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)
@@ -93,7 +93,7 @@ namespace FandaAuth.Service.Extensions
                 case KeyField.Name:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
-                        throw new ArgumentNullException("tenantId", "Tenant Id is required");
+                        throw new BadRequestException("Tenant Id is required");
                     }
 
                     if (data.Id == Guid.Empty && data.TenantId != Guid.Empty)

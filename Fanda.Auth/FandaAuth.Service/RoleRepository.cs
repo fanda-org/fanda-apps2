@@ -23,7 +23,7 @@ namespace FandaAuth.Service
         private readonly IMapper _mapper;
 
         public RoleRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper, "TenantId == '{0}'")
+            : base(context, mapper, "TenantId == @0")
         {
             _mapper = mapper;
             _context = context;
@@ -108,19 +108,27 @@ namespace FandaAuth.Service
         //    return mapper.Map<RoleDto>(role);
         //}
 
-        public override async Task UpdateAsync(RoleDto model, Guid parentId)
+        public override async Task UpdateAsync(Guid id, RoleDto model)
         {
-            Role role = _mapper.Map<Role>(model);
-            role.TenantId = parentId;
+            if (id != model.Id)
+            {
+                throw new BadRequestException("Role id mismatch");
+            }
+
             Role dbRole = await _context.Roles
-                .Where(o => o.Id == role.Id)
+                .Where(o => o.Id == id)
                 .Include(o => o.Privileges)   //.ThenInclude(oc => oc.Resource)
                 .FirstOrDefaultAsync();
-
             if (dbRole == null)
             {
                 throw new NotFoundException("Role not found");
             }
+
+            // copy current (incoming) values to db
+            Role role = _mapper.Map<Role>(model);
+            role.TenantId = dbRole.TenantId;
+            role.DateModified = DateTime.UtcNow;
+            _context.Entry(dbRole).CurrentValues.SetValues(role);
 
             try
             {
@@ -138,10 +146,6 @@ namespace FandaAuth.Service
             }
             catch { }
 
-            // copy current (incoming) values to db
-            role.DateModified = DateTime.UtcNow;
-            _context.Entry(dbRole).CurrentValues.SetValues(role);
-
             #region Resources
 
             var resourcePairs = from curr in role.Privileges   //.Select(oc => oc.Resource)
@@ -151,9 +155,9 @@ namespace FandaAuth.Service
                                 select new { curr, db };
             foreach (var pair in resourcePairs)
             {
+                pair.curr.RoleId = role.Id;
                 if (pair.db != null)
                 {
-                    pair.curr.RoleId = role.Id;
                     _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
                     // _context.Set<RolePrivilege>().Update(pair.db);
                 }
@@ -193,6 +197,11 @@ namespace FandaAuth.Service
         protected override void SetParentId(Role entity, Guid parentId)
         {
             entity.TenantId = parentId;
+        }
+
+        protected override Guid GetParentId(Role entity)
+        {
+            return entity.TenantId;
         }
 
         //public async Task<bool> DeleteAsync(Guid id)

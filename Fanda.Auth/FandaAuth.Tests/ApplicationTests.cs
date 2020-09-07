@@ -7,6 +7,7 @@ using FandaAuth.Service.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Xunit;
 
 namespace FandaAuth.Tests
@@ -67,7 +68,7 @@ namespace FandaAuth.Tests
                 Version = "1.0.0",
                 Active = true
             };
-            var data = await controller.Create(app, string.Empty);
+            var data = await controller.Create(app, Guid.Empty);
 
             //Assert
             Assert.IsType<CreatedAtActionResult>(data);
@@ -87,7 +88,7 @@ namespace FandaAuth.Tests
             };
 
             //Act
-            var data = await controller.GetAll();
+            var data = await controller.GetAll(Guid.Empty);
 
             //Assert
             Assert.IsType<OkObjectResult>(data);

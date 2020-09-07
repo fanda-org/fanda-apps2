@@ -8,12 +8,12 @@ namespace Fanda.Core
         {
             if (password == null)
             {
-                throw new ArgumentNullException("password");
+                throw new BadRequestException("Password is required");
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+                throw new BadRequestException("Password cannot be empty or whitespace only string.");
             }
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
@@ -27,12 +27,12 @@ namespace Fanda.Core
         {
             if (password == null)
             {
-                throw new ArgumentNullException("password");
+                throw new BadRequestException("Password is required");
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+                throw new BadRequestException("Password cannot be empty or whitespace only string");
             }
 
             var storedHash = Convert.FromBase64String(base64Hash);
@@ -40,12 +40,12 @@ namespace Fanda.Core
 
             if (storedHash.Length != 64)
             {
-                throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+                throw new BadRequestException("Invalid length of password hash (64 bytes expected)");
             }
 
             if (storedSalt.Length != 128)
             {
-                throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+                throw new BadRequestException("Invalid length of password salt (128 bytes expected).");
             }
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))

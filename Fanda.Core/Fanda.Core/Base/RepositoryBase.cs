@@ -29,7 +29,7 @@ namespace Fanda.Core.Base
         {
             if (id == null || id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new BadRequestException("Id is required");
             }
 
             var model = await _context.Set<TEntity>()
@@ -65,15 +65,21 @@ namespace Fanda.Core.Base
             return _mapper.Map<TModel>(entity);
         }
 
-        public virtual async Task UpdateAsync(TModel model, Guid parentId)
+        public virtual async Task UpdateAsync(Guid id, TModel model)
         {
+            if (id != model.Id)
+            {
+                throw new BadRequestException("Id mismatch");
+            }
+
             var dbEntity = await _context.Set<TEntity>()
-                .FindAsync(model.Id);
+                .FindAsync(id);
             if (dbEntity == null)
             {
                 throw new NotFoundException($"{nameof(TEntity)} not found");
             }
 
+            Guid parentId = GetParentId(dbEntity);
             var validationResult = await ValidateAsync(model, parentId);
             if (!validationResult.IsValid)
             {
@@ -91,7 +97,7 @@ namespace Fanda.Core.Base
         {
             if (id == null || id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id", "Id is required");
+                throw new BadRequestException("Id is required");
             }
             var entity = await _context.Set<TEntity>()
                 .FindAsync(id);
@@ -109,7 +115,7 @@ namespace Fanda.Core.Base
         {
             if (status.Id == null || status.Id == Guid.Empty)
             {
-                throw new ArgumentNullException("Id", "Id is required");
+                throw new BadRequestException("Id is required");
             }
 
             var entity = await _context.Set<TEntity>()
@@ -169,6 +175,8 @@ namespace Fanda.Core.Base
 
             return model.Errors;
         }
+
+        protected abstract Guid GetParentId(TEntity entity);
 
         protected abstract void SetParentId(TEntity entity, Guid parentId);
 

@@ -20,6 +20,11 @@ namespace FandaAuth.Service
         {
         }
 
+        protected override Guid GetParentId(Tenant entity)
+        {
+            return Guid.Empty;
+        }
+
         protected override void SetParentId(KeyData keyData, Guid parentId)
         {
             throw new NotImplementedException();

@@ -107,6 +107,8 @@ namespace Fanda.Service.AutoMapperProfile
             //CreateMap<Resource, ResourceListDto>();
             //CreateMap<Action, ActionListDto>();
 
+            CreateMap<Role, RoleListDto>();
+
             #endregion List Dto
         }
     }

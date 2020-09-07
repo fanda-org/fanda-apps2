@@ -104,11 +104,11 @@ namespace Fanda.Authentication.Controllers
             }
         }
 
-        [HttpPut("{tenantId}")]
+        [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Update(Guid tenantId, UserDto model)
+        public async Task<IActionResult> Update(Guid id, UserDto model)
         {
             try
             {
@@ -119,13 +119,13 @@ namespace Fanda.Authentication.Controllers
 
                 #region Validation
 
-                var validationResult = await _repository.ValidateAsync(model, tenantId);
+                var validationResult = await _repository.ValidateAsync(model, model.TenantId);
 
                 #endregion Validation
 
                 if (validationResult.IsValid)
                 {
-                    await _repository.UpdateAsync(model, tenantId);
+                    await _repository.UpdateAsync(id, model);
                     return NoContent();
                 }
                 else

@@ -105,12 +105,17 @@ namespace FandaAuth.Service
         //    return mapper.Map<ApplicationDto>(app);
         //}
 
-        public async override Task UpdateAsync(ApplicationDto model, Guid parentId)
+        public async override Task UpdateAsync(Guid id, ApplicationDto model)
         {
+            if (id != model.Id)
+            {
+                throw new BadRequestException("Application id mismatch");
+            }
+
             Application app = mapper.Map<Application>(model);
             Application dbApp = await context.Applications
                 .Include(a => a.AppResources)
-                .Where(a => a.Id == app.Id)
+                .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
 
             if (dbApp == null)
@@ -166,8 +171,13 @@ namespace FandaAuth.Service
 
             #endregion Resources
 
-            //context.Applications.Update(dbApp);
+            context.Applications.Update(dbApp);
             await context.SaveChangesAsync();
+        }
+
+        protected override Guid GetParentId(Application entity)
+        {
+            return Guid.Empty;
         }
 
         protected override void SetParentId(KeyData keyData, Guid parentId)

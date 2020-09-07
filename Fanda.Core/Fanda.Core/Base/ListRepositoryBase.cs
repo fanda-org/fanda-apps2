@@ -92,11 +92,11 @@ namespace Fanda.Core.Base
             {
                 if (parentId == null || parentId == Guid.Empty)
                 {
-                    throw new ArgumentNullException(nameof(parentId), $"{nameof(parentId)} is required");
+                    throw new BadRequestException($"{nameof(parentId)} is required");
                 }
                 qry = _context.Set<TEntity>()
                     .AsNoTracking()
-                    .Where(_filterByParentId, parentId)
+                    .Where(_filterByParentId, parentId.ToString())
                     .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
                 return qry;
             }

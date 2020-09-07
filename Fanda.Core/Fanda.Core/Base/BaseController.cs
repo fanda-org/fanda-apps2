@@ -38,19 +38,19 @@ namespace Fanda.Core.Base
             else if (ex is NotFoundException)
             {
                 //return NotFound(MessageResponse.Failure($"{modelName} not found"));
-                var valErr = (ex as BadRequestException).ValidationErrors;
-                if (valErr == null)
-                {
-                    return NotFound(MessageResponse.Failure(ex.Message));
-                }
-                else
-                {
-                    return BadRequest(MessageResponse.Failure(valErr));
-                }
+                //var valErr = (ex as NotFoundException).ValidationErrors;
+                //if (valErr == null)
+                //{
+                return NotFound(MessageResponse.Failure(ex.Message));
+                //}
+                //else
+                //{
+                //    return BadRequest(MessageResponse.Failure(valErr));
+                //}
             }
             else if (ex is ArgumentNullException || ex is ArgumentException)
             {
-                return BadRequest(MessageResponse.Failure($"Invalid {modelName.ToLower()} id"));
+                return BadRequest(MessageResponse.Failure(ex.Message)); // $"Invalid {modelName.ToLower()} id"
             }
             else
             {

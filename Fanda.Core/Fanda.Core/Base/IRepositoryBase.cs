@@ -12,7 +12,7 @@ namespace Fanda.Core.Base
         Task<TModel> CreateAsync(TModel model, Guid parentId);
 
         // PUT
-        Task UpdateAsync(TModel model, Guid parentId);
+        Task UpdateAsync(Guid id, TModel model);
 
         // DELETE
         Task<bool> DeleteAsync(Guid id);
