@@ -121,14 +121,6 @@ namespace Fanda.Core.Extensions
             bool result = true;
             switch (data.Field)
             {
-                case KeyField.Id:
-                    if (data.Id != Guid.Empty)
-                    {
-                        return await context.Set<TModel>()
-                            .AnyAsync(pc => pc.Id == data.Id);
-                    }
-                    return result;
-
                 case KeyField.Code:
                     if (data.Id == Guid.Empty)
                     {
@@ -166,14 +158,6 @@ namespace Fanda.Core.Extensions
             TModel result = default;
             switch (data.Field)
             {
-                case KeyField.Id:
-                    if (data.Id != Guid.Empty)
-                    {
-                        return await context.Set<TModel>()
-                            .FirstOrDefaultAsync(pc => pc.Id == data.Id);
-                    }
-                    return result;
-
                 case KeyField.Code:
                     if (data.Id == Guid.Empty)
                     {

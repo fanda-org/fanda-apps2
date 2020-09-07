@@ -22,15 +22,31 @@ namespace Fanda.Core.Base
         [NonAction]
         public virtual IActionResult ExceptionResult(Exception ex, string modelName)
         {
-            if (ex is BadRequestException || ex is ArgumentNullException || ex is ArgumentException)
+            if (ex is BadRequestException) //|| ex is ArgumentNullException || ex is ArgumentException)
             {
                 //return BadRequest(MessageResponse.Failure($"Invalid {modelName.ToLower()} id"));
-                return BadRequest(MessageResponse.Failure(ex.Message));
+                var valErr = (ex as BadRequestException).ValidationErrors;
+                if (valErr == null)
+                {
+                    return BadRequest(MessageResponse.Failure(ex.Message));
+                }
+                else
+                {
+                    return BadRequest(MessageResponse.Failure(valErr));
+                }
             }
             else if (ex is NotFoundException)
             {
                 //return NotFound(MessageResponse.Failure($"{modelName} not found"));
-                return NotFound(MessageResponse.Failure(ex.Message));
+                var valErr = (ex as BadRequestException).ValidationErrors;
+                if (valErr == null)
+                {
+                    return NotFound(MessageResponse.Failure(ex.Message));
+                }
+                else
+                {
+                    return BadRequest(MessageResponse.Failure(valErr));
+                }
             }
             else
             {

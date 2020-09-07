@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -74,31 +72,39 @@ namespace Fanda.Core.Base
             }
         }
 
-        [HttpPost("{parentId}")]
+        [HttpPost]
+        [Route("")]
+        [Route("{parentId}")]
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)
-        public async Task<IActionResult> Create(Guid parentId, TModel model)
+        public async Task<IActionResult> Create(TModel model, string parentId = "")
         {
             try
             {
-                #region Validation
-
-                var validationResult = await _repository.ValidateAsync(model, parentId);
-
-                #endregion Validation
-
-                if (validationResult.IsValid)
+                Guid parentGuid = Guid.Empty;
+                if (!string.IsNullOrEmpty(parentId))
                 {
-                    var app = await _repository.CreateAsync(model, parentId);
-                    return CreatedAtAction(nameof(GetById), new { id = app.Id },
-                        DataResponse<TModel>.Succeeded(app));
+                    parentGuid = new Guid(parentId);
                 }
-                else
-                {
-                    return BadRequest(MessageResponse.Failure(validationResult));
-                }
+
+                //#region Validation
+
+                //var validationResult = await _repository.ValidateAsync(model, parentGuid);
+
+                //#endregion Validation
+
+                //if (validationResult.IsValid)
+                //{
+                var app = await _repository.CreateAsync(model, parentGuid);
+                return CreatedAtAction(nameof(GetById), new { id = app.Id },
+                    DataResponse<TModel>.Succeeded(app));
+                //}
+                //else
+                //{
+                //    return BadRequest(MessageResponse.Failure(validationResult));
+                //}
             }
             catch (Exception ex)
             {
@@ -106,34 +112,39 @@ namespace Fanda.Core.Base
             }
         }
 
-        [HttpPut("{parentId}")]
+        [HttpPut("{parentId?}")]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Update(Guid parentId, TModel model)
+        public async Task<IActionResult> Update(string parentId, TModel model)
         {
             try
             {
+                Guid parentGuid = Guid.Empty;
+                if (!string.IsNullOrEmpty(parentId))
+                {
+                    parentGuid = new Guid(parentId);
+                }
                 //if (id != model.Id)
                 //{
                 //    return BadRequest(MessageResponse.Failure($"{_moduleName} id mismatch"));
                 //}
 
-                #region Validation
+                //#region Validation
 
-                var validationResult = await _repository.ValidateAsync(model, parentId);
+                //var validationResult = await _repository.ValidateAsync(model, parentGuid);
 
-                #endregion Validation
+                //#endregion Validation
 
-                if (validationResult.IsValid)
-                {
-                    await _repository.UpdateAsync(model, parentId);
-                    return NoContent();
-                }
-                else
-                {
-                    return BadRequest(MessageResponse.Failure(validationResult));
-                }
+                //if (validationResult.IsValid)
+                //{
+                await _repository.UpdateAsync(model, parentGuid);
+                return NoContent();
+                //}
+                //else
+                //{
+                //    return BadRequest(MessageResponse.Failure(validationResult));
+                //}
             }
             catch (Exception ex)
             {

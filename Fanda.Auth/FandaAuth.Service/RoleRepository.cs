@@ -2,6 +2,7 @@ using AutoMapper;
 using Fanda.Core;
 using Fanda.Core.Base;
 using FandaAuth.Domain;
+using FandaAuth.Domain.Base;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -19,14 +20,14 @@ namespace FandaAuth.Service
     public class RoleRepository :
         RepositoryBase<Role, RoleDto, RoleListDto, TenantKeyData>, IRoleRepository
     {
-        private readonly AuthContext context;
-        private readonly IMapper mapper;
+        private readonly AuthContext _context;
+        private readonly IMapper _mapper;
 
         public RoleRepository(AuthContext context, IMapper mapper)
             : base(context, mapper, "TenantId == '{0}'")
         {
-            this.mapper = mapper;
-            this.context = context;
+            _mapper = mapper;
+            _context = context;
         }
 
         //public IQueryable<RoleListDto> GetAll(Guid tenantId)
@@ -108,15 +109,15 @@ namespace FandaAuth.Service
         //    return mapper.Map<RoleDto>(role);
         //}
 
-        public async override Task UpdateAsync(RoleDto model, Guid parentId)
+        public override async Task UpdateAsync(RoleDto model, Guid parentId)
         {
             //if (id != model.Id)
             //{
             //    throw new BadRequestException("Role id mismatch");
             //}
 
-            Role role = mapper.Map<Role>(model);
-            Role dbRole = await context.Roles
+            Role role = _mapper.Map<Role>(model);
+            Role dbRole = await _context.Roles
                 .Where(o => o.Id == role.Id)
                 .Include(o => o.Privileges)   //.ThenInclude(oc => oc.Resource)
                 .FirstOrDefaultAsync();
@@ -139,7 +140,7 @@ namespace FandaAuth.Service
                     if (role.Privileges.All(ar => ar.RoleId != dbRolePrivilege.RoleId)) // && ar.AppResourceId != dbRolePrivilege.AppResourceId
                     {
                         //context.Resources.Remove(dbResource);
-                        context.Set<RolePrivilege>().Remove(dbRolePrivilege);
+                        _context.Set<RolePrivilege>().Remove(dbRolePrivilege);
                     }
                 }
             }
@@ -147,7 +148,7 @@ namespace FandaAuth.Service
 
             // copy current (incoming) values to db
             role.DateModified = DateTime.UtcNow;
-            context.Entry(dbRole).CurrentValues.SetValues(role);
+            _context.Entry(dbRole).CurrentValues.SetValues(role);
 
             #region Resources
 
@@ -160,8 +161,8 @@ namespace FandaAuth.Service
             {
                 if (pair.db != null)
                 {
-                    context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    context.Set<RolePrivilege>().Update(pair.db);
+                    _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
+                    _context.Set<RolePrivilege>().Update(pair.db);
                 }
                 else
                 {
@@ -172,14 +173,23 @@ namespace FandaAuth.Service
                     //    //ResourceId = pair.curr.Id,
                     //};
                     //dbRole.Privileges.Add(appResource);
-                    context.Set<RolePrivilege>().Add(pair.curr);
+                    _context.Set<RolePrivilege>().Add(pair.curr);
                 }
             }
 
             #endregion Resources
 
-            context.Roles.Update(dbRole);
-            await context.SaveChangesAsync();
+            _context.Roles.Update(dbRole);
+            await _context.SaveChangesAsync();
+        }
+
+        public override async Task<bool> ExistsAsync(TenantKeyData data)
+            => await _context.ExistsAsync<Role>(data);
+
+        public override async Task<RoleDto> GetByAsync(TenantKeyData data)
+        {
+            var app = await _context.GetByAsync<Role>(data);
+            return _mapper.Map<RoleDto>(app);
         }
 
         protected override void SetParentId(TenantKeyData keyData, Guid parentId)

@@ -25,14 +25,6 @@ namespace FandaAuth.Service.Extensions
             bool result = true;
             switch (data.Field)
             {
-                case KeyField.Id:
-                    if (data.Id != Guid.Empty)
-                    {
-                        return await context.Set<TModel>()
-                            .AnyAsync(pc => pc.Id == data.Id);
-                    }
-                    return result;
-
                 case KeyField.Code:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
@@ -47,7 +39,7 @@ namespace FandaAuth.Service.Extensions
                     else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
                     {
                         result = await context.Set<TModel>()
-                            .AnyAsync(pc => pc.Code == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                            .AnyAsync(pc => pc.Code == data.Value && pc.TenantId == data.TenantId && pc.Id != data.Id);
                     }
                     return result;
 
@@ -65,7 +57,7 @@ namespace FandaAuth.Service.Extensions
                     else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
                     {
                         result = await context.Set<TModel>()
-                            .AnyAsync(pc => pc.Name == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                            .AnyAsync(pc => pc.Name == data.Value && pc.TenantId == data.TenantId && pc.Id != data.Id);
                     }
                     return result;
 
@@ -80,14 +72,6 @@ namespace FandaAuth.Service.Extensions
             TModel result = default;
             switch (data.Field)
             {
-                case KeyField.Id:
-                    if (data.Id != Guid.Empty)
-                    {
-                        return await context.Set<TModel>()
-                            .FirstOrDefaultAsync(pc => pc.Id == data.Id);
-                    }
-                    return result;
-
                 case KeyField.Code:
                     if (data.TenantId == null || data.TenantId == Guid.Empty)
                     {
@@ -102,7 +86,7 @@ namespace FandaAuth.Service.Extensions
                     else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
                     {
                         result = await context.Set<TModel>()
-                            .FirstOrDefaultAsync(pc => pc.Code == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                            .FirstOrDefaultAsync(pc => pc.Code == data.Value && pc.TenantId == data.TenantId && pc.Id != data.Id);
                     }
                     return result;
 
@@ -120,7 +104,7 @@ namespace FandaAuth.Service.Extensions
                     else if (data.Id != Guid.Empty && data.TenantId != Guid.Empty)
                     {
                         result = await context.Set<TModel>()
-                            .FirstOrDefaultAsync(pc => pc.Name == data.Value && pc.Id != data.Id && pc.TenantId == data.TenantId);
+                            .FirstOrDefaultAsync(pc => pc.Name == data.Value && pc.TenantId == data.TenantId && pc.Id != data.Id);
                     }
                     return result;
 
@@ -135,14 +119,6 @@ namespace FandaAuth.Service.Extensions
             bool result = true;
             switch (data.Field)
             {
-                case KeyField.Id:
-                    if (data.Id != Guid.Empty)
-                    {
-                        return await context.Set<TModel>()
-                            .AnyAsync(pc => pc.Id == data.Id);
-                    }
-                    return result;
-
                 case KeyField.Email:
                     if (data.Id == Guid.Empty)
                     {
@@ -180,14 +156,6 @@ namespace FandaAuth.Service.Extensions
             bool result = true;
             switch (data.Field)
             {
-                case KeyField.Id:
-                    if (data.Id != Guid.Empty)
-                    {
-                        return await context.Set<TModel>()
-                            .AnyAsync(pc => pc.Id == data.Id);
-                    }
-                    return result;
-
                 case KeyField.Email:
                     if (data.Id == Guid.Empty)
                     {
