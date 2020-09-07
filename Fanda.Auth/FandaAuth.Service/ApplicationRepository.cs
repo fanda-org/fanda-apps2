@@ -107,22 +107,14 @@ namespace FandaAuth.Service
 
         public async override Task UpdateAsync(ApplicationDto model, Guid parentId)
         {
-            //if (id != model.Id)
-            //{
-            //    throw new BadRequestException("Appication id mismatch");
-            //}
-
             Application app = mapper.Map<Application>(model);
             Application dbApp = await context.Applications
-                .Where(o => o.Id == app.Id)
-                .Include(o => o.AppResources)
+                .Include(a => a.AppResources)
+                .Where(a => a.Id == app.Id)
                 .FirstOrDefaultAsync();
 
             if (dbApp == null)
             {
-                //org.DateCreated = DateTime.UtcNow;
-                //org.DateModified = null;
-                //await _context.Organizations.AddAsync(org);
                 throw new NotFoundException("Application not found");
             }
 
@@ -158,7 +150,7 @@ namespace FandaAuth.Service
                 if (pair.db != null)
                 {
                     context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    context.Set<AppResource>().Update(pair.db);
+                    // context.Set<AppResource>().Update(pair.db);
                 }
                 else
                 {
@@ -174,7 +166,7 @@ namespace FandaAuth.Service
 
             #endregion Resources
 
-            context.Applications.Update(dbApp);
+            //context.Applications.Update(dbApp);
             await context.SaveChangesAsync();
         }
 

@@ -39,11 +39,11 @@ namespace Fanda.Authentication.Controllers
                 {
                     Filter = queryString["filter"],
                     FilterArgs = queryString["filterArgs"]?.Split(','),
-                    Search = queryString["search"],
+                    //Search = queryString["search"],
                     Sort = queryString["sort"],
                 };
 
-                var response = await _repository.GetData(tenantId, query);
+                var response = await _repository.GetAll(tenantId, query);
                 return Ok(response);
             }
             catch (Exception ex)

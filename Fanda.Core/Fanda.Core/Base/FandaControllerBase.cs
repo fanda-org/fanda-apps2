@@ -37,11 +37,11 @@ namespace Fanda.Core.Base
                 {
                     Filter = queryString["filter"],
                     FilterArgs = queryString["filterArgs"]?.Split(','),
-                    Search = queryString["search"],
+                    //Search = queryString["search"],
                     Sort = queryString["sort"],
                 };
 
-                var response = await _repository.GetData(Guid.Empty, query);
+                var response = await _repository.GetAll(Guid.Empty, query);
                 return Ok(response);
             }
             catch (Exception ex)

@@ -13,8 +13,9 @@ namespace Fanda.Core
             PageSize = PageSize <= 0 && Page > 0 ? 100 : PageSize;
         }
 
-        public string Search { get; set; }
+        //public string Search { get; set; }
         public string Filter { get; set; }
+
         public string[] FilterArgs { get; set; }
         public string Sort { get; set; }
         public int Page { get; set; }

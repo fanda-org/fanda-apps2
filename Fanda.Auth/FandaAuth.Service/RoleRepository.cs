@@ -111,12 +111,8 @@ namespace FandaAuth.Service
 
         public override async Task UpdateAsync(RoleDto model, Guid parentId)
         {
-            //if (id != model.Id)
-            //{
-            //    throw new BadRequestException("Role id mismatch");
-            //}
-
             Role role = _mapper.Map<Role>(model);
+            role.TenantId = parentId;
             Role dbRole = await _context.Roles
                 .Where(o => o.Id == role.Id)
                 .Include(o => o.Privileges)   //.ThenInclude(oc => oc.Resource)
@@ -124,9 +120,6 @@ namespace FandaAuth.Service
 
             if (dbRole == null)
             {
-                //org.DateCreated = DateTime.UtcNow;
-                //org.DateModified = null;
-                //await _context.Organizations.AddAsync(org);
                 throw new NotFoundException("Role not found");
             }
 
@@ -137,7 +130,7 @@ namespace FandaAuth.Service
                 {
                     //Resource dbResource = dbAppResource.Resource;
                     //if (app.AppResources.All(oc => oc.Resource.Id != dbAppResource.Resource.Id))
-                    if (role.Privileges.All(ar => ar.RoleId != dbRolePrivilege.RoleId)) // && ar.AppResourceId != dbRolePrivilege.AppResourceId
+                    if (role.Privileges.All(ar => ar.AppResourceId != dbRolePrivilege.AppResourceId)) // && ar.AppResourceId != dbRolePrivilege.AppResourceId
                     {
                         //context.Resources.Remove(dbResource);
                         _context.Set<RolePrivilege>().Remove(dbRolePrivilege);
@@ -154,15 +147,16 @@ namespace FandaAuth.Service
 
             var resourcePairs = from curr in role.Privileges   //.Select(oc => oc.Resource)
                                 join db in dbRole.Privileges   //.Select(oc => oc.Resource)
-                                     on curr.RoleId equals db.RoleId into grp
+                                     on curr.AppResourceId equals db.AppResourceId into grp
                                 from db in grp.DefaultIfEmpty()
                                 select new { curr, db };
             foreach (var pair in resourcePairs)
             {
                 if (pair.db != null)
                 {
+                    pair.curr.RoleId = role.Id;
                     _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    _context.Set<RolePrivilege>().Update(pair.db);
+                    // _context.Set<RolePrivilege>().Update(pair.db);
                 }
                 else
                 {

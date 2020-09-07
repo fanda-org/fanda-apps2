@@ -241,7 +241,8 @@ namespace Fanda.Core
         Code = 1,
         Name = 2,
         Email = 3,
-        Number = 4
+        Mobile = 4,
+        Number = 5
     }
 
     public enum ResourceType

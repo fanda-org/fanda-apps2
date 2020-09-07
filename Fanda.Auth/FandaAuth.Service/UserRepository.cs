@@ -22,29 +22,30 @@ namespace FandaAuth.Service
     {
     }
 
-    public class UserRepository : IUserRepository
+    public class UserRepository : ListRepositoryBase<User, UserListDto>, IUserRepository
     {
         private readonly AuthContext _context;
         private readonly IMapper _mapper;
 
         public UserRepository(AuthContext context, IMapper mapper)
+            : base(context, mapper, "TenantId == '{0}'")
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public IQueryable<UserListDto> GetAll(Guid tenantId)
-        {
-            if (tenantId == null || tenantId == Guid.Empty)
-            {
-                throw new ArgumentNullException("tenantId", "Tenant id is required");
-            }
-            IQueryable<UserListDto> userQry = _context.Users
-                .AsNoTracking()
-                .Where(u => u.TenantId == tenantId)
-                .ProjectTo<UserListDto>(_mapper.ConfigurationProvider);
-            return userQry;
-        }
+        //public IQueryable<UserListDto> GetAll(Guid tenantId, Query queryInput)
+        //{
+        //    if (tenantId == null || tenantId == Guid.Empty)
+        //    {
+        //        throw new ArgumentNullException("tenantId", "Tenant id is required");
+        //    }
+        //    IQueryable<UserListDto> userQry = _context.Users
+        //        .AsNoTracking()
+        //        .Where(u => u.TenantId == tenantId)
+        //        .ProjectTo<UserListDto>(_mapper.ConfigurationProvider);
+        //    return userQry;
+        //}
 
         public async Task<UserDto> GetByIdAsync(Guid id/*, bool includeChildren = false*/)
         {
@@ -98,13 +99,20 @@ namespace FandaAuth.Service
                 throw new ArgumentNullException("Password", "Password is required");
             }
 
+            var dbUser = await _context.Users.FindAsync(dto.Id);
+            if (dbUser == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
             PasswordStorage.CreatePasswordHash(dto.Password, out string passwordHash, out string passwordSalt);
 
             var user = _mapper.Map<User>(dto);
             user.DateModified = DateTime.UtcNow;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            _context.Users.Update(user);
+            // _context.Users.Update(user);
+            _context.Entry(dbUser).CurrentValues.SetValues(user);
             await _context.SaveChangesAsync();
             //return _mapper.Map<UserDto>(user);
         }
@@ -119,7 +127,7 @@ namespace FandaAuth.Service
                 .FindAsync(id);
             if (user == null)
             {
-                throw new KeyNotFoundException("User not found");
+                throw new NotFoundException("User not found");
             }
 
             _context.Users.Remove(user);
@@ -268,7 +276,7 @@ namespace FandaAuth.Service
                 await _context.SaveChangesAsync();
                 return true;
             }
-            throw new KeyNotFoundException("User not found");
+            throw new NotFoundException("User not found");
         }
 
         public async Task<bool> ExistsAsync(UserKeyData data)

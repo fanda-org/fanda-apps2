@@ -11,6 +11,7 @@
 	  <Compile Remove="Base\ParentRepositoryBase.cs" />
 	  <Compile Remove="Base\RootControllerBase.cs" />
 	  <Compile Remove="Base\RootRepositoryBase.cs" />
+	  <Compile Remove="Extensions\RepositoryExtensions.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

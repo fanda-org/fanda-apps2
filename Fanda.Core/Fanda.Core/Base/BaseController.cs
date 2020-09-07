@@ -22,7 +22,7 @@ namespace Fanda.Core.Base
         [NonAction]
         public virtual IActionResult ExceptionResult(Exception ex, string modelName)
         {
-            if (ex is BadRequestException) //|| ex is ArgumentNullException || ex is ArgumentException)
+            if (ex is BadRequestException)
             {
                 //return BadRequest(MessageResponse.Failure($"Invalid {modelName.ToLower()} id"));
                 var valErr = (ex as BadRequestException).ValidationErrors;
@@ -47,6 +47,10 @@ namespace Fanda.Core.Base
                 {
                     return BadRequest(MessageResponse.Failure(valErr));
                 }
+            }
+            else if (ex is ArgumentNullException || ex is ArgumentException)
+            {
+                return BadRequest(MessageResponse.Failure($"Invalid {modelName.ToLower()} id"));
             }
             else
             {

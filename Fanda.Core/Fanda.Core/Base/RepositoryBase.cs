@@ -32,17 +32,17 @@ namespace Fanda.Core.Base
                 throw new ArgumentNullException("id", "Id is required");
             }
 
-            var app = await _context.Set<TEntity>()
+            var model = await _context.Set<TEntity>()
                 .AsNoTracking()
                 .Where(t => t.Id == id)
                 .ProjectTo<TModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
-            if (app == null)
+            if (model == null)
             {
-                throw new NotFoundException("Application not found");
+                throw new NotFoundException($"{nameof(TEntity)} not found");
             }
-            return app;
+            return model;
         }
 
         public virtual async Task<TModel> CreateAsync(TModel model, Guid parentId)
@@ -50,9 +50,9 @@ namespace Fanda.Core.Base
             var validationResult = await ValidateAsync(model, parentId);
             if (!validationResult.IsValid)
             {
-                //return (null, validationResult);
                 throw new BadRequestException(validationResult);
             }
+
             var entity = _mapper.Map<TEntity>(model);
             if (parentId != null && parentId != Guid.Empty)
             {
@@ -60,11 +60,6 @@ namespace Fanda.Core.Base
             }
             entity.DateCreated = DateTime.UtcNow;
             entity.DateModified = null;
-            //foreach (var ar in app.AppResources)
-            //{
-            //    ar.DateCreated = DateTime.UtcNow;
-            //    ar.DateModified = null;
-            //}
             await _context.Set<TEntity>().AddAsync(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<TModel>(entity);
@@ -72,40 +67,25 @@ namespace Fanda.Core.Base
 
         public virtual async Task UpdateAsync(TModel model, Guid parentId)
         {
-            //if (id != model.Id)
-            //{
-            //    throw new ArgumentException("Id mismatch");
-            //}
-            var dbEntity = _context.Set<TEntity>().Find(model.Id);
+            var dbEntity = await _context.Set<TEntity>()
+                .FindAsync(model.Id);
             if (dbEntity == null)
             {
                 throw new NotFoundException($"{nameof(TEntity)} not found");
             }
 
-            //ValidationErrors validationResult;
-            //if (parentId == null || parentId == Guid.Empty)
-            //{
             var validationResult = await ValidateAsync(model, parentId);
-            //}
-            //else
-            //{
-            //    validationResult = await ValidateWithParentId(model, parentId);
-            //}
-
             if (!validationResult.IsValid)
             {
-                //return (null, validationResult);
                 throw new BadRequestException(validationResult);
             }
 
             var entity = _mapper.Map<TEntity>(model);
+            entity.DateModified = DateTime.UtcNow;
             _context.Entry(dbEntity).CurrentValues.SetValues(entity);
-            dbEntity.DateModified = DateTime.UtcNow;
-            _context.Set<TEntity>().Update(dbEntity);
+            // _context.Set<TEntity>().Update(dbEntity);
             await _context.SaveChangesAsync();
         }
-
-        //protected abstract Task<ValidationErrors> ValidateWithParentId(TModel model, Guid parentId);
 
         public virtual async Task<bool> DeleteAsync(Guid id)
         {
@@ -140,7 +120,7 @@ namespace Fanda.Core.Base
             }
             entity.Active = status.Active;
             entity.DateModified = DateTime.UtcNow;
-            _context.Set<TEntity>().Update(entity);
+            // _context.Set<TEntity>().Update(entity);
             await _context.SaveChangesAsync();
             return true;
         }

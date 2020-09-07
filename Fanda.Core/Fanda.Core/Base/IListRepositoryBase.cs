@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
     public interface IListRepositoryBase<TListModel>
     {
         // GET
-        IQueryable<TListModel> GetAll(Guid parentId);
+        Task<DataResponse<IEnumerable<TListModel>>> GetAll(Guid parentId, Query queryInput);
     }
 
     //public interface IRepository<TModel, TListModel> : IRootRepository<TModel, TListModel>
