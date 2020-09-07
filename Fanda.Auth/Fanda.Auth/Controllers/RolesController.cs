@@ -1,6 +1,5 @@
 using Fanda.Core.Base;
 using FandaAuth.Service;
-using FandaAuth.Service.Base;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.Extensions;
 

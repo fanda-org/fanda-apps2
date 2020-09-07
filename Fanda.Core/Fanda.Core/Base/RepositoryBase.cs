@@ -15,8 +15,8 @@ namespace Fanda.Core.Base
         where TListModel : BaseListDto
         where TKeyData : KeyData, new()
     {
-        private DbContext _context;
-        private IMapper _mapper;
+        private readonly DbContext _context;
+        private readonly IMapper _mapper;
 
         public RepositoryBase(DbContext context, IMapper mapper, string filterByParentId)
             : base(context, mapper, filterByParentId)

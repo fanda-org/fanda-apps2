@@ -7,7 +7,6 @@ using FandaAuth.Service.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Xunit;
 
 namespace FandaAuth.Tests
