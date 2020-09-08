@@ -2,27 +2,38 @@
 using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
-using Fanda.Service.Base;
 using Fanda.Service.Dto;
+using System;
+using System.Linq.Expressions;
 
 namespace Fanda.Service
 {
     public interface IAccountYearRepository :
-        IOrgRepository<AccountYearDto, YearListDto>
+        ISubRepository<AccountYear, AccountYearDto, YearListDto>
     {
     }
 
     public class AccountYearRepository :
-        OrgRepositoryBase<AccountYear, AccountYearDto, YearListDto>, IAccountYearRepository
+        SubRepository<AccountYear, AccountYearDto, YearListDto>, IAccountYearRepository
     {
         //private readonly FandaContext _context;
         //private readonly IMapper _mapper;
 
         public AccountYearRepository(FandaContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "OrgId == @0")
         {
             //_context = context;
             //_mapper = mapper;
+        }
+
+        protected override Guid GetSuperId(AccountYear entity)
+        {
+            return entity.OrgId;
+        }
+
+        protected override Expression<Func<AccountYear, bool>> GetSuperIdPredicate(Guid superId)
+        {
+            return ay => ay.OrgId == superId;
         }
 
         //public IQueryable<YearListDto> GetAll(Guid orgId)

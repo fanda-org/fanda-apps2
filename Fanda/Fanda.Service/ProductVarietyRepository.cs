@@ -2,23 +2,34 @@
 using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
-using Fanda.Service.Base;
 using Fanda.Service.Dto;
+using System;
+using System.Linq.Expressions;
 
 namespace Fanda.Service
 {
     public interface IProductVarietyRepository :
-        IOrgRepository<ProductVarietyDto, ProductVarietyListDto>
+        ISubRepository<ProductVariety, ProductVarietyDto, ProductVarietyListDto>
     {
     }
 
     public class ProductVarietyRepository :
-        OrgRepositoryBase<ProductVariety, ProductVarietyDto, ProductVarietyListDto>,
+        SubRepository<ProductVariety, ProductVarietyDto, ProductVarietyListDto>,
         IProductVarietyRepository
     {
         public ProductVarietyRepository(FandaContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "OrgId == @0")
         {
+        }
+
+        protected override Guid GetSuperId(ProductVariety entity)
+        {
+            return entity.OrgId;
+        }
+
+        protected override Expression<Func<ProductVariety, bool>> GetSuperIdPredicate(Guid superId)
+        {
+            return pv => pv.OrgId == superId;
         }
     }
 }

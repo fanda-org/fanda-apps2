@@ -5,63 +5,80 @@ using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
 using Fanda.Service.Dto;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Fanda.Service
 {
     public interface IOrganizationRepository :
-        IParentRepository<OrganizationDto, OrgYearListDto>
+        ISuperRepository<Organization, OrganizationDto, OrgYearListDto>
     {
     }
 
-    public class OrganizationRepository :
-        ParentRepositoryBase<Organization, OrganizationDto, OrgYearListDto>, IOrganizationRepository
+    public class OrganizationRepository : ListRepository<Organization, OrgYearListDto>, IOrganizationRepository
     {
         private readonly FandaContext _context;
         private readonly IMapper _mapper;
 
         public OrganizationRepository(FandaContext context, IMapper mapper)
-            : base(context, mapper, "")
+            : base(context, mapper, string.Empty)   // TODO: Filter by UserId
         {
             _context = context;
             _mapper = mapper;
         }
 
-        //public async Task<OrganizationDto> GetByIdAsync(Guid id)
-        //{
-        //    if (id == null || id == Guid.Empty)
-        //    {
-        //        throw new ArgumentNullException("Id", "Id is required");
-        //    }
+        public async Task<OrganizationDto> GetByIdAsync(Guid id)
+        {
+            if (id == null || id == Guid.Empty)
+            {
+                throw new ArgumentNullException("Id", "Id is required");
+            }
 
-        //    OrganizationDto org = await _context.Organizations
-        //        .AsNoTracking()
-        //        .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
-        //        .FirstOrDefaultAsync(o => o.Id == id);
-        //    if (org == null)
-        //    {
-        //        throw new NotFoundException("Organization not found");
-        //    }
-        //    return org;
+            OrganizationDto org = await _context.Organizations
+                .AsNoTracking()
+                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(o => o.Id == id);
+            if (org == null)
+            {
+                throw new NotFoundException("Organization not found");
+            }
+            return org;
 
-        //    //org.Contacts = await _context.Organizations
-        //    //    .AsNoTracking()
-        //    //    .Where(m => m.Id == id)
-        //    //    .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
-        //    //    .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
-        //    //    .ToListAsync();
-        //    //org.Addresses = await _context.Organizations
-        //    //    .AsNoTracking()
-        //    //    .Where(m => m.Id == id)
-        //    //    .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
-        //    //    .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
-        //    //    .ToListAsync();
-        //    //return org;
-        //}
+            #region commented
+
+            //org.Contacts = await _context.Organizations
+            //    .AsNoTracking()
+            //    .Where(m => m.Id == id)
+            //    .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
+            //    .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+            //org.Addresses = await _context.Organizations
+            //    .AsNoTracking()
+            //    .Where(m => m.Id == id)
+            //    .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
+            //    .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+            //return org;
+
+            #endregion commented
+        }
+
+        public async Task<IEnumerable<OrganizationDto>> FindAsync(Expression<Func<Organization, bool>> predicate)
+        {
+            var models = await _context.Organizations
+                .AsNoTracking()
+                .Where(predicate)
+                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return models;
+        }
 
         //public async Task<OrgChildrenDto> GetChildrenByIdAsync(Guid id)
         //{
@@ -99,7 +116,21 @@ namespace Fanda.Service
         //    return model;
         //}
 
-        public override async Task UpdateAsync(Guid id, OrganizationDto model)
+        public virtual async Task<OrganizationDto> CreateAsync(OrganizationDto model)
+        {
+            var validationResult = await ValidateAsync(model);
+            if (!validationResult.IsValid())
+            {
+                throw new BadRequestException(validationResult);
+            }
+            var entity = _mapper.Map<Organization>(model);
+            entity.DateCreated = DateTime.UtcNow;
+            await _context.Organizations.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<OrganizationDto>(entity);
+        }
+
+        public async Task UpdateAsync(Guid id, OrganizationDto model)
         {
             if (id != model.Id)
             {
@@ -209,7 +240,7 @@ namespace Fanda.Service
             //return model;
         }
 
-        public override async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {
@@ -235,6 +266,28 @@ namespace Fanda.Service
                 return true;
             }
             throw new NotFoundException("Organization not found");
+        }
+
+        public virtual async Task<bool> ActivateAsync(Guid id, bool active)
+        {
+            if (id == null || id == Guid.Empty)
+            {
+                throw new ArgumentNullException("id", "Id is required");
+            }
+            var entity = await _context.Organizations.FindAsync(id);
+            if (entity == null)
+            {
+                throw new NotFoundException("Organization not found");
+            }
+            entity.Active = active;
+            entity.DateModified = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<Organization, bool>> predicate)
+        {
+            return await _context.Organizations.AnyAsync(predicate);
         }
 
         //public async Task<bool> ChangeStatusAsync(ActiveStatus status)
@@ -279,67 +332,79 @@ namespace Fanda.Service
         //    return GetAll(query);
         //}
 
-        IQueryable<OrgYearListDto> IListRepository<OrgYearListDto>.GetAll(Guid userId)
-        {
-            // TODO - to be fixed once org-user relationship established
-            //if (userId == null || userId == Guid.Empty)
-            //{
-            //    throw new ArgumentNullException("userId", "User id is required");
-            //}
+        //IQueryable<OrgYearListDto> IListRepository<OrgYearListDto>.GetAll(Guid userId, Query query)
+        //{
+        //    // TODO - to be fixed once org-user relationship established
+        //    //if (userId == null || userId == Guid.Empty)
+        //    //{
+        //    //    throw new ArgumentNullException("userId", "User id is required");
+        //    //}
 
-            IQueryable<OrgYearListDto> query = _context.Organizations
-                .Include(o => o.AccountYears)
-                //.Include(o => o.OrgUsers)
-                .AsNoTracking()
-                //.Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
-                .ProjectTo<OrgYearListDto>(_mapper.ConfigurationProvider);
-            return GetAll(query);
-        }
+        //    IQueryable<OrgYearListDto> query = _context.Organizations
+        //        .Include(o => o.AccountYears)
+        //        //.Include(o => o.OrgUsers)
+        //        .AsNoTracking()
+        //        //.Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
+        //        .ProjectTo<OrgYearListDto>(_mapper.ConfigurationProvider);
+        //    return GetAll(query);
+        //}
 
-        private IQueryable<T> GetAll<T>(IQueryable<T> query)
-            where T : BaseListDto
-        {
-            query = query.Where(c => c.Code != "FANDA");
-            return query;
-        }
-
-        // public async Task<bool> MapUserAsync(Guid orgId, Guid userId) => await _userRepository.MapOrgAsync(userId, orgId);
-
-        // public async Task<bool> UnmapUserAsync(Guid orgId, Guid userId) => await _userRepository.UnmapOrgAsync(userId, orgId);
+        //private IQueryable<T> GetAll<T>(IQueryable<T> query)
+        //    where T : BaseListDto
+        //{
+        //    query = query.Where(c => c.Code != "FANDA");
+        //    return query;
+        //}
 
         #endregion List
 
-        //public async Task<ValidationResultModel> ValidateAsync(OrganizationDto model)
-        //{
-        //    // Reset validation errors
-        //    model.Errors.Clear();
+        public async Task<ValidationErrors> ValidateAsync(OrganizationDto model)
+        {
+            // Reset validation errors
+            model.Errors.Clear();
 
-        //    #region Formatting: Cleansing and formatting
+            #region Formatting: Cleansing and formatting
 
-        //    model.Code = model.Code.ToUpper();
-        //    model.Name = model.Name.TrimExtraSpaces();
-        //    model.Description = model.Description.TrimExtraSpaces();
+            model.Code = model.Code.ToUpper();
+            model.Name = model.Name.TrimExtraSpaces();
+            model.Description = model.Description.TrimExtraSpaces();
 
-        //    #endregion Formatting: Cleansing and formatting
+            #endregion Formatting: Cleansing and formatting
 
-        //    #region Validation: Duplicate
+            #region Validation: Duplicate
 
-        //    // Check code duplicate
-        //    var duplCode = new KeyData { Field = KeyField.Code, Value = model.Code, Id = model.Id };
-        //    if (await ExistsAsync(duplCode))
-        //    {
-        //        model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
-        //    }
-        //    // Check name duplicate
-        //    var duplName = new KeyData { Field = KeyField.Name, Value = model.Name, Id = model.Id };
-        //    if (await ExistsAsync(duplName))
-        //    {
-        //        model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
-        //    }
+            if (await AnyAsync(GetCodePredicate(model.Code, model.Id)))
+            {
+                model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
+            }
+            if (await AnyAsync(GetNamePredicate(model.Name, model.Id)))
+            {
+                model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
+            }
 
-        //    #endregion Validation: Duplicate
+            #endregion Validation: Duplicate
 
-        //    return model.Errors;
-        //}
+            return model.Errors;
+        }
+
+        private ExpressionStarter<Organization> GetCodePredicate(string code, Guid id = default)
+        {
+            var codeExpression = PredicateBuilder.New<Organization>(e => e.Code == code);
+            if (id != null && id != Guid.Empty)
+            {
+                codeExpression = codeExpression.And(e => e.Id != id);
+            }
+            return codeExpression;
+        }
+
+        private ExpressionStarter<Organization> GetNamePredicate(string name, Guid id = default)
+        {
+            var nameExpression = PredicateBuilder.New<Organization>(e => e.Name == name);
+            if (id != null && id != Guid.Empty)
+            {
+                nameExpression = nameExpression.And(e => e.Id != id);
+            }
+            return nameExpression;
+        }
     }
 }

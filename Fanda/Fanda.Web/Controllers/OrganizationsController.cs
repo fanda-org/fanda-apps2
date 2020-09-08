@@ -1,9 +1,8 @@
 using Fanda.Core;
 using Fanda.Core.Base;
-using Fanda.Core.Extensions;
+using Fanda.Domain;
 using Fanda.Service;
 using Fanda.Service.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Specialized;
@@ -14,13 +13,14 @@ using System.Web;
 
 namespace Fanda.Web.Controllers
 {
-    public class OrganizationsController : ParentControllerBase<IOrganizationRepository, OrganizationDto, OrgYearListDto>
+    public class OrganizationsController :
+        SuperController<IOrganizationRepository, Organization, OrganizationDto, OrgYearListDto>
     {
         private const string ModuleName = "Organization";
         private readonly IOrganizationRepository repository;
 
         public OrganizationsController(IOrganizationRepository repository)
-            : base(repository, ModuleName)
+            : base(repository)
         {
             this.repository = repository;
         }
@@ -37,11 +37,11 @@ namespace Fanda.Web.Controllers
                 {
                     Filter = queryString["filter"],
                     FilterArgs = queryString["filterArgs"]?.Split(','),
-                    Search = queryString["search"],
-                    Sort = queryString["sort"],
+                    // Search = queryString["search"],
+                    Sort = queryString["sort"]
                 };
 
-                var response = await repository.GetData(userId, query);
+                var response = await repository.GetAll(userId, query);
                 return Ok(response);
             }
             catch (Exception ex)

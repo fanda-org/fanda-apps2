@@ -1,27 +1,39 @@
 ﻿using AutoMapper;
+using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
-using Fanda.Service.Base;
 using Fanda.Service.Dto;
+using System;
+using System.Linq.Expressions;
 
 namespace Fanda.Service
 {
     public interface IUnitRepository :
-        IOrgRepository<UnitDto, UnitListDto>
+        ISubRepository<Unit, UnitDto, UnitListDto>
     {
     }
 
     public class UnitRepository :
-        OrgRepositoryBase<Unit, UnitDto, UnitListDto>, IUnitRepository
+        SubRepository<Unit, UnitDto, UnitListDto>, IUnitRepository
     {
         //private readonly FandaContext _context;
         //private readonly IMapper _mapper;
 
         public UnitRepository(FandaContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "OrgId == @0")
         {
             //_context = context;
             //_mapper = mapper;
+        }
+
+        protected override Guid GetSuperId(Unit entity)
+        {
+            return entity.OrgId;
+        }
+
+        protected override Expression<Func<Unit, bool>> GetSuperIdPredicate(Guid superId)
+        {
+            return u => u.OrgId == superId;
         }
 
         //public IQueryable<UnitListDto> GetAll(Guid orgId)

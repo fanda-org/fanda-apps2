@@ -2,27 +2,38 @@
 using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
-using Fanda.Service.Base;
 using Fanda.Service.Dto;
+using System;
+using System.Linq.Expressions;
 
 namespace Fanda.Service
 {
     public interface IProductBrandRepository :
-        IOrgRepository<ProductBrandDto, ProductBrandListDto>
+        ISubRepository<ProductBrand, ProductBrandDto, ProductBrandListDto>
     {
     }
 
     public class ProductBrandRepository :
-        OrgRepositoryBase<ProductBrand, ProductBrandDto, ProductBrandListDto>, IProductBrandRepository
+        SubRepository<ProductBrand, ProductBrandDto, ProductBrandListDto>, IProductBrandRepository
     {
         //private readonly FandaContext _context;
         //private readonly IMapper _mapper;
 
         public ProductBrandRepository(FandaContext context, IMapper mapper)
-            : base(context, mapper)
+            : base(context, mapper, "OrgId == @0")
         {
             //_context = context;
             //_mapper = mapper;
+        }
+
+        protected override Guid GetSuperId(ProductBrand entity)
+        {
+            return entity.OrgId;
+        }
+
+        protected override Expression<Func<ProductBrand, bool>> GetSuperIdPredicate(Guid superId)
+        {
+            return pb => pb.OrgId == superId;
         }
 
         //public IQueryable<ProductBrandListDto> GetAll(Guid orgId)
