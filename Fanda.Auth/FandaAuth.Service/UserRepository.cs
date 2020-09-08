@@ -6,18 +6,23 @@ using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.Extensions;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace FandaAuth.Service
 {
     public interface IUserRepository :
-        IRepositoryBase<UserDto, UserListDto, UserKeyData>
+        //IRepositoryBase<UserDto, UserListDto, UserKeyData>
+        ISubRepository<User, UserDto, UserListDto>
     {
     }
 
-    public class UserRepository : ListRepositoryBase<User, UserListDto>, IUserRepository
+    public class UserRepository : ListRepository<User, UserListDto>, IUserRepository
     {
         private readonly AuthContext _context;
         private readonly IMapper _mapper;
@@ -29,20 +34,7 @@ namespace FandaAuth.Service
             _mapper = mapper;
         }
 
-        //public IQueryable<UserListDto> GetAll(Guid tenantId, Query queryInput)
-        //{
-        //    if (tenantId == null || tenantId == Guid.Empty)
-        //    {
-        //        throw new ArgumentNullException("tenantId", "Tenant id is required");
-        //    }
-        //    IQueryable<UserListDto> userQry = _context.Users
-        //        .AsNoTracking()
-        //        .Where(u => u.TenantId == tenantId)
-        //        .ProjectTo<UserListDto>(_mapper.ConfigurationProvider);
-        //    return userQry;
-        //}
-
-        public async Task<UserDto> GetByIdAsync(Guid id/*, bool includeChildren = false*/)
+        public async Task<UserDto> GetByIdAsync(Guid id)
         {
             if (id == null || id == Guid.Empty)
             {
@@ -59,7 +51,18 @@ namespace FandaAuth.Service
             return user;
         }
 
-        public async Task<UserDto> CreateAsync(UserDto dto, Guid tenantId)
+        public async Task<IEnumerable<UserDto>> FindAsync(Expression<Func<User, bool>> predicate)
+        {
+            var models = await _context.Users
+                .AsNoTracking()
+                .Where(predicate)
+                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return models;
+        }
+
+        public async Task<UserDto> CreateAsync(Guid tenantId, UserDto dto)
         {
             if (tenantId == null || tenantId == Guid.Empty)
             {
@@ -68,6 +71,11 @@ namespace FandaAuth.Service
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
                 throw new BadRequestException("Password is required");
+            }
+            var validationResult = await ValidateAsync(tenantId, dto);
+            if (!validationResult.IsValid())
+            {
+                throw new BadRequestException(validationResult);
             }
 
             PasswordStorage.CreatePasswordHash(dto.Password, out string passwordHash, out string passwordSalt);
@@ -99,6 +107,11 @@ namespace FandaAuth.Service
             {
                 throw new NotFoundException("User not found");
             }
+            var validationResult = await ValidateAsync(dbUser.TenantId, dto);
+            if (!validationResult.IsValid())
+            {
+                throw new BadRequestException(validationResult);
+            }
 
             PasswordStorage.CreatePasswordHash(dto.Password, out string passwordHash, out string passwordSalt);
 
@@ -108,9 +121,8 @@ namespace FandaAuth.Service
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             _context.Entry(dbUser).CurrentValues.SetValues(user);
-            // _context.Users.Update(user);
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
-            //return _mapper.Map<UserDto>(user);
         }
 
         public async Task<bool> DeleteAsync(Guid id)
@@ -131,160 +143,29 @@ namespace FandaAuth.Service
             return true;
         }
 
-        //public bool MapOrgAsync(Guid userId, Guid orgId)
-        //{
-        //    throw new NotImplementedException();
-
-        //    // if (userId == null || userId == Guid.Empty)
-        //    // {
-        //    //     throw new ArgumentNullException("userId", "User Id is required");
-        //    // }
-        //    // if (orgId == null || orgId == Guid.Empty)
-        //    // {
-        //    //     throw new ArgumentNullException("orgId", "Org Id is required");
-        //    // }
-        //    // var OrgUsers = _context.Set<OrgUser>();
-
-        //    // var orgUser = await OrgUsers
-        //    //     .FindAsync(orgId, userId);
-        //    // if (orgUser == null)
-        //    // {
-        //    //     await OrgUsers.AddAsync(new OrgUser
-        //    //     {
-        //    //         UserId = userId,
-        //    //         OrgId = orgId
-        //    //     });
-        //    //     await _context.SaveChangesAsync();
-        //    // }
-        //    //return true;
-        //}
-
-        //public bool UnmapOrgAsync(Guid userId, Guid orgId)
-        //{
-        //    throw new NotImplementedException();
-        //    // if (userId == null || userId == Guid.Empty)
-        //    // {
-        //    //     throw new ArgumentNullException("userId", "User Id is required");
-        //    // }
-        //    // if (orgId == null || orgId == Guid.Empty)
-        //    // {
-        //    //     throw new ArgumentNullException("orgId", "Org Id is required");
-        //    // }
-        //    // var OrgUsers = _context.Set<OrgUser>();
-
-        //    // var orgUser = await OrgUsers
-        //    //     .FindAsync(orgId, userId);
-
-        //    // if (orgUser == null)
-        //    // {
-        //    //     throw new KeyNotFoundException("User not found in organization");
-        //    // }
-
-        //    // OrgUsers.Remove(orgUser);
-        //    // await _context.SaveChangesAsync();
-        //    //return true;
-        //}
-
-        //public bool MapRoleAsync(Guid userId, string roleName, Guid orgId)
-        //{
-        //    throw new NotImplementedException();
-        //    // try
-        //    // {
-        //    //     if (userId == null || userId == Guid.Empty)
-        //    //     {
-        //    //         throw new ArgumentNullException("userId", "User Id is required");
-        //    //     }
-        //    //     if (string.IsNullOrEmpty(roleName))
-        //    //     {
-        //    //         throw new ArgumentNullException("roleName", "Role Name is required");
-        //    //     }
-        //    //     if (orgId == null || orgId == Guid.Empty)
-        //    //     {
-        //    //         throw new ArgumentNullException("orgId", "Role Id is required");
-        //    //     }
-
-        //    // Role role = await _context.Roles
-        //    //     .AsNoTracking()
-        //    //     .FirstOrDefaultAsync(r => r.Name == roleName && r.OrgId == orgId);
-        //    // if (role != null)
-        //    // {
-        //    //     await _context.Set<OrgUserRole>().AddAsync(new OrgUserRole
-        //    //     {
-        //    //         OrgId = orgId,
-        //    //         UserId = userId,
-        //    //         RoleId = role.Id
-        //    //     });
-        //    //     await _context.SaveChangesAsync();
-        //    // }
-        //    //     return true;
-        //    // }
-        //    //     catch (Exception ex)
-        //    //     {
-        //    //         _logger.LogError(ex, ex.Message);
-        //    //     }
-        //    //     return false;
-        //}
-
-        //public bool UnmapRoleAsync(Guid userId, Guid roleId, Guid orgId)
-        //{
-        //    throw new NotImplementedException();
-        //    // if (userId == null || userId == Guid.Empty)
-        //    // {
-        //    //     throw new ArgumentNullException("userId", "User Id is required");
-        //    // }
-        //    // if (roleId == null || roleId == Guid.Empty)
-        //    // {
-        //    //     throw new ArgumentNullException("roleId", "Role Id is required");
-        //    // }
-        //    // if (orgId == null || orgId == Guid.Empty)
-        //    // {
-        //    //     throw new ArgumentNullException("orgId", "Role Id is required");
-        //    // }
-        //    // var OrgUserRoles = _context.Set<OrgUserRole>();
-
-        //    // var orgUserRole = await OrgUserRoles
-        //    //     .FindAsync(orgId, userId, roleId);
-
-        //    // if (orgUserRole == null)
-        //    // {
-        //    //     throw new KeyNotFoundException("User not found in organization");
-        //    // }
-
-        //    // OrgUserRoles.Remove(orgUserRole);
-        //    // await _context.SaveChangesAsync();
-        //    //return true;
-        //}
-
-        public async Task<bool> ChangeStatusAsync(ActiveStatus status)
+        public virtual async Task<bool> ActivateAsync(Guid id, bool active)
         {
-            if (status.Id == null || status.Id == Guid.Empty)
+            if (id == null || id == Guid.Empty)
             {
-                throw new BadRequestException("Id is required");
+                throw new ArgumentNullException("id", "Id is required");
             }
-
-            var user = await _context.Users
-                .FindAsync(status.Id);
-            if (user != null)
+            var entity = await _context.Users.FindAsync(id);
+            if (entity == null)
             {
-                user.Active = status.Active;
-                user.DateModified = DateTime.UtcNow;
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync();
-                return true;
+                throw new NotFoundException("User not found");
             }
-            throw new NotFoundException("User not found");
+            entity.Active = active;
+            entity.DateModified = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<bool> ExistsAsync(UserKeyData data)
-            => await _context.ExistsAsync<User>(data);
-
-        public async Task<UserDto> GetByAsync(UserKeyData data)
+        public virtual async Task<bool> AnyAsync(Expression<Func<User, bool>> predicate)
         {
-            var user = await _context.ExistsAsync<User>(data);
-            return _mapper.Map<UserDto>(user);
+            return await _context.Users.AnyAsync(predicate);
         }
 
-        public async Task<ValidationErrors> ValidateAsync(UserDto model, Guid tenantId)
+        public async Task<ValidationErrors> ValidateAsync(Guid tenantId, UserDto model)
         {
             // Reset validation errors
             model.Errors.Clear();
@@ -304,17 +185,11 @@ namespace FandaAuth.Service
 
             if (tenantId == null || tenantId == Guid.Empty)
             {
-                //throw new ArgumentNullException(nameof(tenantId), "Tenant id is required");
                 model.Errors.AddError(nameof(tenantId), "Tenant id is required");
             }
-            //if (tenantId != model.TenantId)
-            //{
-            //    //throw new ArgumentException("Tenant id is mismatch");
-            //    model.Errors.AddError(nameof(tenantId), "Tenant id is mismatch");
-            //}
-            var dbTenant = await _context.Tenants
-                .FindAsync(tenantId);
-            if (dbTenant == null)
+            bool foundTenant = await _context.Tenants
+                .AnyAsync(t => t.Id == tenantId);
+            if (!foundTenant)
             {
                 model.Errors.AddError(nameof(tenantId), "Tenant not found");
             }
@@ -324,14 +199,22 @@ namespace FandaAuth.Service
             #region Validation: Duplicate
 
             // Check email duplicate
-            var duplEmail = new UserKeyData { Field = KeyField.Email, Value = model.Email, Id = model.Id, TenantId = tenantId };
-            if (await ExistsAsync(duplEmail))
+            //var duplEmail = new UserKeyData { Field = KeyField.Email, Value = model.Email, Id = model.Id, TenantId = tenantId };
+            //if (await ExistsAsync(duplEmail))
+            //{
+            //    model.Errors.AddError(nameof(model.Email), $"{nameof(model.Email)} '{model.Email}' already exists");
+            //}
+            if (await AnyAsync(GetEmailPredicate(model.Email, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Email), $"{nameof(model.Email)} '{model.Email}' already exists");
             }
             // Check name duplicate
-            var duplName = new UserKeyData { Field = KeyField.Name, Value = model.UserName, Id = model.Id, TenantId = tenantId };
-            if (await ExistsAsync(duplName))
+            //var duplName = new UserKeyData { Field = KeyField.Name, Value = model.UserName, Id = model.Id, TenantId = tenantId };
+            //if (await ExistsAsync(duplName))
+            //{
+            //    model.Errors.AddError(nameof(model.UserName), $"{nameof(model.UserName)} '{model.UserName}' already exists");
+            //}
+            if (await AnyAsync(GetUserNamePredicate(model.UserName, model.Id)))
             {
                 model.Errors.AddError(nameof(model.UserName), $"{nameof(model.UserName)} '{model.UserName}' already exists");
             }
@@ -341,90 +224,28 @@ namespace FandaAuth.Service
             return model.Errors;
         }
 
-        #region Role specific
+        #region Private methods
 
-        //public async Task<ViewModel.Access.IdentityResult> AddToRoleAsync(UserViewModel userVM, string role)
-        //{
-        //    var user = _mapper.Map<User>(userVM);
-        //    //Microsoft.AspNetCore.Identity.IdentityResult result = await _userManager.AddToRoleAsync(user, role);
-        //    return new ViewModel.Access.IdentityResult
-        //    {
-        //        Succeeded = result.Succeeded,
-        //        Errors = result.Errors.Select(e =>
-        //            new ViewModel.Access.IdentityError
-        //            {
-        //                Code = e.Code,
-        //                Description = e.Description
-        //            })
-        //    };
-        //}
+        private ExpressionStarter<User> GetEmailPredicate(string email, Guid id = default)
+        {
+            var emailExpression = PredicateBuilder.New<User>(e => e.Email == email);
+            if (id != null)
+            {
+                emailExpression = emailExpression.And(e => e.Id != id);
+            }
+            return emailExpression;
+        }
 
-        //public async Task<ViewModel.Access.IdentityResult> AddToRolesAsync(UserViewModel userVM, IEnumerable<string> roles)
-        //{
-        //    var user = _mapper.Map<User>(userVM);
-        //    Microsoft.AspNetCore.Identity.IdentityResult result = await _userManager.AddToRolesAsync(user, roles);
-        //    return new ViewModel.Access.IdentityResult
-        //    {
-        //        Succeeded = result.Succeeded,
-        //        Errors = result.Errors.Select(e =>
-        //            new ViewModel.Access.IdentityError
-        //            {
-        //                Code = e.Code,
-        //                Description = e.Description
-        //            })
-        //    };
-        //}
+        private ExpressionStarter<User> GetUserNamePredicate(string userName, Guid id = default)
+        {
+            var userNameExpression = PredicateBuilder.New<User>(e => e.UserName == userName);
+            if (id != null)
+            {
+                userNameExpression = userNameExpression.And(e => e.Id != id);
+            }
+            return userNameExpression;
+        }
 
-        //public Task<IList<string>> GetRolesAsync(UserViewModel userVM)
-        //{
-        //    var user = _mapper.Map<User>(userVM);
-        //    return _userManager.GetRolesAsync(user);
-        //}
-
-        //public async Task<IList<UserViewModel>> GetUsersInRoleAsync(string roleName)
-        //{
-        //    var users = await _userManager.GetUsersInRoleAsync(roleName);
-        //    return _mapper.Map<IList<UserViewModel>>(users);
-        //}
-
-        //public Task<bool> IsInRoleAsync(UserViewModel userVM, string role)
-        //{
-        //    var user = _mapper.Map<User>(userVM);
-        //    return _userManager.IsInRoleAsync(user, role);
-        //}
-
-        //public async Task<ViewModel.Access.IdentityResult> RemoveFromRoleAsync(UserViewModel userVM, string role)
-        //{
-        //    var user = _mapper.Map<User>(userVM);
-        //    Microsoft.AspNetCore.Identity.IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role);
-        //    return new ViewModel.Access.IdentityResult
-        //    {
-        //        Succeeded = result.Succeeded,
-        //        Errors = result.Errors.Select(e =>
-        //            new ViewModel.Access.IdentityError
-        //            {
-        //                Code = e.Code,
-        //                Description = e.Description
-        //            })
-        //    };
-        //}
-
-        //public async Task<ViewModel.Access.IdentityResult> RemoveFromRolesAsync(UserViewModel userVM, IEnumerable<string> roles)
-        //{
-        //    var user = _mapper.Map<User>(userVM);
-        //    Microsoft.AspNetCore.Identity.IdentityResult result = await _userManager.RemoveFromRolesAsync(user, roles);
-        //    return new ViewModel.Access.IdentityResult
-        //    {
-        //        Succeeded = result.Succeeded,
-        //        Errors = result.Errors.Select(e =>
-        //            new ViewModel.Access.IdentityError
-        //            {
-        //                Code = e.Code,
-        //                Description = e.Description
-        //            })
-        //    };
-        //}
-
-        #endregion Role specific
+        #endregion Private methods
     }
 }

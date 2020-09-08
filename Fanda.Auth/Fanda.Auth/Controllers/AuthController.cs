@@ -116,7 +116,7 @@ namespace Fanda.Auth.Controllers
             try
             {
                 var validationResult = await _repository.ValidateAsync(model.TenantId, model);
-                if (validationResult.IsValid)
+                if (validationResult.IsValid())
                 {
                     string token = Guid.NewGuid().ToString();
                     string callbackUrl = Url.Page(

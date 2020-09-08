@@ -248,7 +248,7 @@ namespace FandaAuth.Service
         public async Task<ValidationErrors> ValidateAsync(Guid tenantId, RegisterViewModel model)
         {
             var userDto = _mapper.Map<UserDto>(model);
-            return await _userRepository.ValidateAsync(userDto, tenantId);
+            return await _userRepository.ValidateAsync(tenantId, userDto);
         }
 
         #region Privates

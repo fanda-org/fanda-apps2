@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public interface IRepositoryBase<TModel, TListModel, TKeyData> : IListRepositoryBase<TListModel>
+    public interface IRepositoryBase<TModel, TListModel, TKeyData> : IListRepository<TListModel>
     {
         // GET
         Task<TModel> GetByIdAsync(Guid id);

@@ -5,17 +5,23 @@
 		<AssemblyOriginatorKeyFile>Fanda.pfx</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="ActiveStatus.cs" />
+	  <Compile Remove="Base\FandaControllerBase.cs" />
 	  <Compile Remove="Base\IParentRepositoryBase.cs" />
+	  <Compile Remove="Base\IRepositoryBase.cs" />
 	  <Compile Remove="Base\IRootRepositoryBase.cs" />
 	  <Compile Remove="Base\ParentControllerBase.cs" />
 	  <Compile Remove="Base\ParentRepositoryBase.cs" />
+	  <Compile Remove="Base\RepositoryBase.cs" />
 	  <Compile Remove="Base\RootControllerBase.cs" />
 	  <Compile Remove="Base\RootRepositoryBase.cs" />
+	  <Compile Remove="ExistsDto.cs" />
 	  <Compile Remove="Extensions\RepositoryExtensions.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="EFCore.NamingConventions" Version="1.1.0" />
+		<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="3.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
 		<PackageReference Include="AutoMapper" Version="10.0.0" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />

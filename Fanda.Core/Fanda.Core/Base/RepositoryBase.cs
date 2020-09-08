@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Fanda.Core.Base
 {
     public abstract class RepositoryBase<TEntity, TModel, TListModel, TKeyData> :
-        ListRepositoryBase<TEntity, TListModel>, IRepositoryBase<TModel, TListModel, TKeyData>
+        ListRepository<TEntity, TListModel>, IRepositoryBase<TModel, TListModel, TKeyData>
         where TEntity : BaseEntity
         where TModel : BaseDto
         where TListModel : BaseListDto
@@ -48,7 +48,7 @@ namespace Fanda.Core.Base
         public virtual async Task<TModel> CreateAsync(TModel model, Guid parentId)
         {
             var validationResult = await ValidateAsync(model, parentId);
-            if (!validationResult.IsValid)
+            if (!validationResult.IsValid())
             {
                 throw new BadRequestException(validationResult);
             }
@@ -81,7 +81,7 @@ namespace Fanda.Core.Base
 
             Guid parentId = GetParentId(dbEntity);
             var validationResult = await ValidateAsync(model, parentId);
-            if (!validationResult.IsValid)
+            if (!validationResult.IsValid())
             {
                 throw new BadRequestException(validationResult);
             }
@@ -89,7 +89,7 @@ namespace Fanda.Core.Base
             var entity = _mapper.Map<TEntity>(model);
             entity.DateModified = DateTime.UtcNow;
             _context.Entry(dbEntity).CurrentValues.SetValues(entity);
-            // _context.Set<TEntity>().Update(dbEntity);
+            _context.Set<TEntity>().Update(dbEntity);
             await _context.SaveChangesAsync();
         }
 

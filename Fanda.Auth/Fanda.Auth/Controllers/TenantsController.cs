@@ -1,16 +1,19 @@
 using Fanda.Core.Base;
 using Fanda.Core.Extensions;
+using FandaAuth.Domain;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
 
 namespace Fanda.Authentication.Controllers
 {
-    public class TenantsController : FandaControllerBase<ITenantRepository, TenantDto, TenantListDto, KeyData>
+    public class TenantsController :
+        //FandaControllerBase<ITenantRepository, TenantDto, TenantListDto, KeyData>
+        SuperController<ITenantRepository, Tenant, TenantDto, TenantListDto>
     {
-        private const string ModuleName = "Tenant";
+        //private const string ModuleName = "Tenant";
         //private readonly ITenantRepository repository;
 
-        public TenantsController(ITenantRepository repository) : base(repository, ModuleName)
+        public TenantsController(ITenantRepository repository) : base(repository)
         {
             //this.repository = repository;
         }

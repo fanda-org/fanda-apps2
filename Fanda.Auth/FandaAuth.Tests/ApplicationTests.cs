@@ -68,7 +68,7 @@ namespace FandaAuth.Tests
                 Version = "1.0.0",
                 Active = true
             };
-            var data = await controller.Create(app, Guid.Empty);
+            var data = await controller.Create(app);
 
             //Assert
             Assert.IsType<CreatedAtActionResult>(data);
@@ -88,7 +88,7 @@ namespace FandaAuth.Tests
             };
 
             //Act
-            var data = await controller.GetAll(Guid.Empty);
+            var data = await controller.GetAll();
 
             //Assert
             Assert.IsType<OkObjectResult>(data);

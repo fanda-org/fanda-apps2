@@ -53,6 +53,7 @@ namespace Fanda.Auth
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             #endregion DI - Repositories and services

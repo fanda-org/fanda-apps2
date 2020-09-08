@@ -12,19 +12,22 @@ using System.Threading.Tasks;
 namespace FandaAuth.Service
 {
     public interface IApplicationRepository :
-        IRepositoryBase<ApplicationDto, ApplicationListDto, KeyData>
+        //IRepositoryBase<ApplicationDto, ApplicationListDto, KeyData>
+        ISuperRepository<Application, ApplicationDto, ApplicationListDto>
     {
     }
 
     public class ApplicationRepository :
-        RepositoryBase<Application, ApplicationDto, ApplicationListDto, KeyData>,
+        //RepositoryBase<Application, ApplicationDto, ApplicationListDto, KeyData>,
+        SuperRepository<Application, ApplicationDto, ApplicationListDto>,
         IApplicationRepository
     {
         private readonly AuthContext context;
         private readonly IMapper mapper;
 
         public ApplicationRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper, string.Empty)
+            //: base(context, mapper, string.Empty)
+            : base(context, mapper)
         {
             this.mapper = mapper;
             this.context = context;
@@ -111,42 +114,37 @@ namespace FandaAuth.Service
             {
                 throw new BadRequestException("Application id mismatch");
             }
-
-            Application app = mapper.Map<Application>(model);
             Application dbApp = await context.Applications
                 .Include(a => a.AppResources)
                 .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
-
             if (dbApp == null)
             {
                 throw new NotFoundException("Application not found");
             }
+
+            // copy current (incoming) values to db
+            Application app = mapper.Map<Application>(model);
+            app.DateModified = DateTime.UtcNow;
+            context.Entry(dbApp).CurrentValues.SetValues(app);
 
             try
             {
                 // delete all app-resource that are no longer exists
                 foreach (AppResource dbAppResource in dbApp.AppResources)
                 {
-                    //Resource dbResource = dbAppResource.Resource;
-                    //if (app.AppResources.All(oc => oc.Resource.Id != dbAppResource.Resource.Id))
                     if (app.AppResources.All(ar => ar.Id != dbAppResource.Id))
                     {
-                        //context.Resources.Remove(dbResource);
                         context.Set<AppResource>().Remove(dbAppResource);
                     }
                 }
             }
             catch { }
 
-            // copy current (incoming) values to db
-            app.DateModified = DateTime.UtcNow;
-            context.Entry(dbApp).CurrentValues.SetValues(app);
-
             #region Resources
 
-            var resourcePairs = from curr in app.AppResources   //.Select(oc => oc.Resource)
-                                join db in dbApp.AppResources   //.Select(oc => oc.Resource)
+            var resourcePairs = from curr in app.AppResources
+                                join db in dbApp.AppResources
                                      on curr.Id equals db.Id into grp
                                 from db in grp.DefaultIfEmpty()
                                 select new { curr, db };
@@ -155,16 +153,10 @@ namespace FandaAuth.Service
                 if (pair.db != null)
                 {
                     context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    // context.Set<AppResource>().Update(pair.db);
+                    context.Set<AppResource>().Update(pair.db);
                 }
                 else
                 {
-                    //var appResource = new AppResource
-                    //{
-                    //    ApplicationId = app.Id,
-                    //    //ResourceId = pair.curr.Id,
-                    //};
-                    //dbApp.AppResources.Add(pair.curr);
                     context.Set<AppResource>().Add(pair.curr);
                 }
             }
@@ -175,20 +167,20 @@ namespace FandaAuth.Service
             await context.SaveChangesAsync();
         }
 
-        protected override Guid GetParentId(Application entity)
-        {
-            return Guid.Empty;
-        }
+        //protected override Guid GetParentId(Application entity)
+        //{
+        //    return Guid.Empty;
+        //}
 
-        protected override void SetParentId(KeyData keyData, Guid parentId)
-        {
-            throw new NotImplementedException();
-        }
+        //protected override void SetParentId(KeyData keyData, Guid parentId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        protected override void SetParentId(Application entity, Guid parentId)
-        {
-            throw new NotImplementedException();
-        }
+        //protected override void SetParentId(Application entity, Guid parentId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public async Task<bool> DeleteAsync(Guid id)
         //{

@@ -49,13 +49,7 @@ namespace Fanda.Core
 
         public void AddError(string field, string message) => Add(new ValidationError(field, message));
 
-        public bool IsValid
-        {
-            get
-            {
-                return Count == 0;
-            }
-        }
+        public bool IsValid() => Count == 0;
     }
 
     //public class DtoErrors : Dictionary<string, List<string>>

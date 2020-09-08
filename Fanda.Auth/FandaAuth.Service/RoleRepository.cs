@@ -7,17 +7,20 @@ using FandaAuth.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace FandaAuth.Service
 {
     public interface IRoleRepository :
-        IRepositoryBase<RoleDto, RoleListDto, TenantKeyData>
+        //IRepositoryBase<RoleDto, RoleListDto, TenantKeyData>
+        ISubRepository<Role, RoleDto, RoleListDto>
     {
     }
 
     public class RoleRepository :
-        RepositoryBase<Role, RoleDto, RoleListDto, TenantKeyData>, IRoleRepository
+        //RepositoryBase<Role, RoleDto, RoleListDto, TenantKeyData>, IRoleRepository
+        SubRepository<Role, RoleDto, RoleListDto>, IRoleRepository
     {
         private readonly AuthContext _context;
         private readonly IMapper _mapper;
@@ -180,29 +183,39 @@ namespace FandaAuth.Service
             await _context.SaveChangesAsync();
         }
 
-        public override async Task<bool> ExistsAsync(TenantKeyData data)
-            => await _context.ExistsAsync<Role>(data);
-
-        public override async Task<RoleDto> GetByAsync(TenantKeyData data)
-        {
-            var app = await _context.GetByAsync<Role>(data);
-            return _mapper.Map<RoleDto>(app);
-        }
-
-        protected override void SetParentId(TenantKeyData keyData, Guid parentId)
-        {
-            keyData.TenantId = parentId;
-        }
-
-        protected override void SetParentId(Role entity, Guid parentId)
-        {
-            entity.TenantId = parentId;
-        }
-
-        protected override Guid GetParentId(Role entity)
+        protected override Guid GetSuperId(Role entity)
         {
             return entity.TenantId;
         }
+
+        protected override Expression<Func<Role, bool>> GetSuperIdPredicate(Guid superId)
+        {
+            return r => r.TenantId == superId;
+        }
+
+        //public override async Task<bool> ExistsAsync(TenantKeyData data)
+        //    => await _context.ExistsAsync<Role>(data);
+
+        //public override async Task<RoleDto> GetByAsync(TenantKeyData data)
+        //{
+        //    var app = await _context.GetByAsync<Role>(data);
+        //    return _mapper.Map<RoleDto>(app);
+        //}
+
+        //protected override void SetParentId(TenantKeyData keyData, Guid parentId)
+        //{
+        //    keyData.TenantId = parentId;
+        //}
+
+        //protected override void SetParentId(Role entity, Guid parentId)
+        //{
+        //    entity.TenantId = parentId;
+        //}
+
+        //protected override Guid GetParentId(Role entity)
+        //{
+        //    return entity.TenantId;
+        //}
 
         //public async Task<bool> DeleteAsync(Guid id)
         //{

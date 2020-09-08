@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public interface IListRepositoryBase<TListModel>
+    public interface IListRepository<TListModel>
     {
         // GET
-        Task<DataResponse<IEnumerable<TListModel>>> GetAll(Guid parentId, Query queryInput);
+        Task<DataResponse<IEnumerable<TListModel>>> GetAll(Guid superId, Query queryInput);
     }
 
     //public interface IRepository<TModel, TListModel> : IRootRepository<TModel, TListModel>

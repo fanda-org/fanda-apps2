@@ -37,7 +37,7 @@ namespace Fanda.Auth
 
                 IApplicationRepository repository = _provider.GetRequiredService<IApplicationRepository>();
 
-                if (!await repository.ExistsAsync(new KeyData { Field = KeyField.Code, Value = appCode }))
+                if (!await repository.AnyAsync(app => app.Code == appCode)) //new KeyData { Field = KeyField.Code, Value = appCode }))
                 {
                     var appInput = new ApplicationDto
                     {
@@ -49,7 +49,7 @@ namespace Fanda.Auth
                         Version = "1.0.0",
                         AppResources = GetAppResources()
                     };
-                    var appOutput = await repository.CreateAsync(appInput, Guid.Empty);
+                    var appOutput = await repository.CreateAsync(appInput);
                 }
             }
             catch (Exception ex)
@@ -128,9 +128,9 @@ namespace Fanda.Auth
                     Active = true,
                     OrgCount = 999999
                 };
-                if (!await repository.ExistsAsync(new KeyData { Field = KeyField.Code, Value = tenantInput.Code }))
+                if (!await repository.AnyAsync(t => t.Code == tenantInput.Code)) //ExistsAsync(new KeyData { Field = KeyField.Code, Value = tenantInput.Code }))
                 {
-                    var tenantOutput = await repository.CreateAsync(tenantInput, Guid.Empty);
+                    var tenantOutput = await repository.CreateAsync(tenantInput);
                     await CreateUsersAsync(tenantOutput);
                     await CreateRolesAsync(tenantOutput);
 
@@ -159,11 +159,10 @@ namespace Fanda.Auth
                     Active = true,
                     //TenantId = tenant.Id
                 };
-                if (!await repository.ExistsAsync(
-                    new UserKeyData { TenantId = tenant.Id, Field = KeyField.Name, Value = superAdmin.UserName })
-                )
+                if (!await repository.AnyAsync(u => u.UserName == superAdmin.UserName))
+                //new UserKeyData { TenantId = tenant.Id, Field = KeyField.Name, Value = superAdmin.UserName })
                 {
-                    var user = await repository.CreateAsync(superAdmin, tenant.Id);
+                    var user = await repository.CreateAsync(tenant.Id, superAdmin);
                     // await repository.MapOrgAsync(user.Id, org.Id);
                     // await repository.MapRoleAsync(user.Id, "SuperAdmin", org.Id);
                 }
@@ -195,7 +194,7 @@ namespace Fanda.Auth
                     string description = roleElement.Split(':')[1];
                     string roleCode = roleName.ToUpper();
                     // creating the roles and seeding them to the database
-                    if (!await repository.ExistsAsync(new TenantKeyData { TenantId = tenant.Id, Field = KeyField.Code, Value = roleCode }))
+                    if (!await repository.AnyAsync(r => r.TenantId == tenant.Id && r.Code == roleCode)) //ExistsAsync(new TenantKeyData { TenantId = tenant.Id, Field = KeyField.Code, Value = roleCode }))
                     {
                         var roleInput = new RoleDto
                         {
@@ -205,7 +204,7 @@ namespace Fanda.Auth
                             Active = true,
                             Privileges = await GetRolePrivileges()
                         };
-                        var roleOutput = await repository.CreateAsync(roleInput, tenant.Id);
+                        var roleOutput = await repository.CreateAsync(tenant.Id, roleInput);
                     }
                 }
             }
@@ -218,10 +217,9 @@ namespace Fanda.Auth
         private async Task<List<RolePrivilegeDto>> GetRolePrivileges()
         {
             IApplicationRepository appRepo = _provider.GetRequiredService<IApplicationRepository>();
-            var app = await appRepo.GetByAsync(new KeyData { Field = KeyField.Code, Value = "FANDA" });
-            //var appChildren = await appRepo.GetChildrenByIdAsync(app.Id);
-            var allResource = app.AppResources.FirstOrDefault(ar => ar.Code == "*");
-
+            var apps = await appRepo
+                .FindAsync(app => app.Code == "FANDA");    //(new KeyData { Field = KeyField.Code, Value = "FANDA" });
+            var allResource = apps?.FirstOrDefault().AppResources.FirstOrDefault(ar => ar.Code == "*");
             return new List<RolePrivilegeDto>()
             {
                 new RolePrivilegeDto

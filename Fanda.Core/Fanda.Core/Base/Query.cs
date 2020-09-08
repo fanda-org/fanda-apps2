@@ -4,6 +4,10 @@ namespace Fanda.Core
 {
     public class Query
     {
+        public Query()
+        {
+        }
+
         public Query(string pageString, string pageSizeString)
         {
             Page = Convert.ToInt32(pageString);

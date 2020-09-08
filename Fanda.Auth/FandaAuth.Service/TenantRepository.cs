@@ -8,32 +8,34 @@ using System;
 namespace FandaAuth.Service
 {
     public interface ITenantRepository :
-        IRepositoryBase<TenantDto, TenantListDto, KeyData>
+        //IRepositoryBase<TenantDto, TenantListDto, KeyData>
+        ISuperRepository<Tenant, TenantDto, TenantListDto>
     {
     }
 
     public class TenantRepository :
-        RepositoryBase<Tenant, TenantDto, TenantListDto, KeyData>, ITenantRepository
+        //RepositoryBase<Tenant, TenantDto, TenantListDto, KeyData>, ITenantRepository
+        SuperRepository<Tenant, TenantDto, TenantListDto>, ITenantRepository
     {
         public TenantRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper, string.Empty)
+            : base(context, mapper)
         {
         }
 
-        protected override Guid GetParentId(Tenant entity)
-        {
-            return Guid.Empty;
-        }
+        //protected override Guid GetParentId(Tenant entity)
+        //{
+        //    return Guid.Empty;
+        //}
 
-        protected override void SetParentId(KeyData keyData, Guid parentId)
-        {
-            throw new NotImplementedException();
-        }
+        //protected override void SetParentId(KeyData keyData, Guid parentId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        protected override void SetParentId(Tenant entity, Guid parentId)
-        {
-            throw new NotImplementedException();
-        }
+        //protected override void SetParentId(Tenant entity, Guid parentId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public IQueryable<TenantListDto> GetAll(Guid parentId)  // nullable
         //{

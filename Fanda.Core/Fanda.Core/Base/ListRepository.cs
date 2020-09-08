@@ -9,57 +9,57 @@ using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
 {
-    public abstract class ListRepositoryBase<TEntity, TListModel> : IListRepositoryBase<TListModel>
+    public abstract class ListRepository<TEntity, TListModel> : IListRepository<TListModel>
         where TEntity : class
         where TListModel : class
     {
         private readonly DbContext _context;
         private readonly IMapper _mapper;
-        private readonly string _filterByParentId;
+        private readonly string _filterBySuperId;
 
-        public ListRepositoryBase(DbContext context, IMapper mapper, string filterByParentId)
+        public ListRepository(DbContext context, IMapper mapper, string filterBySuperId)
         {
             _context = context;
             _mapper = mapper;
-            _filterByParentId = filterByParentId;
+            _filterBySuperId = filterBySuperId;
         }
 
-        public virtual async Task<DataResponse<IEnumerable<TListModel>>> GetAll(Guid parentId, Query queryInput)  // nullable
+        public virtual async Task<DataResponse<IEnumerable<TListModel>>> GetAll(Guid superId, Query queryInput)  // nullable
         {
             if (queryInput.Page > 0 || queryInput.PageSize > 0)
             {
-                return await GetPaged(parentId, queryInput);
+                return await GetPaged(superId, queryInput);
             }
             else
             {
-                return await GetList(parentId, queryInput);
+                return await GetList(superId, queryInput);
             }
         }
 
-        private async Task<PagedResponse<IEnumerable<TListModel>>> GetPaged(Guid parentId, Query queryInput)
+        private async Task<PagedResponse<IEnumerable<TListModel>>> GetPaged(Guid superId, Query queryInput)
         {
-            var (list, itemsCount) = await Execute(parentId, queryInput);
+            var (list, itemsCount) = await Execute(superId, queryInput);
             var response = PagedResponse<IEnumerable<TListModel>>.Succeeded(list, itemsCount, queryInput.Page, queryInput.PageSize);
             return response;
         }
 
-        private async Task<DataResponse<IEnumerable<TListModel>>> GetList(Guid parentId, Query queryInput)
+        private async Task<DataResponse<IEnumerable<TListModel>>> GetList(Guid superId, Query queryInput)
         {
-            var (list, _) = await Execute(parentId, queryInput, true);
+            var (list, _) = await Execute(superId, queryInput, true);
             var response = DataResponse<IEnumerable<TListModel>>.Succeeded(list);
             return response;
         }
 
-        private async Task<(IEnumerable<TListModel>, int)> Execute(Guid parentId, Query queryInput, bool ignoreCount = false)
+        private async Task<(IEnumerable<TListModel>, int)> Execute(Guid superId, Query queryInput, bool ignoreCount = false)
         {
-            var (qry, itemsCount) = GenerateQuery(parentId, queryInput, ignoreCount);
+            var (qry, itemsCount) = GenerateQuery(superId, queryInput, ignoreCount);
             var list = await qry.ToListAsync();
             return (list, itemsCount);
         }
 
-        private (IQueryable<TListModel>, int) GenerateQuery(Guid parentId, Query queryInput, bool ignoreCount = false)
+        private (IQueryable<TListModel>, int) GenerateQuery(Guid superId, Query queryInput, bool ignoreCount = false)
         {
-            var dbQuery = GetBaseQuery(parentId);
+            var dbQuery = GetBaseQuery(superId);
             if (!string.IsNullOrEmpty(queryInput.Filter))
             {
                 dbQuery = dbQuery.Where(queryInput.Filter, queryInput.FilterArgs);
@@ -78,10 +78,10 @@ namespace Fanda.Core.Base
             return (dbQuery, itemsCount);
         }
 
-        private IQueryable<TListModel> GetBaseQuery(Guid parentId)
+        private IQueryable<TListModel> GetBaseQuery(Guid superId)
         {
             IQueryable<TListModel> qry;
-            if (string.IsNullOrEmpty(_filterByParentId))
+            if (string.IsNullOrEmpty(_filterBySuperId))
             {
                 qry = _context.Set<TEntity>()
                     .AsNoTracking()
@@ -90,13 +90,13 @@ namespace Fanda.Core.Base
             }
             else
             {
-                if (parentId == null || parentId == Guid.Empty)
+                if (superId == null || superId == Guid.Empty)
                 {
-                    throw new BadRequestException($"{nameof(parentId)} is required");
+                    throw new BadRequestException($"{nameof(superId)} is required");
                 }
                 qry = _context.Set<TEntity>()
                     .AsNoTracking()
-                    .Where(_filterByParentId, parentId.ToString())
+                    .Where(_filterBySuperId, superId.ToString())
                     .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
                 return qry;
             }
