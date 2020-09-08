@@ -1,8 +1,6 @@
 ﻿using Fanda.Core;
-using Fanda.Core.Extensions;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
-using FandaAuth.Service.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;

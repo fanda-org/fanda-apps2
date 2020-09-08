@@ -2,7 +2,6 @@
 using Fanda.Core.Base;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
-using FandaAuth.Service.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

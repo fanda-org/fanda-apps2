@@ -3,7 +3,6 @@ using Fanda.Core;
 using Fanda.Core.Base;
 using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
-using FandaAuth.Service.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

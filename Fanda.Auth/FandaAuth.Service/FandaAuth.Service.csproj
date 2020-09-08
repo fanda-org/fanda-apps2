@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Extensions\**" />
+	  <EmbeddedResource Remove="Extensions\**" />
+	  <None Remove="Extensions\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Remove="Base\ITenantRepositoryBase.cs" />
 	  <Compile Remove="Base\IUserRepositoryBase.cs" />
 	  <Compile Remove="Base\TenantControllerBase.cs" />

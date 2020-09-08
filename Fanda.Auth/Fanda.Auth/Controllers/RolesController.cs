@@ -2,7 +2,6 @@ using Fanda.Core.Base;
 using FandaAuth.Domain;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
-using FandaAuth.Service.Extensions;
 
 namespace Fanda.Auth.Controllers
 {
