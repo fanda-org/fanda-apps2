@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Fanda.Core.Base
@@ -7,7 +8,7 @@ namespace Fanda.Core.Base
     public interface IListRepository<TListModel>
     {
         // GET
-        Task<DataResponse<IEnumerable<TListModel>>> GetAll(Guid superId, Query queryInput);
+        IQueryable<TListModel> GetAll(Guid superId);
     }
 
     //public interface IRepository<TModel, TListModel> : IRootRepository<TModel, TListModel>

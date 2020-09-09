@@ -13,6 +13,9 @@
 		<None Remove="Extensions\**" />
 		<None Remove="Ref\**" />
 	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Refit" Version="5.2.1" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fanda.Domain\Fanda.Domain.csproj" />

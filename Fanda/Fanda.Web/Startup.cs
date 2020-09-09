@@ -3,6 +3,7 @@ using Fanda.Core;
 using Fanda.Core.Extensions;
 using Fanda.Domain.Context;
 using Fanda.Service;
+using Fanda.Service.ApiClients;
 using Fanda.Service.AutoMapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Reflection;
 
 [assembly: ApiController]
@@ -56,6 +58,16 @@ namespace Fanda.Web
             services.AddJwtAuthentication(appSettings.FandaSettings.Secret);
 
             #endregion Startup configure services
+
+            #region Other services
+
+            services.AddHttpClient("auth_api", c =>
+            {
+                c.BaseAddress = new Uri(appSettings.AuthService.Url);
+            })
+               .AddTypedClient(c => Refit.RestService.For<IAuthClient>(c));
+
+            #endregion Other services
 
             #region DI Repositories and services
 

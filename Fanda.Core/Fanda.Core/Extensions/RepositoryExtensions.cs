@@ -23,7 +23,7 @@ namespace Fanda.Core.Extensions
         //    return dbQuery.GetPagedAsync(); //ToDynamicListAsync();
         //}
 
-        public static async Task<DataResponse<IEnumerable<TModel>>> GetData<TModel>(this IListRepositoryBase<TModel> listRepository,
+        public static async Task<DataResponse<IEnumerable<TModel>>> GetAll<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput)
         {
             if (queryInput.Page > 0 || queryInput.PageSize > 0)
@@ -36,7 +36,7 @@ namespace Fanda.Core.Extensions
             }
         }
 
-        private static async Task<PagedResponse<IEnumerable<TModel>>> GetPaged<TModel>(this IListRepositoryBase<TModel> listRepository,
+        private static async Task<PagedResponse<IEnumerable<TModel>>> GetPaged<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput)
         {
             var (list, itemsCount) = await listRepository.Execute(parentId, queryInput);
@@ -44,7 +44,7 @@ namespace Fanda.Core.Extensions
             return response;
         }
 
-        private static async Task<DataResponse<IEnumerable<TModel>>> GetList<TModel>(this IListRepositoryBase<TModel> listRepository,
+        private static async Task<DataResponse<IEnumerable<TModel>>> GetList<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput)
         {
             var (list, _) = await listRepository.Execute(parentId, queryInput, true);
@@ -52,7 +52,7 @@ namespace Fanda.Core.Extensions
             return response;
         }
 
-        private static async Task<(IEnumerable<TModel>, int)> Execute<TModel>(this IListRepositoryBase<TModel> listRepository,
+        private static async Task<(IEnumerable<TModel>, int)> Execute<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput, bool ignoreCount = false)
         {
             var (qry, itemsCount) = listRepository.GenerateQuery(parentId, queryInput, ignoreCount);
@@ -60,7 +60,7 @@ namespace Fanda.Core.Extensions
             return (list, itemsCount);
         }
 
-        private static (IQueryable<TModel>, int) GenerateQuery<TModel>(this IListRepositoryBase<TModel> listRepository,
+        private static (IQueryable<TModel>, int) GenerateQuery<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput, bool ignoreCount = false)
         {
             var dbQuery = listRepository.GetAll(parentId);

@@ -1,5 +1,6 @@
 ﻿using Fanda.Core;
 using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
 using Microsoft.AspNetCore.Mvc;

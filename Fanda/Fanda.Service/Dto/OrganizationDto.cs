@@ -31,7 +31,7 @@ namespace Fanda.Service.Dto
         public virtual List<AddressDto> Addresses { get; set; }
     }
 
-    //public class OrgListDto : BaseListDto { }
+    public class OrgListDto : BaseListDto { }
 
     public class OrgYearListDto : BaseListDto
     {

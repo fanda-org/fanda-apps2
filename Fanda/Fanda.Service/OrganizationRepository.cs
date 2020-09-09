@@ -4,6 +4,7 @@ using Fanda.Core;
 using Fanda.Core.Base;
 using Fanda.Domain;
 using Fanda.Domain.Context;
+using Fanda.Service.ApiClients;
 using Fanda.Service.Dto;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
@@ -17,20 +18,22 @@ using System.Threading.Tasks;
 namespace Fanda.Service
 {
     public interface IOrganizationRepository :
-        ISuperRepository<Organization, OrganizationDto, OrgYearListDto>
+        ISubRepository<Organization, OrganizationDto, OrgYearListDto>
+    //IListRepository<OrgListDto>
     {
     }
 
-    public class OrganizationRepository : ListRepository<Organization, OrgYearListDto>, IOrganizationRepository
+    public class OrganizationRepository : IOrganizationRepository
     {
         private readonly FandaContext _context;
         private readonly IMapper _mapper;
+        private readonly IAuthClient _authClient;
 
-        public OrganizationRepository(FandaContext context, IMapper mapper)
-            : base(context, mapper, string.Empty)   // TODO: Filter by UserId
+        public OrganizationRepository(FandaContext context, IMapper mapper, IAuthClient authClient)
         {
             _context = context;
             _mapper = mapper;
+            _authClient = authClient;
         }
 
         public async Task<OrganizationDto> GetByIdAsync(Guid id)
@@ -116,9 +119,9 @@ namespace Fanda.Service
         //    return model;
         //}
 
-        public virtual async Task<OrganizationDto> CreateAsync(OrganizationDto model)
+        public virtual async Task<OrganizationDto> CreateAsync(Guid userId, OrganizationDto model)
         {
-            var validationResult = await ValidateAsync(model);
+            var validationResult = await ValidateAsync(userId, model);
             if (!validationResult.IsValid())
             {
                 throw new BadRequestException(validationResult);
@@ -137,10 +140,8 @@ namespace Fanda.Service
                 throw new BadRequestException("Org id mismatch");
             }
 
-            Organization org = _mapper.Map<Organization>(model);
-
             Organization dbOrg = await _context.Organizations
-                .Where(o => o.Id == org.Id)
+                .Where(o => o.Id == model.Id)
                 .Include(o => o.OrgContacts).ThenInclude(oc => oc.Contact)
                 .Include(o => o.OrgAddresses).ThenInclude(oa => oa.Address)
                 .FirstOrDefaultAsync();
@@ -152,6 +153,17 @@ namespace Fanda.Service
                 //await _context.Organizations.AddAsync(org);
                 throw new NotFoundException("Organization not found");
             }
+
+            var validationResult = await ValidateAsync(/*dbOrg.UserId*/ Guid.Empty, model);
+            if (!validationResult.IsValid())
+            {
+                throw new BadRequestException(validationResult);
+            }
+
+            // copy current (incoming) values to db
+            Organization org = _mapper.Map<Organization>(model);
+            org.DateModified = DateTime.UtcNow;
+            _context.Entry(dbOrg).CurrentValues.SetValues(org);
 
             // delete all contacts that are no longer exists
             foreach (OrgContact dbOrgContact in dbOrg.OrgContacts)
@@ -171,9 +183,6 @@ namespace Fanda.Service
                     _context.Addresses.Remove(dbAddress);
                 }
             }
-            // copy current (incoming) values to db
-            org.DateModified = DateTime.UtcNow;
-            _context.Entry(dbOrg).CurrentValues.SetValues(org);
 
             #region Contacts
 
@@ -184,12 +193,7 @@ namespace Fanda.Service
                                select new { curr, db };
             foreach (var pair in contactPairs)
             {
-                if (pair.db != null)
-                {
-                    _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    _context.Contacts.Update(pair.db);
-                }
-                else
+                if (pair.db == null)
                 {
                     var orgContact = new OrgContact
                     {
@@ -199,6 +203,11 @@ namespace Fanda.Service
                         Contact = pair.curr
                     };
                     dbOrg.OrgContacts.Add(orgContact);
+                }
+                else
+                {
+                    _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
+                    _context.Contacts.Update(pair.db);
                 }
             }
 
@@ -213,12 +222,7 @@ namespace Fanda.Service
                                select new { curr, db };
             foreach (var pair in addressPairs)
             {
-                if (pair.db != null)
-                {
-                    _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    _context.Addresses.Update(pair.db);
-                }
-                else
+                if (pair.db == null)
                 {
                     var orgAddress = new OrgAddress
                     {
@@ -229,15 +233,17 @@ namespace Fanda.Service
                     };
                     dbOrg.OrgAddresses.Add(orgAddress);
                 }
+                else
+                {
+                    _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
+                    _context.Addresses.Update(pair.db);
+                }
             }
-
-            _context.Organizations.Update(dbOrg);
 
             #endregion Addresses
 
+            _context.Organizations.Update(dbOrg);
             await _context.SaveChangesAsync();
-            //model = _mapper.Map<OrganizationDto>(org);
-            //return model;
         }
 
         public async Task<bool> DeleteAsync(Guid id)
@@ -319,46 +325,48 @@ namespace Fanda.Service
 
         #region List
 
-        //public IQueryable<OrgListDto> GetAll(Guid userId)
-        //{
-        //    if (userId == null || userId == Guid.Empty)
-        //        throw new ArgumentNullException("userId", "User id is required");
+        public IQueryable<OrgListDto> GetAll(Guid userId)
+        {
+            if (userId == null || userId == Guid.Empty)
+            {
+                throw new ArgumentNullException("userId", "User id is required");
+            }
 
-        //    IQueryable<OrgListDto> query = _context.Organizations
-        //        .Include(o => o.OrgUsers)
-        //        .AsNoTracking()
-        //        .Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
-        //        .ProjectTo<OrgListDto>(_mapper.ConfigurationProvider);
-        //    return GetAll(query);
-        //}
+            IQueryable<OrgListDto> query = _context.Organizations
+                .Include(o => o.OrgUsers)
+                .AsNoTracking()
+                .Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
+                .ProjectTo<OrgListDto>(_mapper.ConfigurationProvider);
+            return GetAll(query);
+        }
 
-        //IQueryable<OrgYearListDto> IListRepository<OrgYearListDto>.GetAll(Guid userId, Query query)
-        //{
-        //    // TODO - to be fixed once org-user relationship established
-        //    //if (userId == null || userId == Guid.Empty)
-        //    //{
-        //    //    throw new ArgumentNullException("userId", "User id is required");
-        //    //}
+        IQueryable<OrgYearListDto> IListRepository<OrgYearListDto>.GetAll(Guid userId)
+        {
+            // TODO - to be fixed once org-user relationship established
+            //if (userId == null || userId == Guid.Empty)
+            //{
+            //    throw new ArgumentNullException("userId", "User id is required");
+            //}
 
-        //    IQueryable<OrgYearListDto> query = _context.Organizations
-        //        .Include(o => o.AccountYears)
-        //        //.Include(o => o.OrgUsers)
-        //        .AsNoTracking()
-        //        //.Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
-        //        .ProjectTo<OrgYearListDto>(_mapper.ConfigurationProvider);
-        //    return GetAll(query);
-        //}
+            IQueryable<OrgYearListDto> query = _context.Organizations
+                .Include(o => o.AccountYears)
+                //.Include(o => o.OrgUsers)
+                .AsNoTracking()
+                //.Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
+                .ProjectTo<OrgYearListDto>(_mapper.ConfigurationProvider);
+            return GetAll(query);
+        }
 
-        //private IQueryable<T> GetAll<T>(IQueryable<T> query)
-        //    where T : BaseListDto
-        //{
-        //    query = query.Where(c => c.Code != "FANDA");
-        //    return query;
-        //}
+        private IQueryable<T> GetAll<T>(IQueryable<T> query)
+            where T : BaseListDto
+        {
+            query = query.Where(c => c.Code != "FANDA");
+            return query;
+        }
 
         #endregion List
 
-        public async Task<ValidationErrors> ValidateAsync(OrganizationDto model)
+        public async Task<ValidationErrors> ValidateAsync(Guid userId, OrganizationDto model)
         {
             // Reset validation errors
             model.Errors.Clear();
@@ -370,6 +378,20 @@ namespace Fanda.Service
             model.Description = model.Description.TrimExtraSpaces();
 
             #endregion Formatting: Cleansing and formatting
+
+            #region UserId validation
+
+            if (userId == null || userId == Guid.Empty)
+            {
+                model.Errors.AddError(nameof(userId), "User id is required");
+            }
+            var user = await _authClient.GetUserAsync(userId);
+            if (user == null)
+            {
+                model.Errors.AddError(nameof(userId), "User not found");
+            }
+
+            #endregion UserId validation
 
             #region Validation: Duplicate
 
@@ -386,6 +408,8 @@ namespace Fanda.Service
 
             return model.Errors;
         }
+
+        #region Privates
 
         private ExpressionStarter<Organization> GetCodePredicate(string code, Guid id = default)
         {
@@ -406,5 +430,7 @@ namespace Fanda.Service
             }
             return nameExpression;
         }
+
+        #endregion Privates
     }
 }

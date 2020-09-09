@@ -196,22 +196,10 @@ namespace FandaAuth.Service
 
             #region Validation: Duplicate
 
-            // Check email duplicate
-            //var duplEmail = new UserKeyData { Field = KeyField.Email, Value = model.Email, Id = model.Id, TenantId = tenantId };
-            //if (await ExistsAsync(duplEmail))
-            //{
-            //    model.Errors.AddError(nameof(model.Email), $"{nameof(model.Email)} '{model.Email}' already exists");
-            //}
             if (await AnyAsync(GetEmailPredicate(model.Email, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Email), $"{nameof(model.Email)} '{model.Email}' already exists");
             }
-            // Check name duplicate
-            //var duplName = new UserKeyData { Field = KeyField.Name, Value = model.UserName, Id = model.Id, TenantId = tenantId };
-            //if (await ExistsAsync(duplName))
-            //{
-            //    model.Errors.AddError(nameof(model.UserName), $"{nameof(model.UserName)} '{model.UserName}' already exists");
-            //}
             if (await AnyAsync(GetUserNamePredicate(model.UserName, model.Id)))
             {
                 model.Errors.AddError(nameof(model.UserName), $"{nameof(model.UserName)} '{model.UserName}' already exists");

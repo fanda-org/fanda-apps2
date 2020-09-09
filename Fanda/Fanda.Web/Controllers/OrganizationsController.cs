@@ -1,5 +1,6 @@
 using Fanda.Core;
 using Fanda.Core.Base;
+using Fanda.Core.Extensions;
 using Fanda.Domain;
 using Fanda.Service;
 using Fanda.Service.Dto;
@@ -14,41 +15,40 @@ using System.Web;
 namespace Fanda.Web.Controllers
 {
     public class OrganizationsController :
-        SuperController<IOrganizationRepository, Organization, OrganizationDto, OrgYearListDto>
+        SubController<IOrganizationRepository, Organization, OrganizationDto, OrgYearListDto>
     {
-        private const string ModuleName = "Organization";
-        private readonly IOrganizationRepository repository;
+        //private const string ModuleName = "Organization";
+        //private readonly IOrganizationRepository repository;
 
-        public OrganizationsController(IOrganizationRepository repository)
-            : base(repository)
+        public OrganizationsController(IOrganizationRepository repository) : base(repository)
         {
-            this.repository = repository;
+            //this.repository = repository;
         }
 
-        [HttpGet("all/{userId}")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> GetAll([Required] Guid userId)
-        {
-            try
-            {
-                NameValueCollection queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
-                var query = new Query(queryString["page"], queryString["pageSize"])
-                {
-                    Filter = queryString["filter"],
-                    FilterArgs = queryString["filterArgs"]?.Split(','),
-                    // Search = queryString["search"],
-                    Sort = queryString["sort"]
-                };
+        //[HttpGet("all/{userId}")]
+        //[ProducesResponseType((int)HttpStatusCode.OK)]
+        //[ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        //public async Task<IActionResult> GetAll([Required] Guid userId)
+        //{
+        //    try
+        //    {
+        //        NameValueCollection queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
+        //        var query = new Query(queryString["page"], queryString["pageSize"])
+        //        {
+        //            Filter = queryString["filter"],
+        //            FilterArgs = queryString["filterArgs"]?.Split(','),
+        //            // Search = queryString["search"],
+        //            Sort = queryString["sort"]
+        //        };
 
-                var response = await repository.GetAll(userId, query);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
+        //        var response = await repository.GetAll(userId, query);
+        //        return Ok(response);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ExceptionResult(ex, ModuleName);
+        //    }
+        //}
 
         //[HttpGet("{id}")]
         //[ProducesResponseType(StatusCodes.Status200OK)]
