@@ -1,0 +1,124 @@
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''"
+        nzSelected
+      >
+        <i nz-icon nzType="dashboard"></i>
+        <span>Dashboard</span>
+      </li>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMenu.invoice"
+        (nzOpenChange)="openHandler('invoice')"
+        nzTitle="Invoice"
+        nzIcon="form"
+      >
+        <ul>
+          <li nz-menu-item>
+            <i nz-icon nzType="book" nzTheme="outline"></i> Sales
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="credit-card" nzTheme="outline"></i> Sales Return
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="container" nzTheme="outline"></i> Purchase
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>
+            Purchase Return
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="appstore-add" nzTheme="outline"></i> Opening
+            Stock
+          </li>
+        </ul>
+      </li>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMenu.transaction"
+        (nzOpenChange)="openHandler('transaction')"
+        nzTitle="Transaction"
+        nzIcon="desktop"
+      >
+        <ul>
+          <li nz-menu-item>
+            <i nz-icon nzType="audit" nzTheme="outline"></i> Receipts
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="carry-out" nzTheme="outline"></i> Payments
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="calculator" nzTheme="outline"></i> Journals
+          </li>
+        </ul>
+      </li>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMenu.inventory"
+        (nzOpenChange)="openHandler('inventory')"
+        nzTitle="Inventory"
+        nzIcon="folder-open"
+      >
+        <ul>
+          <li nz-menu-item>
+            <i nz-icon nzType="gift" nzTheme="outline"></i> Goods and Services
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="apartment" nzTheme="outline"></i> Categories
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="deployment-unit" nzTheme="outline"></i> Units
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="gateway" nzTheme="outline"></i> Brands
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="block" nzTheme="outline"></i> Segments
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="build" nzTheme="outline"></i> Varieties
+          </li>
+        </ul>
+      </li>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMenu.contacts"
+        (nzOpenChange)="openHandler('contacts')"
+        nzTitle="Contacts"
+        nzIcon="contacts"
+      >
+        <ul>
+          <li nz-menu-item>
+            <i nz-icon nzType="contacts" nzTheme="outline"></i> Business
+            Contacts
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="bank" nzTheme="outline"></i> Banks
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="fork" nzTheme="outline"></i> Contact Categories
+          </li>
+        </ul>
+      </li>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMenu.accounts"
+        (nzOpenChange)="openHandler('accounts')"
+        nzTitle="Accounts"
+        nzIcon="project"
+      >
+        <ul>
+          <li nz-menu-item>
+            <i nz-icon nzType="inbox" nzTheme="outline"></i> Ledgers
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="group" nzTheme="outline"></i> Ledger Groups
+          </li>
+          <li nz-menu-item>
+            <i nz-icon nzType="cluster" nzTheme="outline"></i> Contact
+            Categories
+          </li>
+        </ul>
+      </li>

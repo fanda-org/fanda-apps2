@@ -1,0 +1,6 @@
+.container {
+  background-image: url("../../assets/background-image.svg");
+  background-repeat: no-repeat;
+  background-position: center 110px;
+  /*background-size: 100%;*/
+}

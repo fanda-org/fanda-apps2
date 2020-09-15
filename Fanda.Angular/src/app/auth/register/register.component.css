@@ -1,0 +1,17 @@
+.register-form {
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  position: relative;
+  max-width: 600px;
+}
+.container {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  min-width: 100%;
+}
+
+button {
+  margin-right: 8px;
+}

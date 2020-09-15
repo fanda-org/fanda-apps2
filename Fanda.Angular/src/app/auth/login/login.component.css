@@ -1,0 +1,30 @@
+form {
+  align-content: center;
+}
+
+.login-form {
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  position: relative;
+}
+
+.container {
+  position: absolute; /* 2 */
+  top: 50%; /* 3 */
+  transform: translate(0, -50%);
+  min-width: 100%;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}

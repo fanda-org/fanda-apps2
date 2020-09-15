@@ -1,0 +1,106 @@
+<nz-layout class="app-layout">
+  <nz-sider
+    class="menu-sidebar"
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    nzCollapsible
+  >
+    <div class="sidebar-logo">
+      <a href="https://ng.ant.design/" target="_blank">
+        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
+        <h1>Fanda</h1>
+      </a>
+    </div>
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <ng-container
+        *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"
+      ></ng-container>
+      <ng-template #menuTpl let-menus>
+        <ng-container *ngFor="let menu of menus">
+          <li
+            *ngIf="!menu.children"
+            nz-menu-item
+            [nzPaddingLeft]="menu.level * 24"
+            [nzDisabled]="menu.disabled"
+            [nzSelected]="menu.selected"
+          >
+            <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
+            <span>{{ menu.title }}</span>
+          </li>
+          <li
+            *ngIf="menu.children"
+            nz-submenu
+            [nzPaddingLeft]="menu.level * 24"
+            [nzOpen]="menu.open"
+            [nzTitle]="menu.title"
+            [nzIcon]="menu.icon"
+            [nzDisabled]="menu.disabled"
+            (nzOpenChange)="openHandler(menu.title)"
+          >
+            <ul>
+              <ng-container
+                *ngTemplateOutlet="
+                  menuTpl;
+                  context: { $implicit: menu.children }
+                "
+              ></ng-container>
+            </ul>
+          </li>
+        </ng-container>
+      </ng-template>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <div nz-row nzJustify="end">
+          <div nz-col nzSpan="8">
+            <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+              <i
+                class="trigger"
+                nz-icon
+                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+              ></i>
+            </span>
+          </div>
+          <div nz-col nzSpan="8" nzOffset="8" nzPush="7">
+            <a nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
+              <i
+                nz-icon
+                nzType="user"
+                style="font-size: 20px; color: rgba(29, 28, 28, 0.65)"
+                class="trigger"
+              ></i>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                  <li nz-menu-item>
+                    <i nz-icon nzType="profile" nzTheme="outline"></i>Profile
+                  </li>
+                  <li nz-menu-item>
+                    <i nz-icon nzType="setting" nzTheme="outline"></i>Settings
+                  </li>
+                  <li nz-menu-divider></li>
+                  <li nz-menu-item routerLink="/auth/login">
+                    <i nz-icon nzType="logout" nzTheme="outline"></i>Log out
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer>Fanda ©2020 by FandaTech.net</nz-footer>
+  </nz-layout>
+</nz-layout>
