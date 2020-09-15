@@ -22,7 +22,7 @@ namespace Fanda.Domain
 
         public virtual ICollection<OrgContact> OrgContacts { get; set; }
         public virtual ICollection<OrgAddress> OrgAddresses { get; set; }
-        public virtual ICollection<OrgUser> OrgUsers { get; set; }
+        //public virtual ICollection<OrgUser> OrgUsers { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<ProductCategory> ProductCategories { get; set; }

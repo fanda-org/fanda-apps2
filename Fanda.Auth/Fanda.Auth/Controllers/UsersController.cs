@@ -24,8 +24,8 @@ namespace Fanda.Authentication.Controllers
             _repository = repository;
         }
 
-        // users/all/5
-        [HttpGet("all/{tenantId}")]
+        // users?tenantId
+        [HttpGet()]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(DataResponse<List<UserListDto>>), (int)HttpStatusCode.OK)]

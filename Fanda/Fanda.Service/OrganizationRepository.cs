@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 namespace Fanda.Service
 {
     public interface IOrganizationRepository :
-        ISubRepository<Organization, OrganizationDto, OrgYearListDto>
-    //IListRepository<OrgListDto>
+        ISubRepository<Organization, OrganizationDto, OrgListDto>,
+        IListRepository<OrgYearListDto>
     {
     }
 
@@ -154,7 +154,7 @@ namespace Fanda.Service
                 throw new NotFoundException("Organization not found");
             }
 
-            var validationResult = await ValidateAsync(/*dbOrg.UserId*/ Guid.Empty, model);
+            var validationResult = await ValidateAsync(/*dbOrg.UserId or */ Guid.Empty, model);
             if (!validationResult.IsValid())
             {
                 throw new BadRequestException(validationResult);
@@ -325,17 +325,17 @@ namespace Fanda.Service
 
         #region List
 
-        public IQueryable<OrgListDto> GetAll(Guid userId)
+        IQueryable<OrgListDto> IListRepository<OrgListDto>.GetAll(Guid userId)
         {
-            if (userId == null || userId == Guid.Empty)
-            {
-                throw new ArgumentNullException("userId", "User id is required");
-            }
+            //if (userId == null || userId == Guid.Empty)
+            //{
+            //    throw new ArgumentNullException("userId", "User id is required");
+            //}
 
             IQueryable<OrgListDto> query = _context.Organizations
-                .Include(o => o.OrgUsers)
+                //.Include(o => o.OrgUsers)
                 .AsNoTracking()
-                .Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
+                //.Where(o => o.OrgUsers.Select(ou => ou.UserId).Any(uid => uid == userId))
                 .ProjectTo<OrgListDto>(_mapper.ConfigurationProvider);
             return GetAll(query);
         }

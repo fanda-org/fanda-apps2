@@ -1,21 +1,12 @@
-using Fanda.Core;
 using Fanda.Core.Base;
-using Fanda.Core.Extensions;
 using Fanda.Domain;
 using Fanda.Service;
 using Fanda.Service.Dto;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Specialized;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Fanda.Web.Controllers
 {
     public class OrganizationsController :
-        SubController<IOrganizationRepository, Organization, OrganizationDto, OrgYearListDto>
+        SubController<IOrganizationRepository, Organization, OrganizationDto, OrgListDto>
     {
         //private const string ModuleName = "Organization";
         //private readonly IOrganizationRepository repository;

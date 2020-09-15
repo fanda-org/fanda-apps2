@@ -25,7 +25,6 @@ namespace Fanda.Core.Base
         }
 
         [HttpGet]
-        [Route("all/{superId}")]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<List<TListModel>>)
         public async Task<IActionResult> GetAll(Guid superId)

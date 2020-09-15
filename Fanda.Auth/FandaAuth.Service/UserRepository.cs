@@ -42,7 +42,7 @@ namespace FandaAuth.Service
                 .AsNoTracking()
                 .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(u => u.Id == id);
-            if (user != null)
+            if (user == null)
             {
                 throw new NotFoundException("User not found");
             }

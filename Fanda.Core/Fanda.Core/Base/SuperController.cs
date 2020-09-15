@@ -13,7 +13,7 @@ namespace Fanda.Core.Base
     public abstract class SuperController<TRepository, TEntity, TModel, TListModel> : BaseController
         where TRepository : ISuperRepository<TEntity, TModel, TListModel>
         where TModel : BaseDto
-        where TListModel : BaseListDto
+        where TListModel : class
     {
         private readonly TRepository _repository;
         private readonly string _moduleName;
@@ -25,7 +25,6 @@ namespace Fanda.Core.Base
         }
 
         [HttpGet]
-        [Route("all")]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<List<TListModel>>)
         public async Task<IActionResult> GetAll()
