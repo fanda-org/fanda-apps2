@@ -7,7 +7,7 @@ import { NgZorroAntdModule } from '../ng-zorro-antd.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
 
-import { AuthHeaderComponent } from '../components/auth-header.component';
+import { AuthHeaderComponent } from '../components/auth-header/auth-header.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 
