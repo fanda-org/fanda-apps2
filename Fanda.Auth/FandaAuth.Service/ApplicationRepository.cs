@@ -167,8 +167,10 @@ namespace FandaAuth.Service
             await context.SaveChangesAsync();
         }
 
-        public override Task<ValidationErrors> ValidateAsync(ApplicationDto model)
+        public override async Task<ValidationErrors> ValidateAsync(ApplicationDto model)
         {
+            await base.ValidateAsync(model);
+
             #region Validate AppResources - uniqueness of code & name (find duplicates in a list)
 
             bool duplicateCodeFound = model.AppResources
@@ -188,7 +190,7 @@ namespace FandaAuth.Service
 
             #endregion Validate AppResources - uniqueness of code & name (find duplicates in a list)
 
-            return base.ValidateAsync(model);
+            return model.Errors;
         }
 
         //protected override Guid GetParentId(Application entity)
