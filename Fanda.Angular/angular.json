@@ -28,7 +28,10 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["src/theme.less", "src/styles.css"],
+            "styles": [
+              "src/theme.less",
+              "src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -86,7 +89,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
             "styles": [
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.css"
@@ -102,7 +108,9 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {
@@ -120,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "fanda-app"
+  "defaultProject": "fanda-app",
+  "cli": {
+    "analytics": "7332e14f-30b9-4ef6-bd53-99aa0ac2f32b"
+  }
 }

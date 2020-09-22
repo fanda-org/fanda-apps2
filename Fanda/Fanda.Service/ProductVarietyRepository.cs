@@ -21,7 +21,10 @@ namespace Fanda.Service
             : base(context, mapper, "OrgId == @0")
         {
         }
-
+        protected override void SetSuperId(Guid superId, ProductVariety entity)
+        {
+            entity.OrgId = superId;
+        }
         protected override Guid GetSuperId(ProductVariety entity)
         {
             return entity.OrgId;

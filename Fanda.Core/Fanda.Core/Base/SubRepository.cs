@@ -88,6 +88,7 @@ namespace Fanda.Core.Base
                 throw new BadRequestException(validationResult);
             }
             var entity = _mapper.Map<TEntity>(model);
+            SetSuperId(superId, entity);
             entity.DateCreated = DateTime.UtcNow;
             await Entities.AddAsync(entity);
             await _context.SaveChangesAsync();
@@ -208,8 +209,8 @@ namespace Fanda.Core.Base
             return nameExpression;
         }
 
+        protected abstract void SetSuperId(Guid superId, TEntity entity);
         protected abstract Guid GetSuperId(TEntity entity);
-
         protected abstract Expression<Func<TEntity, bool>> GetSuperIdPredicate(Guid superId);
     }
 }
