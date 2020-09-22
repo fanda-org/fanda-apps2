@@ -18,7 +18,7 @@ export class DefaultLayoutComponent {
     contacts: false,
     accounts: false,
   };
-  menus = fandaMenus; // fandaMenus;
+  menus = authMenus; // fandaMenus;
 
   constructor() {
     console.log('defaultLayout:constructor');

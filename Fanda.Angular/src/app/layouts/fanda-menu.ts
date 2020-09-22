@@ -3,6 +3,7 @@ export const fandaMenus = [
     level: 1,
     title: 'Dashboard',
     icon: 'dashboard',
+    router: '/pages',
     open: true,
     selected: true,
     disabled: false,

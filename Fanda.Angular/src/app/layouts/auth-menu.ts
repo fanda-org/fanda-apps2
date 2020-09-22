@@ -1,11 +1,20 @@
 export const authMenus = [
   {
     level: 1,
+    title: 'Dashboard',
+    icon: 'dashboard',
+    router: '/pages',
+    open: true,
+    selected: true,
+    disabled: false,
+  },
+  {
+    level: 1,
     title: 'Application',
     icon: 'snippets',
     router: '/pages/application',
-    open: true,
-    selected: true,
+    open: false,
+    selected: false,
     disabled: false,
   },
   {
