@@ -1,5 +1,4 @@
 using Fanda.Core.Base;
-using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
