@@ -26,7 +26,10 @@ namespace Fanda.Service
             //_context = context;
             //_mapper = mapper;
         }
-
+        protected override void SetSuperId(Guid superId, ProductCategory entity)
+        {
+            entity.OrgId = superId;
+        }
         protected override Guid GetSuperId(ProductCategory entity)
         {
             return entity.OrgId;
