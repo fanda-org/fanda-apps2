@@ -1,7 +1,6 @@
 using AutoMapper;
 using Fanda.Core;
 using Fanda.Core.Base;
-using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
 using Microsoft.EntityFrameworkCore;
