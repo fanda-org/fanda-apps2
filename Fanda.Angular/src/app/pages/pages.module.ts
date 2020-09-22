@@ -11,6 +11,7 @@ import { NgZorroAntdModule } from '../ng-zorro-antd.module';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { ApplicationComponent } from './application/application.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     // NzFormModule,
     PagesRoutingModule,
   ],
-  declarations: [WelcomeComponent],
+  declarations: [WelcomeComponent, ApplicationComponent],
 })
 export class PagesModule {
   constructor() {

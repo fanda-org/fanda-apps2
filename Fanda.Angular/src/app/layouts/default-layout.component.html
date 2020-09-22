@@ -29,9 +29,11 @@
             [nzPaddingLeft]="menu.level * 24"
             [nzDisabled]="menu.disabled"
             [nzSelected]="menu.selected"
+            [nzMatchRouter]
           >
             <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
-            <span>{{ menu.title }}</span>
+            <a [routerLink]="menu.router">{{ menu.title }}</a>
+            <!-- <span>{{ menu.title }}</span> -->
           </li>
           <li
             *ngIf="menu.children"
