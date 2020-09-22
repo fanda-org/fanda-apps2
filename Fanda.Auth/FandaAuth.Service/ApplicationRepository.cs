@@ -167,6 +167,30 @@ namespace FandaAuth.Service
             await context.SaveChangesAsync();
         }
 
+        public override Task<ValidationErrors> ValidateAsync(ApplicationDto model)
+        {
+            #region Validate AppResources - uniqueness of code & name (find duplicates in a list)
+
+            bool duplicateCodeFound = model.AppResources
+                .GroupBy(x => x.Code)
+                .Any(g => g.Count() > 1);
+            if (duplicateCodeFound)
+            {
+                model.Errors.AddError("AppResouce.Code", "App resource code already exists");
+            }
+            bool duplicateNameFound = model.AppResources
+                .GroupBy(x => x.Name)
+                .Any(g => g.Count() > 1);
+            if (duplicateNameFound)
+            {
+                model.Errors.AddError("AppResouce.Name", "App resource name already exists");
+            }
+
+            #endregion Validate AppResources - uniqueness of code & name (find duplicates in a list)
+
+            return base.ValidateAsync(model);
+        }
+
         //protected override Guid GetParentId(Application entity)
         //{
         //    return Guid.Empty;
