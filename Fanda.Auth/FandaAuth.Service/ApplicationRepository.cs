@@ -167,6 +167,15 @@ namespace FandaAuth.Service
             await context.SaveChangesAsync();
         }
 
+        public override Task<ValidationErrors> ValidateAsync(ApplicationDto model)
+        {
+            // validate AppResources - uniqueness of code & name
+            foreach (var appResource in model.AppResources)
+            {
+            }
+            return base.ValidateAsync(model);
+        }
+
         //protected override Guid GetParentId(Application entity)
         //{
         //    return Guid.Empty;
