@@ -19,11 +19,7 @@ export class DefaultLayoutComponent {
     contacts: false,
     accounts: false,
   };
-<<<<<<< HEAD
-  menus = fandaMenus; // fandaMenus;
-=======
   menus = authMenus; // fandaMenus;
->>>>>>> d648d96ddbfd27c65c637dfd4e3131d4c50dc6a5
 
   constructor(private router: Router) {
     console.log('defaultLayout:constructor');

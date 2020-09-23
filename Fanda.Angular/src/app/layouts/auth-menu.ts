@@ -12,15 +12,9 @@ export const authMenus = [
     level: 1,
     title: 'Application',
     icon: 'snippets',
-<<<<<<< HEAD
-    router: '/pages/application',
-    open: true,
-    selected: true,
-=======
     path: ['/', 'pages', 'application'],
     open: false,
     selected: false,
->>>>>>> d648d96ddbfd27c65c637dfd4e3131d4c50dc6a5
     disabled: false,
   },
   {
