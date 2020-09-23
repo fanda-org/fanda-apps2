@@ -7,7 +7,7 @@
     nzCollapsible
   >
     <div class="sidebar-logo">
-      <a href="https://ng.ant.design/" target="_blank">
+      <a href="http://www.fandatech.net" target="_blank">
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo" />
         <h1>Fanda</h1>
       </a>
@@ -30,10 +30,18 @@
             [nzDisabled]="menu.disabled"
             [nzSelected]="menu.selected"
             [nzMatchRouter]
+<<<<<<< HEAD
           >
             <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
             <a [routerLink]="menu.router">{{ menu.title }}</a>
             <!-- <span>{{ menu.title }}</span> -->
+=======
+            (click)="onClick(menu.path)"
+          >
+            <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
+            <!-- <a [routerLink]="menu.router">{{ menu.title }}</a> -->
+            <span>{{ menu.title }}</span>
+>>>>>>> d648d96ddbfd27c65c637dfd4e3131d4c50dc6a5
           </li>
           <li
             *ngIf="menu.children"

@@ -182,6 +182,10 @@ namespace FandaAuth.Service
             await _context.SaveChangesAsync();
         }
 
+        protected override void SetSuperId(Guid superId, Role entity)
+        {
+            entity.TenantId = superId;
+        }
         protected override Guid GetSuperId(Role entity)
         {
             return entity.TenantId;

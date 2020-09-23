@@ -1,7 +1,6 @@
 using AutoMapper;
 using Fanda.Core;
 using Fanda.Core.Base;
-using Fanda.Core.Extensions;
 using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -167,6 +166,7 @@ namespace FandaAuth.Service
             await context.SaveChangesAsync();
         }
 
+<<<<<<< HEAD
         public override Task<ValidationErrors> ValidateAsync(ApplicationDto model)
         {
             // validate AppResources - uniqueness of code & name
@@ -174,6 +174,32 @@ namespace FandaAuth.Service
             {
             }
             return base.ValidateAsync(model);
+=======
+        public override async Task<ValidationErrors> ValidateAsync(ApplicationDto model)
+        {
+            await base.ValidateAsync(model);
+
+            #region Validate AppResources - uniqueness of code & name (find duplicates in a list)
+
+            bool duplicateCodeFound = model.AppResources
+                .GroupBy(x => x.Code)
+                .Any(g => g.Count() > 1);
+            if (duplicateCodeFound)
+            {
+                model.Errors.AddError("AppResouce.Code", "App resource code already exists");
+            }
+            bool duplicateNameFound = model.AppResources
+                .GroupBy(x => x.Name)
+                .Any(g => g.Count() > 1);
+            if (duplicateNameFound)
+            {
+                model.Errors.AddError("AppResouce.Name", "App resource name already exists");
+            }
+
+            #endregion Validate AppResources - uniqueness of code & name (find duplicates in a list)
+
+            return model.Errors;
+>>>>>>> d648d96ddbfd27c65c637dfd4e3131d4c50dc6a5
         }
 
         //protected override Guid GetParentId(Application entity)
