@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { fandaMenus } from './fanda-menu';
 import { authMenus } from './auth-menu';
@@ -20,8 +21,12 @@ export class DefaultLayoutComponent {
   };
   menus = authMenus; // fandaMenus;
 
-  constructor() {
+  constructor(private router: Router) {
     console.log('defaultLayout:constructor');
+  }
+
+  onClick(path: string[]): void{
+    this.router.navigate(path);
   }
 
   openHandler(value: string): void {

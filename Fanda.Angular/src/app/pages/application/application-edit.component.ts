@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-application',
-  templateUrl: './application.component.html',
-  styleUrls: ['./application.component.css'],
+  templateUrl: './application-edit.component.html',
+  styleUrls: ['./application-edit.component.css'],
 })
-export class ApplicationComponent implements OnInit {
+export class ApplicationEditComponent implements OnInit {
   validateForm!: FormGroup;
 
   submitForm(): void {
