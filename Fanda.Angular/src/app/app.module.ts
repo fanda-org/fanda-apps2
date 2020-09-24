@@ -23,7 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DefaultLayoutComponent } from './layouts/default-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout.component';
-
+import { HiddenDataService } from './_services';
 registerLocaleData(en);
 
 @NgModule({
@@ -46,7 +46,7 @@ registerLocaleData(en);
     BrowserAnimationsModule,
   ],
   exports: [NgZorroAntdModule],
-  providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService, HiddenDataService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

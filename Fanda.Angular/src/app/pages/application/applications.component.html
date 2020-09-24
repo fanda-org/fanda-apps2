@@ -1,1 +1,46 @@
-<p>applications works!</p>
+<nz-table
+    nzShowSizeChanger
+    [nzData]="applications"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="page"
+    (nzQueryParams)="onQueryParamsChange($event)"
+>
+    <thead>
+        <tr>
+            <th nzColumnKey="code" [nzSortFn]="true">Code</th>
+            <th nzColumnKey="name" [nzSortFn]="true">Name</th>
+            <th nzColumnKey="description" [nzSortFn]="true">Description</th>
+            <th nzColumnKey="edition" [nzSortFn]="true">Edition</th>
+            <th nzColumnKey="version" [nzSortFn]="true">Version</th>
+            <th nzColumnKey="active">Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of applications">
+            <td>{{ data.code }}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.description }}</td>
+            <td>{{ data.edition }}</td>
+            <td>{{ data.version }}</td>
+            <td>
+                <nz-switch nzSize="small" [ngModel]="data.active"></nz-switch>
+            </td>
+            <td>
+                <div class="icons-list">
+                    <i nz-icon [nzType]="'edit'" [nzTheme]="'twotone'"></i>
+                    <i
+                        nz-icon
+                        [nzType]="'delete'"
+                        [nzTheme]="'twotone'"
+                        [nzTwotoneColor]="'#eb2f96'"
+                    ></i>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+<!-- [nzFilters]="filterGender" [nzFilterFn]="true" -->

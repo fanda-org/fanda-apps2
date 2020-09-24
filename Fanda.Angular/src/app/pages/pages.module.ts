@@ -11,8 +11,8 @@ import { NgZorroAntdModule } from '../ng-zorro-antd.module';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { ApplicationEditComponent } from './application/application-edit.component';
 import { ApplicationsComponent } from './application/applications.component';
+import { ApplicationEditComponent } from './application/application-edit.component';
 
 @NgModule({
   imports: [
