@@ -18,22 +18,14 @@ export class ApplicationService {
         sort: string | null,
         filters: Array<{ key: string; value: string[] }>
     ): Observable<ApiResponse> {
-        let params = new HttpParams()
+        const filterCondition = this.getFilterCondition(filters);
+        console.log(filterCondition);
+        const params = new HttpParams()
             .append('page', `${page}`)
             .append('pageSize', `${pageSize}`)
-            .append('sort', `${sort}`);
-        if (filters) {
-            filters.forEach((filter) => {
-                if (filter.value) {
-                    filter.value.forEach((value) => {
-                        params = params.append(
-                            'filter',
-                            `${filter.key}=${value}`
-                        );
-                    });
-                }
-            });
-        }
+            .append('sort', `${sort}`)
+            .append('filter', filterCondition);
+
         return this.http.get<ApiResponse>(`${this.baseUrl}`, { params });
     }
 
@@ -51,5 +43,33 @@ export class ApplicationService {
 
     delete(id: string): Observable<ApiResponse> {
         return this.http.delete<ApiResponse>(`${this.baseUrl}/${id}`);
+    }
+
+    getFilterCondition(
+        filters: Array<{ key: string; value: string[] }>
+    ): string {
+        console.log('filters', filters);
+        let filterCondition = '';
+        if (filters) {
+            filters.forEach((filter) => {
+                if (filter.value) {
+                    filterCondition += ' (';
+                    filter.value.forEach((value) => {
+                        filterCondition += `${filter.key}==${value} or `;
+                    });
+                    filterCondition =
+                        filterCondition.substring(
+                            0,
+                            filterCondition.length - 4
+                        ) + ')';
+                }
+                filterCondition += ' and ';
+            });
+            filterCondition = filterCondition.substring(
+                0,
+                filterCondition.length - 5
+            );
+            return filterCondition;
+        }
     }
 }

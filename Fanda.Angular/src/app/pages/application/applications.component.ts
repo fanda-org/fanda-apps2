@@ -19,13 +19,20 @@ export class ApplicationsComponent implements OnInit {
     total = 1;
     applications: Application[] = [];
     loading = true;
-    pageSize = 10;
+
     page = 1;
+    pageSize = 10;
+    sortFieldOrder = '';
+    filter = Array<{ key: string; value: string[] }>();
+
     filterActive = [
-        { text: 'Active', value: ['true'] },
-        { text: 'Inactive', value: ['false'] },
+        { text: 'Active', value: [true] },
+        { text: 'Inactive', value: [false] },
         { text: 'Both', value: '' },
     ];
+
+    searchValue = '';
+    visible = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -34,6 +41,22 @@ export class ApplicationsComponent implements OnInit {
         private alertService: AlertService,
         private hiddenService: HiddenDataService
     ) {}
+
+    reset(): void {
+        this.searchValue = '';
+        this.search();
+    }
+
+    search(): void {
+        this.visible = false;
+        // this.filter.push({ key: 'name', value: [this.searchValue] });
+        this.loadData(
+            this.page,
+            this.pageSize,
+            this.sortFieldOrder,
+            this.filter
+        );
+    }
 
     loadData(
         page: number,
@@ -47,7 +70,17 @@ export class ApplicationsComponent implements OnInit {
             .subscribe((res) => {
                 this.loading = false;
                 this.applications = res.data;
-                this.total = res.itemsCount;
+
+                if (this.searchValue) {
+                    this.applications = this.applications.filter(
+                        (item: Application) =>
+                            item.name.indexOf(this.searchValue) !== -1
+                    );
+                    this.total = this.applications.length;
+                } else {
+                    this.total = res.itemsCount;
+                }
+
                 this.alertService.success('Loading successful', {
                     keepAfterRouteChange: true,
                 });
@@ -71,6 +104,11 @@ export class ApplicationsComponent implements OnInit {
         }
         const sortFieldOrder =
             (currentSort && sortField + ' ' + sortOrder) || '';
+
+        this.page = pageIndex;
+        this.pageSize = pageSize;
+        this.sortFieldOrder = sortFieldOrder;
+        this.filter = filter;
         this.loadData(pageIndex, pageSize, sortFieldOrder, filter);
     }
 }

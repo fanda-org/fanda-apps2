@@ -32,7 +32,16 @@
     <thead>
         <tr>
             <th nzColumnKey="code" [nzSortFn]="true">Code</th>
-            <th nzColumnKey="name" [nzSortFn]="true">Name</th>
+            <th nzColumnKey="name" [nzSortFn]="true" nzCustomFilter>
+                Name
+                <nz-filter-trigger
+                    [(nzVisible)]="visible"
+                    [nzActive]="searchValue.length > 0"
+                    [nzDropdownMenu]="menu"
+                >
+                    <i nz-icon nzType="search"></i>
+                </nz-filter-trigger>
+            </th>
             <th nzColumnKey="description" [nzSortFn]="true">Description</th>
             <th nzColumnKey="edition" [nzSortFn]="true">Edition</th>
             <th nzColumnKey="version" [nzSortFn]="true">Version</th>
@@ -71,4 +80,27 @@
         </tr>
     </tbody>
 </nz-table>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input
+                type="text"
+                nz-input
+                placeholder="Search name"
+                [(ngModel)]="searchValue"
+            />
+            <button
+                nz-button
+                nzSize="small"
+                nzType="primary"
+                (click)="search()"
+                class="search-button"
+            >
+                Search
+            </button>
+            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
 <!-- [nzFilters]="filterGender" [nzFilterFn]="true" -->
