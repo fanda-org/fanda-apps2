@@ -1,4 +1,5 @@
 export interface ApiResponse {
-  data: any;
-  success: boolean;
+    itemsCount: number;
+    data: any;
+    success: boolean;
 }
