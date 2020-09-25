@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+.ant-table-column-sorters {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+}
+
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+    padding: 10px 10px !important;
+}

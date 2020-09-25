@@ -1,5 +1,26 @@
+<div nz-row>
+    <div nz-col nzSpan="8">
+        <h1>Applications</h1>
+    </div>
+    <div nz-col nzSpan="8" nzOffset="8">
+        <div nz-row nzJustify="end">
+            <div>
+                <button nz-button nzType="primary">
+                    <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Add
+                    New
+                </button>
+                <!-- <button nz-button nzType="default" nzDanger>
+                    <i nz-icon nzType="minus-circle" nzTheme="outline"></i>
+                    Delete
+                </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <nz-table
     nzShowSizeChanger
+    nzBordered
     [nzData]="applications"
     [nzFrontPagination]="false"
     [nzLoading]="loading"

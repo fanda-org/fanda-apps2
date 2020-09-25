@@ -10,7 +10,7 @@ export const authMenus = [
     },
     {
         level: 1,
-        title: 'Application',
+        title: 'Applications',
         icon: 'snippets',
         path: ['/', 'pages', 'applications'],
         open: false,
@@ -23,6 +23,11 @@ export const authMenus = [
         icon: 'audit',
         open: false,
         children: [
+            {
+                level: 2,
+                title: 'Tenants',
+                icon: 'audit',
+            },
             {
                 level: 2,
                 title: 'Users',

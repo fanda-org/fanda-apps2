@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o --port=4200 &REM",
+    "start": "ng serve --port=4200 &REM",
     "build": "ng build",
     "build:ssr": "ng run fanda:server:dev",
     "test": "ng test",
