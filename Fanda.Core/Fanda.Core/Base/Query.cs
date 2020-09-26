@@ -8,13 +8,13 @@ namespace Fanda.Core
         {
         }
 
-        public Query(string pageString, string pageSizeString)
+        public Query(string pageIndexString, string pageSizeString)
         {
-            Page = Convert.ToInt32(pageString);
+            PageIndex = Convert.ToInt32(pageIndexString);
             PageSize = Convert.ToInt32(pageSizeString);
 
-            Page = Page <= 0 && PageSize > 0 ? 1 : Page;
-            PageSize = PageSize <= 0 && Page > 0 ? 100 : PageSize;
+            PageIndex = PageIndex <= 0 && PageSize > 0 ? 1 : PageIndex;
+            PageSize = PageSize <= 0 && PageIndex > 0 ? 100 : PageSize;
         }
 
         //public string Search { get; set; }
@@ -22,7 +22,7 @@ namespace Fanda.Core
 
         public string[] FilterArgs { get; set; }
         public string Sort { get; set; }
-        public int Page { get; set; }
+        public int PageIndex { get; set; }
         public int PageSize { get; set; }
     }
 }

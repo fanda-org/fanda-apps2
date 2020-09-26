@@ -34,12 +34,12 @@ namespace Fanda.Authentication.Controllers
             try
             {
                 NameValueCollection queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
-                var query = new Query(queryString["page"], queryString["pageSize"])
+                var query = new Query(queryString["pageIndex"], queryString["pageSize"])
                 {
                     Filter = queryString["filter"],
                     FilterArgs = queryString["filterArgs"]?.Split(','),
                     //Search = queryString["search"],
-                    Sort = queryString["sort"],
+                    Sort = queryString["sort"]
                 };
 
                 var response = await _repository.GetAll(tenantId, query);

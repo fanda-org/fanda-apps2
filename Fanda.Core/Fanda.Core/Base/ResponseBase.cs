@@ -18,7 +18,7 @@ namespace Fanda.Core.Base
     public interface IPagedResponse<TModel> : IDataResponse<TModel>
     {
         public int PageSize { get; set; }
-        public int Page { get; set; }
+        public int PageIndex { get; set; }
         int ItemsCount { get; set; }
         int PageCount { get; }
         public int FirstRowOnPage { get; }
@@ -110,7 +110,7 @@ namespace Fanda.Core.Base
     {
         public int PageSize { get; set; }
 
-        public int Page { get; set; }
+        public int PageIndex { get; set; }
 
         public int ItemsCount { get; set; }
 
@@ -126,12 +126,12 @@ namespace Fanda.Core.Base
         {
             get
             {
-                if (Page > PageCount)
+                if (PageIndex > PageCount)
                 {
                     return 0;
                 }
 
-                return Math.Min(ItemsCount, ((Page - 1) * PageSize) + 1);
+                return Math.Min(ItemsCount, ((PageIndex - 1) * PageSize) + 1);
             }
         }
 
@@ -140,7 +140,7 @@ namespace Fanda.Core.Base
         {
             get
             {
-                if (Page > PageCount)
+                if (PageIndex > PageCount)
                 {
                     return 0;
                 }
@@ -151,13 +151,13 @@ namespace Fanda.Core.Base
 
         //=> Math.Min((int)PageNumber * (int)PageSize, (int)ItemsCount);
 
-        public static PagedResponse<TModel> Succeeded(TModel data, int itemsCount, int page, int pageSize, string message = null)
+        public static PagedResponse<TModel> Succeeded(TModel data, int itemsCount, int pageIndex, int pageSize, string message = null)
             => new PagedResponse<TModel>
             {
                 Success = true,
                 Data = data,
                 ItemsCount = itemsCount,
-                Page = page,
+                PageIndex = pageIndex,
                 PageSize = pageSize,
                 Message = message
             };

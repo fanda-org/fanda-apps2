@@ -24,7 +24,7 @@ namespace Fanda.Auth.Controllers
         //    try
         //    {
         //        NameValueCollection queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
-        //        var query = new Query(queryString["page"], queryString["pageSize"])
+        //        var query = new Query(queryString["pageIndex"], queryString["pageSize"])
         //        {
         //            Filter = queryString["filter"],
         //            FilterArgs = queryString["filterArgs"]?.Split(','),

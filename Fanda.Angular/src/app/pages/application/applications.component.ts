@@ -6,7 +6,7 @@ import {
     AlertService,
     HiddenDataService,
 } from '../../_services';
-import { Application } from '../../_models';
+import { Application, FilterModel } from '../../_models';
 import { capitalize } from 'src/app/_utils';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
@@ -16,19 +16,19 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
     styleUrls: ['./applications.component.css'],
 })
 export class ApplicationsComponent implements OnInit {
-    total = 1;
-    applications: Application[] = [];
     loading = true;
-
-    page = 1;
+    total = 1;
+    applications: Application[] = null;
+    pageIndex = 1;
     pageSize = 10;
     sortFieldOrder = '';
-    filter = Array<{ key: string; value: string[] }>();
+    filters: Array<FilterModel> = null;
+    nameFilter: FilterModel = null;
 
     filterActive = [
-        { text: 'Active', value: [true] },
-        { text: 'Inactive', value: [false] },
-        { text: 'Both', value: '' },
+        { text: 'Active', value: true },
+        { text: 'Inactive', value: false },
+        { text: 'Both', value: null },
     ];
 
     searchValue = '';
@@ -49,38 +49,28 @@ export class ApplicationsComponent implements OnInit {
 
     search(): void {
         this.visible = false;
-        // this.filter.push({ key: 'name', value: [this.searchValue] });
-        this.loadData(
-            this.page,
-            this.pageSize,
-            this.sortFieldOrder,
-            this.filter
-        );
+        this.nameFilter = { key: 'name', value: this.searchValue };
+
+        this.loadData(this.pageIndex, this.pageSize, this.sortFieldOrder, [
+            ...this.filters,
+            this.nameFilter,
+        ]);
     }
 
     loadData(
-        page: number,
+        pageIndex: number,
         pageSize: number,
         sort: string | null,
-        filter: Array<{ key: string; value: string[] }>
+        filters: Array<FilterModel>
     ): void {
+        // console.log('Filters', filters);
         this.loading = true;
         this.applicationService
-            .getAll(page, pageSize, sort, filter)
+            .getAll(pageIndex, pageSize, sort, filters)
             .subscribe((res) => {
                 this.loading = false;
                 this.applications = res.data;
-
-                if (this.searchValue) {
-                    this.applications = this.applications.filter(
-                        (item: Application) =>
-                            item.name.indexOf(this.searchValue) !== -1
-                    );
-                    this.total = this.applications.length;
-                } else {
-                    this.total = res.itemsCount;
-                }
-
+                this.total = res.itemsCount;
                 this.alertService.success('Loading successful', {
                     keepAfterRouteChange: true,
                 });
@@ -92,7 +82,7 @@ export class ApplicationsComponent implements OnInit {
     }
 
     onQueryParamsChange(params: NzTableQueryParams): void {
-        console.log(params);
+        // console.log(params);
         const { pageSize, pageIndex, sort, filter } = params;
         const currentSort = sort.find((item) => item.value !== null);
         const sortField = (currentSort && currentSort.key) || '';
@@ -105,10 +95,14 @@ export class ApplicationsComponent implements OnInit {
         const sortFieldOrder =
             (currentSort && sortField + ' ' + sortOrder) || '';
 
-        this.page = pageIndex;
+        this.pageIndex = pageIndex;
         this.pageSize = pageSize;
         this.sortFieldOrder = sortFieldOrder;
-        this.filter = filter;
-        this.loadData(pageIndex, pageSize, sortFieldOrder, filter);
+        this.filters = filter;
+        console.log('NameFilter', this.nameFilter);
+        this.loadData(pageIndex, pageSize, sortFieldOrder, [
+            ...filter,
+            this.nameFilter,
+        ]);
     }
 }

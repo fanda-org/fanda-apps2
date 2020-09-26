@@ -26,7 +26,7 @@ namespace Fanda.Core.Extensions
         public static async Task<DataResponse<IEnumerable<TModel>>> GetAll<TModel>(this IListRepository<TModel> listRepository,
             Guid parentId, Query queryInput)
         {
-            if (queryInput.Page > 0 || queryInput.PageSize > 0)
+            if (queryInput.PageIndex > 0 || queryInput.PageSize > 0)
             {
                 return await GetPaged(listRepository, parentId, queryInput);
             }
@@ -40,7 +40,7 @@ namespace Fanda.Core.Extensions
             Guid parentId, Query queryInput)
         {
             var (list, itemsCount) = await listRepository.Execute(parentId, queryInput);
-            var response = PagedResponse<IEnumerable<TModel>>.Succeeded(list, itemsCount, queryInput.Page, queryInput.PageSize);
+            var response = PagedResponse<IEnumerable<TModel>>.Succeeded(list, itemsCount, queryInput.PageIndex, queryInput.PageSize);
             return response;
         }
 
@@ -73,11 +73,11 @@ namespace Fanda.Core.Extensions
             {
                 dbQuery = dbQuery.OrderBy(queryInput.Sort);
             }
-            if (queryInput.Page > 0 || queryInput.PageSize > 0)
+            if (queryInput.PageIndex > 0 || queryInput.PageSize > 0)
             {
-                int page = queryInput.Page > 0 ? queryInput.Page : 1;
+                int pageIndex = queryInput.PageIndex > 0 ? queryInput.PageIndex : 1;
                 int pageSize = queryInput.PageSize > 0 ? queryInput.PageSize : 100;
-                dbQuery = dbQuery.Page(page, pageSize);
+                dbQuery = dbQuery.Page(pageIndex, pageSize);
             }
             return (dbQuery, itemsCount);
         }

@@ -1,10 +1,9 @@
-import { ApiResponse } from './../_models/api-response';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Application } from '../_models';
+import { Application, ApiResponse, FilterModel } from '../_models';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
@@ -16,7 +15,7 @@ export class ApplicationService {
         page: number,
         pageSize: number,
         sort: string | null,
-        filters: Array<{ key: string; value: string[] }>
+        filters: Array<FilterModel>
     ): Observable<ApiResponse> {
         const filterCondition = this.getFilterCondition(filters);
         console.log(filterCondition);
@@ -45,31 +44,46 @@ export class ApplicationService {
         return this.http.delete<ApiResponse>(`${this.baseUrl}/${id}`);
     }
 
-    getFilterCondition(
-        filters: Array<{ key: string; value: string[] }>
-    ): string {
-        console.log('filters', filters);
+    getFilterCondition(filters: Array<FilterModel>): string {
+        // console.log('filters', filters);
         let filterCondition = '';
         if (filters) {
             filters.forEach((filter) => {
-                if (filter.value) {
-                    filterCondition += ' (';
-                    filter.value.forEach((value) => {
-                        filterCondition += `${filter.key}==${value} or `;
-                    });
-                    filterCondition =
-                        filterCondition.substring(
+                if (filter && filter.value !== null) {
+                    // filterCondition += ' (';
+                    if (Array.isArray(filter.value)) {
+                        filter.value.forEach((value) => {
+                            filterCondition +=
+                                this.getConditionByType(filter.key, value) +
+                                ' or ';
+                        });
+                        filterCondition = filterCondition.substring(
                             0,
                             filterCondition.length - 4
-                        ) + ')';
+                        );
+                    } else {
+                        filterCondition += this.getConditionByType(
+                            filter.key,
+                            filter.value
+                        );
+                    }
+                    // + ')';
+                    filterCondition += filterCondition ? ' and ' : '';
                 }
-                filterCondition += ' and ';
             });
             filterCondition = filterCondition.substring(
                 0,
                 filterCondition.length - 5
             );
             return filterCondition;
+        }
+    }
+
+    getConditionByType(key: string, value: any): string {
+        if (typeof value === 'boolean' || typeof value === 'number') {
+            return `${key}==${value}`;
+        } else if (typeof value === 'string') {
+            return `${key}.Contains("${value}")`;
         }
     }
 }

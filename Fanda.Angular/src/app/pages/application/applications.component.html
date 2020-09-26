@@ -21,12 +21,13 @@
 <nz-table
     nzShowSizeChanger
     nzBordered
+    nzSize="small"
     [nzData]="applications"
     [nzFrontPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
     [nzPageSize]="pageSize"
-    [nzPageIndex]="page"
+    [nzPageIndex]="pageIndex"
     (nzQueryParams)="onQueryParamsChange($event)"
 >
     <thead>
