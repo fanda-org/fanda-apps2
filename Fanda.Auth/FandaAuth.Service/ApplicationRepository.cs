@@ -152,7 +152,7 @@ namespace FandaAuth.Service
                 if (pair.db != null)
                 {
                     context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    context.Set<AppResource>().Update(pair.db);
+                    // context.Set<AppResource>().Update(pair.db);
                 }
                 else
                 {
@@ -162,7 +162,7 @@ namespace FandaAuth.Service
 
             #endregion Resources
 
-            context.Applications.Update(dbApp);
+            // context.Applications.Update(dbApp);
             await context.SaveChangesAsync();
         }
 

@@ -119,7 +119,7 @@ namespace FandaAuth.Service
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             _context.Entry(dbUser).CurrentValues.SetValues(user);
-            _context.Users.Update(user);
+            // _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
 

@@ -19,42 +19,69 @@
             </nz-radio-group>
         </nz-form-control>
     </nz-form-item> -->
-    <nz-form-item>
-        <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
-            >Field A</nz-form-label
-        >
-        <nz-form-control
-            [nzSpan]="isHorizontal ? 14 : null"
-            nzErrorTip="Please input your username!"
-        >
-            <input
-                nz-input
-                formControlName="fieldA"
-                placeholder="input placeholder"
-            />
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
-            >Field B</nz-form-label
-        >
-        <nz-form-control
-            [nzSpan]="isHorizontal ? 14 : null"
-            nzErrorTip="Please input your Password!"
-        >
-            <input
-                nz-input
-                formControlName="filedB"
-                placeholder="input placeholder"
-            />
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-control
-            [nzSpan]="isHorizontal ? 14 : null"
-            [nzOffset]="isHorizontal ? 4 : null"
-        >
-            <button nz-button nzType="primary">Submit</button>
-        </nz-form-control>
-    </nz-form-item>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
+                    >Code</nz-form-label
+                >
+                <nz-form-control
+                    [nzSpan]="isHorizontal ? 14 : null"
+                    nzErrorTip="Please input application code!"
+                >
+                    <input
+                        nz-input
+                        formControlName="fieldA"
+                        placeholder="input code"
+                    />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="9">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
+                    >Name</nz-form-label
+                >
+                <nz-form-control
+                    [nzSpan]="isHorizontal ? 14 : null"
+                    nzErrorTip="Please input application name!"
+                >
+                    <input
+                        nz-input
+                        formControlName="filedB"
+                        placeholder="input name"
+                    />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="9">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
+                    >Description</nz-form-label
+                >
+                <nz-form-control
+                    [nzSpan]="isHorizontal ? 14 : null"
+                    nzErrorTip="Please input description!"
+                >
+                    <input
+                        nz-input
+                        formControlName="filedB"
+                        placeholder="input description"
+                    />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-control
+                    [nzSpan]="isHorizontal ? 14 : null"
+                    [nzOffset]="isHorizontal ? 4 : null"
+                >
+                    <button nz-button nzType="primary">Submit</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
 </form>

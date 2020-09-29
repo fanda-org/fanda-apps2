@@ -141,7 +141,7 @@ namespace FandaAuth.Service
             // save refresh token
             user.DateLastLogin = DateTime.UtcNow;
             user.RefreshTokens.Add(refreshToken);
-            _context.Update(user);
+            // _context.Update(user);
             await _context.SaveChangesAsync();
 
             var userDto = _mapper.Map<UserDto>(user);
@@ -174,7 +174,7 @@ namespace FandaAuth.Service
             refreshToken.RevokedByIp = ipAddress;
             refreshToken.ReplacedByToken = newRefreshToken.Token;
             user.RefreshTokens.Add(newRefreshToken);
-            _context.Update(user);
+            // _context.Update(user);
             await _context.SaveChangesAsync();
 
             // generate new jwt
@@ -207,7 +207,7 @@ namespace FandaAuth.Service
             // revoke token and save
             refreshToken.DateRevoked = DateTime.UtcNow;
             refreshToken.RevokedByIp = ipAddress;
-            _context.Update(user);
+            // _context.Update(user);
             await _context.SaveChangesAsync();
 
             return true;

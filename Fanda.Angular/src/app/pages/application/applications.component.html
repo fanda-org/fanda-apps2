@@ -10,7 +10,11 @@
             [nzGutter]="{ xs: 8, sm: 8, md: 16, lg: 16 }"
         >
             <div nz-col nzFlex="auto">
-                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                <nz-input-group
+                    nzSearch
+                    [nzAddOnAfter]="suffixIconButton"
+                    nzCompact
+                >
                     <input
                         type="text"
                         nz-input
@@ -29,16 +33,32 @@
                     ></i
                 ></ng-template> -->
                 <ng-template #suffixIconButton>
-                    <button
-                        nz-button
-                        nzType="default"
-                        nzSearch
-                        nz-tooltip
-                        nzTooltipTitle="Search"
-                        (click)="searchCustom()"
-                    >
-                        <i nz-icon nzType="search"></i>
-                    </button>
+                    <nz-input-group nzCompact>
+                        <button
+                            nz-button
+                            nzType="default"
+                            nz-tooltip
+                            nzTooltipTitle="Reset"
+                            (click)="resetCustomSearch()"
+                        >
+                            <i
+                                nz-icon
+                                nzType="close-circle"
+                                nzTheme="fill"
+                                class="ant-input-clear-icon"
+                            ></i>
+                        </button>
+                        <button
+                            nz-button
+                            nzType="primary"
+                            nzSearch
+                            nz-tooltip
+                            nzTooltipTitle="Search"
+                            (click)="searchCustom()"
+                        >
+                            <i nz-icon nzType="search"></i>
+                        </button>
+                    </nz-input-group>
                 </ng-template>
             </div>
 
@@ -94,10 +114,11 @@
                         [nzFilters]="filterActive"
                         [nzFilterFn]="true"
                         [nzFilterMultiple]="false"
+                        nzAlign="center"
                     >
                         Active
                     </th>
-                    <th>Actions</th>
+                    <th nzAlign="center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -112,14 +133,14 @@
                     <td>{{ data.description }}</td>
                     <td>{{ data.edition }}</td>
                     <td>{{ data.version }}</td>
-                    <td>
+                    <td nzAlign="center">
                         <nz-switch
                             nzSize="small"
-                            [ngModel]="data.active"
-                            (click)="activate(data.id)"
+                            [(ngModel)]="data.active"
+                            (click)="activate(data.id, data.active)"
                         ></nz-switch>
                     </td>
-                    <td>
+                    <td nzAlign="center">
                         <div class="icons-list">
                             <a
                                 nz-icon
@@ -164,7 +185,7 @@
                 nzType="link"
                 nzSize="small"
                 [disabled]="!nameSearchValue"
-                (click)="reset()"
+                (click)="resetNameSearch()"
                 class="reset-button"
             >
                 Reset

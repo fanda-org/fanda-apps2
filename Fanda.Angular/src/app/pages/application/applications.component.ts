@@ -44,7 +44,7 @@ export class ApplicationsComponent implements OnInit {
         private hiddenService: HiddenDataService
     ) {}
 
-    reset(): void {
+    resetNameSearch(): void {
         this.nameSearchValue = '';
         this.searchName();
     }
@@ -63,6 +63,11 @@ export class ApplicationsComponent implements OnInit {
             [...this.filters, this.nameFilter],
             this.customFilters
         );
+    }
+
+    resetCustomSearch(): void {
+        this.customSearchValue = '';
+        this.searchCustom();
     }
 
     searchCustom(): void {
@@ -116,8 +121,16 @@ export class ApplicationsComponent implements OnInit {
             );
     }
 
-    activate(id: string): void {
-        console.log('Activate ID', id);
+    activate(id: string, active: boolean): void {
+        console.log('Activate', id, active);
+        this.applicationService.activate(id, active).subscribe(
+            (res) => {
+                console.log('Activated');
+            },
+            (err) => {
+                console.log('Activate failed', err);
+            }
+        );
     }
 
     ngOnInit(): void {

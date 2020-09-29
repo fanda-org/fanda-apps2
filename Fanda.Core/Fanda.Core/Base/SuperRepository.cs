@@ -113,7 +113,7 @@ namespace Fanda.Core.Base
             var entity = _mapper.Map<TEntity>(model);
             entity.DateModified = DateTime.UtcNow;
             _context.Entry(dbEntity).CurrentValues.SetValues(model);
-            _context.Update(dbEntity);
+            // _context.Update(dbEntity);
             await _context.SaveChangesAsync();
         }
 
@@ -146,6 +146,7 @@ namespace Fanda.Core.Base
             }
             entity.Active = active;
             entity.DateModified = DateTime.UtcNow;
+            //_context.Update(entity);
             await _context.SaveChangesAsync();
             return true;
         }

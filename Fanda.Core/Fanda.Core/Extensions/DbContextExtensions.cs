@@ -163,7 +163,7 @@ namespace Fanda.Core.Extensions
             })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableDetailedErrors(isDevelopmentEnvironment)
                 .EnableSensitiveDataLogging(isDevelopmentEnvironment)
                 .EnableServiceProviderCaching();
@@ -179,7 +179,7 @@ namespace Fanda.Core.Extensions
             })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableDetailedErrors(isDevelopmentEnvironment)
                 .EnableSensitiveDataLogging(isDevelopmentEnvironment)
                 .EnableServiceProviderCaching();
@@ -195,7 +195,7 @@ namespace Fanda.Core.Extensions
             })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableDetailedErrors(isDevelopmentEnvironment)
                 .EnableSensitiveDataLogging(isDevelopmentEnvironment)
                 .EnableServiceProviderCaching();
@@ -212,7 +212,7 @@ namespace Fanda.Core.Extensions
             })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableDetailedErrors(isDevelopmentEnvironment)
                 .EnableSensitiveDataLogging(isDevelopmentEnvironment)
                 .EnableServiceProviderCaching();
@@ -227,7 +227,7 @@ namespace Fanda.Core.Extensions
             })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableDetailedErrors(isDevelopmentEnvironment)
                 .EnableSensitiveDataLogging(isDevelopmentEnvironment)
                 .EnableServiceProviderCaching();

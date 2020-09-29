@@ -39,7 +39,7 @@ export class ApplicationEditComponent implements OnInit {
         this.mode = capitalize(this.route.snapshot.params.mode);
         this.id = this.route.snapshot.params.id;
         this.form = this.fb.group({
-            formLayout: ['horizontal'],
+            formLayout: ['vertical'],
             fieldA: [null, [Validators.required]],
             filedB: [null, [Validators.required]],
         });

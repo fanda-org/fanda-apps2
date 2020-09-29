@@ -178,7 +178,7 @@ namespace FandaAuth.Service
 
             #endregion Resources
 
-            _context.Roles.Update(dbRole);
+            // _context.Roles.Update(dbRole);
             await _context.SaveChangesAsync();
         }
 
@@ -186,6 +186,7 @@ namespace FandaAuth.Service
         {
             entity.TenantId = superId;
         }
+
         protected override Guid GetSuperId(Role entity)
         {
             return entity.TenantId;

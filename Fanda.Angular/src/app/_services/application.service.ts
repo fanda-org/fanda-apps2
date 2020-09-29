@@ -58,6 +58,17 @@ export class ApplicationService {
         return this.http.delete<ApiResponse>(`${this.baseUrl}/${id}`);
     }
 
+    activate(id: string, active: boolean): Observable<ApiResponse> {
+        console.log('url', `${this.baseUrl}/activate/${id}`, {
+            id,
+            active,
+        });
+        return this.http.patch<ApiResponse>(`${this.baseUrl}/activate/${id}`, {
+            id,
+            active,
+        });
+    }
+
     getFilterCondition(filters: Array<FilterModel>): string {
         // console.log('filters', filters);
         let filterCondition = '';
