@@ -17,6 +17,13 @@ export class ApplicationEditComponent implements OnInit {
     submitted = false;
 
     submitForm(): void {
+        this.submitted = true;
+        this.loading = false;
+        // stop here if form is invalid
+        if (this.form.invalid) {
+            return;
+        }
+
         // tslint:disable-next-line: forin
         for (const i in this.form.controls) {
             this.form.controls[i].markAsDirty();
@@ -33,15 +40,19 @@ export class ApplicationEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private applicationService: ApplicationService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.mode = capitalize(this.route.snapshot.params.mode);
         this.id = this.route.snapshot.params.id;
         this.form = this.fb.group({
             formLayout: ['vertical'],
-            fieldA: [null, [Validators.required]],
-            filedB: [null, [Validators.required]],
+            code: [null, [Validators.required, Validators.maxLength(16)]],
+            name: [null, [Validators.required, Validators.maxLength(50)]],
+            description: [null, [Validators.maxLength(255)]],
+            edition: [null, [Validators.required, Validators.maxLength(25)]],
+            version: [null, [Validators.required, Validators.maxLength(16)]],
+            active: [true],
         });
     }
 }
