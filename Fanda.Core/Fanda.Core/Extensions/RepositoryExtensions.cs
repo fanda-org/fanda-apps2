@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+
+using System.Linq.Dynamic.Core.CustomTypeProviders;
 using System.Threading.Tasks;
 
 namespace Fanda.Core.Extensions
@@ -67,6 +69,7 @@ namespace Fanda.Core.Extensions
             if (!string.IsNullOrEmpty(queryInput.Filter))
             {
                 dbQuery = dbQuery.Where(queryInput.Filter, queryInput.FilterArgs);
+                // dbQuery = dbQuery.Where(c => EF.Functions.Like("name", "%fan%"));
             }
             int itemsCount = ignoreCount ? 0 : dbQuery.Count();
             if (!string.IsNullOrEmpty(queryInput.Sort))

@@ -14,3 +14,16 @@
     padding: 10px 10px !important;
 }
 */
+.module-heading {
+    font-size: xx-large;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.input-group-suffix-addon {
+    padding: 0 !important;
+    border: 0 !important;
+}
+/* .ant-input-group-addon */

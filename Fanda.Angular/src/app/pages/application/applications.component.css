@@ -21,6 +21,10 @@
     width: 90px;
 }
 
-.search-button {
+.reset-button {
     margin-right: 8px;
 }
+
+/* .search-button {
+    align-items: center;
+} */

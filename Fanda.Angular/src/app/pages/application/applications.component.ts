@@ -24,15 +24,17 @@ export class ApplicationsComponent implements OnInit {
     sortFieldOrder = '';
     filters: Array<FilterModel> = null;
     nameFilter: FilterModel = null;
+    customFilters: Array<FilterModel> = null;
+
+    customSearchValue = '';
+    nameSearchValue = '';
+    nameDropdownVisible = false;
 
     filterActive = [
         { text: 'Active', value: true },
         { text: 'Inactive', value: false },
         { text: 'Both', value: null },
     ];
-
-    searchValue = '';
-    visible = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -43,38 +45,79 @@ export class ApplicationsComponent implements OnInit {
     ) {}
 
     reset(): void {
-        this.searchValue = '';
-        this.search();
+        this.nameSearchValue = '';
+        this.searchName();
     }
 
-    search(): void {
-        this.visible = false;
-        this.nameFilter = { key: 'name', value: this.searchValue };
+    searchName(): void {
+        this.nameDropdownVisible = false;
+        if (this.nameSearchValue) {
+            this.nameFilter = { key: 'name', value: this.nameSearchValue };
+        } else {
+            this.nameFilter = null;
+        }
+        this.loadData(
+            this.pageIndex,
+            this.pageSize,
+            this.sortFieldOrder,
+            [...this.filters, this.nameFilter],
+            this.customFilters
+        );
+    }
 
-        this.loadData(this.pageIndex, this.pageSize, this.sortFieldOrder, [
-            ...this.filters,
-            this.nameFilter,
-        ]);
+    searchCustom(): void {
+        // console.log('custom search');
+        if (this.customSearchValue) {
+            this.customFilters = [
+                { key: 'code', value: this.customSearchValue },
+                { key: 'name', value: this.customSearchValue },
+                { key: 'description', value: this.customSearchValue },
+            ];
+        } else {
+            this.customFilters = null;
+        }
+        this.loadData(
+            this.pageIndex,
+            this.pageSize,
+            this.sortFieldOrder,
+            [...this.filters, this.nameFilter],
+            this.customFilters
+        );
     }
 
     loadData(
         pageIndex: number,
         pageSize: number,
         sort: string | null,
-        filters: Array<FilterModel>
+        filters: Array<FilterModel>,
+        customFilters: Array<FilterModel>
     ): void {
         // console.log('Filters', filters);
         this.loading = true;
         this.applicationService
-            .getAll(pageIndex, pageSize, sort, filters)
-            .subscribe((res) => {
-                this.loading = false;
-                this.applications = res.data;
-                this.total = res.itemsCount;
-                this.alertService.success('Loading successful', {
-                    keepAfterRouteChange: true,
-                });
-            });
+            .getAll(pageIndex, pageSize, sort, filters, customFilters)
+            .subscribe(
+                (response) => {
+                    this.loading = false;
+                    this.applications = response.data;
+                    this.total = response.itemsCount;
+                    this.alertService.success('Loading successful', {
+                        keepAfterRouteChange: true,
+                    });
+                },
+                (error) => {
+                    this.loading = false;
+                    // this.nameSearchValue = '';
+                    if (this.nameFilter) {
+                        this.nameDropdownVisible = true;
+                    }
+                    console.log('Error', error);
+                }
+            );
+    }
+
+    activate(id: string): void {
+        console.log('Activate ID', id);
     }
 
     ngOnInit(): void {
@@ -100,9 +143,12 @@ export class ApplicationsComponent implements OnInit {
         this.sortFieldOrder = sortFieldOrder;
         this.filters = filter;
         console.log('NameFilter', this.nameFilter);
-        this.loadData(pageIndex, pageSize, sortFieldOrder, [
-            ...filter,
-            this.nameFilter,
-        ]);
+        this.loadData(
+            pageIndex,
+            pageSize,
+            sortFieldOrder,
+            [...filter, this.nameFilter],
+            this.customFilters
+        );
     }
 }

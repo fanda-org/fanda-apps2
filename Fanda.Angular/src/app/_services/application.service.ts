@@ -15,15 +15,29 @@ export class ApplicationService {
         page: number,
         pageSize: number,
         sort: string | null,
-        filters: Array<FilterModel>
+        filters: Array<FilterModel>,
+        customFilters: FilterModel[]
     ): Observable<ApiResponse> {
         const filterCondition = this.getFilterCondition(filters);
-        console.log(filterCondition);
+        const customCondition = this.getCustomCondition(customFilters);
+        let combinedCondition = '';
+        if (filterCondition) {
+            combinedCondition = filterCondition;
+        }
+        if (customCondition) {
+            if (filterCondition) {
+                combinedCondition += ' and ' + customCondition;
+            } else {
+                combinedCondition = customCondition;
+            }
+        }
+        console.log('Combined Filters', combinedCondition);
+
         const params = new HttpParams()
             .append('page', `${page}`)
             .append('pageSize', `${pageSize}`)
             .append('sort', `${sort}`)
-            .append('filter', filterCondition);
+            .append('filter', combinedCondition);
 
         return this.http.get<ApiResponse>(`${this.baseUrl}`, { params });
     }
@@ -83,7 +97,29 @@ export class ApplicationService {
         if (typeof value === 'boolean' || typeof value === 'number') {
             return `${key}==${value}`;
         } else if (typeof value === 'string') {
-            return `${key}.Contains("${value}")`;
+            return `${key}.Contains("${value}")`; // , StringComparison.OrdinalIgnoreCase)`;
+            // return `DynamicFunctions.Like(${key}, "%${value}%")`;
+            // return `EF.Functions.Like(${key}, "%${value}%")`;
         }
+    }
+
+    getCustomCondition(filters: Array<FilterModel>): string {
+        let filterCondition = '';
+        if (filters) {
+            filters.forEach((filter) => {
+                if (filter && filter.value != null) {
+                    filterCondition += this.getConditionByType(
+                        filter.key,
+                        filter.value
+                    );
+                    filterCondition += filterCondition ? ' or ' : '';
+                }
+            });
+            filterCondition = filterCondition.substring(
+                0,
+                filterCondition.length - 4
+            );
+        }
+        return filterCondition ? '(' + filterCondition + ')' : filterCondition;
     }
 }

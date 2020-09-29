@@ -1,13 +1,55 @@
-<div nz-row>
+<div nz-row nzAlign="middle" [nzGutter]="[16, 8]">
     <div nz-col nzSpan="8">
         <h1>Applications</h1>
     </div>
-    <div nz-col nzSpan="8" nzOffset="8">
-        <div nz-row nzJustify="end">
-            <div>
-                <button nz-button nzType="primary">
-                    <i nz-icon nzType="plus-circle" nzTheme="outline"></i> Add
-                    New
+    <div nz-col nzSpan="16">
+        <div
+            nz-row
+            nzAlign="middle"
+            nzJustify="end"
+            [nzGutter]="{ xs: 8, sm: 8, md: 16, lg: 16 }"
+        >
+            <div nz-col nzFlex="auto">
+                <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                    <input
+                        type="text"
+                        nz-input
+                        placeholder="Search..."
+                        [(ngModel)]="customSearchValue"
+                    />
+                </nz-input-group>
+                <!-- <ng-template #inputClearTpl
+                    ><i
+                        nz-icon
+                        class="ant-input-clear-icon"
+                        nzTheme="fill"
+                        nzType="close-circle"
+                        *ngIf="customSearchValue"
+                        (click)="customSearchValue = null"
+                    ></i
+                ></ng-template> -->
+                <ng-template #suffixIconButton>
+                    <button
+                        nz-button
+                        nzType="default"
+                        nzSearch
+                        nz-tooltip
+                        nzTooltipTitle="Search"
+                        (click)="searchCustom()"
+                    >
+                        <i nz-icon nzType="search"></i>
+                    </button>
+                </ng-template>
+            </div>
+
+            <div nz-col>
+                <button
+                    nz-button
+                    nzType="primary"
+                    routerLink="/pages/applications/add"
+                >
+                    <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+                    Add New
                 </button>
                 <!-- <button nz-button nzType="default" nzDanger>
                     <i nz-icon nzType="minus-circle" nzTheme="outline"></i>
@@ -16,71 +58,97 @@
             </div>
         </div>
     </div>
+    <div nz-col nzSpan="24">
+        <nz-table
+            nzShowSizeChanger
+            nzBordered
+            nzSize="small"
+            [nzData]="applications"
+            [nzFrontPagination]="false"
+            [nzLoading]="loading"
+            [nzTotal]="total"
+            [nzPageSize]="pageSize"
+            [nzPageIndex]="pageIndex"
+            (nzQueryParams)="onQueryParamsChange($event)"
+        >
+            <thead>
+                <tr>
+                    <th nzColumnKey="code" [nzSortFn]="true">Code</th>
+                    <th nzColumnKey="name" [nzSortFn]="true" nzCustomFilter>
+                        Name
+                        <nz-filter-trigger
+                            [(nzVisible)]="nameDropdownVisible"
+                            [nzActive]="nameSearchValue.length > 0"
+                            [nzDropdownMenu]="menu"
+                        >
+                            <i nz-icon nzType="search"></i>
+                        </nz-filter-trigger>
+                    </th>
+                    <th nzColumnKey="description" [nzSortFn]="true">
+                        Description
+                    </th>
+                    <th nzColumnKey="edition" [nzSortFn]="true">Edition</th>
+                    <th nzColumnKey="version" [nzSortFn]="true">Version</th>
+                    <th
+                        nzColumnKey="active"
+                        [nzFilters]="filterActive"
+                        [nzFilterFn]="true"
+                        [nzFilterMultiple]="false"
+                    >
+                        Active
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of applications">
+                    <td>
+                        <a
+                            routerLink="/pages/applications/view/{{ data.id }}"
+                            >{{ data.code }}</a
+                        >
+                    </td>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.description }}</td>
+                    <td>{{ data.edition }}</td>
+                    <td>{{ data.version }}</td>
+                    <td>
+                        <nz-switch
+                            nzSize="small"
+                            [ngModel]="data.active"
+                            (click)="activate(data.id)"
+                        ></nz-switch>
+                    </td>
+                    <td>
+                        <div class="icons-list">
+                            <a
+                                nz-icon
+                                [nzType]="'edit'"
+                                [nzTheme]="'twotone'"
+                                routerLink="/pages/applications/edit/{{
+                                    data.id
+                                }}"
+                                nz-tooltip
+                                nzTooltipTitle="Edit"
+                            ></a>
+                            <a
+                                nz-icon
+                                [nzType]="'delete'"
+                                [nzTheme]="'twotone'"
+                                [nzTwotoneColor]="'#eb2f96'"
+                                routerLink="/pages/applications/delete/{{
+                                    data.id
+                                }}"
+                                nz-tooltip
+                                nzTooltipTitle="Delete"
+                            ></a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
 </div>
-
-<nz-table
-    nzShowSizeChanger
-    nzBordered
-    nzSize="small"
-    [nzData]="applications"
-    [nzFrontPagination]="false"
-    [nzLoading]="loading"
-    [nzTotal]="total"
-    [nzPageSize]="pageSize"
-    [nzPageIndex]="pageIndex"
-    (nzQueryParams)="onQueryParamsChange($event)"
->
-    <thead>
-        <tr>
-            <th nzColumnKey="code" [nzSortFn]="true">Code</th>
-            <th nzColumnKey="name" [nzSortFn]="true" nzCustomFilter>
-                Name
-                <nz-filter-trigger
-                    [(nzVisible)]="visible"
-                    [nzActive]="searchValue.length > 0"
-                    [nzDropdownMenu]="menu"
-                >
-                    <i nz-icon nzType="search"></i>
-                </nz-filter-trigger>
-            </th>
-            <th nzColumnKey="description" [nzSortFn]="true">Description</th>
-            <th nzColumnKey="edition" [nzSortFn]="true">Edition</th>
-            <th nzColumnKey="version" [nzSortFn]="true">Version</th>
-            <th
-                nzColumnKey="active"
-                [nzFilters]="filterActive"
-                [nzFilterFn]="true"
-                [nzFilterMultiple]="false"
-            >
-                Active
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of applications">
-            <td>{{ data.code }}</td>
-            <td>{{ data.name }}</td>
-            <td>{{ data.description }}</td>
-            <td>{{ data.edition }}</td>
-            <td>{{ data.version }}</td>
-            <td>
-                <nz-switch nzSize="small" [ngModel]="data.active"></nz-switch>
-            </td>
-            <td>
-                <div class="icons-list">
-                    <i nz-icon [nzType]="'edit'" [nzTheme]="'twotone'"></i>
-                    <i
-                        nz-icon
-                        [nzType]="'delete'"
-                        [nzTheme]="'twotone'"
-                        [nzTwotoneColor]="'#eb2f96'"
-                    ></i>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</nz-table>
 
 <nz-dropdown-menu #menu="nzDropdownMenu">
     <div class="ant-table-filter-dropdown">
@@ -89,19 +157,27 @@
                 type="text"
                 nz-input
                 placeholder="Search name"
-                [(ngModel)]="searchValue"
+                [(ngModel)]="nameSearchValue"
             />
+            <button
+                nz-button
+                nzType="link"
+                nzSize="small"
+                [disabled]="!nameSearchValue"
+                (click)="reset()"
+                class="reset-button"
+            >
+                Reset
+            </button>
             <button
                 nz-button
                 nzSize="small"
                 nzType="primary"
-                (click)="search()"
+                (click)="searchName()"
                 class="search-button"
             >
                 Search
             </button>
-            <button nz-button nzSize="small" (click)="reset()">Reset</button>
         </div>
     </div>
 </nz-dropdown-menu>
-<!-- [nzFilters]="filterGender" [nzFilterFn]="true" -->
