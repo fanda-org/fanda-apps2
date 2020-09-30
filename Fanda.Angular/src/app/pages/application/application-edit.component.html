@@ -1,87 +1,51 @@
-<form
-    nz-form
-    [nzLayout]="form.get('formLayout')?.value"
-    [formGroup]="form"
-    (ngSubmit)="submitForm()"
->
-    <h1>Application - {{ mode }}</h1>
-    <!-- <nz-form-item>
-        <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
-            >Form Layout</nz-form-label
-        >
-        <nz-form-control [nzSpan]="isHorizontal ? 14 : null">
-            <nz-radio-group formControlName="formLayout">
-                <label nz-radio-button [nzValue]="'horizontal'"
-                    >Horizontal</label
-                >
-                <label nz-radio-button [nzValue]="'vertical'">Vertical</label>
-                <label nz-radio-button [nzValue]="'inline'">Inline</label>
-            </nz-radio-group>
-        </nz-form-control>
-    </nz-form-item> -->
-    <div nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="6">
-            <nz-form-item>
-                <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
-                    >Code</nz-form-label
-                >
-                <nz-form-control
-                    [nzSpan]="isHorizontal ? 14 : null"
-                    nzErrorTip="Please input application code!"
-                >
-                    <input
-                        nz-input
-                        formControlName="fieldA"
-                        placeholder="input code"
-                    />
-                </nz-form-control>
-            </nz-form-item>
+<form nz-form nzLayout="vertical" [formGroup]="form" (ngSubmit)="submitForm()">
+    <div nz-row [nzGutter]="[8, 8]">
+        <div nz-col nzSpan="24">
+            <h1>Application - {{ mode }}</h1>
         </div>
-        <div nz-col [nzSpan]="9">
-            <nz-form-item>
-                <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
-                    >Name</nz-form-label
-                >
-                <nz-form-control
-                    [nzSpan]="isHorizontal ? 14 : null"
-                    nzErrorTip="Please input application name!"
-                >
-                    <input
-                        nz-input
-                        formControlName="filedB"
-                        placeholder="input name"
-                    />
-                </nz-form-control>
-            </nz-form-item>
+        <!-- <nz-form-item> -->
+        <div nz-col [nzSpan]="12">
+            <nz-form-label>Code</nz-form-label>
+            <nz-form-control nzErrorTip="Please input application code!">
+                <input
+                    nz-input
+                    formControlName="code"
+                    placeholder="input code"
+                />
+            </nz-form-control>
+            <!-- </nz-form-item>
+    <nz-form-item> -->
         </div>
-        <div nz-col [nzSpan]="9">
-            <nz-form-item>
-                <nz-form-label [nzSpan]="isHorizontal ? 4 : null"
-                    >Description</nz-form-label
-                >
-                <nz-form-control
-                    [nzSpan]="isHorizontal ? 14 : null"
-                    nzErrorTip="Please input description!"
-                >
-                    <input
-                        nz-input
-                        formControlName="filedB"
-                        placeholder="input description"
-                    />
-                </nz-form-control>
-            </nz-form-item>
+        <div nz-col [nzSpan]="12">
+            <nz-form-label>Name</nz-form-label>
+            <nz-form-control nzErrorTip="Please input application name!">
+                <input
+                    nz-input
+                    formControlName="name"
+                    placeholder="input name"
+                />
+            </nz-form-control>
+        </div>
+        <!-- </nz-form-item>
+    <nz-form-item> -->
+    </div>
+    <div nz-row [nzGutter]="[8, 8]">
+        <div nz-col [nzSpan]="24">
+            <nz-form-label>Description</nz-form-label>
+            <nz-form-control nzErrorTip="Please input description!">
+                <input
+                    nz-input
+                    formControlName="description"
+                    placeholder="input description"
+                />
+            </nz-form-control>
         </div>
     </div>
-    <div nz-row>
-        <div nz-col [nzSpan]="8">
-            <nz-form-item>
-                <nz-form-control
-                    [nzSpan]="isHorizontal ? 14 : null"
-                    [nzOffset]="isHorizontal ? 4 : null"
-                >
-                    <button nz-button nzType="primary">Submit</button>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </div>
+    <!-- </nz-form-item> -->
+
+    <!--<nz-form-item> -->
+    <!-- <nz-form-control>
+            <button nz-button nzType="primary">Submit</button>
+        </nz-form-control> -->
+    <!-- </nz-form-item> -->
 </form>

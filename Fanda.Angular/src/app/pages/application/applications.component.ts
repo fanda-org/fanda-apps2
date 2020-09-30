@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
     ApplicationService,
     AlertService,
-    HiddenDataService,
+    HiddenDataService
 } from '../../_services';
 import { Application, FilterModel } from '../../_models';
 import { capitalize } from 'src/app/_utils';
@@ -13,7 +13,7 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 @Component({
     selector: 'app-applications',
     templateUrl: './applications.component.html',
-    styleUrls: ['./applications.component.css'],
+    styleUrls: ['./applications.component.css']
 })
 export class ApplicationsComponent implements OnInit {
     loading = true;
@@ -33,7 +33,7 @@ export class ApplicationsComponent implements OnInit {
     filterActive = [
         { text: 'Active', value: true },
         { text: 'Inactive', value: false },
-        { text: 'Both', value: null },
+        { text: 'Both', value: null }
     ];
 
     constructor(
@@ -76,7 +76,7 @@ export class ApplicationsComponent implements OnInit {
             this.customFilters = [
                 { key: 'code', value: this.customSearchValue },
                 { key: 'name', value: this.customSearchValue },
-                { key: 'description', value: this.customSearchValue },
+                { key: 'description', value: this.customSearchValue }
             ];
         } else {
             this.customFilters = null;
@@ -107,7 +107,7 @@ export class ApplicationsComponent implements OnInit {
                     this.applications = response.data;
                     this.total = response.itemsCount;
                     this.alertService.success('Loading successful', {
-                        keepAfterRouteChange: true,
+                        keepAfterRouteChange: true
                     });
                 },
                 (error) => {

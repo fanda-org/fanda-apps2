@@ -7,7 +7,7 @@ import { capitalize } from 'src/app/_utils';
 @Component({
     selector: 'app-application',
     templateUrl: './application-edit.component.html',
-    styleUrls: ['./application-edit.component.css'],
+    styleUrls: ['./application-edit.component.css']
 })
 export class ApplicationEditComponent implements OnInit {
     form!: FormGroup;
@@ -31,28 +31,23 @@ export class ApplicationEditComponent implements OnInit {
         }
     }
 
-    get isHorizontal(): boolean {
-        return this.form.controls.formLayout?.value === 'horizontal';
-    }
-
     constructor(
         private fb: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private applicationService: ApplicationService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.mode = capitalize(this.route.snapshot.params.mode);
         this.id = this.route.snapshot.params.id;
         this.form = this.fb.group({
-            formLayout: ['vertical'],
             code: [null, [Validators.required, Validators.maxLength(16)]],
             name: [null, [Validators.required, Validators.maxLength(50)]],
             description: [null, [Validators.maxLength(255)]],
             edition: [null, [Validators.required, Validators.maxLength(25)]],
             version: [null, [Validators.required, Validators.maxLength(16)]],
-            active: [true],
+            active: [true]
         });
     }
 }
