@@ -10,6 +10,7 @@ using System.Web;
 
 namespace Fanda.Core.Base
 {
+    [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "page", "pageSize", "sort", "filter" })]
     public abstract class SuperController<TRepository, TEntity, TModel, TListModel> : BaseController
         where TRepository : ISuperRepository<TEntity, TModel, TListModel>
         where TModel : BaseDto

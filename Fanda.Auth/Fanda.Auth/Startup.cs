@@ -32,6 +32,7 @@ namespace Fanda.Auth
             //AppSettings appSettings = Configuration.Get<AppSettings>();
             AppSettings appSettings = services.ConfigureAppSettings(Configuration);
 
+            services.AddResponseCaching();
             services.AddCustomControllers();
 
             //services.AddDbContext<AuthContext>(options =>
@@ -79,6 +80,8 @@ namespace Fanda.Auth
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {

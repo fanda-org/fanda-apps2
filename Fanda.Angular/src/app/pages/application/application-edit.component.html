@@ -1,8 +1,10 @@
 <form nz-form nzLayout="vertical" [formGroup]="form" (ngSubmit)="submitForm()">
     <div nz-row [nzGutter]="[8, 8]">
-        <div nz-col nzSpan="24">
+        <div nz-col>
             <h1>Application - {{ mode }}</h1>
         </div>
+    </div>
+    <div nz-row [nzGutter]="[8, 8]">
         <!-- <nz-form-item> -->
         <div nz-col [nzSpan]="12">
             <nz-form-label>Code</nz-form-label>
@@ -44,8 +46,23 @@
     <!-- </nz-form-item> -->
 
     <!--<nz-form-item> -->
-    <!-- <nz-form-control>
-            <button nz-button nzType="primary">Submit</button>
-        </nz-form-control> -->
+    <div nz-row [nzGutter]="[8, 8]">
+        <div nz-col>
+            <nz-form-control>
+                <button nz-button nzType="primary">Submit</button>
+            </nz-form-control>
+        </div>
+        <div nz-col>
+            <nz-form-control>
+                <button
+                    nz-button
+                    nzType="default"
+                    routerLink="/pages/applications"
+                >
+                    Cancel
+                </button>
+            </nz-form-control>
+        </div>
+    </div>
     <!-- </nz-form-item> -->
 </form>
