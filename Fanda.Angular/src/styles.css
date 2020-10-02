@@ -26,4 +26,13 @@
     padding: 0 !important;
     border: 0 !important;
 }
-/* .ant-input-group-addon */
+
+.ant-col-24.ant-form-item-label,
+.ant-col-xl-24.ant-form-item-label,
+.ant-form-vertical .ant-form-item-label {
+    padding: 0 0 0;
+}
+
+.ant-form-item {
+    margin: 0 0 8px;
+}

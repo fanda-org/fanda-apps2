@@ -3,11 +3,11 @@ import { ValidatorFn, AbstractControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class UserValidatorService {
-    patternValidator(): ValidatorFn {
-        return (control: AbstractControl): { [key: string]: any } => {
+    passwordPatternValidator(): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } | null => {
             if (!control.value) {
                 return null;
             }
@@ -45,7 +45,7 @@ export class UserValidatorService {
 
     userNameValidator(
         userControl: AbstractControl
-    ): Promise<{ userNameNotAvailable: boolean }> {
+    ): Promise<{ userNameNotAvailable: boolean } | null> {
         return new Promise((resolve) => {
             // setTimeout(() => {
             if (this.validateUserName(userControl.value)) {
