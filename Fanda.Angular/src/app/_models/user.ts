@@ -1,9 +1,9 @@
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  token: string;
+    id: string;
+    userName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    tenantId: string;
+    active: boolean;
 }

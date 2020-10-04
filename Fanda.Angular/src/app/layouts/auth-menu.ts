@@ -32,7 +32,8 @@ export const authMenus = [
             {
                 level: 2,
                 title: 'Users',
-                icon: 'user'
+                icon: 'user',
+                path: ['/', 'pages', 'users']
             },
             {
                 level: 2,

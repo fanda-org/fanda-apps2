@@ -142,11 +142,11 @@ namespace Fanda.Authentication.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Active([Required, FromRoute] Guid id, [Required, FromQuery] bool active)
+        public async Task<IActionResult> Active([Required, FromRoute] Guid id, [Required] Activate activate)
         {
             try
             {
-                bool success = await _repository.ActivateAsync(id, active);
+                bool success = await _repository.ActivateAsync(id, activate.Active);
                 if (success)
                 {
                     return Ok(MessageResponse.Succeeded("Status changed successfully"));

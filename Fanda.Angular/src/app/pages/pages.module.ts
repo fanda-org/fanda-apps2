@@ -14,6 +14,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ApplicationsComponent } from './application/applications.component';
 import { ApplicationEditComponent } from './application/application-edit.component';
 import { TenantsComponent } from './tenant/tenants.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { TenantsComponent } from './tenant/tenants.component';
         WelcomeComponent,
         ApplicationEditComponent,
         ApplicationsComponent,
-        TenantsComponent
+        TenantsComponent,
+        UsersComponent
     ]
 })
 export class PagesModule {
