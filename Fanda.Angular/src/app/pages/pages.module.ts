@@ -13,24 +13,30 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ApplicationsComponent } from './application/applications.component';
 import { ApplicationEditComponent } from './application/application-edit.component';
+import { TenantsComponent } from './tenant/tenants.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IconsProviderModule,
-    NgZorroAntdModule,
-    // CommonModule,
-    // NzGridModule,
-    // NzButtonModule,
-    // NzFormModule,
-    PagesRoutingModule,
-  ],
-  declarations: [WelcomeComponent, ApplicationEditComponent, ApplicationsComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        IconsProviderModule,
+        NgZorroAntdModule,
+        // CommonModule,
+        // NzGridModule,
+        // NzButtonModule,
+        // NzFormModule,
+        PagesRoutingModule
+    ],
+    declarations: [
+        WelcomeComponent,
+        ApplicationEditComponent,
+        ApplicationsComponent,
+        TenantsComponent
+    ]
 })
 export class PagesModule {
-  constructor() {
-    console.log('pagesModule:constructor');
-  }
+    constructor() {
+        console.log('pagesModule:constructor');
+    }
 }

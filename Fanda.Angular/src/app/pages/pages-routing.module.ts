@@ -3,29 +3,35 @@ import { Routes, RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ApplicationsComponent } from './application/applications.component';
 import { ApplicationEditComponent } from './application/application-edit.component';
+import { TenantsComponent } from './tenant/tenants.component';
 
 const routes: Routes = [
     { path: '', component: WelcomeComponent, data: { title: 'Dashboard' } },
     {
         path: 'applications',
         component: ApplicationsComponent,
-        data: { title: 'Applications' },
+        data: { title: 'Applications' }
     },
     {
         path: 'applications/:mode/:id',
         component: ApplicationEditComponent,
-        data: { title: `Application` },
+        data: { title: `Application` }
     },
     {
         path: 'applications/:mode',
         component: ApplicationEditComponent,
-        data: { title: 'Application' },
+        data: { title: 'Application' }
     },
+    {
+        path: 'tenants',
+        component: TenantsComponent,
+        data: { title: 'Tenants' }
+    }
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+    exports: [RouterModule]
 })
 export class PagesRoutingModule {
     constructor() {

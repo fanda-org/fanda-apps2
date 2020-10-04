@@ -4,7 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
     selector: 'app-root',
-    template: '<router-outlet></router-outlet>',
+    template: '<router-outlet></router-outlet>'
 })
 export class AppComponent {
     isCollapsed = false;
@@ -17,7 +17,7 @@ export class AppComponent {
                     router.routerState.root
                 ).join('-');
                 console.log('title', title);
-                titleService.setTitle(`${title} : Fanda`);
+                titleService.setTitle(`Fanda: ${title}`);
             }
         });
     }
