@@ -5,6 +5,7 @@ import { ApplicationsComponent } from './application/applications.component';
 import { ApplicationEditComponent } from './application/application-edit.component';
 import { TenantsComponent } from './tenant/tenants.component';
 import { UsersComponent } from './users/users.component';
+import { RolesComponent } from './roles/roles.component';
 
 const routes: Routes = [
     { path: '', component: WelcomeComponent, data: { title: 'Dashboard' } },
@@ -32,6 +33,11 @@ const routes: Routes = [
         path: 'users',
         component: UsersComponent,
         data: { title: 'Users' }
+    },
+    {
+        path: 'roles',
+        component: RolesComponent,
+        data: { title: 'Roles' }
     }
 ];
 

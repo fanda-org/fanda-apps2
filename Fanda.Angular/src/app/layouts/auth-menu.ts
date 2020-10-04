@@ -38,7 +38,8 @@ export const authMenus = [
             {
                 level: 2,
                 title: 'Roles',
-                icon: 'lock'
+                icon: 'lock',
+                path: ['/', 'pages', 'roles']
             }
         ]
     }
