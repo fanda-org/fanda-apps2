@@ -140,15 +140,26 @@
             </nz-table>
         </div>
         <div nz-col nzSpan="2">
-            <button nz-button (click)="addRow()" nzType="default" type="button">
+            <button
+                nz-button
+                (click)="addRow()"
+                nzType="default"
+                type="button"
+                nzBlock
+            >
                 Add
             </button>
-            <button nz-button nzType="primary" nzAlign="bottom">Submit</button>
+            <br />
+            <br />
+            <button nz-button nzType="primary" nzAlign="bottom" nzBlock>
+                Submit
+            </button>
             <button
                 nz-button
                 nzType="default"
                 routerLink="/pages/applications"
                 nzAlign="bottom"
+                nzBlock
             >
                 Cancel
             </button>

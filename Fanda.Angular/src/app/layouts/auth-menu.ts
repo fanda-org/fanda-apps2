@@ -6,7 +6,7 @@ export const authMenus = [
         path: ['/', 'pages'],
         open: false,
         selected: false,
-        disabled: false,
+        disabled: false
     },
     {
         level: 1,
@@ -15,7 +15,7 @@ export const authMenus = [
         path: ['/', 'pages', 'applications'],
         open: false,
         selected: false,
-        disabled: false,
+        disabled: false
     },
     {
         level: 1,
@@ -26,18 +26,18 @@ export const authMenus = [
             {
                 level: 2,
                 title: 'Tenants',
-                icon: 'audit',
+                icon: 'audit'
             },
             {
                 level: 2,
                 title: 'Users',
-                icon: 'user',
+                icon: 'user'
             },
             {
                 level: 2,
                 title: 'Roles',
-                icon: 'lock',
-            },
-        ],
-    },
+                icon: 'lock'
+            }
+        ]
+    }
 ];

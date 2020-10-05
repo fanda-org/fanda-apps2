@@ -6,7 +6,7 @@ import { authMenus } from './auth-menu';
 @Component({
     selector: 'app-default-layout',
     templateUrl: './default-layout.component.html',
-    styleUrls: ['./default-layout.component.css'],
+    styleUrls: ['./default-layout.component.css']
 })
 export class DefaultLayoutComponent {
     isCollapsed = false;
@@ -17,7 +17,7 @@ export class DefaultLayoutComponent {
         transaction: false,
         inventory: false,
         contacts: false,
-        accounts: false,
+        accounts: false
     };
     menus = authMenus; // fandaMenus;
 
