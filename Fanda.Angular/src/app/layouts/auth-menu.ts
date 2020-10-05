@@ -26,17 +26,20 @@ export const authMenus = [
             {
                 level: 2,
                 title: 'Tenants',
-                icon: 'audit'
+                icon: 'audit',
+                path: ['/', 'pages', 'tenants']
             },
             {
                 level: 2,
                 title: 'Users',
-                icon: 'user'
+                icon: 'user',
+                path: ['/', 'pages', 'users']
             },
             {
                 level: 2,
                 title: 'Roles',
-                icon: 'lock'
+                icon: 'lock',
+                path: ['/', 'pages', 'roles']
             }
         ]
     }

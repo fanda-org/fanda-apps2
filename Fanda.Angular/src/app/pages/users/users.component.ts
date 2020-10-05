@@ -1,34 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import {
-    ApplicationService,
-    AlertService,
-    HiddenDataService
-} from '../../_services';
-import { Application, FilterModel } from '../../_models';
-import { capitalize } from 'src/app/_utils';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
+import { User, FilterModel } from '../../_models';
+import { UserService, AlertService, HiddenDataService } from '../../_services';
+
 @Component({
-    selector: 'app-applications',
-    templateUrl: './applications.component.html',
-    styleUrls: ['./applications.component.css']
+    selector: 'app-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.css']
 })
-export class ApplicationsComponent implements OnInit {
+export class UsersComponent implements OnInit {
     loading = true;
     total = 1;
-    applications: Application[] = null;
+    users: User[] = null;
     pageIndex = 1;
     pageSize = 10;
     sortFieldOrder = '';
     filters: Array<FilterModel> = null;
     nameFilter: FilterModel = null;
+    emailFilter: FilterModel = null;
     customFilters: Array<FilterModel> = null;
 
     customSearchValue = '';
     nameSearchValue = '';
     nameDropdownVisible = false;
+    emailSearchValue = '';
+    emailDropdownVisible = false;
 
     filterActive = [
         { text: 'Active', value: true },
@@ -39,7 +37,7 @@ export class ApplicationsComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private applicationService: ApplicationService,
+        private userService: UserService,
         private alertService: AlertService,
         private hiddenService: HiddenDataService
     ) {}
@@ -52,7 +50,7 @@ export class ApplicationsComponent implements OnInit {
     searchName(): void {
         this.nameDropdownVisible = false;
         if (this.nameSearchValue) {
-            this.nameFilter = { key: 'name', value: this.nameSearchValue };
+            this.nameFilter = { key: 'userName', value: this.nameSearchValue };
         } else {
             this.nameFilter = null;
         }
@@ -60,7 +58,28 @@ export class ApplicationsComponent implements OnInit {
             this.pageIndex,
             this.pageSize,
             this.sortFieldOrder,
-            [...this.filters, this.nameFilter],
+            [...this.filters, this.nameFilter, this.emailFilter],
+            this.customFilters
+        );
+    }
+
+    resetEmailSearch(): void {
+        this.emailSearchValue = '';
+        this.searchEmail();
+    }
+
+    searchEmail(): void {
+        this.emailDropdownVisible = false;
+        if (this.emailSearchValue) {
+            this.emailFilter = { key: 'email', value: this.emailSearchValue };
+        } else {
+            this.emailFilter = null;
+        }
+        this.loadData(
+            this.pageIndex,
+            this.pageSize,
+            this.sortFieldOrder,
+            [...this.filters, this.nameFilter, this.emailFilter],
             this.customFilters
         );
     }
@@ -74,9 +93,10 @@ export class ApplicationsComponent implements OnInit {
         // console.log('custom search');
         if (this.customSearchValue) {
             this.customFilters = [
-                { key: 'code', value: this.customSearchValue },
-                { key: 'name', value: this.customSearchValue },
-                { key: 'description', value: this.customSearchValue }
+                { key: 'userName', value: this.customSearchValue },
+                { key: 'email', value: this.customSearchValue },
+                { key: 'firstName', value: this.customSearchValue },
+                { key: 'lastName', value: this.customSearchValue }
             ];
         } else {
             this.customFilters = null;
@@ -85,7 +105,7 @@ export class ApplicationsComponent implements OnInit {
             this.pageIndex,
             this.pageSize,
             this.sortFieldOrder,
-            [...this.filters, this.nameFilter],
+            [...this.filters, this.nameFilter, this.emailFilter],
             this.customFilters
         );
     }
@@ -99,12 +119,12 @@ export class ApplicationsComponent implements OnInit {
     ): void {
         // console.log('Filters', filters);
         this.loading = true;
-        this.applicationService
+        this.userService
             .getAll(pageIndex, pageSize, sort, filters, customFilters)
             .subscribe(
                 (response) => {
                     this.loading = false;
-                    this.applications = response.data;
+                    this.users = response.data;
                     this.total = response.itemsCount;
                     this.alertService.success('Loading successful', {
                         keepAfterRouteChange: true
@@ -123,7 +143,7 @@ export class ApplicationsComponent implements OnInit {
 
     activate(id: string, active: boolean): void {
         console.log('Activate', id, active);
-        this.applicationService.activate(id, active).subscribe(
+        this.userService.activate(id, active).subscribe(
             (res) => {
                 console.log('Activated');
             },

@@ -1,24 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import {
-    ApplicationService,
-    AlertService,
-    HiddenDataService
-} from '../../_services';
-import { Application, FilterModel } from '../../_models';
-import { capitalize } from 'src/app/_utils';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
+import { Role, FilterModel } from '../../_models';
+import { RoleService, AlertService, HiddenDataService } from '../../_services';
+
 @Component({
-    selector: 'app-applications',
-    templateUrl: './applications.component.html',
-    styleUrls: ['./applications.component.css']
+    selector: 'app-roles',
+    templateUrl: './roles.component.html',
+    styleUrls: ['./roles.component.css']
 })
-export class ApplicationsComponent implements OnInit {
+export class RolesComponent implements OnInit {
     loading = true;
     total = 1;
-    applications: Application[] = null;
+    roles: Role[] = null;
     pageIndex = 1;
     pageSize = 10;
     sortFieldOrder = '';
@@ -39,7 +34,7 @@ export class ApplicationsComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private applicationService: ApplicationService,
+        private roleService: RoleService,
         private alertService: AlertService,
         private hiddenService: HiddenDataService
     ) {}
@@ -99,16 +94,17 @@ export class ApplicationsComponent implements OnInit {
     ): void {
         // console.log('Filters', filters);
         this.loading = true;
-        this.applicationService
+        this.roleService
             .getAll(pageIndex, pageSize, sort, filters, customFilters)
             .subscribe(
                 (response) => {
                     this.loading = false;
-                    this.applications = response.data;
+                    this.roles = response.data;
                     this.total = response.itemsCount;
                     this.alertService.success('Loading successful', {
                         keepAfterRouteChange: true
                     });
+                    console.log('all roles', response);
                 },
                 (error) => {
                     this.loading = false;
@@ -123,7 +119,7 @@ export class ApplicationsComponent implements OnInit {
 
     activate(id: string, active: boolean): void {
         console.log('Activate', id, active);
-        this.applicationService.activate(id, active).subscribe(
+        this.roleService.activate(id, active).subscribe(
             (res) => {
                 console.log('Activated');
             },

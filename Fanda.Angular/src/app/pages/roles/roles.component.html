@@ -1,0 +1,198 @@
+<div nz-row nzAlign="middle" [nzGutter]="{ xs: 8, sm: 8, md: 16, lg: 16 }">
+    <div nz-col nzSpan="8">
+        <h1>Roles</h1>
+    </div>
+    <div nz-col nzSpan="16">
+        <div
+            nz-row
+            nzAlign="middle"
+            nzJustify="end"
+            [nzGutter]="{ xs: 8, sm: 8, md: 16, lg: 16 }"
+        >
+            <div nz-col nzFlex="auto">
+                <nz-input-group
+                    nzSearch
+                    [nzAddOnAfter]="suffixIconButton"
+                    nzCompact
+                >
+                    <input
+                        type="text"
+                        nz-input
+                        placeholder="Search..."
+                        [(ngModel)]="customSearchValue"
+                    />
+                </nz-input-group>
+                <!-- <ng-template #inputClearTpl
+                  ><i
+                      nz-icon
+                      class="ant-input-clear-icon"
+                      nzTheme="fill"
+                      nzType="close-circle"
+                      *ngIf="customSearchValue"
+                      (click)="customSearchValue = null"
+                  ></i
+              ></ng-template> -->
+                <ng-template #suffixIconButton>
+                    <nz-input-group nzCompact>
+                        <button
+                            nz-button
+                            nzType="default"
+                            nz-tooltip
+                            nzTooltipTitle="Reset"
+                            (click)="resetCustomSearch()"
+                        >
+                            <i
+                                nz-icon
+                                nzType="close-circle"
+                                nzTheme="fill"
+                                class="ant-input-clear-icon"
+                            ></i>
+                        </button>
+                        <button
+                            nz-button
+                            nzType="primary"
+                            nzSearch
+                            nz-tooltip
+                            nzTooltipTitle="Search"
+                            (click)="searchCustom()"
+                        >
+                            <i nz-icon nzType="search"></i>
+                        </button>
+                    </nz-input-group>
+                </ng-template>
+            </div>
+
+            <div nz-col>
+                <button
+                    nz-button
+                    nzType="primary"
+                    routerLink="/pages/roles/add"
+                >
+                    <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+                    Add New
+                </button>
+                <!-- <button nz-button nzType="default" nzDanger>
+                  <i nz-icon nzType="minus-circle" nzTheme="outline"></i>
+                  Delete
+              </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-table
+            nzShowSizeChanger
+            nzBordered
+            nzSize="small"
+            [nzData]="roles"
+            [nzFrontPagination]="false"
+            [nzLoading]="loading"
+            [nzTotal]="total"
+            [nzPageSize]="pageSize"
+            [nzPageIndex]="pageIndex"
+            (nzQueryParams)="onQueryParamsChange($event)"
+        >
+            <thead>
+                <tr>
+                    <th nzColumnKey="code" [nzSortFn]="true">Code</th>
+                    <th nzColumnKey="name" [nzSortFn]="true" nzCustomFilter>
+                        Name
+                        <nz-filter-trigger
+                            [(nzVisible)]="nameDropdownVisible"
+                            [nzActive]="nameSearchValue.length > 0"
+                            [nzDropdownMenu]="menu"
+                        >
+                            <i nz-icon nzType="search"></i>
+                        </nz-filter-trigger>
+                    </th>
+                    <th nzColumnKey="description" [nzSortFn]="true">
+                        Description
+                    </th>
+                    <th
+                        nzColumnKey="active"
+                        [nzFilters]="filterActive"
+                        [nzFilterFn]="true"
+                        [nzFilterMultiple]="false"
+                        nzAlign="center"
+                    >
+                        Active
+                    </th>
+                    <th nzAlign="center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of roles">
+                    <td>
+                        <a routerLink="/pages/roles/view/{{ data.id }}">{{
+                            data.code
+                        }}</a>
+                    </td>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.description }}</td>
+                    <td nzAlign="center">
+                        <nz-switch
+                            nzSize="small"
+                            [(ngModel)]="data.active"
+                            (click)="activate(data.id, data.active)"
+                        ></nz-switch>
+                    </td>
+                    <td nzAlign="center">
+                        <div class="icons-list">
+                            <a
+                                nz-icon
+                                [nzType]="'edit'"
+                                [nzTheme]="'twotone'"
+                                routerLink="/pages/roles/edit/{{ data.id }}"
+                                nz-tooltip
+                                nzTooltipTitle="Edit"
+                            ></a>
+                            <a
+                                nz-icon
+                                [nzType]="'delete'"
+                                [nzTheme]="'twotone'"
+                                [nzTwotoneColor]="'#eb2f96'"
+                                routerLink="/pages/roles/delete/{{ data.id }}"
+                                nz-tooltip
+                                nzTooltipTitle="Delete"
+                            ></a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input
+                type="text"
+                nz-input
+                placeholder="Search name"
+                [(ngModel)]="nameSearchValue"
+            />
+            <button
+                nz-button
+                nzType="link"
+                nzSize="small"
+                [disabled]="!nameSearchValue"
+                (click)="resetNameSearch()"
+                class="reset-button"
+            >
+                Reset
+            </button>
+            <button
+                nz-button
+                nzSize="small"
+                nzType="primary"
+                (click)="searchName()"
+                class="search-button"
+            >
+                Search
+            </button>
+        </div>
+    </div>
+</nz-dropdown-menu>

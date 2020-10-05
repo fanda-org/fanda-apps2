@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
+import { Tenant, FilterModel } from '../../_models';
 import {
-    ApplicationService,
+    TenantService,
     AlertService,
     HiddenDataService
 } from '../../_services';
-import { Application, FilterModel } from '../../_models';
-import { capitalize } from 'src/app/_utils';
-import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 @Component({
-    selector: 'app-applications',
-    templateUrl: './applications.component.html',
-    styleUrls: ['./applications.component.css']
+    selector: 'app-tenants',
+    templateUrl: './tenants.component.html',
+    styleUrls: ['./tenants.component.css']
 })
-export class ApplicationsComponent implements OnInit {
+export class TenantsComponent implements OnInit {
     loading = true;
     total = 1;
-    applications: Application[] = null;
+    tenants: Tenant[] = null;
     pageIndex = 1;
     pageSize = 10;
     sortFieldOrder = '';
@@ -39,7 +38,7 @@ export class ApplicationsComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private applicationService: ApplicationService,
+        private tenantService: TenantService,
         private alertService: AlertService,
         private hiddenService: HiddenDataService
     ) {}
@@ -99,12 +98,12 @@ export class ApplicationsComponent implements OnInit {
     ): void {
         // console.log('Filters', filters);
         this.loading = true;
-        this.applicationService
+        this.tenantService
             .getAll(pageIndex, pageSize, sort, filters, customFilters)
             .subscribe(
                 (response) => {
                     this.loading = false;
-                    this.applications = response.data;
+                    this.tenants = response.data;
                     this.total = response.itemsCount;
                     this.alertService.success('Loading successful', {
                         keepAfterRouteChange: true
@@ -123,7 +122,7 @@ export class ApplicationsComponent implements OnInit {
 
     activate(id: string, active: boolean): void {
         console.log('Activate', id, active);
-        this.applicationService.activate(id, active).subscribe(
+        this.tenantService.activate(id, active).subscribe(
             (res) => {
                 console.log('Activated');
             },
