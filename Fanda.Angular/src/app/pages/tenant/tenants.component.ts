@@ -3,11 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 import { Tenant, FilterModel } from '../../_models';
-import {
-    TenantService,
-    AlertService,
-    HiddenDataService
-} from '../../_services';
+import { TenantService, AlertService } from '../../_services';
 
 @Component({
     selector: 'app-tenants',
@@ -39,8 +35,7 @@ export class TenantsComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private tenantService: TenantService,
-        private alertService: AlertService,
-        private hiddenService: HiddenDataService
+        private alertService: AlertService
     ) {}
 
     resetNameSearch(): void {

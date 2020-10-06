@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 import { User, FilterModel } from '../../_models';
-import { UserService, AlertService, HiddenDataService } from '../../_services';
+import { UserService, AlertService } from '../../_services';
 
 @Component({
     selector: 'app-users',
@@ -38,8 +38,7 @@ export class UsersComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private userService: UserService,
-        private alertService: AlertService,
-        private hiddenService: HiddenDataService
+        private alertService: AlertService
     ) {}
 
     resetNameSearch(): void {

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 import { Role, FilterModel } from '../../_models';
-import { RoleService, AlertService, HiddenDataService } from '../../_services';
+import { RoleService, AlertService } from '../../_services';
 
 @Component({
     selector: 'app-roles',
@@ -35,8 +35,7 @@ export class RolesComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private roleService: RoleService,
-        private alertService: AlertService,
-        private hiddenService: HiddenDataService
+        private alertService: AlertService
     ) {}
 
     resetNameSearch(): void {

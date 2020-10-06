@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import {
-    ApplicationService,
-    AlertService,
-    HiddenDataService
-} from '../../_services';
+import { ApplicationService, AlertService } from '../../_services';
 import { Application, FilterModel } from '../../_models';
 import { capitalize } from 'src/app/_utils';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
@@ -40,8 +36,7 @@ export class ApplicationsComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private applicationService: ApplicationService,
-        private alertService: AlertService,
-        private hiddenService: HiddenDataService
+        private alertService: AlertService
     ) {}
 
     resetNameSearch(): void {
