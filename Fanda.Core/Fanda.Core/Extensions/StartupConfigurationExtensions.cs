@@ -71,8 +71,8 @@ namespace Fanda.Core.Extensions
                         {
                             builder.WithOrigins(urls)
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
-                            //.AllowCredentials();
+                            .AllowAnyMethod()
+                            .AllowCredentials();
                         });
                 });
 

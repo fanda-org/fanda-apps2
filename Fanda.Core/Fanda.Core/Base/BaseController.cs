@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net.Mime;
 
@@ -6,9 +8,11 @@ namespace Fanda.Core.Base
 {
     [Route("api/[controller]")]
     //[EnableCors("_MyAllowedOrigins")]
-    //[Authorize]
+    [Authorize]
     [Produces(MediaTypeNames.Application.Json)]
     [ApiController]
+    [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any,
+        VaryByQueryKeys = new[] { "pageIndex", "pageSize", "sort", "filter", "filterArgs" })]
     public class BaseController : ControllerBase
     {
         #region Non action methods

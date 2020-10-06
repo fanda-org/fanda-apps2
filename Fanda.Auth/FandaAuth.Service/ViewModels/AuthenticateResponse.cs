@@ -10,7 +10,7 @@ namespace FandaAuth.Service.ViewModels
         public Guid TenantId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Username { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
         public string JwtToken { get; set; }
 
@@ -24,7 +24,7 @@ namespace FandaAuth.Service.ViewModels
         public AuthenticateResponse(UserDto user, Guid tenantId, string jwtToken, string refreshToken)
         {
             Id = user.Id;
-            Username = user.UserName;
+            UserName = user.UserName;
             Email = user.Email;
             FirstName = user.FirstName;
             LastName = user.LastName;

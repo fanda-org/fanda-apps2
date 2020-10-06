@@ -4,13 +4,20 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { User, ApiResponse, FilterModel } from '../_models';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
     private baseUrl = `${environment.authUrl}/users`;
-    private listUrl = `${environment.authUrl}/users?tenantId=08d853ff-1970-4c0d-875d-e1a985e5edc1`;
+    private listUrl = '';
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        authenticationService: AuthenticationService
+    ) {
+        const tenantId = authenticationService.userValue.tenantId;
+        this.listUrl = `${environment.authUrl}/users?tenantId=${tenantId}`;
+    }
 
     getAll(
         page: number,

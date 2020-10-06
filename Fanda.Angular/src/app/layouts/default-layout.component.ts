@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { fandaMenus } from './fanda-menu';
 import { authMenus } from './auth-menu';
-
+import { AuthenticationService } from './../_services';
 @Component({
     selector: 'app-default-layout',
     templateUrl: './default-layout.component.html',
@@ -21,7 +21,10 @@ export class DefaultLayoutComponent {
     };
     menus = authMenus; // fandaMenus;
 
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        private authenticationService: AuthenticationService
+    ) {
         console.log('defaultLayout:constructor');
     }
 
@@ -41,5 +44,9 @@ export class DefaultLayoutComponent {
                 menu.open = false;
             }
         }
+    }
+
+    logout(): void {
+        this.authenticationService.logout();
     }
 }

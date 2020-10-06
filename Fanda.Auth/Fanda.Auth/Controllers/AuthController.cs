@@ -37,7 +37,7 @@ namespace Fanda.Auth.Controllers
                 var response = await _repository.Authenticate(model, IpAddress());
                 if (response == null)
                 {
-                    return BadRequest(MessageResponse.Failure("Username or password is incorrect"));
+                    return BadRequest(MessageResponse.Failure("User name or password is incorrect"));
                 }
 
                 SetTokenCookie(response.RefreshToken);

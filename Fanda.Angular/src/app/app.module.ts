@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData, CommonModule } from '@angular/common';
 import en from '@angular/common/locales/en';
@@ -26,31 +26,46 @@ import { AuthLayoutComponent } from './layouts/auth-layout.component';
 import { HiddenDataService } from './_services';
 registerLocaleData(en);
 
+import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
+import { AuthenticationService } from './_services';
+
 @NgModule({
-  declarations: [AppComponent, DefaultLayoutComponent, AuthLayoutComponent],
-  imports: [
-    BrowserModule,
-    CommonModule,
-    AppRoutingModule,
-    IconsProviderModule,
-    // NzLayoutModule,
-    // NzMenuModule,
-    // NzBreadCrumbModule,
-    // NzGridModule,
-    // NzFormModule,
-    // NzInputModule,
-    NgZorroAntdModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-  ],
-  exports: [NgZorroAntdModule],
-  providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService, HiddenDataService],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent, DefaultLayoutComponent, AuthLayoutComponent],
+    imports: [
+        BrowserModule,
+        CommonModule,
+        AppRoutingModule,
+        IconsProviderModule,
+        // NzLayoutModule,
+        // NzMenuModule,
+        // NzBreadCrumbModule,
+        // NzGridModule,
+        // NzFormModule,
+        // NzInputModule,
+        NgZorroAntdModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule
+    ],
+    exports: [NgZorroAntdModule],
+    providers: [
+        { provide: NZ_I18N, useValue: en_US },
+        NzMessageService,
+        HiddenDataService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: appInitializer,
+            multi: true,
+            deps: [AuthenticationService]
+        },
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
-    console.log('appModule:constructor');
-  }
+    constructor() {
+        console.log('appModule:constructor');
+    }
 }

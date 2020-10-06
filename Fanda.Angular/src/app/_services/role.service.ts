@@ -4,13 +4,20 @@ import { Observable } from 'rxjs';
 
 import { environment } from './../../environments/environment';
 import { Role, ApiResponse, FilterModel } from '../_models';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
     private baseUrl = `${environment.authUrl}/roles`;
-    private listUrl = `${environment.authUrl}/roles?superId=08d84141-c6e9-4a61-8205-d7fe3e198037`;
+    private listUrl = '';
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        authenticationService: AuthenticationService
+    ) {
+        const tenantId = authenticationService.userValue.tenantId;
+        this.listUrl = `${environment.authUrl}/roles?superId=${tenantId}`;
+    }
 
     getAll(
         page: number,

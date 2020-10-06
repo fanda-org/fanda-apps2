@@ -120,7 +120,7 @@ namespace FandaAuth.Service
         {
             var user = await _context.Users
                 .Include(u => u.RefreshTokens)
-                .FirstOrDefaultAsync(x => x.UserName == model.Username);
+                .FirstOrDefaultAsync(x => x.UserName == model.UserName);
 
             // return null if user not found
             if (user == null)

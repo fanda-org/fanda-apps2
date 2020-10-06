@@ -6,4 +6,7 @@ export interface User {
     lastName: string;
     tenantId: string;
     active: boolean;
+    // password: string;
+    jwtToken: string;
+    refreshToken: string;
 }

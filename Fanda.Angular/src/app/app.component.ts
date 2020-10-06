@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
+import { User } from './_models';
+import { AuthenticationService } from './_services';
 
 @Component({
     selector: 'app-root',
@@ -8,8 +10,13 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class AppComponent {
     isCollapsed = false;
+    user: User;
 
-    constructor(titleService: Title, router: Router) {
+    constructor(
+        titleService: Title,
+        router: Router,
+        private authenticationService: AuthenticationService
+    ) {
         router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 const title = this.getTitle(
@@ -20,6 +27,11 @@ export class AppComponent {
                 titleService.setTitle(`Fanda: ${title}`);
             }
         });
+        this.authenticationService.user.subscribe((x) => (this.user = x));
+    }
+
+    logout(): void {
+        this.authenticationService.logout();
     }
 
     // collect that title data properties from all child routes
