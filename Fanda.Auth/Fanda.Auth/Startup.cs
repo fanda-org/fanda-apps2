@@ -1,11 +1,12 @@
 using AutoMapper;
 using Fanda.Core;
 using Fanda.Core.Extensions;
-using Fanda.Service.AutoMapperProfile;
+using FandaAuth.Service.AutoMapperProfile;
 using FandaAuth.Domain;
 using FandaAuth.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -62,12 +63,15 @@ namespace Fanda.Auth
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            AutoMapper.IConfigurationProvider autoMapperConfigProvider)
+            AutoMapper.IConfigurationProvider autoMapperConfigProvider, FandaAuth.Domain.AuthContext authDbContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // migrate any database changes on startup (includes initial db creation)
+            authDbContext.Database.Migrate();
 
             autoMapperConfigProvider.AssertConfigurationIsValid();
 

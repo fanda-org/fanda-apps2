@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace FandaAuth.Domain
 {
@@ -213,6 +214,8 @@ namespace FandaAuth.Domain
             //builder.Property(o => o.DateModified).ValueGeneratedOnUpdate();
 
             // index
+            builder.HasIndex(t => t.Token)
+                .IsUnique();
 
             // Foreign keys - Owns
             builder.HasOne(u => u.User)
@@ -256,6 +259,8 @@ namespace FandaAuth.Domain
                 .WithMany(o => o.Roles)
                 .HasForeignKey(r => r.TenantId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.HasQueryFilter(r => EF.Property<Guid>(r, "TenantId") == r.TenantId);
         }
     }
 

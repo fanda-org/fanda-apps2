@@ -21,19 +21,19 @@ namespace FandaAuth.Service
 {
     public interface IAuthRepository
     {
-        Task<ValidationErrors> ValidateAsync(Guid tenantId, RegisterViewModel model);
-
-        Task<UserDto> LoginAsync(LoginViewModel model);
+        //Task<UserDto> LoginAsync(LoginViewModel model);
 
         Task<UserDto> RegisterAsync(RegisterViewModel model, string callbackUrl);
 
-        Task<AuthenticateResponse> Authenticate(AuthenticateRequest model, string ipAddress);
+        Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model, string ipAddress);
 
-        Task<AuthenticateResponse> RefreshToken(string token, string ipAddress);
+        Task<AuthenticateResponse> RefreshTokenAsync(string token, string ipAddress);
 
-        Task<bool> RevokeToken(string token, string ipAddress);
+        Task<bool> RevokeTokenAsync(string token, string ipAddress);
 
-        Task<IEnumerable<ActiveTokenViewModel>> GetRefreshTokens(Guid userId);
+        /*Task<IEnumerable<ActiveTokenViewModel>> GetRefreshTokens(Guid userId);*/
+
+        Task<ValidationErrors> ValidateAsync(Guid tenantId, RegisterViewModel model);
     }
 
     public class AuthRepository : IAuthRepository
@@ -55,37 +55,37 @@ namespace FandaAuth.Service
             _emailSender = emailSender;
         }
 
-        public async Task<UserDto> LoginAsync(LoginViewModel model)
-        {
-            UserDto userModel;
-            {
-                User user;
-                if (RegEx.IsEmail(model.NameOrEmail))
-                {
-                    user = await _context.Users
-                        .FirstOrDefaultAsync(x => x.Email == model.NameOrEmail);
-                }
-                else
-                {
-                    user = await _context.Users
-                        .FirstOrDefaultAsync(x => x.UserName == model.NameOrEmail);
-                }
-                // return null if user not found
-                if (user == null)
-                {
-                    return null;
-                }
+        //public async Task<UserDto> LoginAsync(LoginViewModel model)
+        //{
+        //    UserDto userModel;
+        //    {
+        //        User user;
+        //        if (RegEx.IsEmail(model.NameOrEmail))
+        //        {
+        //            user = await _context.Users
+        //                .FirstOrDefaultAsync(x => x.Email == model.NameOrEmail);
+        //        }
+        //        else
+        //        {
+        //            user = await _context.Users
+        //                .FirstOrDefaultAsync(x => x.UserName == model.NameOrEmail);
+        //        }
+        //        // return null if user not found
+        //        if (user == null)
+        //        {
+        //            return null;
+        //        }
 
-                // check if password is correct
-                if (!PasswordStorage.VerifyPasswordHash(model.Password, user.PasswordHash, user.PasswordSalt))
-                {
-                    return null;
-                }
+        //        // check if password is correct
+        //        if (!PasswordStorage.VerifyPasswordHash(model.Password, user.PasswordHash, user.PasswordSalt))
+        //        {
+        //            return null;
+        //        }
 
-                userModel = _mapper.Map<UserDto>(user);
-            }
-            return userModel;
-        }
+        //        userModel = _mapper.Map<UserDto>(user);
+        //    }
+        //    return userModel;
+        //}
 
         public async Task<UserDto> RegisterAsync(RegisterViewModel model, string callbackUrl)
         {
@@ -116,7 +116,7 @@ namespace FandaAuth.Service
             return userModel;
         }
 
-        public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model, string ipAddress)
+        public async Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model, string ipAddress)
         {
             var user = await _context.Users
                 .Include(u => u.RefreshTokens)
@@ -148,7 +148,7 @@ namespace FandaAuth.Service
             return new AuthenticateResponse(userDto, user.TenantId, jwtToken, refreshToken.Token);
         }
 
-        public async Task<AuthenticateResponse> RefreshToken(string token, string ipAddress)
+        public async Task<AuthenticateResponse> RefreshTokenAsync(string token, string ipAddress)
         {
             var user = await _context.Users
                 .Include(u => u.RefreshTokens)
@@ -184,7 +184,7 @@ namespace FandaAuth.Service
             return new AuthenticateResponse(userDto, user.TenantId, jwtToken, newRefreshToken.Token);
         }
 
-        public async Task<bool> RevokeToken(string token, string ipAddress)
+        public async Task<bool> RevokeTokenAsync(string token, string ipAddress)
         {
             var user = await _context.Users
                 .Include(u => u.RefreshTokens)
@@ -213,37 +213,37 @@ namespace FandaAuth.Service
             return true;
         }
 
-        public async Task<IEnumerable<ActiveTokenViewModel>> GetRefreshTokens(Guid userId)
-        {
-            //var result =
-            //    (from u in _context.Users
-            //     where u.Id.Equals(userId) && u.RefreshTokens.Any(t => t.Revoked==null && t.Expires >= DateTime.UtcNow)
-            //     select u.RefreshTokens)
-            //    .AsNoTracking()
-            //    .ToList();
+        //public async Task<IEnumerable<ActiveTokenViewModel>> GetRefreshTokens(Guid userId)
+        //{
+        //    //var result =
+        //    //    (from u in _context.Users
+        //    //     where u.Id.Equals(userId) && u.RefreshTokens.Any(t => t.Revoked==null && t.Expires >= DateTime.UtcNow)
+        //    //     select u.RefreshTokens)
+        //    //    .AsNoTracking()
+        //    //    .ToList();
 
-            //var user = await _context.Users
-            //    .Include(u => u.RefreshTokens)
-            //    //.Where(t => t.RefreshTokens.Any(r => r.Revoked == null && r.Expires >= DateTime.UtcNow))
-            //    .AsNoTracking()
-            //    .FirstOrDefaultAsync(u => u.Id == userId);
+        //    //var user = await _context.Users
+        //    //    .Include(u => u.RefreshTokens)
+        //    //    //.Where(t => t.RefreshTokens.Any(r => r.Revoked == null && r.Expires >= DateTime.UtcNow))
+        //    //    .AsNoTracking()
+        //    //    .FirstOrDefaultAsync(u => u.Id == userId);
 
-            var tokens = await _context.RefreshTokens
-                .Where(t => t.UserId == userId && t.DateRevoked == null && t.DateExpires >= DateTime.UtcNow)
-                .ProjectTo<ActiveTokenViewModel>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-            //var result = user.RefreshTokens.Where(t => t.IsActive);
-            //return _mapper.Map<IEnumerable<RefreshTokenDto>>(result);
+        //    var tokens = await _context.RefreshTokens
+        //        .Where(t => t.UserId == userId && t.DateRevoked == null && t.DateExpires >= DateTime.UtcNow)
+        //        .ProjectTo<ActiveTokenViewModel>(_mapper.ConfigurationProvider)
+        //        .ToListAsync();
+        //    //var result = user.RefreshTokens.Where(t => t.IsActive);
+        //    //return _mapper.Map<IEnumerable<RefreshTokenDto>>(result);
 
-            //string sql =
-            //    "SELECT r.Id, r.UserId, r.Token, r.Expires, r.Created, r.CreatedByIp, r.Revoked, r.RevokedByIp, r.ReplacedByToken " +
-            //    "FROM RefreshTokens r WITH (NOLOCK)" +
-            //    "WHERE r.UserId = @UserId " +
-            //    "AND r.Revoked IS NULL AND r.Expires >= GETUTCDATE()";
-            //var result = await _dbClient.Connection.QueryAsync<RefreshTokenDto>(sql, new { UserId = userId });
+        //    //string sql =
+        //    //    "SELECT r.Id, r.UserId, r.Token, r.Expires, r.Created, r.CreatedByIp, r.Revoked, r.RevokedByIp, r.ReplacedByToken " +
+        //    //    "FROM RefreshTokens r WITH (NOLOCK)" +
+        //    //    "WHERE r.UserId = @UserId " +
+        //    //    "AND r.Revoked IS NULL AND r.Expires >= GETUTCDATE()";
+        //    //var result = await _dbClient.Connection.QueryAsync<RefreshTokenDto>(sql, new { UserId = userId });
 
-            return tokens; //_mapper.Map<IEnumerable<RefreshTokenDto>>(user.RefreshTokens.Where(t => t.Revoked == null && t.Expires >= DateTime.UtcNow));
-        }
+        //    return tokens; //_mapper.Map<IEnumerable<RefreshTokenDto>>(user.RefreshTokens.Where(t => t.Revoked == null && t.Expires >= DateTime.UtcNow));
+        //}
 
         public async Task<ValidationErrors> ValidateAsync(Guid tenantId, RegisterViewModel model)
         {

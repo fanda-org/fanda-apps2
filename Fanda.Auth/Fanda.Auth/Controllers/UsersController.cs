@@ -12,7 +12,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Fanda.Authentication.Controllers
+namespace Fanda.Auth.Controllers
 {
     public class UsersController : BaseController
     {

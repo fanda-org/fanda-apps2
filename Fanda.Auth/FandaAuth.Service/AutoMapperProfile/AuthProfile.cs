@@ -3,7 +3,7 @@ using FandaAuth.Domain;
 using FandaAuth.Service.Dto;
 using FandaAuth.Service.ViewModels;
 
-namespace Fanda.Service.AutoMapperProfile
+namespace FandaAuth.Service.AutoMapperProfile
 {
     public class AuthProfile : Profile
     {

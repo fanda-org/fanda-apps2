@@ -3,7 +3,7 @@ using FandaAuth.Domain;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;
 
-namespace Fanda.Authentication.Controllers
+namespace Fanda.Auth.Controllers
 {
     public class TenantsController :
         //FandaControllerBase<ITenantRepository, TenantDto, TenantListDto, KeyData>

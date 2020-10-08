@@ -34,7 +34,7 @@ namespace Fanda.Auth.Controllers
         {
             try
             {
-                var response = await _repository.Authenticate(model, IpAddress());
+                var response = await _repository.AuthenticateAsync(model, IpAddress());
                 if (response == null)
                 {
                     return BadRequest(MessageResponse.Failure("User name or password is incorrect"));
@@ -63,7 +63,7 @@ namespace Fanda.Auth.Controllers
                 {
                     return BadRequest(MessageResponse.Failure("Token is required"));
                 }
-                var response = await _repository.RefreshToken(refreshToken, IpAddress());
+                var response = await _repository.RefreshTokenAsync(refreshToken, IpAddress());
                 if (response == null)
                 {
                     return Unauthorized(MessageResponse.Failure("Invalid token"));
@@ -94,7 +94,7 @@ namespace Fanda.Auth.Controllers
                 {
                     return BadRequest(MessageResponse.Failure(errorMessage: "Token is required"));
                 }
-                var response = await _repository.RevokeToken(token, IpAddress());
+                var response = await _repository.RevokeTokenAsync(token, IpAddress());
                 if (!response)
                 {
                     return NotFound(MessageResponse.Failure(errorMessage: "Invalid token"));
@@ -141,28 +141,28 @@ namespace Fanda.Auth.Controllers
             }
         }
 
-        [HttpGet("{userId}/refresh-tokens")]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(DataResponse<List<ActiveTokenViewModel>>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetRefreshTokens([Required] Guid userId)
-        {
-            try
-            {
-                var tokens = await _repository.GetRefreshTokens(userId);
-                return Ok(DataResponse<IEnumerable<ActiveTokenViewModel>>.Succeeded(tokens));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, ModuleName);
-            }
-        }
+        //[HttpGet("{userId}/refresh-tokens")]
+        //[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        //[ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        //[ProducesResponseType(typeof(DataResponse<List<ActiveTokenViewModel>>), (int)HttpStatusCode.OK)]
+        //public async Task<IActionResult> GetRefreshTokens([Required] Guid userId)
+        //{
+        //    try
+        //    {
+        //        var tokens = await _repository.GetRefreshTokens(userId);
+        //        return Ok(DataResponse<IEnumerable<ActiveTokenViewModel>>.Succeeded(tokens));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ExceptionResult(ex, ModuleName);
+        //    }
+        //}
 
         #region helper methods
 
         private void SetTokenCookie(string token)
         {
-            var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions
+            var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(7)
