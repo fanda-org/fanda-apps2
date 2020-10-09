@@ -1,8 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    Validators,
+    FormArray,
+    AbstractControl
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationService } from 'src/app/_services';
 import { capitalize } from 'src/app/_utils';
+import { Application, AppResource } from './../../_models';
 
 @Component({
     selector: 'app-application',
@@ -16,9 +23,101 @@ export class ApplicationEditComponent implements OnInit {
     loading = false;
     submitted = false;
 
-    i = 0;
-    editId: string | null = null;
-    listOfData: ItemData[] = [];
+    // data: Application = null;
+    // editCache: { [key: string]: { edit: boolean; data: AppResource } } = {};
+    // editCache: { edit: boolean; data: AppResource } = {
+    //     edit: false,
+    //     data: null
+    // };
+    isEditing = false;
+
+    constructor(
+        private fb: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private applicationService: ApplicationService
+    ) {}
+
+    ngOnInit(): void {
+        this.mode = capitalize(this.route.snapshot.params.mode);
+        this.id = this.route.snapshot.params.id;
+        this.form = this.fb.group({
+            id: [null],
+            code: ['', [Validators.required, Validators.maxLength(16)]],
+            name: ['', [Validators.required, Validators.maxLength(50)]],
+            description: ['', [Validators.maxLength(255)]],
+            edition: ['', [Validators.required, Validators.maxLength(25)]],
+            version: ['', [Validators.required, Validators.maxLength(16)]],
+            active: [true],
+            appResources: this.fb.array([this.initItemRows()])
+        });
+    }
+
+    get formArray(): FormArray {
+        return this.form.get('appResources') as FormArray;
+    }
+
+    // get appResources(): any {
+    //     return this.form.controls.appResources['controls'];
+    // }
+
+    initItemRows(): FormGroup {
+        return this.fb.group({
+            id: [null],
+            code: ['', [Validators.required]],
+            name: ['', [Validators.required]],
+            description: ['', [Validators.required]],
+            resourceType: ['', [Validators.required]],
+            creatable: [false],
+            updatable: [false],
+            deletable: [false],
+            readable: [false],
+            printable: [false],
+            importable: [false],
+            exportable: [false]
+        });
+    }
+
+    addRow(): void {
+        this.formArray.push(this.initItemRows());
+    }
+
+    startEdit(index: number): void {
+        // this.editCache[index].edit = true;
+        this.isEditing = true;
+    }
+
+    saveEdit(index: number): void {
+        // const index = this.listOfData.findIndex((item) => item.id === id);
+        // Object.assign(
+        //     this.data.appResources[index],
+        //     this.editCache[index].data
+        // );
+        // this.editCache[index].edit = false;
+        this.isEditing = false;
+    }
+
+    cancelEdit(index: number): void {
+        // const index = this.listOfData.findIndex((item) => item.id === id);
+        // this.editCache[index] = {
+        //     data: { ...this.data.appResources[index] },
+        //     edit: false
+        // };
+        this.isEditing = false;
+    }
+
+    deleteRow(index: number): void {
+        this.formArray.removeAt(index);
+    }
+
+    // updateEditCache(): void {
+    //     this.data.appResources.forEach((item) => {
+    //         this.editCache[item.id] = {
+    //             edit: false,
+    //             data: { ...item }
+    //         };
+    //     });
+    // }
 
     submitForm(): void {
         console.log('Form submitted');
@@ -35,59 +134,4 @@ export class ApplicationEditComponent implements OnInit {
             this.form.controls[i].updateValueAndValidity();
         }
     }
-
-    constructor(
-        private fb: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private applicationService: ApplicationService
-    ) {}
-
-    ngOnInit(): void {
-        this.mode = capitalize(this.route.snapshot.params.mode);
-        this.id = this.route.snapshot.params.id;
-        this.form = this.fb.group({
-            code: ['', [Validators.required, Validators.maxLength(16)]],
-            name: ['', [Validators.required, Validators.maxLength(50)]],
-            description: ['', [Validators.maxLength(255)]],
-            edition: ['', [Validators.required, Validators.maxLength(25)]],
-            version: ['', [Validators.required, Validators.maxLength(16)]],
-            active: [true]
-        });
-
-        this.addRow();
-        this.addRow();
-    }
-
-    startEdit(id: string): void {
-        this.editId = id;
-    }
-
-    stopEdit(): void {
-        this.editId = null;
-    }
-
-    addRow(): void {
-        this.listOfData = [
-            ...this.listOfData,
-            {
-                id: `${this.i}`,
-                name: `Edward King ${this.i}`,
-                age: '32',
-                address: `London, Park Lane no. ${this.i}`
-            }
-        ];
-        this.i++;
-    }
-
-    deleteRow(id: string): void {
-        this.listOfData = this.listOfData.filter((d) => d.id !== id);
-    }
-}
-
-interface ItemData {
-    id: string;
-    name: string;
-    age: string;
-    address: string;
 }
