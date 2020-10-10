@@ -9,6 +9,7 @@ import { AuthenticationService } from './../_services';
     styleUrls: ['./default-layout.component.css']
 })
 export class DefaultLayoutComponent {
+    // title = 'Fanda';
     isCollapsed = false;
     mode = false;
     dark = false;

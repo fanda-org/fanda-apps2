@@ -1,0 +1,15 @@
+Application Edit page
+
+Forgot Password
+
+Registration and Approval
+	1) Company
+	2) Administrator
+
+Users and Roles - Mapping to tenant/organization
+
+Menu switch b/w FandaAdmin and OrgAdmin
+
+
+pbmurugan.72@gmail.com
+ramanan.bala2003@gmail.com

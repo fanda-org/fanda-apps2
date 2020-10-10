@@ -36,3 +36,21 @@
 .ant-form-item {
     margin: 0 0 8px;
 }
+
+.ant-layout-content {
+    flex: auto;
+    min-height: auto;
+}
+
+.ant-card-head-title {
+    padding: 8px 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 0;
+}

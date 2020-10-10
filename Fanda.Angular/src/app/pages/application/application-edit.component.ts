@@ -49,7 +49,7 @@ export class ApplicationEditComponent implements OnInit {
             edition: ['', [Validators.required, Validators.maxLength(25)]],
             version: ['', [Validators.required, Validators.maxLength(16)]],
             active: [true],
-            appResources: this.fb.array([this.initItemRows()])
+            appResources: this.fb.array([])
         });
     }
 
@@ -66,7 +66,7 @@ export class ApplicationEditComponent implements OnInit {
             id: [null],
             code: ['', [Validators.required]],
             name: ['', [Validators.required]],
-            description: ['', [Validators.required]],
+            description: [''],
             resourceType: ['', [Validators.required]],
             creatable: [false],
             updatable: [false],

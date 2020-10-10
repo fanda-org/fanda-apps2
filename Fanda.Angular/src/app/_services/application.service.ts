@@ -34,7 +34,7 @@ export class ApplicationService {
         console.log('Combined Filters', combinedCondition);
 
         const params = new HttpParams()
-            .append('page', `${page}`)
+            .append('pageIndex', `${page}`)
             .append('pageSize', `${pageSize}`)
             .append('sort', `${sort}`)
             .append('filter', combinedCondition);
@@ -61,11 +61,11 @@ export class ApplicationService {
     activate(id: string, active: boolean): Observable<ApiResponse> {
         console.log('url', `${this.baseUrl}/activate/${id}`, {
             id,
-            active,
+            active
         });
         return this.http.patch<ApiResponse>(`${this.baseUrl}/activate/${id}`, {
             id,
-            active,
+            active
         });
     }
 

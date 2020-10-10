@@ -34,7 +34,7 @@ export class TenantService {
         console.log('Combined Filters', combinedCondition);
 
         const params = new HttpParams()
-            .append('page', `${page}`)
+            .append('pageIndex', `${page}`)
             .append('pageSize', `${pageSize}`)
             .append('sort', `${sort}`)
             .append('filter', combinedCondition);
