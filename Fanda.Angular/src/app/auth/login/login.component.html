@@ -6,6 +6,17 @@
 >
     <div class="container">
         <app-auth-header title="Login"></app-auth-header>
+        <div @fade *ngIf="!!promptMessage" class="login-message-container">
+            <div class="border-inner">
+                <i
+                    class="text-alert"
+                    nz-icon
+                    nzType="info-circle"
+                    nzTheme="outline"
+                ></i>
+                <div class="login-message text-alert">{{ promptMessage }}</div>
+            </div>
+        </div>
         <nz-form-item>
             <nz-form-control nzErrorTip="Please input your user name!">
                 <nz-input-group nzPrefixIcon="user">
@@ -46,6 +57,7 @@
             [nzType]="'primary'"
         >
             Log in
+            <i *ngIf="loading" nz-icon nzType="loading" nzTheme="outline"></i>
         </button>
         Don't have an account yet?
         <a routerLink="/auth/register"> Register</a> now!

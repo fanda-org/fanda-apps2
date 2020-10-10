@@ -7,13 +7,22 @@ import {
     AbstractControl
 } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 import { AuthenticationService } from '../../_services';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+    styleUrls: ['./login.component.css'],
+    animations: [
+        trigger('fade', [
+            transition('void => *', [
+                style({ opacity: 0 }),
+                animate(200, style({ opacity: 1 }))
+            ])
+        ])
+    ]
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
@@ -21,6 +30,7 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
     error = '';
+    promptMessage: string = '';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -59,6 +69,8 @@ export class LoginComponent implements OnInit {
         // if (this.loginForm.valid) {
         //     this.router.navigate(['/pages/']);
         // }
+
+        this.resetMessage();
         this.submitted = true;
 
         // stop here if form is invalid
@@ -71,13 +83,23 @@ export class LoginComponent implements OnInit {
             .login(this.f.userName.value, this.f.password.value)
             .pipe(first())
             .subscribe({
-                next: () => {
+                next: (response) => {
                     this.router.navigate([this.returnUrl]);
                 },
                 error: (error) => {
+                    if (error === 'Bad Request') {
+                        this.promptMessage =
+                            'User name or password is incorrect';
+                    } else {
+                        this.promptMessage = 'Some unknown error occoured';
+                    }
                     this.error = error;
                     this.loading = false;
                 }
             });
+    }
+
+    resetMessage(): void {
+        this.promptMessage = '';
     }
 }
