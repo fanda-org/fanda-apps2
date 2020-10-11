@@ -44,11 +44,14 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginForm = this.formBuilder.group({
-            userName: ['', Validators.required],
-            password: ['', Validators.required],
-            remember: [true]
-        });
+        this.loginForm = this.formBuilder.group(
+            {
+                userName: ['', Validators.required],
+                password: ['', Validators.required],
+                remember: [true]
+            },
+            { updateOn: 'submit' }
+        );
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/pages/';
@@ -75,6 +78,7 @@ export class LoginComponent implements OnInit {
 
         // stop here if form is invalid
         if (this.loginForm.invalid) {
+            this.validateAllFormFields(this.loginForm);
             return;
         }
 
@@ -87,16 +91,23 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 error: (error) => {
+                    this.error = error;
+                    this.loading = false;
                     if (error === 'Bad Request') {
                         this.promptMessage =
                             'User name or password is incorrect';
                     } else {
                         this.promptMessage = 'Some unknown error occoured';
                     }
-                    this.error = error;
-                    this.loading = false;
                 }
             });
+    }
+
+    validateAllFormFields(formGroup: FormGroup) {
+        for (const i in formGroup.controls) {
+            formGroup.controls[i].markAsDirty();
+            formGroup.controls[i].updateValueAndValidity();
+        }
     }
 
     resetMessage(): void {
