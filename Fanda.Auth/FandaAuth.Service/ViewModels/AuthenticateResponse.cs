@@ -13,6 +13,7 @@ namespace FandaAuth.Service.ViewModels
         public string UserName { get; set; }
         public string Email { get; set; }
         public string JwtToken { get; set; }
+        public bool ResetPassword { get; set; }
 
         [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
@@ -21,7 +22,7 @@ namespace FandaAuth.Service.ViewModels
         {
         }
 
-        public AuthenticateResponse(UserDto user, Guid tenantId, string jwtToken, string refreshToken)
+        public AuthenticateResponse(UserDto user, Guid tenantId, string jwtToken, string refreshToken, bool resetPassword)
         {
             Id = user.Id;
             UserName = user.UserName;
@@ -31,6 +32,7 @@ namespace FandaAuth.Service.ViewModels
             TenantId = tenantId;
             JwtToken = jwtToken;
             RefreshToken = refreshToken;
+            ResetPassword = resetPassword;
         }
     }
 }

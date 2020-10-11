@@ -22,6 +22,8 @@ namespace FandaAuth.Service.Dto
         public string Token { get; set; }
 
         public DateTime? DateLastLogin { get; set; }
+
+        public bool? ResetPassword { get; set; }
     }
 
     public class UserListDto //: RootListDto
