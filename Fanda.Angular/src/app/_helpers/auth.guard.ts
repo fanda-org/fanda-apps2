@@ -20,15 +20,14 @@ export class AuthGuard implements CanActivate {
         state: RouterStateSnapshot
     ): boolean {
         const user = this.authenticationService.userValue;
-        if (user) {
-            // logged in so return true
-            return true;
-        } else {
-            // not logged in so redirect to login page with the return url
-            this.router.navigate(['/login'], {
-                queryParams: { returnUrl: state.url }
-            });
-            return false;
-        }
+        if (user) return true;
+        return this.redirectToLoginPage(state);
+    }
+
+    private redirectToLoginPage(state: RouterStateSnapshot) {
+        this.router.navigate(['/auth/login'], {
+            queryParams: { returnUrl: state.url }
+        });
+        return false;
     }
 }
