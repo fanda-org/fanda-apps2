@@ -1,6 +1,6 @@
 using AutoMapper;
 using Fanda.Auth.Controllers;
-using Fanda.Service.AutoMapperProfile;
+using FandaAuth.Service.AutoMapperProfile;
 using FandaAuth.Domain;
 using FandaAuth.Service;
 using FandaAuth.Service.Dto;

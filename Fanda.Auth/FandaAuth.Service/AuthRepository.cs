@@ -99,6 +99,7 @@ namespace FandaAuth.Service
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
                 // user.Active = true;
+                user.ResetPassword = true;
 
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
@@ -145,7 +146,7 @@ namespace FandaAuth.Service
             await _context.SaveChangesAsync();
 
             var userDto = _mapper.Map<UserDto>(user);
-            return new AuthenticateResponse(userDto, user.TenantId, jwtToken, refreshToken.Token);
+            return new AuthenticateResponse(userDto, user.TenantId, jwtToken, refreshToken.Token, false);
         }
 
         public async Task<AuthenticateResponse> RefreshTokenAsync(string token, string ipAddress)
@@ -181,7 +182,7 @@ namespace FandaAuth.Service
             var jwtToken = GenerateJwtToken(user);
 
             var userDto = _mapper.Map<UserDto>(user);
-            return new AuthenticateResponse(userDto, user.TenantId, jwtToken, newRefreshToken.Token);
+            return new AuthenticateResponse(userDto, user.TenantId, jwtToken, newRefreshToken.Token, false);
         }
 
         public async Task<bool> RevokeTokenAsync(string token, string ipAddress)

@@ -17,6 +17,8 @@ namespace FandaAuth.Domain
         public string LastName { get; set; }
         public DateTime? DateLastLogin { get; set; }
 
+        public bool? ResetPassword { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<UserToken> RefreshTokens { get; set; }
     }
