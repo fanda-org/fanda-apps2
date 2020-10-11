@@ -2,7 +2,9 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { fandaMenus } from './fanda-menu';
 import { authMenus } from './auth-menu';
-import { AuthenticationService } from './../_services';
+import { AuthenticationService, TenantService } from './../_services';
+import { Tenant, Menu } from '../_models';
+
 @Component({
     selector: 'app-default-layout',
     templateUrl: './default-layout.component.html',
@@ -20,13 +22,30 @@ export class DefaultLayoutComponent {
         contacts: false,
         accounts: false
     };
-    menus = authMenus; // fandaMenus;
+    menus: Menu[] = authMenus; // fandaMenus;
 
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        tenantService: TenantService
     ) {
         console.log('defaultLayout:constructor');
+
+        tenantService
+            .getById(authenticationService.userValue.tenantId)
+            .subscribe(
+                (res) => {
+                    const tenant = res.data as Tenant;
+                    if (tenant.code === 'FANDA') {
+                        this.menus = authMenus;
+                    } else {
+                        this.menus = fandaMenus;
+                    }
+                },
+                (err) => {
+                    console.log('Error', err);
+                }
+            );
     }
 
     onClick(path: string[]): void {

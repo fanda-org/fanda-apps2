@@ -1,156 +1,261 @@
-export const fandaMenus = [
-  {
-    level: 1,
-    title: 'Dashboard',
-    icon: 'dashboard',
-    router: '/pages',
-    open: true,
-    selected: true,
-    disabled: false,
-  },
-  {
-    level: 1,
-    title: 'Invoice',
-    icon: 'form',
-    open: false,
-    selected: false,
-    disabled: false,
-    children: [
-      {
-        level: 2,
-        title: 'Sales',
-        icon: 'book',
+import { Menu } from '../_models';
+
+export const fandaMenus: Menu[] = [
+    {
+        level: 1,
+        title: 'Dashboard',
+        icon: 'dashboard',
+        path: ['/', 'pages'],
+        open: true,
+        selected: true,
+        disabled: false,
+        children: null
+    },
+    {
+        level: 1,
+        title: 'Invoice',
+        icon: 'form',
+        path: ['/', 'pages'],
+        open: false,
         selected: false,
         disabled: false,
-      },
-      {
-        level: 2,
-        title: 'Sales Return',
-        icon: 'credit-card',
+        children: [
+            {
+                level: 2,
+                title: 'Sales',
+                icon: 'book',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Sales Return',
+                icon: 'credit-card',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Purchase',
+                icon: 'container',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Purchase Return',
+                icon: 'delivered-procedure',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Opening Stock',
+                icon: 'appstore-add',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            }
+        ]
+    },
+    {
+        level: 1,
+        title: 'Transaction',
+        icon: 'desktop',
+        path: null,
+        open: false,
         selected: false,
         disabled: false,
-      },
-      {
-        level: 2,
-        title: 'Purchase',
-        icon: 'container',
+        children: [
+            {
+                level: 2,
+                title: 'Receipts',
+                icon: 'audit',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Payments',
+                icon: 'carry-out',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Journals',
+                icon: 'calculator',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            }
+        ]
+    },
+    {
+        level: 1,
+        title: 'Inventory',
+        icon: 'folder-open',
+        path: null,
+        open: false,
         selected: false,
         disabled: false,
-      },
-      {
-        level: 2,
-        title: 'Purchase Return',
-        icon: 'delivered-procedure',
-        selected: false,
-        disabled: false,
-      },
-      {
-        level: 2,
-        title: 'Opening Stock',
-        icon: 'appstore-add',
-        selected: false,
-        disabled: false,
-      },
-    ],
-  },
-  {
-    level: 1,
-    title: 'Transaction',
-    icon: 'desktop',
-    children: [
-      {
-        level: 2,
-        title: 'Receipts',
-        icon: 'audit',
-      },
-      {
-        level: 2,
-        title: 'Payments',
-        icon: 'carry-out',
-      },
-      {
-        level: 2,
-        title: 'Journals',
-        icon: 'calculator',
-      },
-    ],
-  },
-  {
-    level: 1,
-    title: 'Inventory',
-    icon: 'folder-open',
-    children: [
-      {
-        level: 2,
-        title: 'Goods and Services',
-        icon: 'gift',
-      },
-      {
-        level: 2,
-        title: 'Categories',
-        icon: 'apartment',
-      },
-      {
-        level: 2,
-        title: 'Units',
-        icon: 'deployment-unit',
-      },
-      {
-        level: 2,
-        title: 'Brands',
-        icon: 'gateway',
-      },
-      {
-        level: 2,
-        title: 'Segments',
-        icon: 'block',
-      },
-      {
-        level: 2,
-        title: 'Varieties',
-        icon: 'build',
-      },
-    ],
-  },
-  {
-    level: 1,
-    title: 'Contacts',
-    icon: 'contacts',
-    children: [
-      {
-        level: 2,
-        title: 'Business Contacts',
+        children: [
+            {
+                level: 2,
+                title: 'Goods and Services',
+                icon: 'gift',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Categories',
+                icon: 'apartment',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Units',
+                icon: 'deployment-unit',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Brands',
+                icon: 'gateway',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Segments',
+                icon: 'block',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Varieties',
+                icon: 'build',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            }
+        ]
+    },
+    {
+        level: 1,
+        title: 'Contacts',
         icon: 'contacts',
-      },
-      {
-        level: 2,
-        title: 'Banks',
-        icon: 'bank',
-      },
-      {
-        level: 2,
-        title: 'Contact Categories',
-        icon: 'fork',
-      },
-    ],
-  },
-  {
-    level: 1,
-    title: 'Accounts',
-    icon: 'project',
-    children: [
-      {
-        level: 2,
-        title: 'Ledgers',
-        icon: 'inbox',
-      },
-      {
-        level: 2,
-        title: 'Ledger Groups',
-        icon: 'group',
-      },
-    ],
-  },
+        path: null,
+        open: false,
+        selected: false,
+        disabled: false,
+        children: [
+            {
+                level: 2,
+                title: 'Business Contacts',
+                icon: 'contacts',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Banks',
+                icon: 'bank',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Contact Categories',
+                icon: 'fork',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            }
+        ]
+    },
+    {
+        level: 1,
+        title: 'Accounts',
+        icon: 'project',
+        path: null,
+        open: false,
+        selected: false,
+        disabled: false,
+        children: [
+            {
+                level: 2,
+                title: 'Ledgers',
+                icon: 'inbox',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            },
+            {
+                level: 2,
+                title: 'Ledger Groups',
+                icon: 'group',
+                path: ['/', 'pages'],
+                open: false,
+                selected: false,
+                disabled: false,
+                children: null
+            }
+        ]
+    }
 ];
 
 /*

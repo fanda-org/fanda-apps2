@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-    FormBuilder,
-    FormGroup,
-    Validators,
-    FormArray,
-    AbstractControl
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationService } from 'src/app/_services';
 import { capitalize } from 'src/app/_utils';
