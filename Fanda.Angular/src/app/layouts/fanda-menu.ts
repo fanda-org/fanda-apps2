@@ -11,67 +11,67 @@ export const fandaMenus: Menu[] = [
         disabled: false,
         children: null
     },
-    {
-        level: 1,
-        title: 'Invoice',
-        icon: 'form',
-        path: ['/', 'pages'],
-        open: false,
-        selected: false,
-        disabled: false,
-        children: [
-            {
-                level: 2,
-                title: 'Sales',
-                icon: 'book',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Sales Return',
-                icon: 'credit-card',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Purchase',
-                icon: 'container',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Purchase Return',
-                icon: 'delivered-procedure',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Opening Stock',
-                icon: 'appstore-add',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            }
-        ]
-    },
+    // {
+    //     level: 1,
+    //     title: 'Invoice',
+    //     icon: 'form',
+    //     path: ['/', 'pages'],
+    //     open: false,
+    //     selected: false,
+    //     disabled: false,
+    //     children: [
+    //         {
+    //             level: 2,
+    //             title: 'Sales',
+    //             icon: 'book',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Sales Return',
+    //             icon: 'credit-card',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Purchase',
+    //             icon: 'container',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Purchase Return',
+    //             icon: 'delivered-procedure',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Opening Stock',
+    //             icon: 'appstore-add',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         }
+    //     ]
+    // },
     {
         level: 1,
         title: 'Transaction',
@@ -113,77 +113,77 @@ export const fandaMenus: Menu[] = [
             }
         ]
     },
-    {
-        level: 1,
-        title: 'Inventory',
-        icon: 'folder-open',
-        path: null,
-        open: false,
-        selected: false,
-        disabled: false,
-        children: [
-            {
-                level: 2,
-                title: 'Goods and Services',
-                icon: 'gift',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Categories',
-                icon: 'apartment',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Units',
-                icon: 'deployment-unit',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Brands',
-                icon: 'gateway',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Segments',
-                icon: 'block',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            },
-            {
-                level: 2,
-                title: 'Varieties',
-                icon: 'build',
-                path: ['/', 'pages'],
-                open: false,
-                selected: false,
-                disabled: false,
-                children: null
-            }
-        ]
-    },
+    // {
+    //     level: 1,
+    //     title: 'Inventory',
+    //     icon: 'folder-open',
+    //     path: null,
+    //     open: false,
+    //     selected: false,
+    //     disabled: false,
+    //     children: [
+    //         {
+    //             level: 2,
+    //             title: 'Goods and Services',
+    //             icon: 'gift',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Categories',
+    //             icon: 'apartment',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Units',
+    //             icon: 'deployment-unit',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Brands',
+    //             icon: 'gateway',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Segments',
+    //             icon: 'block',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         },
+    //         {
+    //             level: 2,
+    //             title: 'Varieties',
+    //             icon: 'build',
+    //             path: ['/', 'pages'],
+    //             open: false,
+    //             selected: false,
+    //             disabled: false,
+    //             children: null
+    //         }
+    //     ]
+    // },
     {
         level: 1,
         title: 'Contacts',
