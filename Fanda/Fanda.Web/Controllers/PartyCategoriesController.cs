@@ -1,17 +1,22 @@
-using Fanda.Core.Base;
-using Fanda.Domain;
-using Fanda.Service;
+﻿using Fanda.Service;
 using Fanda.Service.Dto;
+using Fanda.Domain;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Fanda.Core.Base;
 
 namespace Fanda.Web.Controllers
 {
-    public class OrganizationsController :
-        SubController<IOrganizationRepository, Organization, OrganizationDto, OrgListDto>
+    public class PartyCategoriesController :
+        SubController<IPartyCategoryRepository, PartyCategory, PartyCategoryDto, PartyCategoryListDto>
     {
         //private const string ModuleName = "Organization";
         //private readonly IOrganizationRepository repository;
 
-        public OrganizationsController(IOrganizationRepository repository) : base(repository)
+        public PartyCategoriesController(IPartyCategoryRepository repository) : base(repository)
         {
             //this.repository = repository;
         }
@@ -315,7 +320,7 @@ namespace Fanda.Web.Controllers
         //    catch (Exception ex)
         //    {
         //        return ExceptionResult(ex, ModuleName);
-        //    }00
+        //    }
         //}
     }
 }

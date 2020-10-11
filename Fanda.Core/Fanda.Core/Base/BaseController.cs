@@ -8,7 +8,7 @@ namespace Fanda.Core.Base
 {
     [Route("api/[controller]")]
     //[EnableCors("_MyAllowedOrigins")]
-    [Authorize]
+    //[Authorize]
     [Produces(MediaTypeNames.Application.Json)]
     [ApiController]
     [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any,

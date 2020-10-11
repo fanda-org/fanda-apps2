@@ -1,4 +1,5 @@
 ﻿using Fanda.Core;
+using Fanda.Core.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -40,4 +41,6 @@ namespace Fanda.Service.Dto
         public ICollection<ContactDto> Contacts { get; set; }
         public ICollection<AddressDto> Addresses { get; set; }
     }
+
+    public class PartyListDto : BaseListDto { }
 }

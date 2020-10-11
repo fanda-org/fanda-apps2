@@ -46,6 +46,7 @@ namespace Fanda.Web
 
             //services.AddControllers();
             services.AddCustomControllers();
+            services.AddResponseCaching();
 
             //services.AddDbContext<AuthContext>(options =>
             //{
@@ -74,6 +75,7 @@ namespace Fanda.Web
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+            services.AddScoped<IPartyCategoryRepository, PartyCategoryRepository>();
             //services.AddScoped<ISerialNumberRepository, SerialNumberRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IUnitRepository, UnitRepository>();
@@ -117,6 +119,7 @@ namespace Fanda.Web
             app.UseAuthentication();
 
             app.UseAuthorization();
+            app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {
