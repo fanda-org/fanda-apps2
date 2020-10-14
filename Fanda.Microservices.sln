@@ -7,21 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Core", "Fanda.Core\Fanda.Core\Fanda.Core.csproj", "{D56E85C0-E9DB-4F1E-9726-AB994785ED1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.AuthenticationService", "Microservices\Fanda.AuthenticationService\Fanda.AuthenticationService\Fanda.AuthenticationService.csproj", "{3E14C709-605E-440F-A407-6C6B470F443F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Authentication.Service", "Microservices\Fanda.AuthenticationService\Fanda.Authentication.Service\Fanda.Authentication.Service.csproj", "{3E14C709-605E-440F-A407-6C6B470F443F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthenticationService", "AuthenticationService", "{FD4808E0-0357-456A-A93A-27CF1DE69F9A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FandaAuth.Domain", "Microservices\Fanda.AuthenticationService\FandaAuth.Domain\FandaAuth.Domain.csproj", "{39461918-419D-44B8-8A13-9B29A8A0CFC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Authentication.Domain", "Microservices\Fanda.AuthenticationService\Fanda.Authentication.Domain\Fanda.Authentication.Domain.csproj", "{39461918-419D-44B8-8A13-9B29A8A0CFC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FandaAuth.Repository", "Microservices\Fanda.AuthenticationService\FandaAuth.Repository\FandaAuth.Repository.csproj", "{081FABDB-6A8C-44E5-81FD-608A5F15F37B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Authentication.Repository", "Microservices\Fanda.AuthenticationService\Fanda.Authentication.Repository\Fanda.Authentication.Repository.csproj", "{081FABDB-6A8C-44E5-81FD-608A5F15F37B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AccountingService", "AccountingService", "{A3ACAB5B-06A9-43C8-ACA3-A22B3DEE245B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FandaAcct.Domain", "Microservices\Fanda.AccountingService\FandaAcct.Domain\FandaAcct.Domain.csproj", "{7471FF36-2100-401B-85D9-E13A0121EB30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Domain", "Microservices\Fanda.AccountingService\Fanda.Accounting.Domain\Fanda.Accounting.Domain.csproj", "{7471FF36-2100-401B-85D9-E13A0121EB30}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FandaAcct.Repository", "Microservices\Fanda.AccountingService\FandaAcct.Repository\FandaAcct.Repository.csproj", "{A1703FDE-37AA-4790-875A-D107B2994D2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Repository", "Microservices\Fanda.AccountingService\Fanda.Accounting.Repository\Fanda.Accounting.Repository.csproj", "{A1703FDE-37AA-4790-875A-D107B2994D2E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.AccountingService", "Microservices\Fanda.AccountingService\Fanda.AccountingService\Fanda.AccountingService.csproj", "{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Service", "Microservices\Fanda.AccountingService\Fanda.Accounting.Service\Fanda.Accounting.Service.csproj", "{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
