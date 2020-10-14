@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30310.162
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5706FA39-502E-4C7E-B047-05EBEC8CBBB7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{89EA2AD6-E9F1-4EE4-B77D-9892DE25C650}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Domain", "Fanda.Accounting.Domain\Fanda.Accounting.Domain.csproj", "{19E78C1D-13D6-4060-84F1-DB03EB5B8988}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Repository", "Fanda.Accounting.Repository\Fanda.Accounting.Repository.csproj", "{1FD0CB70-FFA9-458F-AC43-FA4EE831CB67}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Service", "Fanda.Accounting.Service\Fanda.Accounting.Service.csproj", "{64C95C67-1A62-4787-97EA-9BFF5FB04389}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Core", "..\..\Fanda.Core\Fanda.Core\Fanda.Core.csproj", "{1029A150-867D-4B44-94A7-53EFB4DAC521}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E221C5F-9BD7-429F-A5B4-DDD3A7BB8C1D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		..\..\Fanda.pfx = ..\..\Fanda.pfx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{E2DCE4B6-34AF-43F9-A681-5AF619EC2F89}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19E78C1D-13D6-4060-84F1-DB03EB5B8988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19E78C1D-13D6-4060-84F1-DB03EB5B8988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19E78C1D-13D6-4060-84F1-DB03EB5B8988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19E78C1D-13D6-4060-84F1-DB03EB5B8988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FD0CB70-FFA9-458F-AC43-FA4EE831CB67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD0CB70-FFA9-458F-AC43-FA4EE831CB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD0CB70-FFA9-458F-AC43-FA4EE831CB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD0CB70-FFA9-458F-AC43-FA4EE831CB67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64C95C67-1A62-4787-97EA-9BFF5FB04389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64C95C67-1A62-4787-97EA-9BFF5FB04389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64C95C67-1A62-4787-97EA-9BFF5FB04389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64C95C67-1A62-4787-97EA-9BFF5FB04389}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1029A150-867D-4B44-94A7-53EFB4DAC521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1029A150-867D-4B44-94A7-53EFB4DAC521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1029A150-867D-4B44-94A7-53EFB4DAC521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1029A150-867D-4B44-94A7-53EFB4DAC521}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{19E78C1D-13D6-4060-84F1-DB03EB5B8988} = {E2DCE4B6-34AF-43F9-A681-5AF619EC2F89}
+		{1FD0CB70-FFA9-458F-AC43-FA4EE831CB67} = {E2DCE4B6-34AF-43F9-A681-5AF619EC2F89}
+		{64C95C67-1A62-4787-97EA-9BFF5FB04389} = {E2DCE4B6-34AF-43F9-A681-5AF619EC2F89}
+		{1029A150-867D-4B44-94A7-53EFB4DAC521} = {5706FA39-502E-4C7E-B047-05EBEC8CBBB7}
+		{E2DCE4B6-34AF-43F9-A681-5AF619EC2F89} = {5706FA39-502E-4C7E-B047-05EBEC8CBBB7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7EE6EABB-CD2F-44A8-9C3B-A88F3E423DCE}
+	EndGlobalSection
+EndGlobal

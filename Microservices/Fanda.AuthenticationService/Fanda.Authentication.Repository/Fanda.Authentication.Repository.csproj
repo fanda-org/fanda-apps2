@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>Fanda.pfx</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Extensions\**" />
+		<EmbeddedResource Remove="Extensions\**" />
+		<None Remove="Extensions\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Base\ITenantRepositoryBase.cs" />
+		<Compile Remove="Base\IUserRepositoryBase.cs" />
+		<Compile Remove="Base\TenantControllerBase.cs" />
+		<Compile Remove="Base\TenantRepositoryBase.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Fanda.Authentication.Domain\Fanda.Authentication.Domain.csproj" />
+	</ItemGroup>
+</Project>

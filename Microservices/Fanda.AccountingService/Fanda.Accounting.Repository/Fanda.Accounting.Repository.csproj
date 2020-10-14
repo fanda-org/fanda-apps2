@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Base\**" />
+		<Compile Remove="Extensions\**" />
+		<Compile Remove="Ref\**" />
+		<EmbeddedResource Remove="Base\**" />
+		<EmbeddedResource Remove="Extensions\**" />
+		<EmbeddedResource Remove="Ref\**" />
+		<None Remove="Base\**" />
+		<None Remove="Extensions\**" />
+		<None Remove="Ref\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Refit" Version="5.2.1" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Fanda.Accounting.Domain\Fanda.Accounting.Domain.csproj" />
+	</ItemGroup>
+</Project>

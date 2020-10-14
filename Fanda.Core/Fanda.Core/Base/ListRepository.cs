@@ -88,7 +88,7 @@ namespace Fanda.Core.Base
             }
             else
             {
-                if (superId == null || superId == Guid.Empty)
+                if (superId == Guid.Empty)
                 {
                     throw new BadRequestException($"{nameof(superId)} is required");
                 }

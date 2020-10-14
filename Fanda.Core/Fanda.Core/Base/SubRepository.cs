@@ -51,9 +51,9 @@ namespace Fanda.Core.Base
 
         public virtual async Task<TModel> GetByIdAsync(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new ArgumentNullException(nameof(id), "Id is required");
             }
 
             var model = await Entities
@@ -99,7 +99,7 @@ namespace Fanda.Core.Base
         {
             if (id != model.Id)
             {
-                throw new ArgumentException("Id is mismatch", "id");
+                throw new ArgumentException("Id is mismatch", nameof(id));
             }
             var dbEntity = await Entities.FindAsync(id);
             if (dbEntity == null)
@@ -121,9 +121,9 @@ namespace Fanda.Core.Base
 
         public virtual async Task<bool> DeleteAsync(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new ArgumentNullException(nameof(id), "Id is required");
             }
             var entity = await Entities.FindAsync(id);
             if (entity == null)
@@ -137,9 +137,9 @@ namespace Fanda.Core.Base
 
         public virtual async Task<bool> ActivateAsync(Guid id, bool active)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new ArgumentNullException(nameof(id), "Id is required");
             }
             var entity = await Entities.FindAsync(id);
             if (entity == null)
@@ -192,7 +192,7 @@ namespace Fanda.Core.Base
         {
             var codeExpression = PredicateBuilder.New<TEntity>(e => e.Code == code);
             codeExpression = codeExpression.And(GetSuperIdPredicate(superId));
-            if (id != null)
+            if (id != Guid.Empty)
             {
                 codeExpression = codeExpression.And(e => e.Id != id);
             }
@@ -203,7 +203,7 @@ namespace Fanda.Core.Base
         {
             var nameExpression = PredicateBuilder.New<TEntity>(e => e.Name == name);
             nameExpression = nameExpression.And(GetSuperIdPredicate(superId));
-            if (id != null)
+            if (id != Guid.Empty)
             {
                 nameExpression = nameExpression.And(e => e.Id != id);
             }

@@ -51,9 +51,9 @@ namespace Fanda.Core.Base
 
         public virtual async Task<TModel> GetByIdAsync(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new ArgumentNullException(nameof(id), "Id is required");
             }
 
             var model = await Entities
@@ -98,7 +98,7 @@ namespace Fanda.Core.Base
         {
             if (id != model.Id)
             {
-                throw new ArgumentException("Id is mismatch", "id");
+                throw new ArgumentException("Id is mismatch", nameof(id));
             }
             var dbEntity = await Entities.FindAsync(id);
             if (dbEntity == null)
@@ -119,9 +119,9 @@ namespace Fanda.Core.Base
 
         public virtual async Task<bool> DeleteAsync(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new ArgumentNullException(nameof(id), "Id is required");
             }
             var entity = await Entities.FindAsync(id);
             if (entity == null)
@@ -135,9 +135,9 @@ namespace Fanda.Core.Base
 
         public virtual async Task<bool> ActivateAsync(Guid id, bool active)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
             {
-                throw new ArgumentNullException("id", "Id is required");
+                throw new ArgumentNullException(nameof(id), "Id is required");
             }
             var entity = await Entities.FindAsync(id);
             if (entity == null)
@@ -186,20 +186,20 @@ namespace Fanda.Core.Base
             return model.Errors;
         }
 
-        private ExpressionStarter<TEntity> GetCodePredicate(string code, Guid id = default)
+        private static ExpressionStarter<TEntity> GetCodePredicate(string code, Guid id = default)
         {
             var codeExpression = PredicateBuilder.New<TEntity>(e => e.Code == code);
-            if (id != null && id != Guid.Empty)
+            if (id != Guid.Empty)
             {
                 codeExpression = codeExpression.And(e => e.Id != id);
             }
             return codeExpression;
         }
 
-        private ExpressionStarter<TEntity> GetNamePredicate(string name, Guid id = default)
+        private static ExpressionStarter<TEntity> GetNamePredicate(string name, Guid id = default)
         {
             var nameExpression = PredicateBuilder.New<TEntity>(e => e.Name == name);
-            if (id != null && id != Guid.Empty)
+            if (id != Guid.Empty)
             {
                 nameExpression = nameExpression.And(e => e.Id != id);
             }

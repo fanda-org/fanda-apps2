@@ -115,7 +115,7 @@ namespace Fanda.Core.Base
         {
             try
             {
-                if (id == null || id == Guid.Empty)
+                if (id == Guid.Empty)
                 {
                     return BadRequest(MessageResponse.Failure($"{_moduleName} id is missing"));
                 }
