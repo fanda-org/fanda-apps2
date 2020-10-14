@@ -18,7 +18,7 @@ namespace Fanda.Core.Base
         private readonly TRepository _repository;
         private readonly string _moduleName;
 
-        public SuperController(TRepository repository)
+        protected SuperController(TRepository repository)
         {
             _repository = repository;
             _moduleName = typeof(TEntity).Name;
@@ -81,6 +81,7 @@ namespace Fanda.Core.Base
             try
             {
                 var app = await _repository.CreateAsync(model);
+                // ReSharper disable once Mvc.ActionNotResolved
                 return CreatedAtAction(nameof(GetById), new { id = app.Id },
                     DataResponse<TModel>.Succeeded(app));
             }
@@ -115,7 +116,7 @@ namespace Fanda.Core.Base
         {
             try
             {
-                if (id == null || id == Guid.Empty)
+                if (id == Guid.Empty)
                 {
                     return BadRequest(MessageResponse.Failure($"{_moduleName} id is missing"));
                 }

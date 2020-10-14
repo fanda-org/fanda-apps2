@@ -19,7 +19,7 @@
     },
     "Fanda": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "openapi",
       "applicationUrl": "http://localhost:5100",
       "environmentVariables": {
