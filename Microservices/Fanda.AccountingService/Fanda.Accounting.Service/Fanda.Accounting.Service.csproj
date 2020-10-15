@@ -10,8 +10,6 @@
 
 		<!-- Set this to true if you enable server-side prerendering -->
 		<BuildServerSideRenderer>false</BuildServerSideRenderer>
-		<AssemblyName>Fanda.Web</AssemblyName>
-		<RootNamespace>Fanda.Web</RootNamespace>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -47,22 +45,17 @@
 
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
-		<Compile Remove="ClientApp\dist\**" />
+		<Compile Remove="$(SpaRoot)**" />
 		<Compile Remove="Extensions\**" />
 		<Content Remove="$(SpaRoot)**" />
-		<Content Remove="ClientApp\dist\**" />
 		<Content Remove="Extensions\**" />
-		<EmbeddedResource Remove="ClientApp\dist\**" />
 		<EmbeddedResource Remove="Extensions\**" />
 		<None Remove="$(SpaRoot)**" />
-		<None Remove="ClientApp\dist\**" />
 		<None Remove="Extensions\**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Remove="ClientApp\dist\out-tsc\src\main.js" />
-		<None Remove="ClientApp\dist\out-tsc\src\main.js.map" />
+	<!--<ItemGroup>
 		<None Remove="ClientApp\src\app\_models\alert.ts" />
 		<None Remove="ClientApp\src\app\_models\index.ts" />
 		<None Remove="ClientApp\src\app\_models\unit.ts" />
@@ -71,9 +64,9 @@
 		<None Remove="ClientApp\src\app\_services\alert.service.ts" />
 		<None Remove="ClientApp\src\app\_services\index.ts" />
 		<None Remove="ClientApp\src\app\_services\unit.service.ts" />
-	</ItemGroup>
+	</ItemGroup>-->
 
-	<ItemGroup>
+	<!--<ItemGroup>
 		<TypeScriptCompile Include="ClientApp\src\app\_models\alert.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\_models\index.ts" />
 		<TypeScriptCompile Include="ClientApp\src\app\_models\unit.ts" />
@@ -84,14 +77,10 @@
 			<SubType>Code</SubType>
 		</TypeScriptCompile>
 		<TypeScriptCompile Include="ClientApp\src\app\_services\account.service.ts" />
-	</ItemGroup>
+	</ItemGroup>-->
 
 	<ItemGroup>
-		<Folder Include="ClientApp\dist\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Fanda.Accounting.Repository\Fanda.Accounting.Repository.csproj" />
+		<ProjectReference Include="..\Fanda.Accounting.Repository\Fanda.Accounting.Repository.csproj" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

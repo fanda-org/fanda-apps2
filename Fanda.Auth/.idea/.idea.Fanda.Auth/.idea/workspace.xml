@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dcba33d8-24fd-4dc5-9e29-665c180c6359" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Fanda.Core/Fanda.Core/Base/ResponseBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Fanda.Core/Fanda.Core/Base/ResponseBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/package-backup.json.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/package-backup.json.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/src/app/containers/default-layout/default-layout.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/src/app/containers/default-layout/default-layout.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/src/app/views/masters/applications.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/src/app/views/masters/applications.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/src/app/views/masters/applications.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Fanda/Fanda.Web/ClientApp/src/app/views/masters/applications.component.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/FandaAuth.Domain/Application.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Fanda.Auth/Extensions/StartupConfigurationExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="dummy://restClient/response14.json" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/FandaAuth.Domain/Base/BaseAuthEntity.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FandaAuth.Service/UserRepository.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FandaAuth.Tests/ApplicationTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FandaAuth.Tests/TestPriorityAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/FandaAuth.Domain/FandaAuth.Domain.csproj" />
+        <option value="$PROJECT_DIR$/FandaAuth.Service/FandaAuth.Service.csproj" />
+        <option value="$PROJECT_DIR$/Fanda.Auth/Fanda.Auth.csproj" />
+        <option value="$PROJECT_DIR$/FandaAuth.Tests/FandaAuth.Tests.csproj" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1fWkY9tAjng6bV7NJdIAPHbQTNp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+  </component>
+  <component name="RestClientSettings">
+    <option name="REQUEST_HISTORY">
+      <list>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://localhost:5100" />
+          <option name="urlPath" value="/api/applications" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.Fanda.Auth">
+    <configuration name="Fanda.Auth" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Fanda.Auth/Fanda.Auth.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value=".NETFramework,Version=v5.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="Fanda.Auth" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="Fanda.Auth: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Fanda.Auth/Fanda.Auth.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value=".NETFramework,Version=v5.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dcba33d8-24fd-4dc5-9e29-665c180c6359" name="Default Changelist" comment="" />
+      <created>1596341281769</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1596341281769</updated>
+      <workItem from="1596341293512" duration="499000" />
+      <workItem from="1596342461813" duration="78000" />
+      <workItem from="1596344167412" duration="1569000" />
+      <workItem from="1597994938666" duration="818000" />
+      <workItem from="1597996301145" duration="600000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1557" height="222" key="GridCell.Tab.0.bottom" timestamp="1596345746694">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.bottom/0.0.1600.860@0.0.1600.860" timestamp="1596345746694" />
+    <state width="1557" height="222" key="GridCell.Tab.0.center" timestamp="1596345746694">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.center/0.0.1600.860@0.0.1600.860" timestamp="1596345746694" />
+    <state width="1557" height="222" key="GridCell.Tab.0.left" timestamp="1596345746694">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.left/0.0.1600.860@0.0.1600.860" timestamp="1596345746694" />
+    <state width="1557" height="222" key="GridCell.Tab.0.right" timestamp="1596345746694">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state width="1557" height="222" key="GridCell.Tab.0.right/0.0.1600.860@0.0.1600.860" timestamp="1596345746694" />
+    <state x="301" y="75" key="SettingsEditor" timestamp="1596341788746">
+      <screen x="0" y="0" width="1600" height="860" />
+    </state>
+    <state x="301" y="75" key="SettingsEditor/0.0.1600.860@0.0.1600.860" timestamp="1596341788746" />
+  </component>
+</project>

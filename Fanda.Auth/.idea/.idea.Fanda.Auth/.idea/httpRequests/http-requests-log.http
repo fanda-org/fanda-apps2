@@ -1,0 +1,48 @@
+﻿GET http://localhost:5100/api/applications
+Accept: */*
+Cache-Control: no-cache
+
+<> 2020-08-02T104317.200.json
+
+###
+
+GET http://localhost:5100/api/applications
+Accept: */*
+Cache-Control: no-cache
+
+<> 2020-08-02T104313.200.json
+
+###
+
+GET http://localhost:5100/api/applications
+Accept: */*
+Cache-Control: no-cache
+
+<> 2020-08-02T104229.200.json
+
+###
+
+GET http://localhost:8080/resources
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://localhost:8080/resources
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://localhost:8080/resources
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://localhost:8080/resources
+Accept: */*
+Cache-Control: no-cache
+
+###
+
