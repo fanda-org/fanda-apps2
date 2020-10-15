@@ -8,7 +8,6 @@ using Fanda.Accounting.Repository.AutoMapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -81,18 +80,6 @@ namespace Fanda.Accounting.Service
             //services.AddScoped<IUnitRepository, UnitRepository>();
 
             #endregion DI Repositories and services
-
-            #region Angular SPA
-
-            //services.AddControllersWithViews();
-            ////.AddRazorRuntimeCompilation();
-            //// In production, the Angular files will be served from this directory
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist";
-            //});
-
-            #endregion Angular SPA
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,6 +99,13 @@ namespace Fanda.Accounting.Service
 
             //app.UseHttpsRedirection();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Application API v1");
+                c.RoutePrefix = "openapi";
+            });
+
             app.UseCors("_MyAllowedOrigins");
 
             app.UseRouting();
@@ -127,48 +121,7 @@ namespace Fanda.Accounting.Service
                 endpoints.MapHealthChecks("/health");
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Application API v1");
-                c.RoutePrefix = "openapi";
-            });
-
             #endregion Startup configure
-
-            #region Angular SPA
-
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
-
-            #endregion Angular SPA
-
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     //endpoints.MapControllerRoute(
-            //     //    name: "default",
-            //     //    pattern: "{controller}/{action=Index}/{id?}");
-            // });
-
-            #region Angular SPA
-
-            //app.UseSpa(spa =>
-            //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-            //    spa.Options.SourcePath = "ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseAngularCliServer(npmScript: "start");
-            //    }
-            //});
-
-            #endregion Angular SPA
         }
     }
 }
