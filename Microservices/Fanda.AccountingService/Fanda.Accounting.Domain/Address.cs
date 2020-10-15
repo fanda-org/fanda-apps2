@@ -25,8 +25,10 @@ namespace Fanda.Accounting.Domain
         }
 
         public virtual Bank Bank { get; set; }
-        public virtual Buyer Buyer { get; set; }
+
+        //public virtual Buyer Buyer { get; set; }
         public virtual ICollection<OrgAddress> OrgAddresses { get; set; }
+
         public virtual ICollection<PartyAddress> PartyAddresses { get; set; }
     }
 }

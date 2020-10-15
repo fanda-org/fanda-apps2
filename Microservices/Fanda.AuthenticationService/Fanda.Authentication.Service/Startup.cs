@@ -72,6 +72,13 @@ namespace Fanda.Authentication.Service
 
             //app.UseHttpsRedirection();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Authentication API v1");
+                c.RoutePrefix = "openapi";
+            });
+
             app.UseCors("_MyAllowedOrigins");
 
             app.UseRouting();
@@ -84,29 +91,27 @@ namespace Fanda.Authentication.Service
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllers();
-                endpoints.MapControllerRoute(
-                    name: "areaRoute",
-                    pattern: "{area:exists}/{controller}/{action}",
-                    defaults: new { action = "Index" });
+                endpoints.MapControllers()
+                    .RequireCors("_MyAllowedOrigins");
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "Home", action = "Index" });
+                //endpoints.MapControllerRoute(
+                //    name: "areaRoute",
+                //    pattern: "{area:exists}/{controller}/{action}",
+                //    defaults: new { action = "Index" })
+                //.RequireCors("_MyAllowedOrigins");
 
-                endpoints.MapControllerRoute(
-                    name: "api",
-                    pattern: "{controller}/{id?}");
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller}/{action}/{id?}",
+                //    defaults: new { controller = "Home", action = "Index" })
+                //.RequireCors("_MyAllowedOrigins");
+
+                //endpoints.MapControllerRoute(
+                //    name: "api",
+                //    pattern: "{controller}/{id?}")
+                //.RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapHealthChecks("/health");
-            });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Authentication API v1");
-                c.RoutePrefix = "openapi";
             });
         }
     }

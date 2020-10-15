@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Fanda.Accounting.Domain
 {
-    public class PartyCategory : OrgEntity
+    public class PartyCategory : OrgAcctEntity
     {
         //public Guid Id { get; set; }
         //public string Code { get; set; }
@@ -17,6 +17,6 @@ namespace Fanda.Accounting.Domain
         //public virtual Organization Organization { get; set; }
         public virtual ICollection<Party> Parties { get; set; }
 
-        public virtual ICollection<ProductPricing> ProductPricings { get; set; }
+        //public virtual ICollection<ProductPricing> ProductPricings { get; set; }
     }
 }

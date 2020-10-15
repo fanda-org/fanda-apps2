@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fanda.Accounting.Domain.Migrations.MySQL
 {
-    [DbContext(typeof(FandaContext))]
+    [DbContext(typeof(AcctContext))]
     partial class FandaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

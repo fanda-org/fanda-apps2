@@ -16,9 +16,9 @@ namespace Fanda.Accounting.Repository
         private static readonly object syncRoot = new object();
 
         //private readonly AppSettings _settings;
-        private readonly FandaContext _context;
+        private readonly AcctContext _context;
 
-        public SerialNumberRepository(FandaContext context)
+        public SerialNumberRepository(AcctContext context)
         {
             _context = context;
         }

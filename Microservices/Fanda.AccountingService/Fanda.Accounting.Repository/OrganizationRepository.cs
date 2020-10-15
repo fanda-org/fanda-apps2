@@ -25,11 +25,11 @@ namespace Fanda.Accounting.Repository
 
     public class OrganizationRepository : IOrganizationRepository
     {
-        private readonly FandaContext _context;
+        private readonly AcctContext _context;
         private readonly IMapper _mapper;
         private readonly IAuthClient _authClient;
 
-        public OrganizationRepository(FandaContext context, IMapper mapper, IAuthClient authClient)
+        public OrganizationRepository(AcctContext context, IMapper mapper, IAuthClient authClient)
         {
             _context = context;
             _mapper = mapper;

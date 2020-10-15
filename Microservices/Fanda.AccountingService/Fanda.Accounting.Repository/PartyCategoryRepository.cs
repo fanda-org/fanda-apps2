@@ -19,7 +19,7 @@ namespace Fanda.Accounting.Repository
         //private readonly FandaContext _context;
         //private readonly IMapper _mapper;
 
-        public PartyCategoryRepository(FandaContext context, IMapper mapper)
+        public PartyCategoryRepository(AcctContext context, IMapper mapper)
             : base(context, mapper, "OrgId == @0")
         {
             //_context = context;

@@ -17,8 +17,10 @@ namespace Fanda.Accounting.Domain
         public bool IsPrimary { get; set; }
 
         public virtual Bank Bank { get; set; }
-        public virtual Buyer Buyer { get; set; }
+
+        //public virtual Buyer Buyer { get; set; }
         public virtual ICollection<OrgContact> OrgContacts { get; set; }
+
         public virtual ICollection<PartyContact> PartyContacts { get; set; }
     }
 }

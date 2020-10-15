@@ -36,7 +36,7 @@ namespace Fanda.Accounting.Service
 
             #region Startup configure services
 
-            services.AddCustomHealthChecks<FandaContext>();
+            services.AddCustomHealthChecks<AcctContext>();
 
             //services.Configure<AppSettings>(Configuration);
             //AppSettings appSettings = Configuration.Get<AppSettings>();
@@ -51,7 +51,7 @@ namespace Fanda.Accounting.Service
             //{
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
-            services.AddCustomDbContext<FandaContext>(appSettings, Assembly.GetAssembly(typeof(FandaContext)).GetName().Name, Env.IsDevelopment())
+            services.AddCustomDbContext<AcctContext>(appSettings, Assembly.GetAssembly(typeof(AcctContext)).GetName().Name, Env.IsDevelopment())
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AutoMapperProfile))
                 .AddSwagger("Fanda Application API");
@@ -117,7 +117,8 @@ namespace Fanda.Accounting.Service
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers()
+                    .RequireCors("_MyAllowedOrigins");
                 endpoints.MapHealthChecks("/health");
             });
 

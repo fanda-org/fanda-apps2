@@ -9,8 +9,6 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
     {
         public AutoMapperProfile()
         {
-            //CreateMap<Location, LocationDto>()
-            //    .ReverseMap();
             CreateMap<Contact, ContactDto>()
                 .ForMember(vm => vm.IsDeleted, opt => opt.Ignore())
                 .ForMember(vm => vm.Index, opt => opt.Ignore())
@@ -19,30 +17,6 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
                 .ReverseMap();
             CreateMap<PartyCategory, PartyCategoryDto>()
                 .ReverseMap();
-            CreateMap<ProductCategory, ProductCategoryDto>()
-                .ReverseMap();
-            CreateMap<Unit, UnitDto>()
-                .ReverseMap();
-            CreateMap<UnitConversion, UnitConversionDto>()
-                .ReverseMap();
-            CreateMap<ProductBrand, ProductBrandDto>()
-                .ReverseMap();
-            CreateMap<ProductSegment, ProductSegmentDto>()
-                .ReverseMap();
-            CreateMap<ProductVariety, ProductVarietyDto>()
-                .ReverseMap();
-            CreateMap<ProductIngredient, ProductIngredientDto>()
-                .ReverseMap();
-            CreateMap<ProductPricing, ProductPricingDto>()
-                .ReverseMap();
-            CreateMap<ProductPricingRange, ProductPricingRangeDto>()
-                .ReverseMap();
-            CreateMap<Product, ProductDto>()
-                .ForMember(vm => vm.IsCompoundProduct, opt => opt.MapFrom(src => src.ParentIngredients.Any()))
-                .ForMember(vm => vm.Ingredients, opt => opt.MapFrom(src => src.ParentIngredients))
-                .ForMember(vm => vm.ProductPricings, opt => opt.MapFrom(src => src.ProductPricings))
-                .ReverseMap();
-
             CreateMap<Bank, BankDto>()
                 //.ForMember(dest => dest.Owner, opt => opt.Ignore())
                 //.ForMember(dest => dest.OwnerId, opt => opt.Ignore())
@@ -155,16 +129,6 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
             //        }).ToList();
             //    }));
 
-            CreateMap<InvoiceCategory, InvoiceCategoryDto>()
-                .ReverseMap();
-
-            CreateMap<Stock, StockDto>()
-                .ReverseMap();
-            CreateMap<InvoiceItem, InvoiceItemDto>()
-                .ReverseMap();
-            CreateMap<Invoice, InvoiceDto>()
-                .ReverseMap();
-
             CreateMap<AccountYear, AccountYearDto>()
                 .ReverseMap();
 
@@ -176,9 +140,6 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
                 .ForMember(vm => vm.SelectedYearId, opt => opt.Ignore())
                 .ForMember(vm => vm.IsSelected, opt => opt.Ignore());
             CreateMap<PartyCategory, PartyCategoryListDto>();
-            CreateMap<ProductCategory, ProductCategoryListDto>();
-            CreateMap<Unit, UnitListDto>();
-            CreateMap<ProductBrand, ProductBrandListDto>();
 
             #endregion List mappings
         }

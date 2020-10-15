@@ -56,6 +56,7 @@ namespace Fanda.ApiGateway
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHealthChecks("/health");
             });
 
             app.UseSpa(spa =>

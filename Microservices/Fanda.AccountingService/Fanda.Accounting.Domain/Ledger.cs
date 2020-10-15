@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Fanda.Accounting.Domain
 {
-    public class Ledger : OrgEntity
+    public class Ledger : OrgAcctEntity
     {
         //public Guid Id { get; set; }
         //public string LedgerCode { get; set; }

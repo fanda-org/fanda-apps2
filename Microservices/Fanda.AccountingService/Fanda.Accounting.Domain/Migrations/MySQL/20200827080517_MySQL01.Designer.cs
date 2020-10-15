@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fanda.Accounting.Domain.Migrations.MySQL
 {
-    [DbContext(typeof(FandaContext))]
+    [DbContext(typeof(AcctContext))]
     [Migration("20200827080517_MySQL01")]
     partial class MySQL01
     {

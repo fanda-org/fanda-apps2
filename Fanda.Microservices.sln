@@ -23,7 +23,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Repository
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Service", "Microservices\Fanda.AccountingService\Fanda.Accounting.Service\Fanda.Accounting.Service.csproj", "{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanda.ApiGateway", "Fanda.ApiGateway\Fanda.ApiGateway.csproj", "{8C2153E9-5A49-4372-9900-B1F833D6950E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.ApiGateway", "Fanda.ApiGateway\Fanda.ApiGateway.csproj", "{8C2153E9-5A49-4372-9900-B1F833D6950E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InventoryService", "InventoryService", "{1C16E542-5C06-4409-B11B-A0568DD0ACD4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FinanceService", "FinanceService", "{F47D8FED-BA45-4941-91AB-2DB31687DC03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanda.Inventory.Domain", "Microservices\Fanda.InventoryService\Fanda.Inventory.Domain\Fanda.Inventory.Domain.csproj", "{D5CB7707-4199-4BCF-94BE-5E95E351599E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fanda.Inventory.Repository", "Microservices\Fanda.InventoryService\Fanda.Inventory.Repository\Fanda.Inventory.Repository.csproj", "{A1FCDE80-4304-4861-8384-4697930F54BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +71,14 @@ Global
 		{8C2153E9-5A49-4372-9900-B1F833D6950E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C2153E9-5A49-4372-9900-B1F833D6950E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C2153E9-5A49-4372-9900-B1F833D6950E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5CB7707-4199-4BCF-94BE-5E95E351599E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5CB7707-4199-4BCF-94BE-5E95E351599E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5CB7707-4199-4BCF-94BE-5E95E351599E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5CB7707-4199-4BCF-94BE-5E95E351599E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1FCDE80-4304-4861-8384-4697930F54BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1FCDE80-4304-4861-8384-4697930F54BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1FCDE80-4304-4861-8384-4697930F54BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1FCDE80-4304-4861-8384-4697930F54BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +92,10 @@ Global
 		{7471FF36-2100-401B-85D9-E13A0121EB30} = {A3ACAB5B-06A9-43C8-ACA3-A22B3DEE245B}
 		{A1703FDE-37AA-4790-875A-D107B2994D2E} = {A3ACAB5B-06A9-43C8-ACA3-A22B3DEE245B}
 		{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B} = {A3ACAB5B-06A9-43C8-ACA3-A22B3DEE245B}
+		{1C16E542-5C06-4409-B11B-A0568DD0ACD4} = {7BBF3E2B-CE40-42B0-983A-21F48EB4DC89}
+		{F47D8FED-BA45-4941-91AB-2DB31687DC03} = {7BBF3E2B-CE40-42B0-983A-21F48EB4DC89}
+		{D5CB7707-4199-4BCF-94BE-5E95E351599E} = {1C16E542-5C06-4409-B11B-A0568DD0ACD4}
+		{A1FCDE80-4304-4861-8384-4697930F54BC} = {1C16E542-5C06-4409-B11B-A0568DD0ACD4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C00DED28-6141-4F7A-802D-7918347DFCE2}
