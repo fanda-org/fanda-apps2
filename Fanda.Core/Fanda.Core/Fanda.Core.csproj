@@ -21,33 +21,33 @@
 	<ItemGroup>
 		<PackageReference Include="EFCore.NamingConventions" Version="1.1.0" />
 		<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="3.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
-		<PackageReference Include="AutoMapper" Version="10.0.0" />
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
+		<PackageReference Include="AutoMapper" Version="10.1.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
 		<PackageReference Include="Dapper" Version="2.0.35" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.7" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9" />
 
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.9" />
 
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.7" />
-		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.1.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.1.9" />
 
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
 		<PackageReference Include="SendGrid" Version="9.21.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
-		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.2" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.3" />
 	</ItemGroup>
 </Project>

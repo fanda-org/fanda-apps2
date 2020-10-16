@@ -20,7 +20,33 @@ namespace Fanda.ApiGateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllers();
+            services.AddCors(options =>
+            {
+                var urls = new[]
+                {
+                        "http://localhost:4200",    // Frontend Angular app from nodejs
+                        "https://localhost:44301",  // Frontend Angular app from https
+                        "http://localhost:50500",   // Frontend Angular app from http
+                        "http://localhost:5200",    // Accounting Service from http
+                        "http://localhost:5201",    // Accounting Service from https
+                        "http://localhost:5100",    // Authentication Service from http
+                        "http://localhost:5101",    // Authentication Service from https
+                        "http://localhost:5000",    // API Gateway from http
+                        "http://localhost:5001",    // API Gateway from https
+                                                    //Configuration["Fanda.Gateway.Url"],
+                                                    //Configuration["Fanda.Ng.Url"]
+                };
+                options.AddPolicy("_MyAllowedOrigins", builder =>
+                {
+                    builder.WithOrigins(urls)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            }); ; //WithViews();
+            services.AddResponseCaching();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -37,7 +63,7 @@ namespace Fanda.ApiGateway
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                // app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -49,6 +75,7 @@ namespace Fanda.ApiGateway
                 app.UseSpaStaticFiles();
             }
 
+            app.UseCors("_MyAllowedOrigins");
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -56,7 +83,8 @@ namespace Fanda.ApiGateway
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapHealthChecks("/health");
+                //.RequireCors("_MyAllowedOrigins");
+                // endpoints.MapHealthChecks("/health");
             });
 
             app.UseSpa(spa =>

@@ -91,8 +91,8 @@ namespace Fanda.Authentication.Service
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers()
-                    .RequireCors("_MyAllowedOrigins");
+                endpoints.MapControllers();
+                // .RequireCors("_MyAllowedOrigins");
 
                 //endpoints.MapControllerRoute(
                 //    name: "areaRoute",

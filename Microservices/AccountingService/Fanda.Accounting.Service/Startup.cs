@@ -54,7 +54,7 @@ namespace Fanda.Accounting.Service
             services.AddCustomDbContext<AcctContext>(appSettings, Assembly.GetAssembly(typeof(AcctContext)).GetName().Name, Env.IsDevelopment())
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AutoMapperProfile))
-                .AddSwagger("Fanda Application API");
+                .AddSwagger("Fanda Accounting API");
             services.AddJwtAuthentication(appSettings.FandaSettings.Secret);
 
             #endregion Startup configure services
@@ -96,9 +96,7 @@ namespace Fanda.Accounting.Service
             }
 
             autoMapperConfigProvider.AssertConfigurationIsValid();
-
             //app.UseHttpsRedirection();
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -107,18 +105,15 @@ namespace Fanda.Accounting.Service
             });
 
             app.UseCors("_MyAllowedOrigins");
-
             app.UseRouting();
-
             app.UseAuthentication();
-
             app.UseAuthorization();
             app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers()
-                    .RequireCors("_MyAllowedOrigins");
+                endpoints.MapControllers();
+                //.RequireCors("_MyAllowedOrigins");
                 endpoints.MapHealthChecks("/health");
             });
 

@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Fanda.Auth": {
+    "Fanda.AuthenticationService": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "openapi",
