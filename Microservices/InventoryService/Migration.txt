@@ -1,0 +1,5 @@
+To add new migration: 
+	Add-Migration MySQL<05> -o Migrations\MySQL -p FandaAuth.Domain
+
+To remove latest migration: 
+	Remove-Migration -p FandaAuth.Domain
