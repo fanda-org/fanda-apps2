@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Service.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    // [Route("api/[controller]")]
+    // [ApiController]
     public class AuthController : BaseController
     {
         private const string ModuleName = "User";

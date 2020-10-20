@@ -63,13 +63,11 @@ namespace Fanda.Core.Extensions
                     {
                         "http://localhost:4200",    // Frontend Angular app from nodejs
                         "https://localhost:44301",  // Frontend Angular app from https
-                        "http://localhost:50500",   // Frontend Angular app from http
+                        "http://localhost:50000",   // Frontend Angular app from http
                         "http://localhost:5200",    // Accounting Service from http
-                        "http://localhost:5201",    // Accounting Service from https
                         "http://localhost:5100",    // Authentication Service from http
-                        "http://localhost:5101",    // Authentication Service from https
                         "http://localhost:5000",    // API Gateway from http
-                        "http://localhost:5001",    // API Gateway from https
+                        "http://localhost:63500",    // API Gateway from http
                         //Configuration["Fanda.Gateway.Url"],
                         //Configuration["Fanda.Ng.Url"]
                     };

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<SignAssembly>false</SignAssembly>
-		<AssemblyOriginatorKeyFile>Fanda.pfx</AssemblyOriginatorKeyFile>
+		<!--<AssemblyOriginatorKeyFile>Fanda.pfx</AssemblyOriginatorKeyFile>-->
 	</PropertyGroup>
 
 	<ItemGroup>

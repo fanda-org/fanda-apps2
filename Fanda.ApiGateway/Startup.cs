@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
+
 namespace Fanda.ApiGateway
 {
     public class Startup
@@ -52,6 +55,7 @@ namespace Fanda.ApiGateway
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddOcelot();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,24 +72,25 @@ namespace Fanda.ApiGateway
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
 
+            app.UseOcelot();
             app.UseCors("_MyAllowedOrigins");
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
-                //.RequireCors("_MyAllowedOrigins");
-                // endpoints.MapHealthChecks("/health");
-            });
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller}/{action=Index}/{id?}");
+            //    //.RequireCors("_MyAllowedOrigins");
+            //    // endpoints.MapHealthChecks("/health");
+            //});
 
             app.UseSpa(spa =>
             {

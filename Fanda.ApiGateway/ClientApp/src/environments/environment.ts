@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  authUrl: 'http://localhost:5100/api',
-  apiUrl: 'http://localhost:5200/api'
+    production: false,
+    authUrl: 'http://localhost:63500/auth-api',
+    apiUrl: 'http://localhost:63500/acct-api'
 };
 
 /*

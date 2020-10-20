@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net.Mime;
 
@@ -16,7 +17,7 @@ namespace Fanda.Core.Base
         #region Non action methods
 
         [NonAction]
-        private InternalServerErrorResult InternalServerError(IMessageResponse value)   // [ActionResultObjectValueAttribute]
+        private static InternalServerErrorResult InternalServerError(IMessageResponse value)   // [ActionResultObjectValueAttribute]
         {
             return new InternalServerErrorResult(value);
         }

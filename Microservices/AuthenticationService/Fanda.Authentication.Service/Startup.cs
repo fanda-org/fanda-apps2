@@ -91,24 +91,24 @@ namespace Fanda.Authentication.Service
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                // endpoints.MapControllers();
                 // .RequireCors("_MyAllowedOrigins");
 
-                //endpoints.MapControllerRoute(
-                //    name: "areaRoute",
-                //    pattern: "{area:exists}/{controller}/{action}",
-                //    defaults: new { action = "Index" })
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller}/{action}",
+                    defaults: new { action = "Index" });
                 //.RequireCors("_MyAllowedOrigins");
 
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller}/{action}/{id?}",
-                //    defaults: new { controller = "Home", action = "Index" })
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" });
                 //.RequireCors("_MyAllowedOrigins");
 
-                //endpoints.MapControllerRoute(
-                //    name: "api",
-                //    pattern: "{controller}/{id?}")
+                endpoints.MapControllerRoute(
+                    name: "api",
+                    pattern: "api/{controller}/{id?}");
                 //.RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapHealthChecks("/health");
