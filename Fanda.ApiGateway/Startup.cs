@@ -29,16 +29,12 @@ namespace Fanda.ApiGateway
                 var urls = new[]
                 {
                         "http://localhost:4200",    // Frontend Angular app from nodejs
-                        "https://localhost:44301",  // Frontend Angular app from https
-                        "http://localhost:50500",   // Frontend Angular app from http
+                        "http://localhost:55000",   // Frontend Angular app from http
                         "http://localhost:5200",    // Accounting Service from http
-                        "http://localhost:5201",    // Accounting Service from https
                         "http://localhost:5100",    // Authentication Service from http
-                        "http://localhost:5101",    // Authentication Service from https
                         "http://localhost:5000",    // API Gateway from http
-                        "http://localhost:5001",    // API Gateway from https
-                                                    //Configuration["Fanda.Gateway.Url"],
-                                                    //Configuration["Fanda.Ng.Url"]
+                                                    // Configuration["Fanda.Gateway.Url"],
+                                                    // Configuration["Fanda.Ng.Url"]
                 };
                 options.AddPolicy("_MyAllowedOrigins", builder =>
                 {
@@ -51,10 +47,10 @@ namespace Fanda.ApiGateway
             services.AddResponseCaching();
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "ClientApp/dist";
+            //});
             services.AddOcelot();
         }
 
@@ -79,9 +75,10 @@ namespace Fanda.ApiGateway
                 app.UseSpaStaticFiles();
             }
 
-            app.UseOcelot();
+            app.UseResponseCaching();
             app.UseCors("_MyAllowedOrigins");
             app.UseRouting();
+            app.UseOcelot();
 
             //app.UseEndpoints(endpoints =>
             //{
@@ -92,19 +89,19 @@ namespace Fanda.ApiGateway
             //    // endpoints.MapHealthChecks("/health");
             //});
 
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+            //app.UseSpa(spa =>
+            //{
+            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "ClientApp";
+            //    spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
-                {
-                    // spa.UseAngularCliServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                }
-            });
+            //    if (env.IsDevelopment())
+            //    {
+            //        // spa.UseAngularCliServer(npmScript: "start");
+            //        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+            //    }
+            //});
         }
     }
 }

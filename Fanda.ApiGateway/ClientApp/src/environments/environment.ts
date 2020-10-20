@@ -4,8 +4,8 @@
 
 export const environment = {
     production: false,
-    authUrl: 'http://localhost:63500/auth-api',
-    apiUrl: 'http://localhost:63500/acct-api'
+    authUrl: 'http://localhost:55000/auth-api',
+    apiUrl: 'http://localhost:55000/acct-api'
 };
 
 /*

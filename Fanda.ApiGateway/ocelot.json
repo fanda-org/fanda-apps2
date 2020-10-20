@@ -2,7 +2,6 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/{everything}",
-      // "DownstreamHttpMethod": "GET",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -11,14 +10,37 @@
         }
       ],
       "UpstreamPathTemplate": "/auth-api/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "PATCH" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5200
+        }
+      ],
+      "UpstreamPathTemplate": "/acct-api/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4200
+        }
+      ],
+      "UpstreamPathTemplate": "/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
     }
-
   ],
   "GlobalConfiguration": {
     //"RequestIdKey": "OcRequestId",
     //"AdministrationPath": "/administration"
-    //"BaseUrl": "http://localhost:5000",
+    "BaseUrl": "http://localhost:55000"
     //"ServiceDiscoveryProvider": {
     //  "Host": "localhost",
     //  "Port": 5000
