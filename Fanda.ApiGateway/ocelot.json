@@ -1,6 +1,42 @@
 {
   "Routes": [
     {
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/auth-api/auth/login",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/refresh-token",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/auth-api/auth/refresh-token",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5100
+        }
+      ],
+      "UpstreamPathTemplate": "/auth-api/auth/register",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -10,7 +46,12 @@
         }
       ],
       "UpstreamPathTemplate": "/auth-api/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "SwaggerKey": "authentication"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -22,19 +63,47 @@
         }
       ],
       "UpstreamPathTemplate": "/acct-api/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "SwaggerKey": "accounting"
+    }
+    //,
+    //{
+    //  "DownstreamPathTemplate": "/{everything}",
+    //  "DownstreamScheme": "http",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "localhost",
+    //      "Port": 4200
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/{everything}",
+    //  "UpstreamHttpMethod": [ "Get", "Post" ]
+    //}
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "authentication",
+      "Config": [
+        {
+          "Name": "Fanda Authentication API",
+          "Version": "v1",
+          "Url": "http://localhost:5100/swagger/v1/swagger.json"
+        }
+      ]
     },
     {
-      "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+      "Key": "accounting",
+      "Config": [
         {
-          "Host": "localhost",
-          "Port": 4200
+          "Name": "Fanda Accounting API",
+          "Version": "v1",
+          "Url": "http://localhost:5200/swagger/v1/swagger.json"
         }
-      ],
-      "UpstreamPathTemplate": "/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ]
+      ]
     }
   ],
   "GlobalConfiguration": {

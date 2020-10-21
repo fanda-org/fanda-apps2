@@ -32,7 +32,8 @@
                             "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
                             "src/styles.css"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "allowedCommonJsDependencies": ["@ant-design/colors"]
                     },
                     "configurations": {
                         "production": {
@@ -68,7 +69,8 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "fanda-app:build"
+                        "browserTarget": "fanda-app:build",
+                        "disableHostCheck": true
                     },
                     "configurations": {
                         "production": {
