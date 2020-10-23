@@ -216,24 +216,26 @@ namespace Fanda.Core
 
     public enum SerialNumberModule
     {
-        SalesInvoice,
-        CreditNote,
-        PurchaseBill,
-        DebitNote,
-        BatchNumber,
-        Receipts,
-        Payments,
-        Journals
+        Receipts = 1,
+        Payments = 2,
+        Withdrawls = 3,
+        Deposits = 4,
+        Journals = 5,
+        Purchase = 6,
+        Sales = 7,
+        PurchaseReturn = 8,     // DebitNote
+        SalesReturn = 9,        // CreditNote
+        BatchNumber = 10
     }
 
     public enum SerialNumberReset
     {
-        NoReset,
-        Max,
-        Daily,
-        Monthly,
-        CalendarYear,
-        AccountingYear
+        NoReset = 0,
+        Max = 1,
+        Daily = 2,
+        Monthly = 3,
+        CalendarYear = 4,
+        AccountingYear = 5
     }
 
     public enum KeyField
@@ -257,8 +259,26 @@ namespace Fanda.Core
     public enum LedgerType
     {
         Default = 0,
-        Customer = 1,
-        Supplier = 2,
-        Bank = 3
+        Party = 1,
+        Bank = 2
+    }
+
+    public enum JournalType
+    {
+        Receipts = 1,
+        Payments = 2,
+        Withdrawls = 3,
+        Deposits = 4,
+        Journals = 5,
+        Purchase = 6,
+        Sales = 7,
+        PurchaseReturn = 8,     // DebitNote
+        SalesReturn = 9         // CreditNote
+    }
+
+    public enum GoodsType
+    {
+        FinishedGoods = 1,
+        RawMaterial = 2
     }
 }

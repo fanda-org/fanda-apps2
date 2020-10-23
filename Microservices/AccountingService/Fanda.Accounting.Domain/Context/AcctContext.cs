@@ -23,6 +23,10 @@ namespace Fanda.Accounting.Domain.Context
 
         public DbSet<SerialNumber> SerialNumbers { get; set; }
 
+        public DbSet<Journal> Journals { get; set; }
+        public DbSet<JournalItem> JournalItems { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -47,6 +51,10 @@ namespace Fanda.Accounting.Domain.Context
 
             modelBuilder.ApplyConfiguration(new LedgerBalanceConfig());
             modelBuilder.ApplyConfiguration(new SerialNumberConfig());
+
+            modelBuilder.ApplyConfiguration(new JournalConfig());
+            modelBuilder.ApplyConfiguration(new JournalItemConfig());
+            modelBuilder.ApplyConfiguration(new TransactionConfig());
 
             foreach (var property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetProperties())

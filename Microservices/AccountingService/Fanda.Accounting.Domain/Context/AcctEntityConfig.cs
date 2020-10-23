@@ -14,6 +14,7 @@ namespace Fanda.Accounting.Domain.Context
 
             // key
             builder.HasKey(c => c.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(c => c.Salutation)
@@ -45,6 +46,7 @@ namespace Fanda.Accounting.Domain.Context
 
             // key
             builder.HasKey(a => a.Id);
+            builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(a => a.Attention)
@@ -89,6 +91,7 @@ namespace Fanda.Accounting.Domain.Context
 
             // key
             builder.HasKey(o => o.Id);
+            builder.Property(o => o.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(o => o.Code)
@@ -222,7 +225,8 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("LedgerGroups");
 
             // key
-            builder.HasKey(u => u.Id);
+            builder.HasKey(g => g.Id);
+            builder.Property(g => g.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -270,6 +274,7 @@ namespace Fanda.Accounting.Domain.Context
 
             // key
             builder.HasKey(l => l.Id);
+            builder.Property(l => l.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -327,6 +332,7 @@ namespace Fanda.Accounting.Domain.Context
 
             // key
             builder.HasKey(pc => pc.Id);
+            builder.Property(pc => pc.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(pc => pc.Code)
@@ -506,7 +512,8 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("AccountYears");
 
             // key
-            builder.HasKey(u => u.Id);
+            builder.HasKey(y => y.Id);
+            builder.Property(y => y.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -607,4 +614,108 @@ namespace Fanda.Accounting.Domain.Context
     }
 
     #endregion Accounting Year
+
+    #region Journal & Transaction
+
+    public class JournalConfig : IEntityTypeConfiguration<Journal>
+    {
+        public void Configure(EntityTypeBuilder<Journal> builder)
+        {
+            // table
+            builder.ToTable("Journals");
+
+            // primary key
+            builder.HasKey(j => j.Id);
+            builder.Property(j => j.Id).ValueGeneratedOnAdd();
+
+            // columns
+            builder.Property(i => i.Number)
+                .HasMaxLength(16);
+            builder.Property(i => i.ReferenceNumber)
+                .HasMaxLength(16);
+            builder.Ignore(i => i.JournalType);
+            builder.Property(i => i.JournalTypeString)
+                .HasColumnName("JournalType")
+                .IsUnicode(false)
+                .IsRequired()
+                .HasMaxLength(16);
+            builder.Property(i => i.JournalSign)
+                .HasMaxLength(1);
+
+            // foreign key
+            builder.HasOne(a => a.Ledger)
+                .WithMany(b => b.Journals)
+                .HasForeignKey(a => a.LedgerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(a => a.AccountYear)
+                .WithMany(b => b.Journals)
+                .HasForeignKey(a => a.YearId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+    }
+
+    public class JournalItemConfig : IEntityTypeConfiguration<JournalItem>
+    {
+        public void Configure(EntityTypeBuilder<JournalItem> builder)
+        {
+            // table
+            builder.ToTable("JournalItems");
+
+            // key
+            builder.HasKey(j => new { j.JournalItemId, j.JournalId });
+            builder.Property(j => j.JournalItemId).ValueGeneratedOnAdd();
+
+            // columns
+            builder.Property(i => i.Description)
+                .HasMaxLength(255);
+            builder.Property(i => i.ReferenceNumber)
+                .HasMaxLength(16);
+
+            // foreign key
+            builder.HasOne(ji => ji.Journal)
+                .WithMany(j => j.JournalItems)
+                .HasForeignKey(ji => ji.JournalId);
+            builder.HasOne(a => a.Ledger)
+                .WithMany(b => b.JournalItems)
+                .HasForeignKey(a => a.LedgerId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+    }
+
+    public class TransactionConfig : IEntityTypeConfiguration<Transaction>
+    {
+        public void Configure(EntityTypeBuilder<Transaction> builder)
+        {
+            // table
+            builder.ToTable("Transactions");
+
+            // key
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.Id).ValueGeneratedOnAdd();
+
+            // columns
+            builder.Property(i => i.Number)
+                .HasMaxLength(16);
+            builder.Property(i => i.ReferenceNumber)
+                .HasMaxLength(16);
+            builder.Property(i => i.Description)
+                .HasMaxLength(255);
+
+            // foreign keys
+            builder.HasOne(t => t.DebitLedger)
+                .WithMany(l => l.DebitTransactions)
+                .HasForeignKey(t => t.DebitLedgerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(t => t.CreditLedger)
+                .WithMany(l => l.CreditTransactions)
+                .HasForeignKey(t => t.CreditLedgerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(a => a.AccountYear)
+                .WithMany(b => b.Transactions)
+                .HasForeignKey(a => a.YearId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+    }
+
+    #endregion Journal & Transaction
 }
