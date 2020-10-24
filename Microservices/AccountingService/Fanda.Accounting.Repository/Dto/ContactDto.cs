@@ -42,8 +42,5 @@ namespace Fanda.Accounting.Repository.Dto
 
         [Display(Name = "Is Primary?")]
         public bool IsPrimary { get; set; }
-
-        public bool IsDeleted { get; set; }
-        public int Index { get; set; }
     }
 }

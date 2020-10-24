@@ -33,8 +33,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Inventory.Repository"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{9BD44F8B-1537-4419-BFEB-EF3F69DF0E98}"
 	ProjectSection(SolutionItems) = preProject
+		Microservices\AccountingService\Migration.txt = Microservices\AccountingService\Migration.txt
 		Readme.txt = Readme.txt
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{48341EEE-DEE1-4B2E-A5A4-96753923BA69}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A085B5D6-AB97-4481-82C0-61086ED65EF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +88,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{7BBF3E2B-CE40-42B0-983A-21F48EB4DC89} = {48341EEE-DEE1-4B2E-A5A4-96753923BA69}
+		{D56E85C0-E9DB-4F1E-9726-AB994785ED1D} = {48341EEE-DEE1-4B2E-A5A4-96753923BA69}
 		{3E14C709-605E-440F-A407-6C6B470F443F} = {FD4808E0-0357-456A-A93A-27CF1DE69F9A}
 		{FD4808E0-0357-456A-A93A-27CF1DE69F9A} = {7BBF3E2B-CE40-42B0-983A-21F48EB4DC89}
 		{39461918-419D-44B8-8A13-9B29A8A0CFC1} = {FD4808E0-0357-456A-A93A-27CF1DE69F9A}

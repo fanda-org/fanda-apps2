@@ -10,8 +10,6 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
         public AutoMapperProfile()
         {
             CreateMap<Contact, ContactDto>()
-                .ForMember(vm => vm.IsDeleted, opt => opt.Ignore())
-                .ForMember(vm => vm.Index, opt => opt.Ignore())
                 .ReverseMap();
             CreateMap<Address, AddressDto>()
                 .ReverseMap();
@@ -131,6 +129,8 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
 
             CreateMap<AccountYear, AccountYearDto>()
                 .ReverseMap();
+            CreateMap<LedgerGroup, LedgerGroupDto>()
+                .ReverseMap();
 
             #region List mappings
 
@@ -140,6 +140,7 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
                 .ForMember(vm => vm.SelectedYearId, opt => opt.Ignore())
                 .ForMember(vm => vm.IsSelected, opt => opt.Ignore());
             CreateMap<PartyCategory, PartyCategoryListDto>();
+            CreateMap<LedgerGroup, LedgerGroupListDto>();
 
             #endregion List mappings
         }

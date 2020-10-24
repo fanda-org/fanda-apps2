@@ -3,3 +3,6 @@ To add new migration:
 
 To remove latest migration: 
 	Remove-Migration -p FandaAuth.Domain
+
+To update database:
+	Update-Database

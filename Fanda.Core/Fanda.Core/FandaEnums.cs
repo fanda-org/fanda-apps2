@@ -211,7 +211,17 @@ namespace Fanda.Core
         Asset = 1,
         Liability = 2,
         Income = 3,
-        Expense = 4
+        Expense = 4,
+        Revenue = 5,
+        Branches = 6,
+        Warehouse = 7
+    }
+
+    public enum IncomeOrExpenseType
+    {
+        Manufacturing = 1,
+        Tranding = 2,
+        Business = 3
     }
 
     public enum SerialNumberModule
