@@ -42,6 +42,7 @@ namespace Fanda.ApiGateway
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseWindowsService();
     }
 }

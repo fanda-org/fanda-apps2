@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Repository
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Accounting.Service", "Microservices\AccountingService\Fanda.Accounting.Service\Fanda.Accounting.Service.csproj", "{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.ApiGateway", "Fanda.ApiGateway\Fanda.ApiGateway.csproj", "{8C2153E9-5A49-4372-9900-B1F833D6950E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{1C16E542-5C06-4409-B11B-A0568DD0ACD4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Finance", "Finance", "{F47D8FED-BA45-4941-91AB-2DB31687DC03}"
@@ -32,6 +30,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Inventory.Domain", "Microservices\InventoryService\Fanda.Inventory.Domain\Fanda.Inventory.Domain.csproj", "{D5CB7707-4199-4BCF-94BE-5E95E351599E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Inventory.Repository", "Microservices\InventoryService\Fanda.Inventory.Repository\Fanda.Inventory.Repository.csproj", "{A1FCDE80-4304-4861-8384-4697930F54BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{9BD44F8B-1537-4419-BFEB-EF3F69DF0E98}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.txt = Readme.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +70,6 @@ Global
 		{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ED6449E-996B-4EA9-BAAB-D2D183ADE71B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C2153E9-5A49-4372-9900-B1F833D6950E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C2153E9-5A49-4372-9900-B1F833D6950E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C2153E9-5A49-4372-9900-B1F833D6950E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C2153E9-5A49-4372-9900-B1F833D6950E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5CB7707-4199-4BCF-94BE-5E95E351599E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D5CB7707-4199-4BCF-94BE-5E95E351599E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5CB7707-4199-4BCF-94BE-5E95E351599E}.Release|Any CPU.ActiveCfg = Release|Any CPU

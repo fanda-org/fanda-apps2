@@ -66,6 +66,7 @@ namespace Fanda.Core.Extensions
                         "http://localhost:5200",    // Accounting Service from http
                         "http://localhost:5100",    // Authentication Service from http
                         "http://localhost:5000",    // API Gateway from http
+                        "http://localhost:8000",    // nginx proxy server
                                                     // Configuration["Fanda.Gateway.Url"],
                                                     // Configuration["Fanda.Ng.Url"]
                     };

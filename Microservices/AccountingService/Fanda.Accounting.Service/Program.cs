@@ -37,7 +37,8 @@ namespace Fanda.Accounting.Service
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseWindowsService();
     }
 
     // #pragma warning restore CS1591

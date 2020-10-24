@@ -57,7 +57,8 @@ namespace Fanda.Authentication.Service
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseWindowsService();
 
         private static async Task CreateAndRunTasks(IHost host)
         {
