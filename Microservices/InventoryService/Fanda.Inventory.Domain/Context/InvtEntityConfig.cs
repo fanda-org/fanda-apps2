@@ -14,6 +14,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(u => u.Id);
+            builder.Property(u => u.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -81,6 +82,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(u => u.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -121,6 +123,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(u => u.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -157,6 +160,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(u => u.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -193,6 +197,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(u => u.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -261,6 +266,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(pp => pp.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
 
@@ -319,6 +325,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(u => u.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(u => u.Code)
@@ -389,6 +396,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(ic => ic.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(ic => ic.Code)
@@ -425,6 +433,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(b => b.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
 
@@ -456,9 +465,12 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(i => i.Id);
+            builder.Property(i => i.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(i => i.Number)
+                .HasMaxLength(16);
+            builder.Property(i => i.ReferenceNumber)
                 .HasMaxLength(16);
             builder.Ignore(i => i.InvoiceType);
             builder.Property(i => i.InvoiceTypeString)
@@ -524,6 +536,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(i => new { i.InvoiceItemId, i.InvoiceId });
+            builder.Property(i => i.InvoiceItemId).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(i => i.Description)
@@ -556,6 +569,7 @@ namespace Fanda.Inventory.Domain.Context
 
             // key
             builder.HasKey(s => s.Id);
+            builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
             // columns
             builder.Property(s => s.BatchNumber)

@@ -38,5 +38,10 @@ namespace Fanda.Accounting.Domain
         public virtual Bank Bank { get; set; }
         public virtual Party Party { get; set; }
         public virtual ICollection<LedgerBalance> LedgerBalances { get; set; }
+
+        public virtual ICollection<Journal> Journals { get; set; }
+        public virtual ICollection<JournalItem> JournalItems { get; set; }
+        public virtual ICollection<Transaction> DebitTransactions { get; set; }
+        public virtual ICollection<Transaction> CreditTransactions { get; set; }
     }
 }
