@@ -9,6 +9,6 @@ namespace Fanda.Accounting.Domain
         public Guid UserId { get; set; }
         public Guid RoleId { get; set; }
 
-        public virtual ICollection<OrgUser> OrgUsers { get; set; }
+        public virtual OrgUser OrgUser { get; set; }
     }
 }

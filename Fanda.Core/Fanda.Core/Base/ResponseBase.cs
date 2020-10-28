@@ -57,10 +57,10 @@ namespace Fanda.Core.Base
 
     public class MessageResponse : IMessageResponse
     {
-        public string Message { get; set; } = null;
+        public string Message { get; set; }
         public bool Success { get; set; }
-        public string ErrorMessage { get; set; } = null;
-        public ValidationErrors Errors { get; set; } = null;
+        public string ErrorMessage { get; set; }
+        public ValidationErrors Errors { get; set; }
 
         public static MessageResponse Succeeded(string message = null)
             => new MessageResponse
@@ -95,7 +95,7 @@ namespace Fanda.Core.Base
 
     public class DataResponse<TModel> : MessageResponse, IDataResponse<TModel>
     {
-        public TModel Data { get; set; } = default;
+        public TModel Data { get; set; }
 
         public static DataResponse<TModel> Succeeded(TModel data, string message = null)
             => new DataResponse<TModel>

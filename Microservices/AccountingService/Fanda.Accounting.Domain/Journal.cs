@@ -23,5 +23,6 @@ namespace Fanda.Accounting.Domain
 
         public virtual Ledger Ledger { get; set; }
         public virtual ICollection<JournalItem> JournalItems { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

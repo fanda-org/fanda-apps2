@@ -170,48 +170,49 @@ namespace Fanda.Accounting.Domain.Context
         }
     }
 
-    // public class OrgUserConfig : IEntityTypeConfiguration<OrgUser>
-    // {
-    //     public void Configure(EntityTypeBuilder<OrgUser> builder)
-    //     {
-    //         // table
-    //         builder.ToTable("OrgUsers");
+    public class OrgUserConfig : IEntityTypeConfiguration<OrgUser>
+    {
+        public void Configure(EntityTypeBuilder<OrgUser> builder)
+        {
+            // table
+            builder.ToTable("OrgUsers");
 
-    //         // key
-    //         builder.HasKey(ou => new { ou.OrgId, ou.UserId });
+            // key
+            builder.HasKey(ou => new { ou.OrgId, ou.UserId });
 
-    //         // foreign key
-    //         builder.HasOne(ou => ou.Organization)
-    //             .WithMany(b => b.OrgUsers)
-    //             .HasForeignKey(ou => ou.OrgId)
-    //             .OnDelete(DeleteBehavior.Cascade);
-    //         // builder.HasOne(ou => ou.User)
-    //         //     .WithMany(c => c.OrgUsers)
-    //         //     .HasForeignKey(ou => ou.UserId)
-    //         //     .OnDelete(DeleteBehavior.Cascade);
-    //     }
-    // }
-    // public class OrgUserRoleConfig : IEntityTypeConfiguration<OrgUserRole>
-    // {
-    //     public void Configure(EntityTypeBuilder<OrgUserRole> builder)
-    //     {
-    //         // table
-    //         builder.ToTable("OrgUserRoles");
+            // foreign key
+            builder.HasOne(ou => ou.Organization)
+                .WithMany(b => b.OrgUsers)
+                .HasForeignKey(ou => ou.OrgId)
+                .OnDelete(DeleteBehavior.Cascade);
+            // builder.HasOne(ou => ou.User)
+            //     .WithMany(c => c.OrgUsers)
+            //     .HasForeignKey(ou => ou.UserId)
+            //     .OnDelete(DeleteBehavior.Cascade);
+        }
+    }
 
-    //         // key
-    //         builder.HasKey(o => new { o.OrgId, o.UserId, o.RoleId });
+    public class OrgUserRoleConfig : IEntityTypeConfiguration<OrgUserRole>
+    {
+        public void Configure(EntityTypeBuilder<OrgUserRole> builder)
+        {
+            // table
+            builder.ToTable("OrgUserRoles");
 
-    //         // foreign key
-    //         builder.HasOne(o => o.OrgUser)
-    //             .WithMany(u => u.OrgUserRoles)
-    //             .HasForeignKey(o => new { o.OrgId, o.UserId })
-    //             .OnDelete(DeleteBehavior.Cascade);
-    //         builder.HasOne(o => o.Role)
-    //             .WithMany(r => r.OrgUserRoles)
-    //             .HasForeignKey(o => o.RoleId)
-    //             .OnDelete(DeleteBehavior.Cascade);
-    //     }
-    // }
+            // key
+            builder.HasKey(o => new { o.OrgId, o.UserId, o.RoleId });
+
+            // foreign key
+            builder.HasOne(o => o.OrgUser)
+                .WithMany(u => u.OrgUserRoles)
+                .HasForeignKey(o => new { o.OrgId, o.UserId })
+                .OnDelete(DeleteBehavior.Cascade);
+            //builder.HasOne(o => o.Role)
+            //    .WithMany(r => r.OrgUserRoles)
+            //    .HasForeignKey(o => o.RoleId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+        }
+    }
 
     #endregion Organization, Contact, Address, Role, User
 
@@ -714,6 +715,10 @@ namespace Fanda.Accounting.Domain.Context
                 .WithMany(b => b.Transactions)
                 .HasForeignKey(a => a.YearId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(t => t.Journal)
+                .WithMany(j => j.Transactions)
+                .HasForeignKey(t => t.JournalId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

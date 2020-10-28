@@ -24,12 +24,12 @@ namespace Fanda.Authentication.Service.Controllers
             _repository = repository;
         }
 
-        // /users?tenantId=5
+        // users?tenantId=5
         [HttpGet()]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(DataResponse<List<UserListDto>>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAll([Required] Guid tenantId)
+        public async Task<IActionResult> GetAll([FromQuery, Required] Guid tenantId)
         {
             try
             {

@@ -1,5 +1,5 @@
 To add new migration: 
-	add-migration MySQL<03> -o Migrations\MySQL -p Fanda.Accounting.Domain -s Fanda.Accounting.Service
+	add-migration <Acct>MySQL<03> -o Migrations\MySQL -p Fanda.Accounting.Domain -s Fanda.Accounting.Service
 
 To remove latest migration: 
 	Remove-Migration -p FandaAuth.Domain

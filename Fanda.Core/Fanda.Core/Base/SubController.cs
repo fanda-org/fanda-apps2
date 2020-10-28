@@ -24,10 +24,11 @@ namespace Fanda.Core.Base
             _moduleName = typeof(TEntity).Name;
         }
 
-        [HttpGet]
+        // organizations?superId=5
+        [HttpGet()]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<List<TListModel>>)
-        public async Task<IActionResult> GetAll(Guid superId)
+        public async Task<IActionResult> GetAll([FromQuery] Guid superId)
         {
             try
             {

@@ -2,6 +2,7 @@ using Fanda.Core.Base;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Repository;
 using Fanda.Accounting.Repository.Dto;
+using System;
 
 namespace Fanda.Accounting.Service.Controllers
 {
@@ -14,6 +15,7 @@ namespace Fanda.Accounting.Service.Controllers
         public OrganizationsController(IOrganizationRepository repository) : base(repository)
         {
             //this.repository = repository;
+            //var l = ((IListRepository<OrgYearListDto>)repository).GetAll(new Guid("08d853ff-7f8b-4749-8a56-1d6d50176bbb"));
         }
 
         //[HttpGet("all/{userId}")]

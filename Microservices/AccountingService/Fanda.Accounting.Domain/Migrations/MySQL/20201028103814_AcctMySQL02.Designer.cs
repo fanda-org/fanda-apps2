@@ -3,14 +3,16 @@ using System;
 using Fanda.Accounting.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fanda.Accounting.Domain.Migrations.MySQL
 {
     [DbContext(typeof(AcctContext))]
-    partial class AcctContextModelSnapshot : ModelSnapshot
+    [Migration("20201028103814_AcctMySQL02")]
+    partial class AcctMySQL02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -764,9 +766,6 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4")
                         .HasMaxLength(255);
 
-                    b.Property<Guid?>("JournalId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Number")
                         .HasColumnType("varchar(16) CHARACTER SET utf8mb4")
                         .HasMaxLength(16);
@@ -789,8 +788,6 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                     b.HasIndex("CreditLedgerId");
 
                     b.HasIndex("DebitLedgerId");
-
-                    b.HasIndex("JournalId");
 
                     b.HasIndex("YearId");
 
@@ -1023,11 +1020,6 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                         .HasForeignKey("DebitLedgerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Fanda.Accounting.Domain.Journal", "Journal")
-                        .WithMany("Transactions")
-                        .HasForeignKey("JournalId")
-                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Fanda.Accounting.Domain.AccountYear", "AccountYear")
                         .WithMany("Transactions")
