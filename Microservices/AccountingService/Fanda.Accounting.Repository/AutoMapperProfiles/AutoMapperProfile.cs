@@ -48,12 +48,12 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
 
             CreateMap<Organization, OrganizationDto>()
                 //.ForPath(vm => vm.Users, opt => opt.MapFrom(src => src.OrgUsers.Select(ou => ou.User).ToList()))
-                .ForPath(vm => vm.Contacts, opt => opt.MapFrom(src => src.OrgContacts.Select(c => c.Contact).ToList()))
-                .ForPath(s => s.Addresses, opt => opt.MapFrom(src => src.OrgAddresses.Select(a => a.Address).ToList()))
+                .ForPath(dto => dto.Contacts, conf => conf.MapFrom(o => o.OrgContacts.Select(c => c.Contact).ToList()))
+                .ForPath(dto => dto.Addresses, conf => conf.MapFrom(o => o.OrgAddresses.Select(a => a.Address).ToList()))
                 //.ForPath(vm => vm.Banks, opt => opt.MapFrom(src => src.Banks.Select(b => b.BankAccount).ToList()))
                 .ReverseMap()
-                .ForMember(x => x.OrgContacts,
-                    src => src.MapFrom((orgVM, org, oc, context) =>
+                .ForMember(o => o.OrgContacts,
+                    conf => conf.MapFrom((orgVM, org, oc, context) =>
                       {
                           return orgVM.Contacts?.Select(c => new OrgContact
                           {
@@ -63,8 +63,8 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
                               Contact = context.Mapper.Map<ContactDto, Contact>(c)
                           }).ToList();
                       }))
-                .ForMember(x => x.OrgAddresses,
-                    src => src.MapFrom((orgVM, org, oa, context) =>
+                .ForMember(o => o.OrgAddresses,
+                    conf => conf.MapFrom((orgVM, org, oa, context) =>
                     {
                         return orgVM.Addresses?.Select(a => new OrgAddress
                         {

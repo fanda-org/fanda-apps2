@@ -38,41 +38,45 @@ namespace Fanda.Accounting.Repository
             _authClient = authClient;
         }
 
-        //public async Task<OrganizationDto> GetByIdAsync(Guid id)
-        //{
-        //    if (id == Guid.Empty)
-        //    {
-        //        throw new ArgumentNullException("Id", "Id is required");
-        //    }
+        public override async Task<OrganizationDto> GetByIdAsync(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException("Id", "Id is required");
+            }
 
-        //    OrganizationDto org = await _context.Organizations
-        //        .AsNoTracking()
-        //        .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
-        //        .FirstOrDefaultAsync(o => o.Id == id);
-        //    if (org == null)
-        //    {
-        //        throw new NotFoundException("Organization not found");
-        //    }
-        //    return org;
+            var org = await _context.Organizations
+                .AsNoTracking()
+                //.Include(o => o.OrgContacts).ThenInclude(oc => oc.Contact)
+                //.Include(o => o.OrgAddresses).ThenInclude(oa => oa.Address)
+                .Where(o => o.Id == id)
+                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
 
-        //    #region commented
+            if (org == null)
+            {
+                throw new NotFoundException("Organization not found");
+            }
+            //return _mapper.Map<OrganizationDto>(org);
 
-        //    //org.Contacts = await _context.Organizations
-        //    //    .AsNoTracking()
-        //    //    .Where(m => m.Id == id)
-        //    //    .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
-        //    //    .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
-        //    //    .ToListAsync();
-        //    //org.Addresses = await _context.Organizations
-        //    //    .AsNoTracking()
-        //    //    .Where(m => m.Id == id)
-        //    //    .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
-        //    //    .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
-        //    //    .ToListAsync();
-        //    //return org;
+            #region commented
 
-        //    #endregion commented
-        //}
+            org.Contacts = await _context.Organizations
+                .AsNoTracking()
+                .Where(m => m.Id == id)
+                .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
+                .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+            org.Addresses = await _context.Organizations
+                .AsNoTracking()
+                .Where(m => m.Id == id)
+                .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
+                .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+            return org;
+
+            #endregion commented
+        }
 
         //public async Task<IEnumerable<OrganizationDto>> FindAsync(Expression<Func<Organization, bool>> predicate)
         //{
@@ -133,9 +137,7 @@ namespace Fanda.Accounting.Repository
 
             entity.OrgUsers = new List<OrgUser>();
             entity.OrgUsers.Add(new OrgUser { UserId = userId });
-
             await _context.Organizations.AddAsync(entity);
-
             await _context.SaveChangesAsync();
             return _mapper.Map<OrganizationDto>(entity);
         }
@@ -151,6 +153,7 @@ namespace Fanda.Accounting.Repository
                 .Where(o => o.Id == model.Id)
                 .Include(o => o.OrgContacts).ThenInclude(oc => oc.Contact)
                 .Include(o => o.OrgAddresses).ThenInclude(oa => oa.Address)
+                .Include(o => o.OrgUsers)
                 .FirstOrDefaultAsync();
 
             if (dbOrg == null)
@@ -160,8 +163,11 @@ namespace Fanda.Accounting.Repository
                 //await _context.Organizations.AddAsync(org);
                 throw new NotFoundException("Organization not found");
             }
+            Guid userId = Guid.Empty;
+            if (dbOrg.OrgUsers != null && dbOrg.OrgUsers.Any())
+                userId = dbOrg.OrgUsers.FirstOrDefault().UserId;
 
-            var validationResult = await ValidateAsync(/*dbOrg.UserId or */ Guid.Empty, model);
+            var validationResult = await ValidateAsync(userId, model);
             if (!validationResult.IsValid())
             {
                 throw new BadRequestException(validationResult);
@@ -169,6 +175,7 @@ namespace Fanda.Accounting.Repository
 
             // copy current (incoming) values to db
             Organization org = _mapper.Map<Organization>(model);
+            org.DateCreated = dbOrg.DateCreated;
             org.DateModified = DateTime.UtcNow;
             _context.Entry(dbOrg).CurrentValues.SetValues(org);
 
@@ -214,7 +221,7 @@ namespace Fanda.Accounting.Repository
                 else
                 {
                     _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    _context.Contacts.Update(pair.db);
+                    //_context.Contacts.Update(pair.db);
                 }
             }
 
@@ -243,13 +250,13 @@ namespace Fanda.Accounting.Repository
                 else
                 {
                     _context.Entry(pair.db).CurrentValues.SetValues(pair.curr);
-                    _context.Addresses.Update(pair.db);
+                    //_context.Addresses.Update(pair.db);
                 }
             }
 
             #endregion Addresses
 
-            _context.Organizations.Update(dbOrg);
+            //_context.Organizations.Update(dbOrg);
             await _context.SaveChangesAsync();
         }
 
@@ -377,6 +384,11 @@ namespace Fanda.Accounting.Repository
         {
             // Reset validation errors
             model.Errors.Clear();
+            if (userId == Guid.Empty)
+            {
+                model.Errors.AddError(nameof(userId), "User id is required");
+                return model.Errors;
+            }
 
             #region Formatting: Cleansing and formatting
 
@@ -388,10 +400,6 @@ namespace Fanda.Accounting.Repository
 
             #region UserId validation
 
-            if (userId == Guid.Empty)
-            {
-                model.Errors.AddError(nameof(userId), "User id is required");
-            }
             var user = await _authClient.GetUserAsync(userId);
             if (user == null)
             {

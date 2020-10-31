@@ -45,7 +45,7 @@ namespace Fanda.Accounting.Service
 
             //services.AddControllers();
             services.AddCustomControllers();
-            services.AddResponseCaching();
+            //services.AddResponseCaching();
 
             //services.AddDbContext<AuthContext>(options =>
             //{
@@ -109,7 +109,7 @@ namespace Fanda.Accounting.Service
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseResponseCaching();
+            //app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {

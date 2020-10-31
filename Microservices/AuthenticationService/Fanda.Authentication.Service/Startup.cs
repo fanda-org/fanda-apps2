@@ -34,7 +34,7 @@ namespace Fanda.Authentication.Service
             AppSettings appSettings = services.ConfigureAppSettings(Configuration);
 
             services.AddCustomControllers();
-            services.AddResponseCaching();
+            //services.AddResponseCaching();
 
             services.AddCustomDbContext<AuthContext>(appSettings,
                 Assembly.GetAssembly(typeof(AuthContext)).GetName().Name, Env.IsDevelopment())
@@ -82,12 +82,9 @@ namespace Fanda.Authentication.Service
             app.UseCors("_MyAllowedOrigins");
 
             app.UseRouting();
-
             app.UseAuthentication();
-
             app.UseAuthorization();
-
-            app.UseResponseCaching();
+            //app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {

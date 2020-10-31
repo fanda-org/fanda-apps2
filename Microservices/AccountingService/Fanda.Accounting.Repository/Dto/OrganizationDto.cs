@@ -7,6 +7,9 @@ namespace Fanda.Accounting.Repository.Dto
 {
     public class OrganizationDto : BaseDto
     {
+        [Required]
+        public Guid TenantId { get; set; }
+
         [Display(Name = "Regd.No.", Prompt = "Registered number"),
             RegularExpression(@"^[a-zA-Z0-9\s~!@#$()_+-{}|:<>.?\/]*$", ErrorMessage = @"Special characters are not allowed in name"),
             StringLength(25, ErrorMessage = "Maximum allowed length is 25")]
@@ -27,8 +30,8 @@ namespace Fanda.Accounting.Repository.Dto
             StringLength(25, ErrorMessage = "Maximum allowed length is 25")]
         public string GSTIN { get; set; }
 
-        public virtual List<ContactDto> Contacts { get; set; }
-        public virtual List<AddressDto> Addresses { get; set; }
+        public virtual ICollection<ContactDto> Contacts { get; set; }
+        public virtual ICollection<AddressDto> Addresses { get; set; }
     }
 
     public class OrgListDto : BaseListDto { }

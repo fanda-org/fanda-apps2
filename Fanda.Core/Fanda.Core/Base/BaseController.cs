@@ -10,8 +10,8 @@ namespace Fanda.Core.Base
     //[Authorize]
     [Produces(MediaTypeNames.Application.Json)]
     [ApiController]
-    [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any,
-        VaryByQueryKeys = new[] { "pageIndex", "pageSize", "sort", "filter", "filterArgs" })]
+    //[ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any,
+    //    VaryByQueryKeys = new[] { "pageIndex", "pageSize", "sort", "filter", "filterArgs" })]
     public class BaseController : ControllerBase
     {
         #region Non action methods
