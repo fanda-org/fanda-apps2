@@ -1,10 +1,10 @@
 using AutoMapper;
-using Fanda.Core;
-using Fanda.Core.Extensions;
 using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository;
 using Fanda.Accounting.Repository.ApiClients;
 using Fanda.Accounting.Repository.AutoMapperProfiles;
+using Fanda.Core;
+using Fanda.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

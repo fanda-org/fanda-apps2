@@ -1,11 +1,11 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Fanda.Core;
-using Fanda.Core.Base;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository.ApiClients;
 using Fanda.Accounting.Repository.Dto;
+using Fanda.Core;
+using Fanda.Core.Base;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -47,33 +47,33 @@ namespace Fanda.Accounting.Repository
 
             var org = await _context.Organizations
                 .AsNoTracking()
-                //.Include(o => o.OrgContacts).ThenInclude(oc => oc.Contact)
-                //.Include(o => o.OrgAddresses).ThenInclude(oa => oa.Address)
-                .Where(o => o.Id == id)
-                .ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
+                .Include(o => o.OrgContacts).ThenInclude(oc => oc.Contact)
+                .Include(o => o.OrgAddresses).ThenInclude(oa => oa.Address)
+                //.Where(o => o.Id == id)
+                //.ProjectTo<OrganizationDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (org == null)
             {
                 throw new NotFoundException("Organization not found");
             }
-            //return _mapper.Map<OrganizationDto>(org);
+            return _mapper.Map<OrganizationDto>(org);
 
             #region commented
 
-            org.Contacts = await _context.Organizations
-                .AsNoTracking()
-                .Where(m => m.Id == id)
-                .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
-                .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-            org.Addresses = await _context.Organizations
-                .AsNoTracking()
-                .Where(m => m.Id == id)
-                .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
-                .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-            return org;
+            //org.Contacts = await _context.Organizations
+            //    .AsNoTracking()
+            //    .Where(m => m.Id == id)
+            //    .SelectMany(oc => oc.OrgContacts.Select(c => c.Contact))
+            //    .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+            //org.Addresses = await _context.Organizations
+            //    .AsNoTracking()
+            //    .Where(m => m.Id == id)
+            //    .SelectMany(oa => oa.OrgAddresses.Select(a => a.Address))
+            //    .ProjectTo<AddressDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+            //return org;
 
             #endregion commented
         }
@@ -135,8 +135,10 @@ namespace Fanda.Accounting.Repository
             var entity = _mapper.Map<Organization>(model);
             entity.DateCreated = DateTime.UtcNow;
 
-            entity.OrgUsers = new List<OrgUser>();
-            entity.OrgUsers.Add(new OrgUser { UserId = userId });
+            entity.OrgUsers = new List<OrgUser>
+            {
+                new OrgUser { UserId = userId }
+            };
             await _context.Organizations.AddAsync(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<OrganizationDto>(entity);
@@ -165,7 +167,9 @@ namespace Fanda.Accounting.Repository
             }
             Guid userId = Guid.Empty;
             if (dbOrg.OrgUsers != null && dbOrg.OrgUsers.Any())
+            {
                 userId = dbOrg.OrgUsers.FirstOrDefault().UserId;
+            }
 
             var validationResult = await ValidateAsync(userId, model);
             if (!validationResult.IsValid())

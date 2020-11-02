@@ -4,11 +4,7 @@ using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository.Dto;
 using Fanda.Core.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository
 {
