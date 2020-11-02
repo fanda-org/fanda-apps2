@@ -34,12 +34,8 @@ namespace Fanda.Accounting.Repository.Dto
         [StringLength(50, ErrorMessage = "Maximum allowed length is 50")]
         public string BranchName { get; set; }
 
-        public ContactDto Contact { get; set; }
-        public AddressDto Address { get; set; }
-
+        public virtual ContactDto Contact { get; set; }
+        public virtual AddressDto Address { get; set; }
         public bool IsDefault { get; set; }
-
-        //public bool IsDeleted { get; set; }
-        //public int Index { get; set; }
     }
 }

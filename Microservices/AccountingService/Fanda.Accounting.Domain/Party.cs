@@ -34,6 +34,5 @@ namespace Fanda.Accounting.Domain
         public virtual Ledger Ledger { get; set; }
         public virtual ICollection<PartyContact> PartyContacts { get; set; }
         public virtual ICollection<PartyAddress> PartyAddresses { get; set; }
-        //public virtual ICollection<Invoice> Invoices { get; set; }
     }
 }

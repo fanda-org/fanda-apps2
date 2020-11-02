@@ -87,7 +87,7 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
             //    }));
 
             CreateMap<Party, PartyDto>()
-                .ForMember(vm => vm.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+                //.ForMember(vm => vm.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
                 .ForPath(vm => vm.Contacts, m => m.MapFrom(s => s.PartyContacts.Select(pc => pc.Contact).ToList()))
                 .ForPath(vm => vm.Addresses, m => m.MapFrom(s => s.PartyAddresses.Select(pa => pa.Address).ToList()))
                 //.ForPath(vm => vm.Banks, m => m.MapFrom(s => s.Banks.Select(pb => pb.BankAccount).ToList()))
@@ -131,6 +131,9 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
                 .ReverseMap();
             CreateMap<LedgerGroup, LedgerGroupDto>()
                 .ReverseMap();
+            CreateMap<Ledger, LedgerDto>()
+                .ForMember(dto => dto.LedgerBalance, opt => opt.Ignore())
+                .ReverseMap();
 
             #region List mappings
 
@@ -141,6 +144,7 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
                 .ForMember(vm => vm.IsSelected, opt => opt.Ignore());
             CreateMap<PartyCategory, PartyCategoryListDto>();
             CreateMap<LedgerGroup, LedgerGroupListDto>();
+            CreateMap<Ledger, LedgerListDto>();
 
             #endregion List mappings
         }
