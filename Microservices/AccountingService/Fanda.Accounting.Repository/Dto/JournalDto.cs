@@ -1,14 +1,12 @@
 ﻿using Fanda.Accounting.Domain.Base;
 using Fanda.Core;
+using Fanda.Core.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository.Dto
 {
-    public class JournalDto : YearAcctEntity
+    public class JournalDto : BaseYearDto
     {
         public JournalType JournalType { get; set; }
         public string JournalSign { get; set; }
@@ -18,12 +16,13 @@ namespace Fanda.Accounting.Repository.Dto
         public virtual ICollection<TransactionDto> Transactions { get; set; }
     }
 
-    public class JournalListDto
+    public class JournalListDto : BaseYearListDto
     {
-        public Guid Id { get; set; }
-        public string Number { get; set; }
-        public DateTime Date { get; set; }
+        //public Guid Id { get; set; }
+        //public string Number { get; set; }
+        //public DateTime Date { get; set; }
         public JournalType JournalType { get; set; }
+
         public string LedgerName { get; set; }
     }
 }

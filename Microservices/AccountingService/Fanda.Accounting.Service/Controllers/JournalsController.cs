@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Service.Controllers
 {
-    //public class JournalsController :
-    //    SubController<IJournalRepository, Journal, JournalDto, JournalListDto>
-    //{
-    //    public JournalsController(IJournalRepository repository) : base(repository)
-    //    {
-    //    }
-    //}
+    public class JournalsController : BaseController
+    {
+        private readonly IJournalRepository _repository;
+
+        public JournalsController(IJournalRepository repository)
+        {
+            this._repository = repository;
+        }
+    }
 }

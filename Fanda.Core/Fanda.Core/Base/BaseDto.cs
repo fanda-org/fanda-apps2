@@ -103,11 +103,21 @@ namespace Fanda.Core.Base
 
     public class BaseYearDto
     {
+        public BaseYearDto()
+        {
+            Errors = new ValidationErrors();
+        }
+
         public Guid Id { get; set; }
         public string Number { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
+
+        [JsonIgnore(), IgnoreDataMember(), IgnoreMap()]
+        public ValidationErrors Errors { get; set; }
+
+        public bool IsValid() => Errors.Count == 0;
     }
 
     public class BaseYearListDto
