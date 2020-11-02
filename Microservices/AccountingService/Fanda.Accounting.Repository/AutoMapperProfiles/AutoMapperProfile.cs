@@ -134,6 +134,12 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
             CreateMap<Ledger, LedgerDto>()
                 .ForMember(dto => dto.LedgerBalance, opt => opt.Ignore())
                 .ReverseMap();
+            CreateMap<Journal, JournalDto>()
+                .ReverseMap();
+            CreateMap<JournalItem, JournalItemDto>()
+                .ReverseMap();
+            CreateMap<Transaction, TransactionDto>()
+                .ReverseMap();
 
             #region List mappings
 
@@ -145,6 +151,7 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
             CreateMap<PartyCategory, PartyCategoryListDto>();
             CreateMap<LedgerGroup, LedgerGroupListDto>();
             CreateMap<Ledger, LedgerListDto>();
+            CreateMap<Journal, JournalListDto>();
 
             #endregion List mappings
         }
