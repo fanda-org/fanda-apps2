@@ -59,12 +59,12 @@ namespace Fanda.Core.Base
         {
             try
             {
-                var app = await _repository.GetByIdAsync(id);
-                if (app == null)
+                var dto = await _repository.GetByIdAsync(id);
+                if (dto == null)
                 {
                     return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
                 }
-                return Ok(DataResponse<TModel>.Succeeded(app));
+                return Ok(DataResponse<TModel>.Succeeded(dto));
             }
             catch (Exception ex)
             {
@@ -73,7 +73,6 @@ namespace Fanda.Core.Base
         }
 
         [HttpPost("{superId}")]
-        [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)
@@ -81,9 +80,9 @@ namespace Fanda.Core.Base
         {
             try
             {
-                var app = await _repository.CreateAsync(superId, model);
-                return CreatedAtAction(nameof(GetById), new { id = app.Id },
-                    DataResponse<TModel>.Succeeded(app));
+                var dto = await _repository.CreateAsync(superId, model);
+                return CreatedAtAction(nameof(GetById), new { id = dto.Id },
+                    DataResponse<TModel>.Succeeded(dto));
             }
             catch (Exception ex)
             {

@@ -72,7 +72,6 @@ namespace Fanda.Core.Base
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)

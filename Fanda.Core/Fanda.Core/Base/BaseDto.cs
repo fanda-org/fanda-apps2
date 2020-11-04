@@ -125,10 +125,7 @@ namespace Fanda.Core.Base
         public Guid Id { get; set; }
         public string Number { get; set; }
         public DateTime Date { get; set; }
-        public string ContactFullName { get; set; }
-        public string ContactPhone { get; set; }
-        public string ContactMobile { get; set; }
-        public string AddressCity { get; set; }
+        public string LedgerName { get; set; }
         public decimal NetAmount { get; set; }
     }
 }

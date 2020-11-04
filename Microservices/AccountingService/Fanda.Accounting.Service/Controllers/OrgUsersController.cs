@@ -1,10 +1,8 @@
-﻿using Fanda.Accounting.Domain;
-using Fanda.Accounting.Repository;
+﻿using Fanda.Accounting.Repository;
 using Fanda.Accounting.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Fanda.Core.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,12 +16,12 @@ using System.Web;
 
 namespace Fanda.Accounting.Service.Controllers
 {
-    public class JournalsController : BaseController
+    public class OrgUsersController : BaseController
     {
-        private readonly IJournalRepository _repository;
-        private const string _moduleName = "Journal";
+        private readonly IOrgUserRepository _repository;
+        private const string _moduleName = "Users";
 
-        public JournalsController(IJournalRepository repository)
+        public OrgUsersController(IOrgUserRepository repository)
         {
             this._repository = repository;
         }
@@ -63,12 +61,12 @@ namespace Fanda.Accounting.Service.Controllers
         {
             try
             {
-                var journalDto = await _repository.GetByIdAsync(id);
-                if (journalDto == null)
+                var dto = await _repository.GetByIdAsync(id);
+                if (dto == null)
                 {
                     return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
                 }
-                return Ok(DataResponse<JournalDto>.Succeeded(journalDto));
+                return Ok(DataResponse<OrgUserDto>.Succeeded(dto));
             }
             catch (Exception ex)
             {
@@ -80,13 +78,13 @@ namespace Fanda.Accounting.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)
-        public async Task<IActionResult> Create(Guid superId, JournalDto model)
+        public async Task<IActionResult> Create(Guid superId, OrgUserDto model)
         {
             try
             {
                 var dto = await _repository.CreateAsync(superId, model);
                 return CreatedAtAction(nameof(GetById), new { id = dto.Id },
-                    DataResponse<JournalDto>.Succeeded(dto));
+                    DataResponse<OrgUserDto>.Succeeded(dto));
             }
             catch (Exception ex)
             {
@@ -98,7 +96,7 @@ namespace Fanda.Accounting.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Update(Guid id, JournalDto model)
+        public async Task<IActionResult> Update(Guid id, OrgUserDto model)
         {
             try
             {

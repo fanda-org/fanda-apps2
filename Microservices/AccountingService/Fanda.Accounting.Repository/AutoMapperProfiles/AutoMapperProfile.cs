@@ -151,7 +151,9 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
             CreateMap<PartyCategory, PartyCategoryListDto>();
             CreateMap<LedgerGroup, LedgerGroupListDto>();
             CreateMap<Ledger, LedgerListDto>();
-            CreateMap<Journal, JournalListDto>();
+            CreateMap<Journal, JournalListDto>()
+                .ForMember(dto => dto.LedgerName, opt => opt.MapFrom(j => j.Ledger.Name))
+                .ForMember(dto => dto.NetAmount, opt => opt.MapFrom(j => j.JournalItems.Sum(ji => ji.Amount)));
 
             #endregion List mappings
         }

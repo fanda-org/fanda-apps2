@@ -77,6 +77,9 @@ namespace Fanda.Accounting.Service
             services.AddScoped<IPartyCategoryRepository, PartyCategoryRepository>();
             services.AddScoped<ILedgerGroupRepository, LedgerGroupRepository>();
             services.AddScoped<ILedgerRepository, LedgerRepository>();
+            services.AddScoped<IJournalRepository, JournalRepository>();
+            services.AddScoped<IOrgUserRepository, OrgUserRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             //services.AddScoped<ISerialNumberRepository, SerialNumberRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IUnitRepository, UnitRepository>();
