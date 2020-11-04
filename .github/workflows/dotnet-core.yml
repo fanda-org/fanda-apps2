@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Change directory to Fanda.Core
-      run: cd ../..
+      run: cd ..
     - name: Install dependencies
       run: dotnet restore
     - name: Build
