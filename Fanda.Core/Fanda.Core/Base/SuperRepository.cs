@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ namespace Fanda.Core.Base
 
         Task<IEnumerable<TModel>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
+        Task<IEnumerable<TModel>> FindAsync(string expression, params object[] args);
+
         Task<TModel> CreateAsync(TModel model);
 
         Task UpdateAsync(Guid id, TModel model);
@@ -23,6 +26,8 @@ namespace Fanda.Core.Base
         Task<bool> DeleteAsync(Guid id);
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
+
+        bool Any(string expression, params object[] args);
 
         Task<bool> ActivateAsync(Guid id, bool active);
 
@@ -74,6 +79,17 @@ namespace Fanda.Core.Base
             var models = await Entities
                 .AsNoTracking()
                 .Where(predicate)
+                .ProjectTo<TModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return models;
+        }
+
+        public virtual async Task<IEnumerable<TModel>> FindAsync(string expression, params object[] args)
+        {
+            var models = await Entities
+                .AsNoTracking()
+                .Where(expression, args)
                 .ProjectTo<TModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
@@ -157,6 +173,11 @@ namespace Fanda.Core.Base
         public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await Entities.AnyAsync(predicate);
+        }
+
+        public virtual bool Any(string expression, params object[] args)
+        {
+            return Entities.Any(expression, args);
         }
 
         public virtual async Task<ValidationErrors> ValidateAsync(TModel model)

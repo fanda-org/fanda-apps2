@@ -15,6 +15,8 @@ namespace Fanda.Accounting.Repository.Dto
         public string LastName { get; set; }
         public string Password { get; set; }
         public bool Active { get; set; }
+
+        public virtual List<OrgRoleDto> OrgRoles { get; set; }
     }
 
     public class OrgUserListDto

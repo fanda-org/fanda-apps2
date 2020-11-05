@@ -404,8 +404,8 @@ namespace Fanda.Accounting.Repository
 
             #region UserId validation
 
-            var user = await _authClient.GetUserAsync(userId);
-            if (user == null)
+            var apiData = await _authClient.GetUserByIdAsync(userId);
+            if (apiData == null || apiData.Data == null)
             {
                 model.Errors.AddError(nameof(userId), "User not found");
             }
@@ -414,11 +414,11 @@ namespace Fanda.Accounting.Repository
 
             #region Validation: Duplicate
 
-            if (await AnyAsync(GetCodePredicate(model.Code, model.Id)))
+            if (await AnyAsync(userId, GetCodePredicate(model.Code, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
-            if (await AnyAsync(GetNamePredicate(model.Name, model.Id)))
+            if (await AnyAsync(userId, GetNamePredicate(model.Name, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
             }

@@ -65,7 +65,7 @@ namespace Fanda.Accounting.Service
             {
                 c.BaseAddress = new Uri(appSettings.AuthService.Url);
             })
-               .AddTypedClient(c => Refit.RestService.For<IAuthClient>(c));
+                .AddTypedClient(c => Refit.RestService.For<IAuthClient>(c));
 
             #endregion Other services
 
@@ -79,7 +79,7 @@ namespace Fanda.Accounting.Service
             services.AddScoped<ILedgerRepository, LedgerRepository>();
             services.AddScoped<IJournalRepository, JournalRepository>();
             services.AddScoped<IOrgUserRepository, OrgUserRepository>();
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            //services.AddScoped<IOrgRoleRepository, OrgRoleRepository>();
             //services.AddScoped<ISerialNumberRepository, SerialNumberRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IUnitRepository, UnitRepository>();

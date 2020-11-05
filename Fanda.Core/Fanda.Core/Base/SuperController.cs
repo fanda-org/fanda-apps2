@@ -158,6 +158,29 @@ namespace Fanda.Core.Base
             }
         }
 
+        [HttpPost("exists")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
+        public IActionResult Exists(string expression, params string[] args)
+        {
+            try
+            {
+                bool found = _repository.Any(expression, args);
+                if (found)
+                {
+                    return Ok(MessageResponse.Succeeded($"{_moduleName} exists"));
+                }
+                return NotFound(MessageResponse.Failure($"{_moduleName} not exists"));
+            }
+            catch (Exception ex)
+            {
+                return ExceptionResult(ex, _moduleName);
+            }
+        }
+
         //[HttpGet("exists")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //[ProducesResponseType((int)HttpStatusCode.Unauthorized)]

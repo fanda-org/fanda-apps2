@@ -157,7 +157,7 @@ namespace Fanda.Authentication.Service
                     Active = true,
                     //TenantId = tenant.Id
                 };
-                if (!await repository.AnyAsync(u => u.UserName == superAdmin.UserName))
+                if (!await repository.AnyAsync(Guid.Empty, u => u.UserName == superAdmin.UserName))
                 //new UserKeyData { TenantId = tenant.Id, Field = KeyField.Name, Value = superAdmin.UserName })
                 {
                     var user = await repository.CreateAsync(tenant.Id, superAdmin);
@@ -192,7 +192,7 @@ namespace Fanda.Authentication.Service
                     string description = roleElement.Split(':')[1];
                     string roleCode = roleName.ToUpper();
                     // creating the roles and seeding them to the database
-                    if (!await repository.AnyAsync(r => r.TenantId == tenant.Id && r.Code == roleCode)) //ExistsAsync(new TenantKeyData { TenantId = tenant.Id, Field = KeyField.Code, Value = roleCode }))
+                    if (!await repository.AnyAsync(tenant.Id, r => r.Code == roleCode)) //ExistsAsync(new TenantKeyData { TenantId = tenant.Id, Field = KeyField.Code, Value = roleCode }))
                     {
                         var roleInput = new RoleDto
                         {

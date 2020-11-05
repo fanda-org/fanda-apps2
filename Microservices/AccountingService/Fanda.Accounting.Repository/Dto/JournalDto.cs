@@ -23,6 +23,6 @@ namespace Fanda.Accounting.Repository.Dto
         //public DateTime Date { get; set; }
         public JournalType JournalType { get; set; }
 
-        public string LedgerName { get; set; }
+        //public string LedgerName { get; set; }
     }
 }

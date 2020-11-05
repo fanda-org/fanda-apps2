@@ -48,12 +48,22 @@ namespace Fanda.Accounting.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> AnyAsync(Expression<Func<OrgUser, bool>> predicate)
+        public Task<IEnumerable<OrgUserDto>> FindAsync(Guid superId, Expression<Func<OrgUser, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<OrgUserDto>> FindAsync(Expression<Func<OrgUser, bool>> predicate)
+        public Task<IEnumerable<OrgUserDto>> FindAsync(Guid superId, string expression, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AnyAsync(Guid superId, Expression<Func<OrgUser, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Any(Guid superId, string expression, params object[] args)
         {
             throw new NotImplementedException();
         }

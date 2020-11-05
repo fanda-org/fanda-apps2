@@ -16,12 +16,12 @@ using System.Web;
 
 namespace Fanda.Accounting.Service.Controllers
 {
-    public class UserRolesController : BaseController
+    public class OrgRolesController : BaseController
     {
-        private readonly IUserRoleRepository _repository;
+        private readonly IOrgRoleRepository _repository;
         private const string _moduleName = "Users";
 
-        public UserRolesController(IUserRoleRepository repository)
+        public OrgRolesController(IOrgRoleRepository repository)
         {
             this._repository = repository;
         }
@@ -66,7 +66,7 @@ namespace Fanda.Accounting.Service.Controllers
                 {
                     return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
                 }
-                return Ok(DataResponse<UserRoleDto>.Succeeded(dto));
+                return Ok(DataResponse<OrgRoleDto>.Succeeded(dto));
             }
             catch (Exception ex)
             {
@@ -78,13 +78,13 @@ namespace Fanda.Accounting.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)
-        public async Task<IActionResult> Create(Guid superId, UserRoleDto model)
+        public async Task<IActionResult> Create(Guid superId, OrgRoleDto model)
         {
             try
             {
                 var dto = await _repository.CreateAsync(superId, model);
                 return CreatedAtAction(nameof(GetById), new { id = dto.Id },
-                    DataResponse<UserRoleDto>.Succeeded(dto));
+                    DataResponse<OrgRoleDto>.Succeeded(dto));
             }
             catch (Exception ex)
             {
@@ -96,7 +96,7 @@ namespace Fanda.Accounting.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Update(Guid id, UserRoleDto model)
+        public async Task<IActionResult> Update(Guid id, OrgRoleDto model)
         {
             try
             {

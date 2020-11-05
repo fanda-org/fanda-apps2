@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,14 +53,32 @@ namespace Fanda.Accounting.Repository
             return journal;
         }
 
-        public async Task<IEnumerable<JournalDto>> FindAsync(Expression<Func<Journal, bool>> predicate)
+        public async Task<IEnumerable<JournalDto>> FindAsync(Guid yearId, Expression<Func<Journal, bool>> predicate)
         {
+            var newPredicate = PredicateBuilder.New<Journal>(predicate);
+            newPredicate = newPredicate.And(GetYearIdPredicate(yearId));
+
             var models = await _context.Journals
                 .AsNoTracking()
-                .Where(predicate)
+                .Where(newPredicate)
                 .ProjectTo<JournalDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
+            return models;
+        }
+
+        public async Task<IEnumerable<JournalDto>> FindAsync(Guid yearId, string expression, params object[] args)
+        {
+            int newSize = args.Length + 1;
+            string newExpression = expression + $" AND YearId==@${newSize - 1}";
+            Array.Resize(ref args, newSize);
+            args[newSize - 1] = yearId;
+
+            var models = await _context.Journals
+                .AsNoTracking()
+                .Where(newExpression, args)
+                .ProjectTo<JournalDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
             return models;
         }
 
@@ -240,9 +259,22 @@ namespace Fanda.Accounting.Repository
                 .ProjectTo<JournalListDto>(_mapper.ConfigurationProvider);
         }
 
-        public async Task<bool> AnyAsync(Expression<Func<Journal, bool>> predicate)
+        public async Task<bool> AnyAsync(Guid yearId, Expression<Func<Journal, bool>> predicate)
         {
-            return await _context.Journals.AnyAsync(predicate);
+            var newPredicate = PredicateBuilder.New<Journal>(predicate);
+            newPredicate = newPredicate.And(GetYearIdPredicate(yearId));
+
+            return await _context.Journals.AnyAsync(newPredicate);
+        }
+
+        public bool Any(Guid yearId, string expression, params object[] args)
+        {
+            int newSize = args.Length + 1;
+            string newExpression = expression + $" AND YearId==@{ newSize - 1}";
+            Array.Resize(ref args, newSize);
+            args[newSize - 1] = yearId;
+
+            return _context.Journals.Any(newExpression, args);
         }
 
         public async Task<ValidationErrors> ValidateAsync(Guid superId, JournalDto model)
@@ -251,7 +283,7 @@ namespace Fanda.Accounting.Repository
 
             #region Check duplicate
 
-            if (await AnyAsync(GetJournalNumberPredicate(model.Number, superId, model.Id)))
+            if (await AnyAsync(superId, GetJournalNumberPredicate(model.Number, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Number), $"Journal Number '{model.Number}' already exists");
             }
@@ -262,15 +294,27 @@ namespace Fanda.Accounting.Repository
         }
 
         private static ExpressionStarter<Journal> GetJournalNumberPredicate(string journalNumber,
-            Guid superId, Guid id = default)
+            Guid id = default)
         {
             var numExpression = PredicateBuilder.New<Journal>(j => j.Number == journalNumber);
-            numExpression = numExpression.And(j => j.YearId == superId);
+            //numExpression = numExpression.And(j => j.YearId == superId);
             if (id != Guid.Empty)
             {
                 numExpression = numExpression.And(e => e.Id != id);
             }
             return numExpression;
+        }
+
+        private static Expression<Func<Journal, bool>> GetYearIdPredicate(Guid yearId)
+        {
+            //var numExpression = PredicateBuilder.New<Journal>(j => j.Number == journalNumber);
+            // numExpression = numExpression.And(j => j.YearId == superId);
+            return j => j.YearId == yearId;
+        }
+
+        public bool Any(string expression, params object[] args)
+        {
+            return _context.Journals.Any(expression, args);
         }
     }
 }

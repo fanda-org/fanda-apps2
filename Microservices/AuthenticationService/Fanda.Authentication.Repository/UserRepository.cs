@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -49,11 +50,28 @@ namespace Fanda.Authentication.Repository
             return user;
         }
 
-        public async Task<IEnumerable<UserDto>> FindAsync(Expression<Func<User, bool>> predicate)
+        public async Task<IEnumerable<UserDto>> FindAsync(Guid tenantId, Expression<Func<User, bool>> predicate)
         {
+            // var newPredicate = PredicateBuilder.New<User>(predicate);
+            // newPredicate = newPredicate.And(GetTenantIdPredicate(tenantId));
+
             var models = await _context.Users
                 .AsNoTracking()
                 .Where(predicate)
+                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return models;
+        }
+
+        public async Task<IEnumerable<UserDto>> FindAsync(Guid tenantId, string expression, params object[] args)
+        {
+            // var newPredicate = PredicateBuilder.New<User>(predicate);
+            // newPredicate = newPredicate.And(GetTenantIdPredicate(tenantId));
+
+            var models = await _context.Users
+                .AsNoTracking()
+                .Where(expression, args)
                 .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
@@ -141,7 +159,7 @@ namespace Fanda.Authentication.Repository
             return true;
         }
 
-        public virtual async Task<bool> ActivateAsync(Guid id, bool active)
+        public async Task<bool> ActivateAsync(Guid id, bool active)
         {
             if (id == Guid.Empty)
             {
@@ -158,10 +176,30 @@ namespace Fanda.Authentication.Repository
             return true;
         }
 
-        public virtual async Task<bool> AnyAsync(Expression<Func<User, bool>> predicate)
+        public async Task<bool> AnyAsync(Guid tenantId, Expression<Func<User, bool>> predicate)
         {
             return await _context.Users.AnyAsync(predicate);
         }
+
+        public bool Any(Guid tenantId, string expression, params object[] args)
+        {
+            return _context.Users.Any(expression, args);
+        }
+
+        //public async Task<IEnumerable<UserDto>> FindAsync(string expression, params object[] args)
+        //{
+        //    var models = await _context.Users
+        //        .AsNoTracking()
+        //        .Where(expression, args)
+        //        .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+        //        .ToListAsync();
+        //    return models;
+        //}
+
+        //public bool Any(string expression, params object[] args)
+        //{
+        //    return _context.Users.Any(expression, args);
+        //}
 
         public async Task<ValidationErrors> ValidateAsync(Guid tenantId, UserDto model)
         {
@@ -196,11 +234,11 @@ namespace Fanda.Authentication.Repository
 
             #region Validation: Duplicate
 
-            if (await AnyAsync(GetEmailPredicate(model.Email, model.Id)))
+            if (await AnyAsync(tenantId, GetEmailPredicate(model.Email, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Email), $"{nameof(model.Email)} '{model.Email}' already exists");
             }
-            if (await AnyAsync(GetUserNamePredicate(model.UserName, model.Id)))
+            if (await AnyAsync(tenantId, GetUserNamePredicate(model.UserName, model.Id)))
             {
                 model.Errors.AddError(nameof(model.UserName), $"{nameof(model.UserName)} '{model.UserName}' already exists");
             }

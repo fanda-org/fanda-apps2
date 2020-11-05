@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository.Dto
 {
-    public class UserRoleDto : BaseDto
+    public class OrgRoleDto : BaseDto
     {
     }
 
-    public class UserRoleListDto : BaseListDto
+    public class OrgRoleListDto : BaseListDto
     {
     }
 }

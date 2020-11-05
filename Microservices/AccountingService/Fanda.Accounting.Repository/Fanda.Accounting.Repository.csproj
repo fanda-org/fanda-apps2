@@ -13,6 +13,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="OrgRoleRepository.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Refit" Version="5.2.1" />
 	</ItemGroup>
 
