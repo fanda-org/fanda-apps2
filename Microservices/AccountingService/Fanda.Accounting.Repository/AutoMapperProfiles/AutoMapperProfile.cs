@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Repository.Dto;
+using System.Linq;
 
 namespace Fanda.Accounting.Repository.AutoMapperProfiles
 {

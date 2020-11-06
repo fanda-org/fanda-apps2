@@ -1,13 +1,13 @@
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Repository
 {

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Fanda.Accounting.Repository.Dto;
+﻿using Fanda.Accounting.Repository.Dto;
 using Fanda.Core.Base;
 using Refit;
+using System;
+using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository.ApiClients
 {

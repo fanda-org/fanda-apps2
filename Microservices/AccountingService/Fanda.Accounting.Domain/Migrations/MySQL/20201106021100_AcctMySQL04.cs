@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Fanda.Accounting.Domain.Migrations.MySQL
 {
@@ -95,13 +95,13 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
             migrationBuilder.CreateIndex(
                 "IX_PartyTypes_Code_OrgId",
                 "PartyTypes",
-                new[] {"Code", "OrgId"},
+                new[] { "Code", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_PartyTypes_Name_OrgId",
                 "PartyTypes",
-                new[] {"Name", "OrgId"},
+                new[] { "Name", "OrgId" },
                 unique: true);
 
             migrationBuilder.AddForeignKey(
@@ -204,7 +204,7 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PartyAddresses", x => new {x.PartyId, x.AddressId});
+                    table.PrimaryKey("PK_PartyAddresses", x => new { x.PartyId, x.AddressId });
                     table.ForeignKey(
                         "FK_PartyAddresses_Addresses_AddressId",
                         x => x.AddressId,
@@ -228,7 +228,7 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PartyContacts", x => new {x.PartyId, x.ContactId});
+                    table.PrimaryKey("PK_PartyContacts", x => new { x.PartyId, x.ContactId });
                     table.ForeignKey(
                         "FK_PartyContacts_Contacts_ContactId",
                         x => x.ContactId,

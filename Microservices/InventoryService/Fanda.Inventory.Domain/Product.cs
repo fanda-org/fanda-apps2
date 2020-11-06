@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Fanda.Core;
 using Fanda.Inventory.Domain.Base;
+using System;
+using System.Collections.Generic;
 
 namespace Fanda.Inventory.Domain
 {
@@ -46,7 +46,8 @@ namespace Fanda.Inventory.Domain
         public virtual ICollection<ProductIngredient> ParentIngredients { get; set; } // ProductIngredient.ProductId
 
         public virtual ICollection<ProductIngredient>
-            ChildIngredients { get; set; } // ProductIngredient.IngredientProductId
+            ChildIngredients
+        { get; set; } // ProductIngredient.IngredientProductId
 
         #region Tax / GST
 

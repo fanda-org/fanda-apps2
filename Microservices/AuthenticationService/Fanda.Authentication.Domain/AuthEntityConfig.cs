@@ -57,9 +57,9 @@ namespace Fanda.Authentication.Domain
             builder.Ignore(ar => ar.ResourceTypeString);
 
             // index
-            builder.HasIndex(ar => new {ar.ApplicationId, ar.Code})
+            builder.HasIndex(ar => new { ar.ApplicationId, ar.Code })
                 .IsUnique();
-            builder.HasIndex(ar => new {ar.ApplicationId, ar.Name})
+            builder.HasIndex(ar => new { ar.ApplicationId, ar.Name })
                 .IsUnique();
 
             // foreign key
@@ -82,18 +82,18 @@ namespace Fanda.Authentication.Domain
             builder.ToTable("RolePrivileges");
 
             // key
-            builder.HasKey(p => new {p.RoleId, p.AppResourceId});
+            builder.HasKey(p => new { p.RoleId, p.AppResourceId });
 
             // index
 
             // foreign keys
             builder.HasOne(p => p.Role)
                 .WithMany(r => r.Privileges)
-                .HasForeignKey(p => new {p.RoleId})
+                .HasForeignKey(p => new { p.RoleId })
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(p => p.AppResource)
                 .WithMany(ra => ra.Privileges)
-                .HasForeignKey(p => new {p.AppResourceId})
+                .HasForeignKey(p => new { p.AppResourceId })
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
@@ -139,7 +139,7 @@ namespace Fanda.Authentication.Domain
             builder.ToTable("Users");
 
             // key
-            builder.HasKey(u => new {u.Id});
+            builder.HasKey(u => new { u.Id });
             builder.Property(u => u.Id).ValueGeneratedOnAdd();
 
             // columns
@@ -189,7 +189,7 @@ namespace Fanda.Authentication.Domain
             builder.ToTable("UserTokens");
 
             // key
-            builder.HasKey(u => new {u.Id});
+            builder.HasKey(u => new { u.Id });
             builder.Property(t => t.Id).ValueGeneratedOnAdd();
 
             // columns
@@ -219,7 +219,7 @@ namespace Fanda.Authentication.Domain
             // Foreign keys - Owns
             builder.HasOne(u => u.User)
                 .WithMany(t => t.RefreshTokens)
-                .HasForeignKey(u => new {u.UserId})
+                .HasForeignKey(u => new { u.UserId })
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
@@ -232,7 +232,7 @@ namespace Fanda.Authentication.Domain
             builder.ToTable("Roles");
 
             // key
-            builder.HasKey(r => new {r.Id});
+            builder.HasKey(r => new { r.Id });
             builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
             // columns
@@ -248,9 +248,9 @@ namespace Fanda.Authentication.Domain
             //builder.Property(o => o.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(r => new {r.Code, r.TenantId})
+            builder.HasIndex(r => new { r.Code, r.TenantId })
                 .IsUnique();
-            builder.HasIndex(r => new {r.Name, r.TenantId})
+            builder.HasIndex(r => new { r.Name, r.TenantId })
                 .IsUnique();
 
             // foreign key

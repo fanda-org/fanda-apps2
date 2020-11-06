@@ -1,6 +1,6 @@
-﻿using System;
-using Fanda.Core;
+﻿using Fanda.Core;
 using Fanda.Core.Base;
+using System;
 
 namespace Fanda.Accounting.Repository.Dto
 {

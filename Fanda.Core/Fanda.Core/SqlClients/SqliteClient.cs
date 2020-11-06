@@ -1,5 +1,5 @@
-﻿using System.Data.Common;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
+using System.Data.Common;
 
 namespace Fanda.Core.SqlClients
 {

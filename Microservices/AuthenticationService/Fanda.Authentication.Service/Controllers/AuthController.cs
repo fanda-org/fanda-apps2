@@ -1,13 +1,13 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using Fanda.Authentication.Repository;
+﻿using Fanda.Authentication.Repository;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Authentication.Repository.ViewModels;
 using Fanda.Core.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Service.Controllers
 {

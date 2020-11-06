@@ -1,9 +1,9 @@
+using AutoMapper;
+using Fanda.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using AutoMapper;
-using Fanda.Core;
 
 namespace Fanda.Authentication.Repository.Dto
 {

@@ -1,8 +1,10 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+
 using Serilog;
+
+using System.Reflection;
 
 namespace Fanda.ApiGateway
 {

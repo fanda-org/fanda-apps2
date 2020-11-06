@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Fanda.Inventory.Domain.Base;
+using System.Collections.Generic;
 
 namespace Fanda.Inventory.Domain
 {

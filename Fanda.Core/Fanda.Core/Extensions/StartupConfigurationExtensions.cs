@@ -1,17 +1,17 @@
-﻿using System;
-using System.IO;
-using System.Net.Mime;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Net.Mime;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Fanda.Core.Extensions
 {
@@ -202,7 +202,8 @@ namespace Fanda.Core.Extensions
                     },
                     License = new OpenApiLicense
                     {
-                        Name = "Use under MIT", Url = new Uri("https://fandatech.net/license")
+                        Name = "Use under MIT",
+                        Url = new Uri("https://fandatech.net/license")
                     }
                 });
 

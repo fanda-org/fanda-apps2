@@ -1,5 +1,5 @@
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Fanda.Inventory.Domain.Context
 {

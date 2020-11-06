@@ -1,6 +1,3 @@
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository;
@@ -9,13 +6,19 @@ using Fanda.Core;
 using Fanda.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 using IConfigurationProvider = AutoMapper.IConfigurationProvider;
+
+[assembly: ApiController]
 
 namespace Fanda.Authentication.Service
 {
@@ -86,7 +89,6 @@ namespace Fanda.Authentication.Service
             });
 
             app.UseCors("_MyAllowedOrigins");
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -94,27 +96,26 @@ namespace Fanda.Authentication.Service
 
             app.UseEndpoints(endpoints =>
             {
-                // endpoints.MapControllers();
-                // .RequireCors("_MyAllowedOrigins");
-
-                endpoints.MapControllerRoute(
-                    "areaRoute",
-                    "{area:exists}/{controller}/{action}",
-                    new { action = "Index" });
+                endpoints.MapControllers();
                 //.RequireCors("_MyAllowedOrigins");
-
-                endpoints.MapControllerRoute(
-                    "default",
-                    "{controller}/{action}/{id?}",
-                    new { controller = "Home", action = "Index" });
-                //.RequireCors("_MyAllowedOrigins");
-
-                endpoints.MapControllerRoute(
-                    "api",
-                    "api/{controller}/{id?}");
-                //.RequireCors("_MyAllowedOrigins");
-
                 endpoints.MapHealthChecks("/health");
+
+                //endpoints.MapControllerRoute(
+                //    "areaRoute",
+                //    "{area:exists}/{controller}/{action}",
+                //    new { action = "Index" });
+                ////.RequireCors("_MyAllowedOrigins");
+
+                //endpoints.MapControllerRoute(
+                //    "default",
+                //    "{controller}/{action}/{id?}",
+                //    new { controller = "Home", action = "Index" });
+                ////.RequireCors("_MyAllowedOrigins");
+
+                //endpoints.MapControllerRoute(
+                //    "api",
+                //    "api/{controller}/{id?}");
+                ////.RequireCors("_MyAllowedOrigins");
             });
         }
 

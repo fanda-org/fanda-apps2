@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Fanda.Core;
+﻿using Fanda.Core;
 using Fanda.Core.Base;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fanda.Accounting.Repository.Dto
 {

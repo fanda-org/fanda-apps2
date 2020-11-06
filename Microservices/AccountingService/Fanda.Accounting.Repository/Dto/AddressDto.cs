@@ -1,6 +1,6 @@
+using Fanda.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
-using Fanda.Core;
 
 namespace Fanda.Accounting.Repository.Dto
 {

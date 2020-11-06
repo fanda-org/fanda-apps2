@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository.ApiClients;
@@ -11,6 +6,11 @@ using Fanda.Accounting.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository
 {

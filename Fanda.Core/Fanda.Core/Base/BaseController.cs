@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net.Mime;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Fanda.Core.Base
 {

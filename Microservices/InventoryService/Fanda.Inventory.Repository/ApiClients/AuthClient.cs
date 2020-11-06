@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Refit;
+using System;
 using System.Threading.Tasks;
-using Refit;
 
 namespace Fanda.Inventory.Repository.ApiClients
 {

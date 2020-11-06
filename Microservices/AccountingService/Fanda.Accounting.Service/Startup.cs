@@ -1,6 +1,3 @@
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository;
@@ -18,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Refit;
+using System;
+using System.Reflection;
 using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 [assembly: ApiController]

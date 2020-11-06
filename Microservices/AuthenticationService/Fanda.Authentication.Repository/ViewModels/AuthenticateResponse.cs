@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Fanda.Authentication.Repository.Dto;
+using System;
 using System.Text.Json.Serialization;
-using Fanda.Authentication.Repository.Dto;
 
 namespace Fanda.Authentication.Repository.ViewModels
 {

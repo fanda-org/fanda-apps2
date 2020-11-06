@@ -1,5 +1,5 @@
-﻿using System;
-using Fanda.Core;
+﻿using Fanda.Core;
+using System;
 
 namespace Fanda.Inventory.Domain
 {

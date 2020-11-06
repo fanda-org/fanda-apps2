@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
-using Fanda.Authentication.Repository;
+﻿using Fanda.Authentication.Repository;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Fanda.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Fanda.Authentication.Service.Controllers
 {
@@ -28,7 +28,7 @@ namespace Fanda.Authentication.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(DataResponse<List<UserListDto>>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAll([FromQuery] [Required] Guid tenantId)
+        public async Task<IActionResult> GetAll([FromQuery][Required] Guid tenantId)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Fanda.Authentication.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(DataResponse<UserDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetById([Required] [FromRoute] Guid id /*, [FromQuery] bool include*/)
+        public async Task<IActionResult> GetById([Required][FromRoute] Guid id /*, [FromQuery] bool include*/)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace Fanda.Authentication.Service.Controllers
             try
             {
                 var userDto = await _repository.CreateAsync(tenantId, model);
-                return CreatedAtAction(nameof(GetById), new {id = model.Id},
+                return CreatedAtAction(nameof(GetById), new { id = model.Id },
                     DataResponse<UserDto>.Succeeded(userDto));
             }
             catch (Exception ex)
@@ -141,7 +141,7 @@ namespace Fanda.Authentication.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Active([Required] [FromRoute] Guid id, [Required] Activate activate)
+        public async Task<IActionResult> Active([Required][FromRoute] Guid id, [Required] Activate activate)
         {
             try
             {

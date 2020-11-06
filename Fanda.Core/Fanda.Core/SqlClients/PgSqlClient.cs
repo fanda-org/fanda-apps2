@@ -1,5 +1,5 @@
-﻿using System.Data.Common;
-using Npgsql;
+﻿using Npgsql;
+using System.Data.Common;
 
 namespace Fanda.Core.SqlClients
 {

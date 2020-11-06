@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using Fanda.Core.Base;
 using Fanda.Inventory.Domain;
 using Fanda.Inventory.Domain.Context;
 using Fanda.Inventory.Repository.Dto;
+using System;
+using System.Linq.Expressions;
 
 namespace Fanda.Accounting.Repository
 {

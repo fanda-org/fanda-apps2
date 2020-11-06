@@ -1,8 +1,8 @@
-using System;
-using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System;
+using System.Reflection;
 
 namespace Fanda.Accounting.Service
 {

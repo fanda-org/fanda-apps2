@@ -64,17 +64,17 @@ namespace Fanda.Core.Base
 
         public static MessageResponse Succeeded(string message = null)
         {
-            return new MessageResponse {Success = true, Message = message};
+            return new MessageResponse { Success = true, Message = message };
         }
 
         public static MessageResponse Failure(string errorMessage)
         {
-            return new MessageResponse {Success = false, ErrorMessage = errorMessage};
+            return new MessageResponse { Success = false, ErrorMessage = errorMessage };
         }
 
         public static MessageResponse Failure(ValidationErrors errors, string errorMessage = null)
         {
-            return new MessageResponse {Success = false, Errors = errors, ErrorMessage = errorMessage};
+            return new MessageResponse { Success = false, Errors = errors, ErrorMessage = errorMessage };
         }
 
         //public static MessageResponse Failure(ModelStateDictionary modelState, string errorMessage = null)
@@ -92,7 +92,7 @@ namespace Fanda.Core.Base
 
         public static DataResponse<TModel> Succeeded(TModel data, string message = null)
         {
-            return new DataResponse<TModel> {Success = true, Message = message, Data = data};
+            return new DataResponse<TModel> { Success = true, Message = message, Data = data };
         }
     }
 

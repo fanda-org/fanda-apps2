@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Fanda.Authentication.Domain.Base;
 using Fanda.Core;
+using System;
+using System.Collections.Generic;
 
 namespace Fanda.Authentication.Domain
 {

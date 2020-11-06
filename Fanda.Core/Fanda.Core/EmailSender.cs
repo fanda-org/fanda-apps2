@@ -1,9 +1,9 @@
-﻿using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace Fanda.Core
 {

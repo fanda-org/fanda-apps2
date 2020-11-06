@@ -1,5 +1,5 @@
-﻿using System.Data.Common;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
+using System.Data.Common;
 
 namespace Fanda.Core.SqlClients
 {

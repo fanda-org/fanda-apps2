@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Fanda.Accounting.Domain.Base;
+using System;
 using System.Collections.Generic;
-using Fanda.Accounting.Domain.Base;
 
 namespace Fanda.Accounting.Domain
 {

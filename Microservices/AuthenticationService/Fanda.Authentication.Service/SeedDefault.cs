@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Fanda.Authentication.Repository;
+﻿using Fanda.Authentication.Repository;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Service
 {
@@ -64,11 +64,14 @@ namespace Fanda.Authentication.Service
                 // creating a super user who could maintain the web app
                 var superAdmin = new UserDto
                 {
-                    UserName = "FandaAdmin", Email = "fandaadmin@fandatech.net", Password = "Welcome@123", Active = true
+                    UserName = "FandaAdmin",
+                    Email = "fandaadmin@fandatech.net",
+                    Password = "Welcome@123",
+                    Active = true
                     //TenantId = tenant.Id
                 };
                 if (!await repository.AnyAsync(Guid.Empty, u => u.UserName == superAdmin.UserName))
-                    //new UserKeyData { TenantId = tenant.Id, Field = KeyField.Name, Value = superAdmin.UserName })
+                //new UserKeyData { TenantId = tenant.Id, Field = KeyField.Name, Value = superAdmin.UserName })
                 {
                     var user = await repository.CreateAsync(tenant.Id, superAdmin);
                     // await repository.MapOrgAsync(user.Id, org.Id);

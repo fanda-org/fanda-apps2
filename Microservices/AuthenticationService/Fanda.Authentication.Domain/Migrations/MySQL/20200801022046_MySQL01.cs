@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Fanda.Authentication.Domain.Migrations.MySQL
 {
@@ -147,7 +147,7 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePrivileges", x => new {x.RoleId, x.AppResourceId});
+                    table.PrimaryKey("PK_RolePrivileges", x => new { x.RoleId, x.AppResourceId });
                     table.ForeignKey(
                         "FK_RolePrivileges_AppResources_AppResourceId",
                         x => x.AppResourceId,
@@ -202,13 +202,13 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
             migrationBuilder.CreateIndex(
                 "IX_AppResources_ApplicationId_Code",
                 "AppResources",
-                new[] {"ApplicationId", "Code"},
+                new[] { "ApplicationId", "Code" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_AppResources_ApplicationId_Name",
                 "AppResources",
-                new[] {"ApplicationId", "Name"},
+                new[] { "ApplicationId", "Name" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -229,13 +229,13 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
             migrationBuilder.CreateIndex(
                 "IX_Roles_Code_TenantId",
                 "Roles",
-                new[] {"Code", "TenantId"},
+                new[] { "Code", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_Roles_Name_TenantId",
                 "Roles",
-                new[] {"Name", "TenantId"},
+                new[] { "Name", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Fanda.Core;
+﻿using Fanda.Core;
 using Fanda.Core.Base;
+using System;
+using System.Collections.Generic;
 
 namespace Fanda.Accounting.Repository.Dto
 {

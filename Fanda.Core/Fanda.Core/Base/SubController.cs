@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Fanda.Core.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
-using Fanda.Core.Extensions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Fanda.Core.Base
 {

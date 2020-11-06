@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Fanda.Accounting.Domain.Migrations.MySQL
 {
@@ -133,11 +133,12 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 "OrgAddresses",
                 table => new
                 {
-                    OrgId = table.Column<Guid>(nullable: false), AddressId = table.Column<Guid>(nullable: false)
+                    OrgId = table.Column<Guid>(nullable: false),
+                    AddressId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrgAddresses", x => new {x.OrgId, x.AddressId});
+                    table.PrimaryKey("PK_OrgAddresses", x => new { x.OrgId, x.AddressId });
                     table.ForeignKey(
                         "FK_OrgAddresses_Addresses_AddressId",
                         x => x.AddressId,
@@ -156,11 +157,12 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 "OrgContacts",
                 table => new
                 {
-                    OrgId = table.Column<Guid>(nullable: false), ContactId = table.Column<Guid>(nullable: false)
+                    OrgId = table.Column<Guid>(nullable: false),
+                    ContactId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrgContacts", x => new {x.OrgId, x.ContactId});
+                    table.PrimaryKey("PK_OrgContacts", x => new { x.OrgId, x.ContactId });
                     table.ForeignKey(
                         "FK_OrgContacts_Contacts_ContactId",
                         x => x.ContactId,
@@ -215,7 +217,7 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SerialNumbers", x => new {x.YearId, x.Module});
+                    table.PrimaryKey("PK_SerialNumbers", x => new { x.YearId, x.Module });
                     table.ForeignKey(
                         "FK_SerialNumbers_AccountYears_YearId",
                         x => x.YearId,
@@ -339,7 +341,7 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LedgerBalances", x => new {x.LedgerId, x.YearId});
+                    table.PrimaryKey("PK_LedgerBalances", x => new { x.LedgerId, x.YearId });
                     table.ForeignKey(
                         "FK_LedgerBalances_Ledgers_LedgerId",
                         x => x.LedgerId,
@@ -441,7 +443,7 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JournalItems", x => new {x.JournalItemId, x.JournalId});
+                    table.PrimaryKey("PK_JournalItems", x => new { x.JournalItemId, x.JournalId });
                     table.ForeignKey(
                         "FK_JournalItems_Journals_JournalId",
                         x => x.JournalId,
@@ -460,11 +462,12 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 "PartyAddresses",
                 table => new
                 {
-                    PartyId = table.Column<Guid>(nullable: false), AddressId = table.Column<Guid>(nullable: false)
+                    PartyId = table.Column<Guid>(nullable: false),
+                    AddressId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PartyAddresses", x => new {x.PartyId, x.AddressId});
+                    table.PrimaryKey("PK_PartyAddresses", x => new { x.PartyId, x.AddressId });
                     table.ForeignKey(
                         "FK_PartyAddresses_Addresses_AddressId",
                         x => x.AddressId,
@@ -483,11 +486,12 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                 "PartyContacts",
                 table => new
                 {
-                    PartyId = table.Column<Guid>(nullable: false), ContactId = table.Column<Guid>(nullable: false)
+                    PartyId = table.Column<Guid>(nullable: false),
+                    ContactId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PartyContacts", x => new {x.PartyId, x.ContactId});
+                    table.PrimaryKey("PK_PartyContacts", x => new { x.PartyId, x.ContactId });
                     table.ForeignKey(
                         "FK_PartyContacts_Contacts_ContactId",
                         x => x.ContactId,
@@ -510,7 +514,7 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
             migrationBuilder.CreateIndex(
                 "IX_AccountYears_Code_OrgId",
                 "AccountYears",
-                new[] {"Code", "OrgId"},
+                new[] { "Code", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -569,13 +573,13 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
             migrationBuilder.CreateIndex(
                 "IX_LedgerGroups_Code_OrgId",
                 "LedgerGroups",
-                new[] {"Code", "OrgId"},
+                new[] { "Code", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_LedgerGroups_Name_OrgId",
                 "LedgerGroups",
-                new[] {"Name", "OrgId"},
+                new[] { "Name", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -591,13 +595,13 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
             migrationBuilder.CreateIndex(
                 "IX_Ledgers_Code_OrgId",
                 "Ledgers",
-                new[] {"Code", "OrgId"},
+                new[] { "Code", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_Ledgers_Name_OrgId",
                 "Ledgers",
-                new[] {"Name", "OrgId"},
+                new[] { "Name", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -640,13 +644,13 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
             migrationBuilder.CreateIndex(
                 "IX_PartyCategories_Code_OrgId",
                 "PartyCategories",
-                new[] {"Code", "OrgId"},
+                new[] { "Code", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 "IX_PartyCategories_Name_OrgId",
                 "PartyCategories",
-                new[] {"Name", "OrgId"},
+                new[] { "Name", "OrgId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

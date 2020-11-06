@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Domain.Context;
@@ -13,6 +7,12 @@ using Fanda.Core;
 using Fanda.Core.Base;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository
 {

@@ -1,9 +1,9 @@
-﻿using System;
-using Fanda.Core.SqlClients;
+﻿using Fanda.Core.SqlClients;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
+using System;
 
 namespace Fanda.Core.Extensions
 {

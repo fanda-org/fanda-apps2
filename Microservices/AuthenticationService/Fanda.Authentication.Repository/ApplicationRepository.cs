@@ -1,12 +1,12 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Repository
 {
@@ -144,10 +144,10 @@ namespace Fanda.Authentication.Repository
             #region Resources
 
             var resourcePairs = from curr in app.AppResources
-                join db in dbApp.AppResources
-                    on curr.Id equals db.Id into grp
-                from db in grp.DefaultIfEmpty()
-                select new {curr, db};
+                                join db in dbApp.AppResources
+                                    on curr.Id equals db.Id into grp
+                                from db in grp.DefaultIfEmpty()
+                                select new { curr, db };
             foreach (var pair in resourcePairs)
             {
                 if (pair.db != null)

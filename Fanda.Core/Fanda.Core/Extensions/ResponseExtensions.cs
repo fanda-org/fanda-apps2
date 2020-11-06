@@ -1,6 +1,6 @@
-﻿using System.Net;
-using Fanda.Core.Base;
+﻿using Fanda.Core.Base;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Fanda.Core.Extensions
 {
@@ -29,7 +29,7 @@ namespace Fanda.Core.Extensions
                 status = HttpStatusCode.NotFound;
             }
 
-            return new ObjectResult(response) {StatusCode = (int)status};
+            return new ObjectResult(response) { StatusCode = (int)status };
         }
 
         public static IActionResult ToHttpResponse<TModel>(this IPagedResponse<TModel> response)
@@ -45,7 +45,7 @@ namespace Fanda.Core.Extensions
                 status = HttpStatusCode.NoContent;
             }
 
-            return new ObjectResult(response) {StatusCode = (int)status};
+            return new ObjectResult(response) { StatusCode = (int)status };
         }
     }
 }
