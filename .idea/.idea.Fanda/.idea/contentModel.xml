@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\tbala\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\tbala\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Fanda.781562169.00" t="ExcludeRecursive" />
+    <e p="D:\Development\Projects\dotnet\Fanda\src" t="IncludeFlat">
+      <e p="docs" t="Include" />
+      <e p="Fanda.ApiGateway" t="IncludeRecursive">
+        <e p=".gitignore" t="Include" />
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Fanda.ApiGateway.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.ApiGateway.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="ocelot.json" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+      </e>
+      <e p="Fanda.Core\Fanda.Core" t="IncludeRecursive">
+        <e p="Activate.cs" t="Include" />
+        <e p="AppException.cs" t="Include" />
+        <e p="AppSettings.cs" t="Include" />
+        <e p="Base" t="Include">
+          <e p="BaseController.cs" t="Include" />
+          <e p="BaseDto.cs" t="Include" />
+          <e p="BaseEntity.cs" t="Include" />
+          <e p="IListRepository.cs" t="Include" />
+          <e p="ListRepository.cs" t="Include" />
+          <e p="Query.cs" t="Include" />
+          <e p="ResponseBase.cs" t="Include" />
+          <e p="SubController.cs" t="Include" />
+          <e p="SubRepository.cs" t="Include" />
+          <e p="SuperController.cs" t="Include" />
+          <e p="SuperRepository.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="EmailHelper.cs" t="Include" />
+        <e p="EmailSender.cs" t="Include" />
+        <e p="EnumHelper.cs" t="Include" />
+        <e p="Extensions" t="Include">
+          <e p="DbContextExtensions.cs" t="Include" />
+          <e p="ExceptionExtension.cs" t="Include" />
+          <e p="RepositoryExtensions.cs" t="Include" />
+          <e p="ResponseExtensions.cs" t="Include" />
+          <e p="StartupConfigurationExtensions.cs" t="Include" />
+        </e>
+        <e p="Fanda.Core.csproj" t="IncludeRecursive" />
+        <e p="FandaEnums.cs" t="Include" />
+        <e p="MailRequest.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="PasswordStorage.cs" t="Include" />
+        <e p="RegEx.cs" t="Include" />
+        <e p="RequiredTrueAttribute.cs" t="Include" />
+        <e p="SqlClients" t="Include">
+          <e p="IDbClient.cs" t="Include" />
+          <e p="MariaDbClient.cs" t="Include" />
+          <e p="MsSqlClient.cs" t="Include" />
+          <e p="MySqlClient.cs" t="Include" />
+          <e p="PgSqlClient.cs" t="Include" />
+          <e p="SqliteClient.cs" t="Include" />
+        </e>
+        <e p="ValidationFailedResult.cs" t="Include" />
+        <e p="ValidationResult.cs" t="Include" />
+      </e>
+      <e p="Fanda.sln" t="IncludeFlat" />
+      <e p="Microservices\AccountingService\Fanda.Accounting.Domain" t="IncludeRecursive">
+        <e p="AccountYear.cs" t="Include" />
+        <e p="Address.cs" t="Include" />
+        <e p="Bank.cs" t="Include" />
+        <e p="Base" t="Include">
+          <e p="BaseAcctEntity.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Contact.cs" t="Include" />
+        <e p="Context" t="Include">
+          <e p="AcctContext.cs" t="Include" />
+          <e p="AcctEntityConfig.cs" t="Include" />
+        </e>
+        <e p="Fanda.Accounting.Domain.csproj" t="IncludeRecursive" />
+        <e p="Journal.cs" t="Include" />
+        <e p="JournalItem.cs" t="Include" />
+        <e p="Ledger.cs" t="Include" />
+        <e p="LedgerBalance.cs" t="Include" />
+        <e p="LedgerGroup.cs" t="Include" />
+        <e p="Migrations" t="Include">
+          <e p="MySQL" t="Include">
+            <e p="20201023151959_AcctMySQL01.cs" t="Include" />
+            <e p="20201023151959_AcctMySQL01.Designer.cs" t="Include" />
+            <e p="20201028103814_AcctMySQL02.cs" t="Include" />
+            <e p="20201028103814_AcctMySQL02.Designer.cs" t="Include" />
+            <e p="20201028143940_AcctMySQL03.cs" t="Include" />
+            <e p="20201028143940_AcctMySQL03.Designer.cs" t="Include" />
+            <e p="20201106021100_AcctMySQL04.cs" t="Include" />
+            <e p="20201106021100_AcctMySQL04.Designer.cs" t="Include" />
+            <e p="AcctContextModelSnapshot.cs" t="Include" />
+          </e>
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Accounting.Domain.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="OrgAddress.cs" t="Include" />
+        <e p="Organization.cs" t="Include" />
+        <e p="OrgContact.cs" t="Include" />
+        <e p="OrgUser.cs" t="Include" />
+        <e p="OrgUserRole.cs" t="Include" />
+        <e p="Party.cs" t="Include" />
+        <e p="PartyCategory.cs" t="Include" />
+        <e p="PartyType.cs" t="Include" />
+        <e p="SerialNumber.cs" t="Include" />
+        <e p="Transaction.cs" t="Include" />
+      </e>
+      <e p="Microservices\AccountingService\Fanda.Accounting.Repository" t="IncludeRecursive">
+        <e p="AccountYearRepository.cs" t="Include" />
+        <e p="ApiClients" t="Include">
+          <e p="AuthClient.cs" t="Include" />
+        </e>
+        <e p="AutoMapperProfiles" t="Include">
+          <e p="AutoMapperProfile.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Dto" t="Include">
+          <e p="AccountYearDto.cs" t="Include" />
+          <e p="AddressDto.cs" t="Include" />
+          <e p="BankDto.cs" t="Include" />
+          <e p="ContactDto.cs" t="Include" />
+          <e p="JournalDto.cs" t="Include" />
+          <e p="JournalItemDto.cs" t="Include" />
+          <e p="LedgerBalanceDto.cs" t="Include" />
+          <e p="LedgerDto.cs" t="Include" />
+          <e p="LedgerGroupDto.cs" t="Include" />
+          <e p="OrganizationDto.cs" t="Include" />
+          <e p="OrgRoleDto.cs" t="Include" />
+          <e p="OrgUserDto.cs" t="Include" />
+          <e p="PartyCategoryDto.cs" t="Include" />
+          <e p="PartyDto.cs" t="Include" />
+          <e p="TransactionDto.cs" t="Include" />
+        </e>
+        <e p="Fanda.Accounting.Repository.csproj" t="IncludeRecursive" />
+        <e p="Helpers" t="Include">
+          <e p="DbUpdateHelper.cs" t="Include" />
+        </e>
+        <e p="JournalRepository.cs" t="Include" />
+        <e p="LedgerGroupRepository.cs" t="Include" />
+        <e p="LedgerRepository.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Accounting.Repository.AssemblyInfo.cs" t="Include" />
+              <e p="RefitStubs.g.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="OrganizationRepository.cs" t="Include" />
+        <e p="OrgUserRepository.cs" t="Include" />
+        <e p="PartyCategoryRepository.cs" t="Include" />
+        <e p="SerialNumberRepository.cs" t="Include" />
+      </e>
+      <e p="Microservices\AccountingService\Fanda.Accounting.Service" t="IncludeRecursive">
+        <e p="add-migrations.cmd" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="JournalsController.cs" t="Include" />
+          <e p="LedgerGroupsController.cs" t="Include" />
+          <e p="LedgersController.cs" t="Include" />
+          <e p="OrganizationsController.cs" t="Include" />
+          <e p="OrgUsersController.cs" t="Include" />
+          <e p="PartyCategoriesController.cs" t="Include" />
+        </e>
+        <e p="Fanda.Accounting.Service.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Accounting.Service.AssemblyInfo.cs" t="Include" />
+              <e p="RefitStubs.g.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="update-database.cmd" t="Include" />
+      </e>
+      <e p="Microservices\AccountingService\Migration.txt" t="Include" />
+      <e p="Microservices\AuthenticationService\Fanda.Authentication.Domain" t="IncludeRecursive">
+        <e p="Application.cs" t="Include" />
+        <e p="AppResource.cs" t="Include" />
+        <e p="AuthContext.cs" t="Include" />
+        <e p="AuthEntityConfig.cs" t="Include" />
+        <e p="Base" t="Include">
+          <e p="BaseAuthEntity.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Fanda-Auth-Domain.cd" t="Include" />
+        <e p="Fanda.Authentication.Domain.csproj" t="IncludeRecursive" />
+        <e p="Migrations" t="Include">
+          <e p="MySQL" t="Include">
+            <e p="20200801022046_MySQL01.cs" t="Include" />
+            <e p="20200801022046_MySQL01.Designer.cs" t="Include" />
+            <e p="20200804091113_MySQL02.cs" t="Include" />
+            <e p="20200804091113_MySQL02.Designer.cs" t="Include" />
+            <e p="20200827072650_MySQL03.cs" t="Include" />
+            <e p="20200827072650_MySQL03.Designer.cs" t="Include" />
+            <e p="20201007053209_MySQL04.cs" t="Include" />
+            <e p="20201007053209_MySQL04.Designer.cs" t="Include" />
+            <e p="20201011083311_MySQL05.cs" t="Include" />
+            <e p="20201011083311_MySQL05.Designer.cs" t="Include" />
+            <e p="AuthContextModelSnapshot.cs" t="Include" />
+          </e>
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Authentication.Domain.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Role.cs" t="Include" />
+        <e p="RolePrivilege.cs" t="Include" />
+        <e p="Tenant.cs" t="Include" />
+        <e p="User.cs" t="Include" />
+        <e p="UserToken.cs" t="Include" />
+      </e>
+      <e p="Microservices\AuthenticationService\Fanda.Authentication.Repository" t="IncludeRecursive">
+        <e p="ApplicationRepository.cs" t="Include" />
+        <e p="AuthRepository.cs" t="Include" />
+        <e p="AutoMapperProfile" t="Include">
+          <e p="AuthProfile.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Dto" t="Include">
+          <e p="ApplicationDto.cs" t="Include" />
+          <e p="AppResourceDto.cs" t="Include" />
+          <e p="RoleDto.cs" t="Include" />
+          <e p="RolePrivilegeDto.cs" t="Include" />
+          <e p="TenantDto.cs" t="Include" />
+          <e p="UserDto.cs" t="Include" />
+          <e p="UserTokenDto.cs" t="Include" />
+        </e>
+        <e p="Fanda-Auth-Services.cd" t="Include" />
+        <e p="Fanda.Authentication.Repository.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Authentication.Repository.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="RoleRepository.cs" t="Include" />
+        <e p="TenantRepository.cs" t="Include" />
+        <e p="UserRepository.cs" t="Include" />
+        <e p="ViewModels" t="Include">
+          <e p="ActiveTokenViewModel.cs" t="Include" />
+          <e p="AuthenticateRequest.cs" t="Include" />
+          <e p="AuthenticateResponse.cs" t="Include" />
+          <e p="ChangePasswordViewModel.cs" t="Include" />
+          <e p="ForgotPasswordViewModel.cs" t="Include" />
+          <e p="LoginViewModel.cs" t="Include" />
+          <e p="RegisterViewModel.cs" t="Include" />
+          <e p="ResetPasswordViewModel.cs" t="Include" />
+          <e p="RevokeTokenRequest.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Microservices\AuthenticationService\Fanda.Authentication.Service" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="ApplicationsController.cs" t="Include" />
+          <e p="AuthController.cs" t="Include" />
+          <e p="RolesController.cs" t="Include" />
+          <e p="TenantsController.cs" t="Include" />
+          <e p="UsersController.cs" t="Include" />
+        </e>
+        <e p="Fanda.Authentication.Service.csproj" t="IncludeRecursive" />
+        <e p="fanda_auth.db" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Authentication.Service.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+          <e p="PublishProfiles" t="Include">
+            <e p="FolderProfile.pubxml" t="Include" />
+          </e>
+        </e>
+        <e p="SeedDefault.cs" t="Include" />
+        <e p="Startup.cs" t="Include" />
+      </e>
+      <e p="Microservices\InventoryService\Fanda.Inventory.Domain" t="IncludeRecursive">
+        <e p="Base" t="Include">
+          <e p="BaseInvtEntity.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Buyer.cs" t="Include" />
+        <e p="Context" t="Include">
+          <e p="InvtContext.cs" t="Include" />
+          <e p="InvtEntityConfig.cs" t="Include" />
+        </e>
+        <e p="Fanda.Inventory.Domain.csproj" t="IncludeRecursive" />
+        <e p="Invoice.cs" t="Include" />
+        <e p="InvoiceCategory.cs" t="Include" />
+        <e p="InvoiceItem.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Inventory.Domain.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Product.cs" t="Include" />
+        <e p="ProductBrand.cs" t="Include" />
+        <e p="ProductCategory.cs" t="Include" />
+        <e p="ProductIngredient.cs" t="Include" />
+        <e p="ProductPricing.cs" t="Include" />
+        <e p="ProductPricingRange.cs" t="Include" />
+        <e p="ProductSegment.cs" t="Include" />
+        <e p="ProductVariety.cs" t="Include" />
+        <e p="Stock.cs" t="Include" />
+        <e p="Unit.cs" t="Include" />
+        <e p="UnitConversion.cs" t="Include" />
+      </e>
+      <e p="Microservices\InventoryService\Fanda.Inventory.Repository" t="IncludeRecursive">
+        <e p="ApiClients" t="Include">
+          <e p="AuthClient.cs" t="Include" />
+        </e>
+        <e p="AutoMapperProfiles" t="Include">
+          <e p="AutoMapperProfile.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Dto" t="Include">
+          <e p="InvoiceCategoryDto.cs" t="Include" />
+          <e p="InvoiceDto.cs" t="Include" />
+          <e p="InvoiceItemDto.cs" t="Include" />
+          <e p="ProductBrandDto.cs" t="Include" />
+          <e p="ProductCategoryDto.cs" t="Include" />
+          <e p="ProductDto.cs" t="Include" />
+          <e p="ProductIngredientDto.cs" t="Include" />
+          <e p="ProductPricingDto.cs" t="Include" />
+          <e p="ProductPricingRangeDto.cs" t="Include" />
+          <e p="ProductSegmentDto.cs" t="Include" />
+          <e p="ProductVarietyDto.cs" t="Include" />
+          <e p="StockDto.cs" t="Include" />
+          <e p="UnitConversionDto.cs" t="Include" />
+          <e p="UnitDto.cs" t="Include" />
+        </e>
+        <e p="Fanda.Inventory.Repository.csproj" t="IncludeRecursive" />
+        <e p="InvoiceCategoryRepository.cs" t="Include" />
+        <e p="InvoiceRepository.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="Fanda.Inventory.Repository.AssemblyInfo.cs" t="Include" />
+              <e p="RefitStubs.g.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="ProductBrandRepository.cs" t="Include" />
+        <e p="ProductCategoryRepository.cs" t="Include" />
+        <e p="ProductRepository.cs" t="Include" />
+        <e p="ProductSegmentRepository.cs" t="Include" />
+        <e p="ProductVarietyRepository.cs" t="Include" />
+        <e p="UnitRepository.cs" t="Include" />
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Readme.txt" t="Include" />
+      <e p="src" t="Include">
+        <e p="Microservices" t="Include">
+          <e p="Accounting" t="Include" />
+          <e p="Authentication" t="Include" />
+          <e p="Finance" t="Include" />
+          <e p="Inventory" t="Include" />
+        </e>
+      </e>
+      <e p="tests" t="Include" />
+    </e>
+  </component>
+</project>
