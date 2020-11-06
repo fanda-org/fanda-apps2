@@ -18,8 +18,13 @@ namespace Fanda.Accounting.Repository
         IProductSegmentRepository
     {
         public ProductSegmentRepository(InvtContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
+        }
+
+        public override Expression<Func<ProductSegment, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return ps => ps.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, ProductSegment entity)
@@ -30,11 +35,6 @@ namespace Fanda.Accounting.Repository
         protected override Guid GetSuperId(ProductSegment entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<ProductSegment, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return ps => ps.OrgId == superId;
         }
     }
 }

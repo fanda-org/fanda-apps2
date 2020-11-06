@@ -20,10 +20,15 @@ namespace Fanda.Accounting.Repository
         //private readonly IMapper _mapper;
 
         public UnitRepository(InvtContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
             //_context = context;
             //_mapper = mapper;
+        }
+
+        public override Expression<Func<Unit, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return u => u.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, Unit entity)
@@ -34,11 +39,6 @@ namespace Fanda.Accounting.Repository
         protected override Guid GetSuperId(Unit entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<Unit, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return u => u.OrgId == superId;
         }
 
         //public IQueryable<UnitListDto> GetAll(Guid orgId)

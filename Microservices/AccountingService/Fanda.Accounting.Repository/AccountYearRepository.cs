@@ -20,10 +20,15 @@ namespace Fanda.Accounting.Repository
         //private readonly IMapper _mapper;
 
         public AccountYearRepository(AcctContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
             //_context = context;
             //_mapper = mapper;
+        }
+
+        public override Expression<Func<AccountYear, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return ay => ay.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, AccountYear entity)
@@ -34,11 +39,6 @@ namespace Fanda.Accounting.Repository
         protected override Guid GetSuperId(AccountYear entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<AccountYear, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return ay => ay.OrgId == superId;
         }
 
         //public IQueryable<YearListDto> GetAll(Guid orgId)

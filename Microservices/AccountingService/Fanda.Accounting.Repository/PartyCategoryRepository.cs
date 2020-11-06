@@ -20,10 +20,15 @@ namespace Fanda.Accounting.Repository
         //private readonly IMapper _mapper;
 
         public PartyCategoryRepository(AcctContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
             //_context = context;
             //_mapper = mapper;
+        }
+
+        public override Expression<Func<PartyCategory, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return pc => pc.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, PartyCategory entity)
@@ -34,11 +39,6 @@ namespace Fanda.Accounting.Repository
         protected override Guid GetSuperId(PartyCategory entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<PartyCategory, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return pc => pc.OrgId == superId;
         }
 
         //public IQueryable<PartyCategoryListDto> GetAll(Guid orgId)

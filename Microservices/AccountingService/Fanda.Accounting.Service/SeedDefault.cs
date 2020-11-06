@@ -12,10 +12,9 @@ namespace Fanda.Accounting.Service
 {
     public class SeedDefault
     {
-        //private readonly AppSettings _settings;
         private readonly ILogger<SeedDefault> _logger;
-
         private readonly IServiceProvider _provider;
+        //private readonly AppSettings _settings;
 
         public SeedDefault(IServiceProvider provider /*, IOptions<AppSettings> options*/)
         {

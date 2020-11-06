@@ -55,7 +55,7 @@ namespace Fanda.Accounting.Repository
         public async Task<IEnumerable<JournalDto>> FindAsync(Guid yearId, Expression<Func<Journal, bool>> predicate)
         {
             var newPredicate = PredicateBuilder.New(predicate);
-            newPredicate = newPredicate.And(GetYearIdPredicate(yearId));
+            newPredicate = newPredicate.And(GetSuperIdPredicate(yearId));
 
             var models = await _context.Journals
                 .AsNoTracking()
@@ -148,10 +148,10 @@ namespace Fanda.Accounting.Repository
             #region JournalItems
 
             var jnlItemPairs = from curr in jnl.JournalItems //OrgContacts.Select(oc => oc.Contact)
-                join db in dbJnl.JournalItems //OrgContacts.Select(oc => oc.Contact)
-                    on curr.JournalItemId equals db.JournalItemId into grp
-                from db in grp.DefaultIfEmpty()
-                select new {curr, db};
+                               join db in dbJnl.JournalItems //OrgContacts.Select(oc => oc.Contact)
+                                   on curr.JournalItemId equals db.JournalItemId into grp
+                               from db in grp.DefaultIfEmpty()
+                               select new { curr, db };
             foreach (var pair in jnlItemPairs)
             {
                 if (pair.db == null)
@@ -180,10 +180,10 @@ namespace Fanda.Accounting.Repository
             #region Transactions
 
             var tranPairs = from curr in jnl.Transactions //OrgAddresses.Select(oa => oa.Address)
-                join db in dbJnl.Transactions //OrgAddresses.Select(oa => oa.Address)
-                    on curr.Id equals db.Id into grp
-                from db in grp.DefaultIfEmpty()
-                select new {curr, db};
+                            join db in dbJnl.Transactions //OrgAddresses.Select(oa => oa.Address)
+                                on curr.Id equals db.Id into grp
+                            from db in grp.DefaultIfEmpty()
+                            select new { curr, db };
             foreach (var pair in tranPairs)
             {
                 if (pair.db == null)
@@ -256,7 +256,7 @@ namespace Fanda.Accounting.Repository
             return true;
         }
 
-        public IQueryable<JournalListDto> GetAll(Guid superId)
+        public IQueryable<JournalListDto> GetAll(Guid? superId)
         {
             return _context.Journals
                 .AsNoTracking()
@@ -267,7 +267,7 @@ namespace Fanda.Accounting.Repository
         public async Task<bool> AnyAsync(Guid yearId, Expression<Func<Journal, bool>> predicate)
         {
             var newPredicate = PredicateBuilder.New(predicate);
-            newPredicate = newPredicate.And(GetYearIdPredicate(yearId));
+            newPredicate = newPredicate.And(GetSuperIdPredicate(yearId));
 
             return await _context.Journals.AnyAsync(newPredicate);
         }
@@ -298,6 +298,13 @@ namespace Fanda.Accounting.Repository
             return model.Errors;
         }
 
+        public virtual Expression<Func<Journal, bool>> GetSuperIdPredicate(Guid? yearId)
+        {
+            //var numExpression = PredicateBuilder.New<Journal>(j => j.Number == journalNumber);
+            // numExpression = numExpression.And(j => j.YearId == superId);
+            return j => j.YearId == yearId;
+        }
+
         private static ExpressionStarter<Journal> GetJournalNumberPredicate(string journalNumber,
             Guid id = default)
         {
@@ -311,16 +318,9 @@ namespace Fanda.Accounting.Repository
             return numExpression;
         }
 
-        private static Expression<Func<Journal, bool>> GetYearIdPredicate(Guid yearId)
-        {
-            //var numExpression = PredicateBuilder.New<Journal>(j => j.Number == journalNumber);
-            // numExpression = numExpression.And(j => j.YearId == superId);
-            return j => j.YearId == yearId;
-        }
-
-        public bool Any(string expression, params object[] args)
-        {
-            return _context.Journals.Any(expression, args);
-        }
+        //public bool Any(string expression, params object[] args)
+        //{
+        //    return _context.Journals.Any(expression, args);
+        //}
     }
 }

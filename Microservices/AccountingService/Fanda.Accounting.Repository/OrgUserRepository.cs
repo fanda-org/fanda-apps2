@@ -72,7 +72,7 @@ namespace Fanda.Accounting.Repository
             throw new NotImplementedException();
         }
 
-        public IQueryable<OrgUserListDto> GetAll(Guid orgId)
+        public IQueryable<OrgUserListDto> GetAll(Guid? orgId)
         {
             throw new NotImplementedException();
         }
@@ -82,22 +82,27 @@ namespace Fanda.Accounting.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<OrgUserDto>> FindAsync(Guid orgId, string expression, params object[] args)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<IEnumerable<OrgUserDto>> FindAsync(Guid orgId, string expression, params object[] args)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Task<bool> AnyAsync(Guid orgId, Expression<Func<OrgUser, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public bool Any(Guid orgId, string expression, params object[] args)
+        //public bool Any(Guid orgId, string expression, params object[] args)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public Task<ValidationErrors> ValidateAsync(Guid orgId, OrgUserDto model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ValidationErrors> ValidateAsync(Guid orgId, OrgUserDto model)
+        public Expression<Func<OrgUser, bool>> GetSuperIdPredicate(Guid? superId)
         {
             throw new NotImplementedException();
         }

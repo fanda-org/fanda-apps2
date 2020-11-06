@@ -18,8 +18,13 @@ namespace Fanda.Inventory.Repository
         IInvoiceCategoryRepository
     {
         public InvoiceCategoryRepository(InvtContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
+        }
+
+        public override Expression<Func<InvoiceCategory, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return ic => ic.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, InvoiceCategory entity)
@@ -30,11 +35,6 @@ namespace Fanda.Inventory.Repository
         protected override Guid GetSuperId(InvoiceCategory entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<InvoiceCategory, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return ic => ic.OrgId == superId;
         }
     }
 }

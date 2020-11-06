@@ -56,7 +56,7 @@ namespace Fanda.Authentication.Service.Controllers
         {
             try
             {
-                string? refreshToken = Request.Cookies["refreshToken"];
+                string refreshToken = Request.Cookies["refreshToken"];
                 if (string.IsNullOrEmpty(refreshToken))
                 {
                     return BadRequest(MessageResponse.Failure("Token is required"));
@@ -123,7 +123,7 @@ namespace Fanda.Authentication.Service.Controllers
                     string callbackUrl = Url.Page(
                         "/Users/ConfirmEmail",
                         null,
-                        new {userName = model.UserName, code = token},
+                        new { userName = model.UserName, code = token },
                         Request.Scheme
                     );
 
@@ -161,7 +161,7 @@ namespace Fanda.Authentication.Service.Controllers
 
         private void SetTokenCookie(string token)
         {
-            var cookieOptions = new CookieOptions {HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7)};
+            var cookieOptions = new CookieOptions { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7) };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
 

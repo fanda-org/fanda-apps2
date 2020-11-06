@@ -2,6 +2,8 @@ using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Core.Base;
+using System;
+using System.Linq.Expressions;
 
 namespace Fanda.Authentication.Repository
 {

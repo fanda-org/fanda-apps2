@@ -27,7 +27,7 @@ namespace Fanda.Authentication.Repository
         private readonly IMapper _mapper;
 
         public UserRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper, "TenantId == @0")
+            : base(context, mapper/*, "TenantId == @0"*/)
         {
             _context = context;
             _mapper = mapper;
@@ -66,19 +66,19 @@ namespace Fanda.Authentication.Repository
             return models;
         }
 
-        public async Task<IEnumerable<UserDto>> FindAsync(Guid tenantId, string expression, params object[] args)
-        {
-            // var newPredicate = PredicateBuilder.New<User>(predicate);
-            // newPredicate = newPredicate.And(GetTenantIdPredicate(tenantId));
+        //public async Task<IEnumerable<UserDto>> FindAsync(Guid tenantId, string expression, params object[] args)
+        //{
+        //    // var newPredicate = PredicateBuilder.New<User>(predicate);
+        //    // newPredicate = newPredicate.And(GetTenantIdPredicate(tenantId));
 
-            var models = await _context.Users
-                .AsNoTracking()
-                .Where(expression, args)
-                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+        //    var models = await _context.Users
+        //        .AsNoTracking()
+        //        .Where(expression, args)
+        //        .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+        //        .ToListAsync();
 
-            return models;
-        }
+        //    return models;
+        //}
 
         public async Task<UserDto> CreateAsync(Guid tenantId, UserDto dto)
         {
@@ -190,10 +190,10 @@ namespace Fanda.Authentication.Repository
             return await _context.Users.AnyAsync(predicate);
         }
 
-        public bool Any(Guid tenantId, string expression, params object[] args)
-        {
-            return _context.Users.Any(expression, args);
-        }
+        //public bool Any(Guid tenantId, string expression, params object[] args)
+        //{
+        //    return _context.Users.Any(expression, args);
+        //}
 
         //public async Task<IEnumerable<UserDto>> FindAsync(string expression, params object[] args)
         //{
@@ -259,6 +259,11 @@ namespace Fanda.Authentication.Repository
             #endregion Validation: Duplicate
 
             return model.Errors;
+        }
+
+        public override Expression<Func<User, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return r => r.TenantId == superId;
         }
 
         #region Private methods

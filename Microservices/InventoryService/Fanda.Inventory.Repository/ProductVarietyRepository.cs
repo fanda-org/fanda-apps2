@@ -18,8 +18,13 @@ namespace Fanda.Inventory.Repository
         IProductVarietyRepository
     {
         public ProductVarietyRepository(InvtContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
+        }
+
+        public override Expression<Func<ProductVariety, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return pv => pv.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, ProductVariety entity)
@@ -30,11 +35,6 @@ namespace Fanda.Inventory.Repository
         protected override Guid GetSuperId(ProductVariety entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<ProductVariety, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return pv => pv.OrgId == superId;
         }
     }
 }

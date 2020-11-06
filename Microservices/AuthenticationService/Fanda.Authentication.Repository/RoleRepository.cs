@@ -25,7 +25,7 @@ namespace Fanda.Authentication.Repository
         private readonly IMapper _mapper;
 
         public RoleRepository(AuthContext context, IMapper mapper)
-            : base(context, mapper, "TenantId == @0")
+            : base(context, mapper/*, "TenantId == @0"*/)
         {
             _mapper = mapper;
             _context = context;
@@ -152,10 +152,10 @@ namespace Fanda.Authentication.Repository
             #region Resources
 
             var resourcePairs = from curr in role.Privileges //.Select(oc => oc.Resource)
-                join db in dbRole.Privileges //.Select(oc => oc.Resource)
-                    on curr.AppResourceId equals db.AppResourceId into grp
-                from db in grp.DefaultIfEmpty()
-                select new {curr, db};
+                                join db in dbRole.Privileges //.Select(oc => oc.Resource)
+                                    on curr.AppResourceId equals db.AppResourceId into grp
+                                from db in grp.DefaultIfEmpty()
+                                select new { curr, db };
             foreach (var pair in resourcePairs)
             {
                 pair.curr.RoleId = role.Id;
@@ -183,6 +183,11 @@ namespace Fanda.Authentication.Repository
             await _context.SaveChangesAsync();
         }
 
+        public override Expression<Func<Role, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return r => r.TenantId == superId;
+        }
+
         protected override void SetSuperId(Guid superId, Role entity)
         {
             entity.TenantId = superId;
@@ -191,11 +196,6 @@ namespace Fanda.Authentication.Repository
         protected override Guid GetSuperId(Role entity)
         {
             return entity.TenantId;
-        }
-
-        protected override Expression<Func<Role, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return r => r.TenantId == superId;
         }
 
         //public override async Task<bool> ExistsAsync(TenantKeyData data)

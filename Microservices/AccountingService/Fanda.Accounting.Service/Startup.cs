@@ -95,7 +95,7 @@ namespace Fanda.Accounting.Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             IConfigurationProvider autoMapperConfigProvider, AcctContext acctDbContext, IHost host)
         {
             //app.ConfigureStartup(env, autoMapperConfigProvider);
@@ -109,7 +109,7 @@ namespace Fanda.Accounting.Service
 
             // migrate any database changes on startup (includes initial db creation)
             acctDbContext.Database.Migrate();
-            await SeedDataAsync(host);
+            SeedDataAsync(host);
             autoMapperConfigProvider.AssertConfigurationIsValid();
 
             //app.UseHttpsRedirection();
@@ -136,7 +136,7 @@ namespace Fanda.Accounting.Service
             #endregion Startup configure
         }
 
-        private static async Task SeedDataAsync(IHost host)
+        private static /*async*/ void SeedDataAsync(IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {

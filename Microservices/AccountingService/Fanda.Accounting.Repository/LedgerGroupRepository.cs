@@ -18,18 +18,18 @@ namespace Fanda.Accounting.Repository
         ILedgerGroupRepository
     {
         public LedgerGroupRepository(AcctContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
+        }
+
+        public override Expression<Func<LedgerGroup, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return g => g.OrgId == superId;
         }
 
         protected override Guid GetSuperId(LedgerGroup entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<LedgerGroup, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return g => g.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, LedgerGroup entity)

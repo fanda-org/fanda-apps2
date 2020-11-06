@@ -53,7 +53,7 @@ namespace Fanda.Core.Base
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<TModel>)
-        public async Task<IActionResult> GetById([Required] [FromRoute] Guid id)
+        public async Task<IActionResult> GetById([Required][FromRoute] Guid id)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Fanda.Core.Base
             try
             {
                 var dto = await _repository.CreateAsync(superId, model);
-                return CreatedAtAction(nameof(GetById), new {id = dto.Id},
+                return CreatedAtAction(nameof(GetById), new { id = dto.Id },
                     DataResponse<TModel>.Succeeded(dto));
             }
             catch (Exception ex)
@@ -139,8 +139,8 @@ namespace Fanda.Core.Base
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Active([Required] [FromRoute] Guid id,
-            [Required] [FromQuery] Activate activate)
+        public async Task<IActionResult> Active([Required][FromRoute] Guid id,
+            [Required][FromQuery] Activate activate)
         {
             try
             {
@@ -158,29 +158,29 @@ namespace Fanda.Core.Base
             }
         }
 
-        [HttpPost("exists/{superId}")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public IActionResult Exists(Guid superId, string expression, params string[] args)
-        {
-            try
-            {
-                bool found = _repository.Any(superId, expression, args);
-                if (found)
-                {
-                    return Ok(MessageResponse.Succeeded($"{_moduleName} exists"));
-                }
+        //[HttpPost("exists/{superId}")]
+        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        //[ProducesResponseType((int)HttpStatusCode.NotFound)]
+        //[ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        //[ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
+        //public IActionResult Exists(Guid superId, string expression, params string[] args)
+        //{
+        //    try
+        //    {
+        //        bool found = _repository.Any(superId, expression, args);
+        //        if (found)
+        //        {
+        //            return Ok(MessageResponse.Succeeded($"{_moduleName} exists"));
+        //        }
 
-                return NotFound(MessageResponse.Failure($"{_moduleName} not exists"));
-            }
-            catch (Exception ex)
-            {
-                return ExceptionResult(ex, _moduleName);
-            }
-        }
+        //        return NotFound(MessageResponse.Failure($"{_moduleName} not exists"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ExceptionResult(ex, _moduleName);
+        //    }
+        //}
 
         //[HttpGet("exists")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]

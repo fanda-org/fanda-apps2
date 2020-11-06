@@ -11,13 +11,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fanda.Core.Base
 {
-    public interface ISubRepository<TEntity, TModel, TListModel> : IListRepository<TListModel>
+    public interface ISubRepository<TEntity, TModel, TListModel> :
+        IListRepository<TEntity, TListModel>
     {
         Task<TModel> GetByIdAsync(Guid id);
 
         Task<IEnumerable<TModel>> FindAsync(Guid superId, Expression<Func<TEntity, bool>> predicate);
 
-        Task<IEnumerable<TModel>> FindAsync(Guid superId, string expression, params object[] args);
+        //Task<IEnumerable<TModel>> FindAsync(Guid superId, string expression, params object[] args);
 
         Task<TModel> CreateAsync(Guid superId, TModel model);
 
@@ -27,7 +28,7 @@ namespace Fanda.Core.Base
 
         Task<bool> AnyAsync(Guid superId, Expression<Func<TEntity, bool>> predicate);
 
-        bool Any(Guid superId, string expression, params object[] args);
+        //bool Any(Guid superId, string expression, params object[] args);
 
         Task<bool> ActivateAsync(Guid id, bool active);
 
@@ -42,15 +43,16 @@ namespace Fanda.Core.Base
     {
         private readonly DbContext _context;
         private readonly string _entityTypeName;
-        private readonly string _filterBySuperId;
+
+        //private readonly Expression<Func<TEntity, bool>> _filterBySuperId;
         private readonly IMapper _mapper;
 
-        public SubRepository(DbContext context, IMapper mapper, string filterBySuperId)
-            : base(context, mapper, filterBySuperId)
+        public SubRepository(DbContext context, IMapper mapper/*, Expression<Func<TEntity, bool>> filterBySuperId*/)
+            : base(context, mapper/*, filterBySuperId*/)
         {
             _context = context;
             _mapper = mapper;
-            _filterBySuperId = filterBySuperId;
+            //_filterBySuperId = filterBySuperId;
             _entityTypeName = typeof(TEntity).Name;
         }
 
@@ -80,7 +82,11 @@ namespace Fanda.Core.Base
             Expression<Func<TEntity, bool>> predicate)
         {
             var newPredicate = PredicateBuilder.New(predicate);
-            newPredicate = newPredicate.And(GetSuperIdPredicate(superId));
+            var superIdPredicate = GetSuperIdPredicate(superId);
+            if (superIdPredicate != null)
+            {
+                newPredicate = newPredicate.And(superIdPredicate);
+            }
 
             var models = await Entities
                 .AsNoTracking()
@@ -91,24 +97,25 @@ namespace Fanda.Core.Base
             return models;
         }
 
-        public virtual async Task<IEnumerable<TModel>> FindAsync(Guid superId, string expression, params object[] args)
-        {
-            int newSize = args.Length + 1;
-            string newFilterBySuperId = _filterBySuperId.Replace("@0", $"@{newSize - 1}");
-            string newExpression = expression + $" AND {newFilterBySuperId}";
-            Array.Resize(ref args, newSize);
-            args[newSize - 1] = superId;
+        //public virtual async Task<IEnumerable<TModel>> FindAsync(Guid superId, string expression, params object[] args)
+        //{
+        //    //int newSize = args.Length + 1;
+        //    //string newFilterBySuperId = _filterBySuperId.Replace("@0", $"@{newSize - 1}");
+        //    //string newExpression = expression + $" AND {newFilterBySuperId}";
+        //    //Array.Resize(ref args, newSize);
+        //    //args[newSize - 1] = superId;
 
-            var models = await Entities
-                .AsNoTracking()
-                //.Where(expression, args)
-                //.Where(_filterBySuperId, superId)
-                .Where(newExpression, args)
-                .ProjectTo<TModel>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+        //    var models = await Entities
+        //        .AsNoTracking()
+        //        //.Where(expression, args)
+        //        //.Where(_filterBySuperId, superId)
+        //        .Where(_filterBySuperId)
+        //        .Where(expression, args)
+        //        .ProjectTo<TModel>(_mapper.ConfigurationProvider)
+        //        .ToListAsync();
 
-            return models;
-        }
+        //    return models;
+        //}
 
         public virtual async Task<TModel> CreateAsync(Guid superId, TModel model)
         {
@@ -197,21 +204,25 @@ namespace Fanda.Core.Base
         public virtual async Task<bool> AnyAsync(Guid superId, Expression<Func<TEntity, bool>> predicate)
         {
             var newPredicate = PredicateBuilder.New(predicate);
-            newPredicate = newPredicate.And(GetSuperIdPredicate(superId));
+            var superIdPredicate = GetSuperIdPredicate(superId);
+            if (superIdPredicate != null)
+            {
+                newPredicate = newPredicate.And(superIdPredicate);
+            }
 
             return await Entities.AnyAsync(newPredicate);
         }
 
-        public virtual bool Any(Guid superId, string expression, params object[] args)
-        {
-            int newSize = args.Length + 1;
-            string newFilterBySuperId = _filterBySuperId.Replace("@0", $"@{newSize - 1}");
-            string newExpression = expression + $" AND {newFilterBySuperId}";
-            Array.Resize(ref args, newSize);
-            args[newSize - 1] = superId;
+        //public virtual bool Any(Guid superId, string expression, params object[] args)
+        //{
+        //    //int newSize = args.Length + 1;
+        //    //string newFilterBySuperId = _filterBySuperId.Replace("@0", $"@{newSize - 1}");
+        //    //string newExpression = expression + $" AND {newFilterBySuperId}";
+        //    //Array.Resize(ref args, newSize);
+        //    //args[newSize - 1] = superId;
 
-            return Entities.Any(newExpression, args);
-        }
+        //    return Entities.Where(_filterBySuperId).Any(expression, args);
+        //}
 
         public virtual async Task<ValidationErrors> ValidateAsync(Guid superId, TModel model)
         {
@@ -241,6 +252,8 @@ namespace Fanda.Core.Base
             return model.Errors;
         }
 
+        //public abstract Expression<Func<TEntity, bool>> GetSuperIdPredicate(Guid superId);
+
         private static ExpressionStarter<TEntity> GetCodePredicate(string code, Guid id = default)
         {
             var codeExpression = PredicateBuilder.New<TEntity>(e => e.Code == code);
@@ -268,7 +281,5 @@ namespace Fanda.Core.Base
         protected abstract void SetSuperId(Guid superId, TEntity entity);
 
         protected abstract Guid GetSuperId(TEntity entity);
-
-        protected abstract Expression<Func<TEntity, bool>> GetSuperIdPredicate(Guid superId);
     }
 }

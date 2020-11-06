@@ -7,6 +7,7 @@
 	<ItemGroup>
 		<Compile Remove="ActiveStatus.cs" />
 		<Compile Remove="Base\FandaControllerBase.cs" />
+		<Compile Remove="Base\IListRepository.cs" />
 		<Compile Remove="Base\IParentRepositoryBase.cs" />
 		<Compile Remove="Base\IRepositoryBase.cs" />
 		<Compile Remove="Base\IRootRepositoryBase.cs" />

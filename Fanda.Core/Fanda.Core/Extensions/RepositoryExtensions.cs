@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Fanda.Core.Base;
 using Microsoft.EntityFrameworkCore;
@@ -23,9 +24,9 @@ namespace Fanda.Core.Extensions
         //    return dbQuery.GetPagedAsync(); //ToDynamicListAsync();
         //}
 
-        public static async Task<DataResponse<IEnumerable<TModel>>> GetAll<TModel>(
-            this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput)
+        public static async Task<DataResponse<IEnumerable<TListModel>>> GetAll<TEntity, TListModel>(
+            this IListRepository<TEntity, TListModel> listRepository,
+            Guid? parentId, Query queryInput)
         {
             if (queryInput.PageIndex > 0 || queryInput.PageSize > 0)
             {
@@ -35,37 +36,38 @@ namespace Fanda.Core.Extensions
             return await GetList(listRepository, parentId, queryInput);
         }
 
-        private static async Task<PagedResponse<IEnumerable<TModel>>> GetPaged<TModel>(
-            this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput)
+        private static async Task<PagedResponse<IEnumerable<TListModel>>> GetPaged<TEntity, TListModel>(
+            this IListRepository<TEntity, TListModel> listRepository,
+            Guid? parentId, Query queryInput)
         {
             (var list, int itemsCount) = await listRepository.Execute(parentId, queryInput);
             var response =
-                PagedResponse<IEnumerable<TModel>>.Succeeded(list, itemsCount, queryInput.PageIndex,
+                PagedResponse<IEnumerable<TListModel>>.Succeeded(list, itemsCount, queryInput.PageIndex,
                     queryInput.PageSize);
             return response;
         }
 
-        private static async Task<DataResponse<IEnumerable<TModel>>> GetList<TModel>(
-            this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput)
+        private static async Task<DataResponse<IEnumerable<TListModel>>> GetList<TEntity, TListModel>(
+            this IListRepository<TEntity, TListModel> listRepository,
+            Guid? parentId, Query queryInput)
         {
             var (list, _) = await listRepository.Execute(parentId, queryInput, true);
-            var response = DataResponse<IEnumerable<TModel>>.Succeeded(list);
+            var response = DataResponse<IEnumerable<TListModel>>.Succeeded(list);
             return response;
         }
 
-        private static async Task<(IEnumerable<TModel>, int)> Execute<TModel>(
-            this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput, bool ignoreCount = false)
+        private static async Task<(IEnumerable<TListModel>, int)> Execute<TEntity, TListModel>(
+            this IListRepository<TEntity, TListModel> listRepository,
+            Guid? parentId, Query queryInput, bool ignoreCount = false)
         {
             (var qry, int itemsCount) = listRepository.GenerateQuery(parentId, queryInput, ignoreCount);
             var list = await qry.ToListAsync();
             return (list, itemsCount);
         }
 
-        private static (IQueryable<TModel>, int) GenerateQuery<TModel>(this IListRepository<TModel> listRepository,
-            Guid parentId, Query queryInput, bool ignoreCount = false)
+        private static (IQueryable<TListModel>, int) GenerateQuery<TEntity, TListModel>(
+            this IListRepository<TEntity, TListModel> listRepository,
+            Guid? parentId, Query queryInput, bool ignoreCount = false)
         {
             var dbQuery = listRepository.GetAll(parentId);
             if (!string.IsNullOrEmpty(queryInput.Filter))

@@ -1,25 +1,34 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fanda.Core.Base
 {
-    public abstract class ListRepository<TEntity, TListModel> : IListRepository<TListModel>
+    public interface IListRepository<TEntity, TListModel>
+    {
+        IQueryable<TListModel> GetAll(Guid? superId);
+
+        Expression<Func<TEntity, bool>> GetSuperIdPredicate(Guid? superId);
+    }
+
+    public abstract class ListRepository<TEntity, TListModel> : IListRepository<TEntity, TListModel>
         where TEntity : class
         where TListModel : class
     {
         private readonly DbContext _context;
-        private readonly string _filterBySuperId;
+
+        // private readonly Expression<Func<TEntity, bool>> _filterBySuperId;
         private readonly IMapper _mapper;
 
-        public ListRepository(DbContext context, IMapper mapper, string filterBySuperId)
+        public ListRepository(DbContext context, IMapper mapper/*, Expression<Func<TEntity, bool>> filterBySuperId*/)
         {
             _context = context;
             _mapper = mapper;
-            _filterBySuperId = filterBySuperId;
+            // _filterBySuperId = filterBySuperId;
         }
 
         //public virtual async Task<DataResponse<IEnumerable<TListModel>>> GetAll(Guid superId, Query queryInput)  // nullable
@@ -76,10 +85,10 @@ namespace Fanda.Core.Base
         //    return (dbQuery, itemsCount);
         //}
 
-        public virtual IQueryable<TListModel> GetAll(Guid superId)
+        public virtual IQueryable<TListModel> GetAll(Guid? superId)
         {
             IQueryable<TListModel> qry;
-            if (string.IsNullOrEmpty(_filterBySuperId))
+            if (superId == null || superId == Guid.Empty /*string.IsNullOrEmpty(_filterBySuperId)*/)
             {
                 qry = _context.Set<TEntity>()
                     .AsNoTracking()
@@ -87,16 +96,29 @@ namespace Fanda.Core.Base
                 return qry;
             }
 
-            if (superId == Guid.Empty)
+            //if (superId == Guid.Empty)
+            //{
+            //    throw new BadRequestException($"{nameof(superId)} is required");
+            //}
+
+            var predicate = GetSuperIdPredicate(superId);
+            if (predicate == null)
             {
-                throw new BadRequestException($"{nameof(superId)} is required");
+                qry = _context.Set<TEntity>()
+                    .AsNoTracking()
+                    .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
+            }
+            else
+            {
+                qry = _context.Set<TEntity>()
+                    .AsNoTracking()
+                    .Where(predicate)
+                    .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
             }
 
-            qry = _context.Set<TEntity>()
-                .AsNoTracking()
-                .Where(_filterBySuperId, superId.ToString())
-                .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
             return qry;
         }
+
+        public abstract Expression<Func<TEntity, bool>> GetSuperIdPredicate(Guid? superId);
     }
 }

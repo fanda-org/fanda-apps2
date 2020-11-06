@@ -3,12 +3,6 @@ using System.Linq;
 
 namespace Fanda.Core.Base
 {
-    public interface IListRepository<TListModel>
-    {
-        // GET
-        IQueryable<TListModel> GetAll(Guid superId);
-    }
-
     //public interface IRepository<TModel, TListModel> : IRootRepository<TModel, TListModel>
     //{
     //    // POST

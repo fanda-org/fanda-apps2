@@ -18,7 +18,7 @@ namespace Fanda.Accounting.Repository
 {
     public interface IOrganizationRepository :
         ISubRepository<Organization, OrganizationDto, OrgListDto>,
-        IListRepository<OrgYearListDto>
+        IListRepository<Organization, OrgYearListDto>
     {
     }
 
@@ -30,7 +30,7 @@ namespace Fanda.Accounting.Repository
         private readonly IMapper _mapper;
 
         public OrganizationRepository(AcctContext context, IMapper mapper, IAuthClient authClient)
-            : base(context, mapper, "UserId = @0")
+            : base(context, mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -136,7 +136,7 @@ namespace Fanda.Accounting.Repository
             var entity = _mapper.Map<Organization>(model);
             entity.DateCreated = DateTime.UtcNow;
 
-            entity.OrgUsers = new List<OrgUser> {new OrgUser {UserId = userId}};
+            entity.OrgUsers = new List<OrgUser> { new OrgUser { UserId = userId } };
             await _context.Organizations.AddAsync(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<OrganizationDto>(entity);
@@ -205,17 +205,20 @@ namespace Fanda.Accounting.Repository
             #region Contacts
 
             var contactPairs = from curr in org.OrgContacts.Select(oc => oc.Contact)
-                join db in dbOrg.OrgContacts.Select(oc => oc.Contact)
-                    on curr.Id equals db.Id into grp
-                from db in grp.DefaultIfEmpty()
-                select new {curr, db};
+                               join db in dbOrg.OrgContacts.Select(oc => oc.Contact)
+                                   on curr.Id equals db.Id into grp
+                               from db in grp.DefaultIfEmpty()
+                               select new { curr, db };
             foreach (var pair in contactPairs)
             {
                 if (pair.db == null)
                 {
                     var orgContact = new OrgContact
                     {
-                        OrgId = org.Id, Organization = org, ContactId = pair.curr.Id, Contact = pair.curr
+                        OrgId = org.Id,
+                        Organization = org,
+                        ContactId = pair.curr.Id,
+                        Contact = pair.curr
                     };
                     dbOrg.OrgContacts.Add(orgContact);
                 }
@@ -231,17 +234,20 @@ namespace Fanda.Accounting.Repository
             #region Addresses
 
             var addressPairs = from curr in org.OrgAddresses.Select(oa => oa.Address)
-                join db in dbOrg.OrgAddresses.Select(oa => oa.Address)
-                    on curr.Id equals db.Id into grp
-                from db in grp.DefaultIfEmpty()
-                select new {curr, db};
+                               join db in dbOrg.OrgAddresses.Select(oa => oa.Address)
+                                   on curr.Id equals db.Id into grp
+                               from db in grp.DefaultIfEmpty()
+                               select new { curr, db };
             foreach (var pair in addressPairs)
             {
                 if (pair.db == null)
                 {
                     var orgAddress = new OrgAddress
                     {
-                        OrgId = org.Id, Organization = org, AddressId = pair.curr.Id, Address = pair.curr
+                        OrgId = org.Id,
+                        Organization = org,
+                        AddressId = pair.curr.Id,
+                        Address = pair.curr
                     };
                     dbOrg.OrgAddresses.Add(orgAddress);
                 }
@@ -334,6 +340,12 @@ namespace Fanda.Accounting.Repository
             return model.Errors;
         }
 
+        public override Expression<Func<Organization, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            // return o => o.UserId = superId;
+            return o => true;
+        }
+
         //public virtual async Task<bool> ActivateAsync(Guid id, bool active)
         //{
         //    if (id == Guid.Empty)
@@ -385,7 +397,7 @@ namespace Fanda.Accounting.Repository
 
         #region List
 
-        IQueryable<OrgListDto> IListRepository<OrgListDto>.GetAll(Guid userId)
+        IQueryable<OrgListDto> IListRepository<Organization, OrgListDto>.GetAll(Guid? userId)
         {
             //if (userId == null || userId == Guid.Empty)
             //{
@@ -400,7 +412,7 @@ namespace Fanda.Accounting.Repository
             return query; //GetAll(query);
         }
 
-        IQueryable<OrgYearListDto> IListRepository<OrgYearListDto>.GetAll(Guid userId)
+        IQueryable<OrgYearListDto> IListRepository<Organization, OrgYearListDto>.GetAll(Guid? userId)
         {
             // TODO - to be fixed once org-user relationship established
             //if (userId == null || userId == Guid.Empty)
@@ -463,12 +475,6 @@ namespace Fanda.Accounting.Repository
         {
             // return entity.UserId;
             return Guid.Empty;
-        }
-
-        protected override Expression<Func<Organization, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            // return o => o.UserId = superId;
-            return o => true;
         }
 
         #endregion Implement base abstract class

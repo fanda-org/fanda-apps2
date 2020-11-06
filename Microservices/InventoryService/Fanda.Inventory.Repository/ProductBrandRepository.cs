@@ -20,10 +20,15 @@ namespace Fanda.Inventory.Repository
         //private readonly IMapper _mapper;
 
         public ProductBrandRepository(InvtContext context, IMapper mapper)
-            : base(context, mapper, "OrgId == @0")
+            : base(context, mapper)
         {
             //_context = context;
             //_mapper = mapper;
+        }
+
+        public override Expression<Func<ProductBrand, bool>> GetSuperIdPredicate(Guid? superId)
+        {
+            return pb => pb.OrgId == superId;
         }
 
         protected override void SetSuperId(Guid superId, ProductBrand entity)
@@ -34,11 +39,6 @@ namespace Fanda.Inventory.Repository
         protected override Guid GetSuperId(ProductBrand entity)
         {
             return entity.OrgId;
-        }
-
-        protected override Expression<Func<ProductBrand, bool>> GetSuperIdPredicate(Guid superId)
-        {
-            return pb => pb.OrgId == superId;
         }
 
         //public IQueryable<ProductBrandListDto> GetAll(Guid orgId)

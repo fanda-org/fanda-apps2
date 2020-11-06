@@ -11,13 +11,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fanda.Core.Base
 {
-    public interface ISuperRepository<TEntity, TModel, TListModel> : IListRepository<TListModel>
+    public interface ISuperRepository<TEntity, TModel, TListModel> : IListRepository<TEntity, TListModel>
     {
         Task<TModel> GetByIdAsync(Guid id);
 
         Task<IEnumerable<TModel>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task<IEnumerable<TModel>> FindAsync(string expression, params object[] args);
+        //Task<IEnumerable<TModel>> FindAsync(string expression, params object[] args);
 
         Task<TModel> CreateAsync(TModel model);
 
@@ -27,14 +27,14 @@ namespace Fanda.Core.Base
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
 
-        bool Any(string expression, params object[] args);
+        //bool Any(string expression, params object[] args);
 
         Task<bool> ActivateAsync(Guid id, bool active);
 
         Task<ValidationErrors> ValidateAsync(TModel model);
     }
 
-    public class SuperRepository<TEntity, TModel, TListModel> :
+    public abstract class SuperRepository<TEntity, TModel, TListModel> :
         ListRepository<TEntity, TListModel>, ISuperRepository<TEntity, TModel, TListModel>
         where TEntity : BaseEntity
         where TModel : BaseDto
@@ -45,7 +45,7 @@ namespace Fanda.Core.Base
         private readonly IMapper _mapper;
 
         public SuperRepository(DbContext context, IMapper mapper)
-            : base(context, mapper, string.Empty)
+            : base(context, mapper /*, null*/ /*string.Empty*/)
         {
             _context = context;
             _mapper = mapper;
@@ -85,16 +85,16 @@ namespace Fanda.Core.Base
             return models;
         }
 
-        public virtual async Task<IEnumerable<TModel>> FindAsync(string expression, params object[] args)
-        {
-            var models = await Entities
-                .AsNoTracking()
-                .Where(expression, args)
-                .ProjectTo<TModel>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+        //public virtual async Task<IEnumerable<TModel>> FindAsync(string expression, params object[] args)
+        //{
+        //    var models = await Entities
+        //        .AsNoTracking()
+        //        .Where(expression, args)
+        //        .ProjectTo<TModel>(_mapper.ConfigurationProvider)
+        //        .ToListAsync();
 
-            return models;
-        }
+        //    return models;
+        //}
 
         public virtual async Task<TModel> CreateAsync(TModel model)
         {
@@ -183,10 +183,10 @@ namespace Fanda.Core.Base
             return await Entities.AnyAsync(predicate);
         }
 
-        public virtual bool Any(string expression, params object[] args)
-        {
-            return Entities.Any(expression, args);
-        }
+        //public virtual bool Any(string expression, params object[] args)
+        //{
+        //    return Entities.Any(expression, args);
+        //}
 
         public virtual async Task<ValidationErrors> ValidateAsync(TModel model)
         {
@@ -215,6 +215,9 @@ namespace Fanda.Core.Base
 
             return model.Errors;
         }
+
+        public override Expression<Func<TEntity, bool>> GetSuperIdPredicate(Guid? superId)
+            => null;
 
         private static ExpressionStarter<TEntity> GetCodePredicate(string code, Guid id = default)
         {
