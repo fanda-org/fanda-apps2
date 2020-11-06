@@ -40,16 +40,16 @@ namespace Fanda.Accounting.Repository
 
         public async Task<OrgUserDto> CreateAsync(Guid orgId, OrgUserDto model)
         {
-            Guid tenantId = await _context.Organizations
+            Guid? tenantId = await _context.Organizations
                 .Where(o => o.Id == orgId)
                 .Select(o => o.TenantId)
                 .FirstOrDefaultAsync();
-            if (tenantId == Guid.Empty)
+            if (tenantId == null || tenantId == Guid.Empty)
             {
                 throw new NotFoundException("Org not found");
             }
 
-            var res = await _client.CreateUserAsync(tenantId, model);
+            var res = await _client.CreateUserAsync((Guid)tenantId, model);
             if (res != null && res.Data != null)
                 return res.Data;
             else
