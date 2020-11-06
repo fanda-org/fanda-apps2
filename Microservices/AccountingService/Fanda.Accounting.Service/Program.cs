@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -17,13 +18,13 @@ namespace Fanda.Accounting.Service
                 .CreateLogger();
             try
             {
-                Log.Information("Application starting up");
+                Log.Information("Fanda Accounting Service starting up");
                 CreateHostBuilder(args).Build().Run();
-                Log.Information("Application shut down successfully");
+                Log.Information("Fanda Accounting Service shut down successfully");
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Application start-up failed");
+                Log.Fatal(ex, "Fanda Accounting Service start-up failed");
             }
             finally
             {
@@ -34,7 +35,17 @@ namespace Fanda.Accounting.Service
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .UseSerilog()
+                .UseSerilog((builderContext, config) =>
+                {
+                    config
+                        .MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .Enrich.WithMachineName()
+                        .Enrich.WithProperty("Accounting", Assembly.GetExecutingAssembly().FullName)
+                        .Enrich.WithEnvironmentUserName()
+                        .Enrich.WithThreadId()
+                        .WriteTo.Console();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

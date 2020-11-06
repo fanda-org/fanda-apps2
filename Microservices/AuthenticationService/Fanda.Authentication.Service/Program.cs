@@ -15,7 +15,7 @@ namespace Fanda.Authentication.Service
 
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
@@ -26,7 +26,7 @@ namespace Fanda.Authentication.Service
             {
                 Log.Information("Fanda Authentication Service starting up");
                 var host = CreateHostBuilder(args).Build();
-                await CreateAndRunTasks(host);
+                // await CreateAndRunTasks(host);
                 host.Run();
                 Log.Information("Fanda Authentication Service shut down successfully");
             }
@@ -49,7 +49,7 @@ namespace Fanda.Authentication.Service
                         .MinimumLevel.Information()
                         .Enrich.FromLogContext()
                         .Enrich.WithMachineName()
-                        .Enrich.WithProperty("Application", Assembly.GetExecutingAssembly().FullName)
+                        .Enrich.WithProperty("Authentication", Assembly.GetExecutingAssembly().FullName)
                         .Enrich.WithEnvironmentUserName()
                         .Enrich.WithThreadId()
                         .WriteTo.Console();
@@ -59,29 +59,6 @@ namespace Fanda.Authentication.Service
                     webBuilder.UseStartup<Startup>();
                 })
                 .UseWindowsService();
-        }
-
-        private static async Task CreateAndRunTasks(IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var serviceProvider = services.GetRequiredService<IServiceProvider>();
-                    //var configuration = services.GetRequiredService<IConfiguration>();
-                    var options = services.GetRequiredService<IOptions<AppSettings>>();
-
-                    var seed = new SeedDefault(serviceProvider /*, options*/);
-                    await seed.CreateFandaAppAsync();
-                    await seed.CreateTenantAsync();
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, ex.Message);
-                }
-            }
         }
     }
 

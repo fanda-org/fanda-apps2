@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository;
@@ -14,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Refit;
 using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
@@ -92,8 +95,8 @@ namespace Fanda.Accounting.Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            IConfigurationProvider autoMapperConfigProvider, AcctContext acctDbContext)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IConfigurationProvider autoMapperConfigProvider, AcctContext acctDbContext, IHost host)
         {
             //app.ConfigureStartup(env, autoMapperConfigProvider);
 
@@ -106,7 +109,9 @@ namespace Fanda.Accounting.Service
 
             // migrate any database changes on startup (includes initial db creation)
             acctDbContext.Database.Migrate();
+            await SeedDataAsync(host);
             autoMapperConfigProvider.AssertConfigurationIsValid();
+
             //app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -129,6 +134,27 @@ namespace Fanda.Accounting.Service
             });
 
             #endregion Startup configure
+        }
+
+        private static async Task SeedDataAsync(IHost host)
+        {
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var serviceProvider = services.GetRequiredService<IServiceProvider>();
+                    //var configuration = services.GetRequiredService<IConfiguration>();
+                    var options = services.GetRequiredService<IOptions<AppSettings>>();
+
+                    var seed = new SeedDefault(serviceProvider /*, options*/);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Startup>>();
+                    logger.LogError(ex, ex.Message);
+                }
+            }
         }
     }
 }

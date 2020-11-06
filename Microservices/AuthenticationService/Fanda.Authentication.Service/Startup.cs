@@ -1,4 +1,6 @@
+using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository;
@@ -11,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 namespace Fanda.Authentication.Service
@@ -59,8 +63,8 @@ namespace Fanda.Authentication.Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            IConfigurationProvider autoMapperConfigProvider, AuthContext authDbContext)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IConfigurationProvider autoMapperConfigProvider, AuthContext authDbContext, IHost host)
         {
             if (env.IsDevelopment())
             {
@@ -69,6 +73,7 @@ namespace Fanda.Authentication.Service
 
             // migrate any database changes on startup (includes initial db creation)
             authDbContext.Database.Migrate();
+            await SeedDataAsync(host);
             autoMapperConfigProvider.AssertConfigurationIsValid();
 
             //app.UseHttpsRedirection();
@@ -95,13 +100,13 @@ namespace Fanda.Authentication.Service
                 endpoints.MapControllerRoute(
                     "areaRoute",
                     "{area:exists}/{controller}/{action}",
-                    new {action = "Index"});
+                    new { action = "Index" });
                 //.RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller}/{action}/{id?}",
-                    new {controller = "Home", action = "Index"});
+                    new { controller = "Home", action = "Index" });
                 //.RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapControllerRoute(
@@ -111,6 +116,29 @@ namespace Fanda.Authentication.Service
 
                 endpoints.MapHealthChecks("/health");
             });
+        }
+
+        private static async Task SeedDataAsync(IHost host)
+        {
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var serviceProvider = services.GetRequiredService<IServiceProvider>();
+                    //var configuration = services.GetRequiredService<IConfiguration>();
+                    var options = services.GetRequiredService<IOptions<AppSettings>>();
+
+                    var seed = new SeedDefault(serviceProvider /*, options*/);
+                    await seed.CreateFandaAppAsync();
+                    await seed.CreateTenantAsync();
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Startup>>();
+                    logger.LogError(ex, ex.Message);
+                }
+            }
         }
     }
 }
