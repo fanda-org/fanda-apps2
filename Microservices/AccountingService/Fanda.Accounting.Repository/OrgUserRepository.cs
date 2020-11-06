@@ -1,7 +1,11 @@
-﻿using Fanda.Accounting.Domain;
+﻿using AutoMapper;
+using Fanda.Accounting.Domain;
+using Fanda.Accounting.Domain.Context;
+using Fanda.Accounting.Repository.ApiClients;
 using Fanda.Accounting.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +22,38 @@ namespace Fanda.Accounting.Repository
 
     public class OrgUserRepository : IOrgUserRepository
     {
+        private readonly AcctContext _context;
+        private readonly IMapper _mapper;
+        private readonly IAuthClient _client;
+
+        public OrgUserRepository(AcctContext context, IMapper mapper, IAuthClient client)
+        {
+            _context = context;
+            _mapper = mapper;
+            _client = client;
+        }
+
         public Task<OrgUserDto> GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OrgUserDto> CreateAsync(Guid superId, OrgUserDto model)
+        public async Task<OrgUserDto> CreateAsync(Guid orgId, OrgUserDto model)
         {
-            throw new NotImplementedException();
+            Guid tenantId = await _context.Organizations
+                .Where(o => o.Id == orgId)
+                .Select(o => o.TenantId)
+                .FirstOrDefaultAsync();
+            if (tenantId == Guid.Empty)
+            {
+                throw new NotFoundException("Org not found");
+            }
+
+            var res = await _client.CreateUserAsync(tenantId, model);
+            if (res != null && res.Data != null)
+                return res.Data;
+            else
+                throw new BadRequestException(res.ErrorMessage);
         }
 
         public Task UpdateAsync(Guid id, OrgUserDto model)
@@ -43,32 +71,32 @@ namespace Fanda.Accounting.Repository
             throw new NotImplementedException();
         }
 
-        public IQueryable<OrgUserListDto> GetAll(Guid superId)
+        public IQueryable<OrgUserListDto> GetAll(Guid orgId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<OrgUserDto>> FindAsync(Guid superId, Expression<Func<OrgUser, bool>> predicate)
+        public Task<IEnumerable<OrgUserDto>> FindAsync(Guid orgId, Expression<Func<OrgUser, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<OrgUserDto>> FindAsync(Guid superId, string expression, params object[] args)
+        public Task<IEnumerable<OrgUserDto>> FindAsync(Guid orgId, string expression, params object[] args)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AnyAsync(Guid superId, Expression<Func<OrgUser, bool>> predicate)
+        public Task<bool> AnyAsync(Guid orgId, Expression<Func<OrgUser, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public bool Any(Guid superId, string expression, params object[] args)
+        public bool Any(Guid orgId, string expression, params object[] args)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ValidationErrors> ValidateAsync(Guid superId, OrgUserDto model)
+        public Task<ValidationErrors> ValidateAsync(Guid orgId, OrgUserDto model)
         {
             throw new NotImplementedException();
         }

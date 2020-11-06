@@ -26,10 +26,6 @@ namespace Fanda.Authentication.Repository.Base
         [StringLength(255)]
         public string Email { get; set; }
 
-        //[Required]
-        //[Display(Name = "Tenant ID")]
-        //public Guid TenantId { get; set; }
-
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
@@ -38,7 +34,5 @@ namespace Fanda.Authentication.Repository.Base
         public ValidationErrors Errors { get; set; }
 
         public bool IsValid() => Errors.Count == 0;
-
-        //public virtual TenantDto Tenant { get; set; }
     }
 }

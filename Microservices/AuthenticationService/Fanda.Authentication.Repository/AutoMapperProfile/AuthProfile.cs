@@ -94,6 +94,7 @@ namespace Fanda.Authentication.Repository.AutoMapperProfile
                 .ForMember(vm => vm.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(vm => vm.ConfirmPassword, opt => opt.Ignore())
                 .ForMember(vm => vm.AgreeTerms, opt => opt.Ignore())
+                .ForMember(vm => vm.TenantId, opt => opt.Ignore())
                 .ReverseMap();
 
             #endregion ViewModel to Dto

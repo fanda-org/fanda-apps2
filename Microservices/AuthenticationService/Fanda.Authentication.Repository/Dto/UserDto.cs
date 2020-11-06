@@ -1,13 +1,30 @@
-using Fanda.Authentication.Repository.Base;
+using AutoMapper;
+using Fanda.Core;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Fanda.Authentication.Repository.Dto
 {
-    public class UserDto : BaseUserDto
+    public class UserDto //: BaseUserDto
     {
+        public UserDto()
+        {
+            Errors = new ValidationErrors();
+        }
+
+        public Guid Id { get; set; }
+
         [Required]
-        public Guid TenantId { get; set; }
+        [Display(Name = "User Name")]
+        [StringLength(50)]
+        public string UserName { get; set; }
+
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [StringLength(255)]
+        public string Email { get; set; }
 
         [StringLength(50)]
         [Display(Name = "First Name")]
@@ -18,12 +35,17 @@ namespace Fanda.Authentication.Repository.Dto
         public string LastName { get; set; }
 
         public string Password { get; set; }
-
         public string Token { get; set; }
-
         public DateTime? DateLastLogin { get; set; }
-
         public bool? ResetPassword { get; set; }
+        public bool Active { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime? DateModified { get; set; }
+
+        [JsonIgnore(), IgnoreDataMember(), IgnoreMap()]
+        public ValidationErrors Errors { get; set; }
+
+        public bool IsValid() => Errors.Count == 0;
     }
 
     public class UserListDto //: RootListDto
