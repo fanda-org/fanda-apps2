@@ -1,13 +1,13 @@
-﻿using Fanda.Authentication.Repository;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using Fanda.Authentication.Repository;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Authentication.Repository.ViewModels;
 using Fanda.Core.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Service.Controllers
 {
@@ -56,11 +56,12 @@ namespace Fanda.Authentication.Service.Controllers
         {
             try
             {
-                var refreshToken = Request.Cookies["refreshToken"];
+                string? refreshToken = Request.Cookies["refreshToken"];
                 if (string.IsNullOrEmpty(refreshToken))
                 {
                     return BadRequest(MessageResponse.Failure("Token is required"));
                 }
+
                 var response = await _repository.RefreshTokenAsync(refreshToken, IpAddress());
                 if (response == null)
                 {
@@ -87,17 +88,19 @@ namespace Fanda.Authentication.Service.Controllers
             try
             {
                 // accept token from request body or cookie
-                var token = model.Token ?? Request.Cookies["refreshToken"];
+                string token = model.Token ?? Request.Cookies["refreshToken"];
                 if (string.IsNullOrEmpty(token))
                 {
-                    return BadRequest(MessageResponse.Failure(errorMessage: "Token is required"));
+                    return BadRequest(MessageResponse.Failure("Token is required"));
                 }
-                var response = await _repository.RevokeTokenAsync(token, IpAddress());
+
+                bool response = await _repository.RevokeTokenAsync(token, IpAddress());
                 if (!response)
                 {
-                    return NotFound(MessageResponse.Failure(errorMessage: "Invalid token"));
+                    return NotFound(MessageResponse.Failure("Invalid token"));
                 }
-                return Ok(MessageResponse.Succeeded(message: "Token revoked"));
+
+                return Ok(MessageResponse.Succeeded("Token revoked"));
             }
             catch (Exception ex)
             {
@@ -118,20 +121,18 @@ namespace Fanda.Authentication.Service.Controllers
                 {
                     string token = Guid.NewGuid().ToString();
                     string callbackUrl = Url.Page(
-                        pageName: "/Users/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userName = model.UserName, code = token },
-                        protocol: Request.Scheme
+                        "/Users/ConfirmEmail",
+                        null,
+                        new {userName = model.UserName, code = token},
+                        Request.Scheme
                     );
 
                     // save
                     var userDto = await _repository.RegisterAsync(model, callbackUrl);
                     return Ok(DataResponse<UserDto>.Succeeded(userDto));
                 }
-                else
-                {
-                    return BadRequest(MessageResponse.Failure(validationResult));
-                }
+
+                return BadRequest(MessageResponse.Failure(validationResult));
             }
             catch (Exception ex)
             {
@@ -160,11 +161,7 @@ namespace Fanda.Authentication.Service.Controllers
 
         private void SetTokenCookie(string token)
         {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
-            };
+            var cookieOptions = new CookieOptions {HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7)};
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
 
@@ -174,10 +171,8 @@ namespace Fanda.Authentication.Service.Controllers
             {
                 return Request.Headers["X-Forwarded-For"];
             }
-            else
-            {
-                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            }
+
+            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
 
         #endregion helper methods

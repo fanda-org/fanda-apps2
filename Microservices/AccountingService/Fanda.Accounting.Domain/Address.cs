@@ -1,6 +1,6 @@
-using Fanda.Core;
 using System;
 using System.Collections.Generic;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Domain
 {
@@ -20,11 +20,12 @@ namespace Fanda.Accounting.Domain
 
         public string AddressTypeString
         {
-            get { return AddressType.ToString(); }
-            set { AddressType = (AddressType)Enum.Parse(typeof(AddressType), value, true); }
+            get => AddressType.ToString();
+            set => AddressType = (AddressType)Enum.Parse(typeof(AddressType), value, true);
         }
 
         public virtual Bank Bank { get; set; }
+
         public virtual ICollection<OrgAddress> OrgAddresses { get; set; }
         // public virtual ICollection<PartyAddress> PartyAddresses { get; set; }
     }

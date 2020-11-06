@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Repository.Dto;
-using System.Linq;
 
 namespace Fanda.Accounting.Repository.AutoMapperProfiles
 {
@@ -49,20 +49,21 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
             CreateMap<Organization, OrganizationDto>()
                 //.ForPath(vm => vm.Users, opt => opt.MapFrom(src => src.OrgUsers.Select(ou => ou.User).ToList()))
                 .ForPath(dto => dto.Contacts, conf => conf.MapFrom(o => o.OrgContacts.Select(c => c.Contact).ToList()))
-                .ForPath(dto => dto.Addresses, conf => conf.MapFrom(o => o.OrgAddresses.Select(a => a.Address).ToList()))
+                .ForPath(dto => dto.Addresses,
+                    conf => conf.MapFrom(o => o.OrgAddresses.Select(a => a.Address).ToList()))
                 //.ForPath(vm => vm.Banks, opt => opt.MapFrom(src => src.Banks.Select(b => b.BankAccount).ToList()))
                 .ReverseMap()
                 .ForMember(o => o.OrgContacts,
                     conf => conf.MapFrom((orgVM, org, oc, context) =>
-                      {
-                          return orgVM.Contacts?.Select(c => new OrgContact
-                          {
-                              OrgId = orgVM.Id,
-                              Organization = org,
-                              ContactId = c.Id,
-                              Contact = context.Mapper.Map<ContactDto, Contact>(c)
-                          }).ToList();
-                      }))
+                    {
+                        return orgVM.Contacts?.Select(c => new OrgContact
+                        {
+                            OrgId = orgVM.Id,
+                            Organization = org,
+                            ContactId = c.Id,
+                            Contact = context.Mapper.Map<ContactDto, Contact>(c)
+                        }).ToList();
+                    }))
                 .ForMember(o => o.OrgAddresses,
                     conf => conf.MapFrom((orgVM, org, oa, context) =>
                     {

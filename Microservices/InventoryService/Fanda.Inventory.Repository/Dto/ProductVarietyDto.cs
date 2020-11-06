@@ -2,7 +2,11 @@
 
 namespace Fanda.Inventory.Repository.Dto
 {
-    public class ProductVarietyDto : BaseDto { }
+    public class ProductVarietyDto : BaseDto
+    {
+    }
 
-    public class ProductVarietyListDto : BaseListDto { }
+    public class ProductVarietyListDto : BaseListDto
+    {
+    }
 }

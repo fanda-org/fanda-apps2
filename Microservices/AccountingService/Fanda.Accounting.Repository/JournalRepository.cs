@@ -1,4 +1,10 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Domain.Context;
@@ -7,13 +13,6 @@ using Fanda.Core;
 using Fanda.Core.Base;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository
 {
@@ -55,7 +54,7 @@ namespace Fanda.Accounting.Repository
 
         public async Task<IEnumerable<JournalDto>> FindAsync(Guid yearId, Expression<Func<Journal, bool>> predicate)
         {
-            var newPredicate = PredicateBuilder.New<Journal>(predicate);
+            var newPredicate = PredicateBuilder.New(predicate);
             newPredicate = newPredicate.And(GetYearIdPredicate(yearId));
 
             var models = await _context.Journals
@@ -89,6 +88,7 @@ namespace Fanda.Accounting.Repository
             {
                 throw new BadRequestException(validationResult);
             }
+
             var journal = _mapper.Map<Journal>(model);
             journal.YearId = superId;
             journal.DateCreated = DateTime.UtcNow;
@@ -104,7 +104,7 @@ namespace Fanda.Accounting.Repository
                 throw new BadRequestException("Journal id mismatch");
             }
 
-            Journal dbJnl = await _context.Journals
+            var dbJnl = await _context.Journals
                 .Where(o => o.Id == model.Id)
                 .Include(o => o.JournalItems)
                 .Include(o => o.Transactions)
@@ -114,7 +114,7 @@ namespace Fanda.Accounting.Repository
                 throw new NotFoundException("Journal not found");
             }
 
-            Guid yearId = dbJnl.YearId;
+            var yearId = dbJnl.YearId;
             var validationResult = await ValidateAsync(yearId, model);
             if (!validationResult.IsValid())
             {
@@ -122,21 +122,22 @@ namespace Fanda.Accounting.Repository
             }
 
             // copy current (incoming) values to db
-            Journal jnl = _mapper.Map<Journal>(model);
+            var jnl = _mapper.Map<Journal>(model);
             jnl.DateCreated = dbJnl.DateCreated;
             jnl.DateModified = DateTime.UtcNow;
             _context.Entry(dbJnl).CurrentValues.SetValues(jnl);
 
             // delete all journalItems that are no longer exists
-            foreach (JournalItem dbJnlItem in dbJnl.JournalItems)
+            foreach (var dbJnlItem in dbJnl.JournalItems)
             {
                 if (jnl.JournalItems.All(ji => ji.JournalItemId != dbJnlItem.JournalItemId))
                 {
                     _context.Set<JournalItem>().Remove(dbJnlItem);
                 }
             }
+
             // delete all transactions that are no longer exists
-            foreach (Transaction dbTran in dbJnl.Transactions)
+            foreach (var dbTran in dbJnl.Transactions)
             {
                 if (jnl.Transactions.All(t => t.Id != dbTran.Id))
                 {
@@ -146,11 +147,11 @@ namespace Fanda.Accounting.Repository
 
             #region JournalItems
 
-            var jnlItemPairs = from curr in jnl.JournalItems    //OrgContacts.Select(oc => oc.Contact)
-                               join db in dbJnl.JournalItems    //OrgContacts.Select(oc => oc.Contact)
-                                    on curr.JournalItemId equals db.JournalItemId into grp
-                               from db in grp.DefaultIfEmpty()
-                               select new { curr, db };
+            var jnlItemPairs = from curr in jnl.JournalItems //OrgContacts.Select(oc => oc.Contact)
+                join db in dbJnl.JournalItems //OrgContacts.Select(oc => oc.Contact)
+                    on curr.JournalItemId equals db.JournalItemId into grp
+                from db in grp.DefaultIfEmpty()
+                select new {curr, db};
             foreach (var pair in jnlItemPairs)
             {
                 if (pair.db == null)
@@ -178,11 +179,11 @@ namespace Fanda.Accounting.Repository
 
             #region Transactions
 
-            var tranPairs = from curr in jnl.Transactions   //OrgAddresses.Select(oa => oa.Address)
-                            join db in dbJnl.Transactions   //OrgAddresses.Select(oa => oa.Address)
-                                 on curr.Id equals db.Id into grp
-                            from db in grp.DefaultIfEmpty()
-                            select new { curr, db };
+            var tranPairs = from curr in jnl.Transactions //OrgAddresses.Select(oa => oa.Address)
+                join db in dbJnl.Transactions //OrgAddresses.Select(oa => oa.Address)
+                    on curr.Id equals db.Id into grp
+                from db in grp.DefaultIfEmpty()
+                select new {curr, db};
             foreach (var pair in tranPairs)
             {
                 if (pair.db == null)
@@ -225,11 +226,13 @@ namespace Fanda.Accounting.Repository
             {
                 throw new ArgumentNullException(nameof(id), "Id is required");
             }
+
             var journal = await _context.Journals.FindAsync(id);
             if (journal == null)
             {
                 throw new NotFoundException("Journal not found");
             }
+
             _context.Journals.Remove(journal);
             await _context.SaveChangesAsync();
             return true;
@@ -241,11 +244,13 @@ namespace Fanda.Accounting.Repository
             {
                 throw new ArgumentNullException(nameof(id), "Id is required");
             }
+
             var entity = await _context.Journals.FindAsync(id);
             if (entity == null)
             {
                 throw new NotFoundException("Journal not found");
             }
+
             entity.DateModified = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return true;
@@ -261,7 +266,7 @@ namespace Fanda.Accounting.Repository
 
         public async Task<bool> AnyAsync(Guid yearId, Expression<Func<Journal, bool>> predicate)
         {
-            var newPredicate = PredicateBuilder.New<Journal>(predicate);
+            var newPredicate = PredicateBuilder.New(predicate);
             newPredicate = newPredicate.And(GetYearIdPredicate(yearId));
 
             return await _context.Journals.AnyAsync(newPredicate);
@@ -270,7 +275,7 @@ namespace Fanda.Accounting.Repository
         public bool Any(Guid yearId, string expression, params object[] args)
         {
             int newSize = args.Length + 1;
-            string newExpression = expression + $" AND YearId==@{ newSize - 1}";
+            string newExpression = expression + $" AND YearId==@{newSize - 1}";
             Array.Resize(ref args, newSize);
             args[newSize - 1] = yearId;
 
@@ -302,6 +307,7 @@ namespace Fanda.Accounting.Repository
             {
                 numExpression = numExpression.And(e => e.Id != id);
             }
+
             return numExpression;
         }
 

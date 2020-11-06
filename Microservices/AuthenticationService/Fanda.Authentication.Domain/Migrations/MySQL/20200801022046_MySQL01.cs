@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Fanda.Authentication.Domain.Migrations.MySQL
 {
@@ -8,8 +8,8 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Applications",
-                columns: table => new
+                "Applications",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Code = table.Column<string>(unicode: false, maxLength: 16, nullable: false),
@@ -27,8 +27,8 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tenants",
-                columns: table => new
+                "Tenants",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Code = table.Column<string>(maxLength: 16, nullable: false),
@@ -45,8 +45,8 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppResources",
-                columns: table => new
+                "AppResources",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Code = table.Column<string>(nullable: true),
@@ -70,16 +70,16 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 {
                     table.PrimaryKey("PK_AppResources", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppResources_Applications_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalTable: "Applications",
-                        principalColumn: "Id",
+                        "FK_AppResources_Applications_ApplicationId",
+                        x => x.ApplicationId,
+                        "Applications",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
+                "Roles",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Code = table.Column<string>(maxLength: 16, nullable: false),
@@ -94,16 +94,16 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Roles_Tenants_TenantId",
-                        column: x => x.TenantId,
-                        principalTable: "Tenants",
-                        principalColumn: "Id",
+                        "FK_Roles_Tenants_TenantId",
+                        x => x.TenantId,
+                        "Tenants",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
+                "Users",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(maxLength: 25, nullable: false),
@@ -112,8 +112,10 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                     Active = table.Column<bool>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     DateModified = table.Column<DateTime>(nullable: true),
-                    PasswordHash = table.Column<string>(unicode: false, fixedLength: true, maxLength: 255, nullable: false),
-                    PasswordSalt = table.Column<string>(unicode: false, fixedLength: true, maxLength: 255, nullable: false),
+                    PasswordHash =
+                        table.Column<string>(unicode: false, fixedLength: true, maxLength: 255, nullable: false),
+                    PasswordSalt =
+                        table.Column<string>(unicode: false, fixedLength: true, maxLength: 255, nullable: false),
                     FirstName = table.Column<string>(maxLength: 50, nullable: true),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
                     DateLastLogin = table.Column<DateTime>(nullable: true)
@@ -122,16 +124,16 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Tenants_TenantId",
-                        column: x => x.TenantId,
-                        principalTable: "Tenants",
-                        principalColumn: "Id",
+                        "FK_Users_Tenants_TenantId",
+                        x => x.TenantId,
+                        "Tenants",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RolePrivileges",
-                columns: table => new
+                "RolePrivileges",
+                table => new
                 {
                     RoleId = table.Column<Guid>(nullable: false),
                     AppResourceId = table.Column<Guid>(nullable: false),
@@ -145,24 +147,24 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePrivileges", x => new { x.RoleId, x.AppResourceId });
+                    table.PrimaryKey("PK_RolePrivileges", x => new {x.RoleId, x.AppResourceId});
                     table.ForeignKey(
-                        name: "FK_RolePrivileges_AppResources_AppResourceId",
-                        column: x => x.AppResourceId,
-                        principalTable: "AppResources",
-                        principalColumn: "Id",
+                        "FK_RolePrivileges_AppResources_AppResourceId",
+                        x => x.AppResourceId,
+                        "AppResources",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RolePrivileges_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
+                        "FK_RolePrivileges_Roles_RoleId",
+                        x => x.RoleId,
+                        "Roles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefreshTokens",
-                columns: table => new
+                "RefreshTokens",
+                table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false),
@@ -178,116 +180,116 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshTokens_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        "FK_RefreshTokens_Users_UserId",
+                        x => x.UserId,
+                        "Users",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applications_Code",
-                table: "Applications",
-                column: "Code",
+                "IX_Applications_Code",
+                "Applications",
+                "Code",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applications_Name",
-                table: "Applications",
-                column: "Name",
+                "IX_Applications_Name",
+                "Applications",
+                "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppResources_ApplicationId_Code",
-                table: "AppResources",
-                columns: new[] { "ApplicationId", "Code" },
+                "IX_AppResources_ApplicationId_Code",
+                "AppResources",
+                new[] {"ApplicationId", "Code"},
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppResources_ApplicationId_Name",
-                table: "AppResources",
-                columns: new[] { "ApplicationId", "Name" },
+                "IX_AppResources_ApplicationId_Name",
+                "AppResources",
+                new[] {"ApplicationId", "Name"},
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_UserId",
-                table: "RefreshTokens",
-                column: "UserId");
+                "IX_RefreshTokens_UserId",
+                "RefreshTokens",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolePrivileges_AppResourceId",
-                table: "RolePrivileges",
-                column: "AppResourceId");
+                "IX_RolePrivileges_AppResourceId",
+                "RolePrivileges",
+                "AppResourceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_TenantId",
-                table: "Roles",
-                column: "TenantId");
+                "IX_Roles_TenantId",
+                "Roles",
+                "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_Code_TenantId",
-                table: "Roles",
-                columns: new[] { "Code", "TenantId" },
+                "IX_Roles_Code_TenantId",
+                "Roles",
+                new[] {"Code", "TenantId"},
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_Name_TenantId",
-                table: "Roles",
-                columns: new[] { "Name", "TenantId" },
+                "IX_Roles_Name_TenantId",
+                "Roles",
+                new[] {"Name", "TenantId"},
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenants_Code",
-                table: "Tenants",
-                column: "Code",
+                "IX_Tenants_Code",
+                "Tenants",
+                "Code",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenants_Name",
-                table: "Tenants",
-                column: "Name",
+                "IX_Tenants_Name",
+                "Tenants",
+                "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
+                "IX_Users_Email",
+                "Users",
+                "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_TenantId",
-                table: "Users",
-                column: "TenantId");
+                "IX_Users_TenantId",
+                "Users",
+                "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_UserName",
-                table: "Users",
-                column: "UserName",
+                "IX_Users_UserName",
+                "Users",
+                "UserName",
                 unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RefreshTokens");
+                "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "RolePrivileges");
+                "RolePrivileges");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                "Users");
 
             migrationBuilder.DropTable(
-                name: "AppResources");
+                "AppResources");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                "Roles");
 
             migrationBuilder.DropTable(
-                name: "Applications");
+                "Applications");
 
             migrationBuilder.DropTable(
-                name: "Tenants");
+                "Tenants");
         }
     }
 }

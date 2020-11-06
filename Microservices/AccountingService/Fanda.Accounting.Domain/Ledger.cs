@@ -1,7 +1,7 @@
-﻿using Fanda.Accounting.Domain.Base;
-using Fanda.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Fanda.Accounting.Domain.Base;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Domain
 {
@@ -11,8 +11,8 @@ namespace Fanda.Accounting.Domain
 
         public string LedgerTypeString
         {
-            get { return LedgerType.ToString(); }
-            set { LedgerType = (LedgerType)Enum.Parse(typeof(LedgerType), value, true); }
+            get => LedgerType.ToString();
+            set => LedgerType = (LedgerType)Enum.Parse(typeof(LedgerType), value, true);
         }
 
         public Guid LedgerGroupId { get; set; }

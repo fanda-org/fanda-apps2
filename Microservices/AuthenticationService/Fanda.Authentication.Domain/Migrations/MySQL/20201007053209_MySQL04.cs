@@ -7,17 +7,17 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateIndex(
-                name: "IX_UserTokens_Token",
-                table: "UserTokens",
-                column: "Token",
+                "IX_UserTokens_Token",
+                "UserTokens",
+                "Token",
                 unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_UserTokens_Token",
-                table: "UserTokens");
+                "IX_UserTokens_Token",
+                "UserTokens");
         }
     }
 }

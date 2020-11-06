@@ -1,14 +1,20 @@
-﻿namespace Fanda.Core.SqlClients
+﻿using System.Data.Common;
+using Npgsql;
+
+namespace Fanda.Core.SqlClients
 {
     public class PgSqlClient : IDbClient
     {
-        public System.Data.Common.DbConnection Connection { get; }
-
         public PgSqlClient(string connectionString)
         {
-            Connection = new Npgsql.NpgsqlConnection(connectionString);
+            Connection = new NpgsqlConnection(connectionString);
         }
 
-        public void Dispose() => Connection.Dispose();
+        public DbConnection Connection { get; }
+
+        public void Dispose()
+        {
+            Connection.Dispose();
+        }
     }
 }

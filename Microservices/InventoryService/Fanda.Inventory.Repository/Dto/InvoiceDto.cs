@@ -1,8 +1,7 @@
-﻿using Fanda.Core;
-using Fanda.Core.Base;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Fanda.Core;
+using Fanda.Core.Base;
 
 namespace Fanda.Inventory.Repository.Dto
 {
@@ -32,6 +31,7 @@ namespace Fanda.Inventory.Repository.Dto
         public decimal TaxAmt { get; set; }
         public decimal MiscAddDesc { get; set; }
         public decimal MiscAddAmt { get; set; }
+
         public decimal GrandTotal { get; set; }
         //public DateTime DateCreated { get; set; }
         //public DateTime? DateModified { get; set; }

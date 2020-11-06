@@ -1,13 +1,13 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Repository
 {
@@ -117,9 +117,9 @@ namespace Fanda.Authentication.Repository
                 throw new BadRequestException("Role id mismatch");
             }
 
-            Role dbRole = await _context.Roles
+            var dbRole = await _context.Roles
                 .Where(o => o.Id == id)
-                .Include(o => o.Privileges)   //.ThenInclude(oc => oc.Resource)
+                .Include(o => o.Privileges) //.ThenInclude(oc => oc.Resource)
                 .FirstOrDefaultAsync();
             if (dbRole == null)
             {
@@ -127,7 +127,7 @@ namespace Fanda.Authentication.Repository
             }
 
             // copy current (incoming) values to db
-            Role role = _mapper.Map<Role>(model);
+            var role = _mapper.Map<Role>(model);
             role.TenantId = dbRole.TenantId;
             role.DateModified = DateTime.UtcNow;
             _context.Entry(dbRole).CurrentValues.SetValues(role);
@@ -135,11 +135,12 @@ namespace Fanda.Authentication.Repository
             try
             {
                 // delete all app-resource that are no longer exists
-                foreach (RolePrivilege dbRolePrivilege in dbRole.Privileges)
+                foreach (var dbRolePrivilege in dbRole.Privileges)
                 {
                     //Resource dbResource = dbAppResource.Resource;
                     //if (app.AppResources.All(oc => oc.Resource.Id != dbAppResource.Resource.Id))
-                    if (role.Privileges.All(ar => ar.AppResourceId != dbRolePrivilege.AppResourceId)) // && ar.AppResourceId != dbRolePrivilege.AppResourceId
+                    if (role.Privileges.All(ar => ar.AppResourceId != dbRolePrivilege.AppResourceId)
+                    ) // && ar.AppResourceId != dbRolePrivilege.AppResourceId
                     {
                         //context.Resources.Remove(dbResource);
                         _context.Set<RolePrivilege>().Remove(dbRolePrivilege);
@@ -150,11 +151,11 @@ namespace Fanda.Authentication.Repository
 
             #region Resources
 
-            var resourcePairs = from curr in role.Privileges   //.Select(oc => oc.Resource)
-                                join db in dbRole.Privileges   //.Select(oc => oc.Resource)
-                                     on curr.AppResourceId equals db.AppResourceId into grp
-                                from db in grp.DefaultIfEmpty()
-                                select new { curr, db };
+            var resourcePairs = from curr in role.Privileges //.Select(oc => oc.Resource)
+                join db in dbRole.Privileges //.Select(oc => oc.Resource)
+                    on curr.AppResourceId equals db.AppResourceId into grp
+                from db in grp.DefaultIfEmpty()
+                select new {curr, db};
             foreach (var pair in resourcePairs)
             {
                 pair.curr.RoleId = role.Id;

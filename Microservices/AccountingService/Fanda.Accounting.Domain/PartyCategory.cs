@@ -1,5 +1,5 @@
-﻿using Fanda.Accounting.Domain.Base;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Fanda.Accounting.Domain.Base;
 
 namespace Fanda.Accounting.Domain
 {

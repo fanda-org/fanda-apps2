@@ -1,6 +1,5 @@
-﻿using Fanda.Core.Base;
-
-using System;
+﻿using System;
+using Fanda.Core.Base;
 
 namespace Fanda.Inventory.Domain.Base
 {
@@ -11,6 +10,7 @@ namespace Fanda.Inventory.Domain.Base
     public class YearInvtEntity : BaseYearEntity
     {
         public string ReferenceNumber { get; set; }
+
         public DateTime ReferenceDate { get; set; }
         //public Guid YearId { get; set; }
     }

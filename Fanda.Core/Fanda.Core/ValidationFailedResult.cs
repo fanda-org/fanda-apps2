@@ -8,7 +8,7 @@ namespace Fanda.Core
     public class ValidationFailedResult : ObjectResult
     {
         public ValidationFailedResult(ModelStateDictionary modelState)
-            : base(DataResponse<string>.Failure(new ValidationErrors(modelState), "Validation failed"))
+            : base(MessageResponse.Failure(new ValidationErrors(modelState), "Validation failed"))
         {
             StatusCode = StatusCodes.Status422UnprocessableEntity;
         }

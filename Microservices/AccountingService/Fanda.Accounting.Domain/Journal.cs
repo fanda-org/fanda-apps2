@@ -1,7 +1,7 @@
-﻿using Fanda.Accounting.Domain.Base;
-using Fanda.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Fanda.Accounting.Domain.Base;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Domain
 {
@@ -11,8 +11,8 @@ namespace Fanda.Accounting.Domain
 
         public string JournalTypeString
         {
-            get { return JournalType.ToString(); }
-            set { JournalType = (JournalType)Enum.Parse(typeof(JournalType), value, true); }
+            get => JournalType.ToString();
+            set => JournalType = (JournalType)Enum.Parse(typeof(JournalType), value, true);
         }
 
         public string JournalSign { get; set; }

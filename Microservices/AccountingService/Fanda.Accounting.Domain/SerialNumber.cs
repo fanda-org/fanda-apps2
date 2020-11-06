@@ -1,5 +1,5 @@
-﻿using Fanda.Core;
-using System;
+﻿using System;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Domain
 {
@@ -15,8 +15,8 @@ namespace Fanda.Accounting.Domain
 
         public string ModuleString
         {
-            get { return Module.ToString(); }
-            set { Module = (SerialNumberModule)Enum.Parse(typeof(SerialNumberModule), value, true); }
+            get => Module.ToString();
+            set => Module = (SerialNumberModule)Enum.Parse(typeof(SerialNumberModule), value, true);
         }
 
         public string Prefix { get; set; }
@@ -29,8 +29,8 @@ namespace Fanda.Accounting.Domain
 
         public string ResetString
         {
-            get { return Reset.ToString(); }
-            set { Reset = (SerialNumberReset)Enum.Parse(typeof(SerialNumberReset), value, true); }
+            get => Reset.ToString();
+            set => Reset = (SerialNumberReset)Enum.Parse(typeof(SerialNumberReset), value, true);
         }
 
         public virtual AccountYear AccountYear { get; set; }

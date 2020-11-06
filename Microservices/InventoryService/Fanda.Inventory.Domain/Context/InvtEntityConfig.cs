@@ -29,9 +29,9 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(u => u.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
-            builder.HasIndex(p => new { p.Name, p.OrgId })
+            builder.HasIndex(p => new {p.Name, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -50,7 +50,7 @@ namespace Fanda.Inventory.Domain.Context
             builder.ToTable("UnitConversions");
 
             // key
-            builder.HasKey(u => new { u.FromUnitId, u.ToUnitId });
+            builder.HasKey(u => new {u.FromUnitId, u.ToUnitId});
 
             // columns
 
@@ -97,9 +97,9 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(pc => pc.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
-            builder.HasIndex(p => new { p.Name, p.OrgId })
+            builder.HasIndex(p => new {p.Name, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -138,9 +138,9 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(b => b.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
-            builder.HasIndex(p => new { p.Name, p.OrgId })
+            builder.HasIndex(p => new {p.Name, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -175,9 +175,9 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(s => s.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
-            builder.HasIndex(p => new { p.Name, p.OrgId })
+            builder.HasIndex(p => new {p.Name, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -212,9 +212,9 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(v => v.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
-            builder.HasIndex(p => new { p.Name, p.OrgId })
+            builder.HasIndex(p => new {p.Name, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -233,7 +233,7 @@ namespace Fanda.Inventory.Domain.Context
             builder.ToTable("ProductIngredients");
 
             // key
-            builder.HasKey(p => new { p.ParentProductId, p.ChildProductId, p.UnitId });
+            builder.HasKey(p => new {p.ParentProductId, p.ChildProductId, p.UnitId});
 
             // index
             //builder.HasIndex(p => new { p.ParentProductId, p.ChildProductId, p.UnitId })
@@ -271,7 +271,7 @@ namespace Fanda.Inventory.Domain.Context
             // columns
 
             // index
-            builder.HasIndex(pp => new { pp.ProductId, pp.PartyCategoryId, pp.InvoiceCategoryId })
+            builder.HasIndex(pp => new {pp.ProductId, pp.PartyCategoryId, pp.InvoiceCategoryId})
                 .IsUnique();
 
             // foreign key
@@ -300,7 +300,7 @@ namespace Fanda.Inventory.Domain.Context
             builder.ToTable("ProductPricingRanges");
 
             // key
-            builder.HasKey(r => new { r.RangeId, r.PricingId });
+            builder.HasKey(r => new {r.RangeId, r.PricingId});
 
             // columns
             builder.Ignore(r => r.RoundOffOption);
@@ -350,9 +350,9 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(p => p.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
-            builder.HasIndex(p => new { p.Name, p.OrgId })
+            builder.HasIndex(p => new {p.Name, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -411,9 +411,9 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(c => c.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(ic => new { ic.Code, ic.OrgId })
+            builder.HasIndex(ic => new {ic.Code, ic.OrgId})
                 .IsUnique();
-            builder.HasIndex(ic => new { ic.Name, ic.OrgId })
+            builder.HasIndex(ic => new {ic.Name, ic.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -501,7 +501,7 @@ namespace Fanda.Inventory.Domain.Context
             //builder.Property(o => o.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(i => new { i.Number, i.YearId })
+            builder.HasIndex(i => new {i.Number, i.YearId})
                 .IsUnique();
 
             // foreign key
@@ -535,7 +535,7 @@ namespace Fanda.Inventory.Domain.Context
             builder.ToTable("InvoiceItems");
 
             // key
-            builder.HasKey(i => new { i.InvoiceItemId, i.InvoiceId });
+            builder.HasKey(i => new {i.InvoiceItemId, i.InvoiceId});
             builder.Property(i => i.InvoiceItemId).ValueGeneratedOnAdd();
 
             // columns
@@ -576,7 +576,7 @@ namespace Fanda.Inventory.Domain.Context
                 .HasMaxLength(25);
 
             // index
-            builder.HasIndex(s => new { s.BatchNumber, s.ProductId })
+            builder.HasIndex(s => new {s.BatchNumber, s.ProductId})
                 .IsUnique();
 
             // foreign key

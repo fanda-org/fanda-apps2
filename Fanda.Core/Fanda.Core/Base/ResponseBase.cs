@@ -63,26 +63,19 @@ namespace Fanda.Core.Base
         public ValidationErrors Errors { get; set; }
 
         public static MessageResponse Succeeded(string message = null)
-            => new MessageResponse
-            {
-                Success = true,
-                Message = message
-            };
+        {
+            return new MessageResponse {Success = true, Message = message};
+        }
 
         public static MessageResponse Failure(string errorMessage)
-            => new MessageResponse
-            {
-                Success = false,
-                ErrorMessage = errorMessage
-            };
+        {
+            return new MessageResponse {Success = false, ErrorMessage = errorMessage};
+        }
 
         public static MessageResponse Failure(ValidationErrors errors, string errorMessage = null)
-            => new MessageResponse
-            {
-                Success = false,
-                Errors = errors,
-                ErrorMessage = errorMessage
-            };
+        {
+            return new MessageResponse {Success = false, Errors = errors, ErrorMessage = errorMessage};
+        }
 
         //public static MessageResponse Failure(ModelStateDictionary modelState, string errorMessage = null)
         //    => new MessageResponse
@@ -98,12 +91,9 @@ namespace Fanda.Core.Base
         public TModel Data { get; set; }
 
         public static DataResponse<TModel> Succeeded(TModel data, string message = null)
-            => new DataResponse<TModel>
-            {
-                Success = true,
-                Message = message,
-                Data = data
-            };
+        {
+            return new DataResponse<TModel> {Success = true, Message = message, Data = data};
+        }
     }
 
     public class PagedResponse<TModel> : DataResponse<TModel>, IPagedResponse<TModel>
@@ -114,13 +104,7 @@ namespace Fanda.Core.Base
 
         public int ItemsCount { get; set; }
 
-        public int PageCount
-        {
-            get
-            {
-                return ItemsCount < PageSize ? 1 : (int)((double)ItemsCount / PageSize);
-            }
-        }
+        public int PageCount => ItemsCount < PageSize ? 1 : (int)((double)ItemsCount / PageSize);
 
         public int FirstRowOnPage
         {
@@ -145,14 +129,16 @@ namespace Fanda.Core.Base
                     return 0;
                 }
 
-                return Math.Min(ItemsCount, FirstRowOnPage + PageSize - 1);
+                return Math.Min(ItemsCount, (FirstRowOnPage + PageSize) - 1);
             }
         }
 
         //=> Math.Min((int)PageNumber * (int)PageSize, (int)ItemsCount);
 
-        public static PagedResponse<TModel> Succeeded(TModel data, int itemsCount, int pageIndex, int pageSize, string message = null)
-            => new PagedResponse<TModel>
+        public static PagedResponse<TModel> Succeeded(TModel data, int itemsCount, int pageIndex, int pageSize,
+            string message = null)
+        {
+            return new PagedResponse<TModel>
             {
                 Success = true,
                 Data = data,
@@ -161,6 +147,7 @@ namespace Fanda.Core.Base
                 PageSize = pageSize,
                 Message = message
             };
+        }
     }
 
     //public class DataResponse : DataResponse<object> { }

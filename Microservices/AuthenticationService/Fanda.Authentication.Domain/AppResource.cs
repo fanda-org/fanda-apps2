@@ -1,7 +1,7 @@
-using Fanda.Authentication.Domain.Base;
-using Fanda.Core;
 using System;
 using System.Collections.Generic;
+using Fanda.Authentication.Domain.Base;
+using Fanda.Core;
 
 namespace Fanda.Authentication.Domain
 {
@@ -11,9 +11,11 @@ namespace Fanda.Authentication.Domain
 
         public string ResourceTypeString
         {
-            get { return ResourceType.ToString(); }
-            set { ResourceType = (ResourceType)Enum.Parse(typeof(ResourceType), value, true); }
+            get => ResourceType.ToString();
+            set => ResourceType = (ResourceType)Enum.Parse(typeof(ResourceType), value, true);
         }
+
+        public virtual ICollection<RolePrivilege> Privileges { get; set; }
 
         #region Action fields
 
@@ -26,7 +28,5 @@ namespace Fanda.Authentication.Domain
         public bool Exportable { get; set; }
 
         #endregion Action fields
-
-        public virtual ICollection<RolePrivilege> Privileges { get; set; }
     }
 }

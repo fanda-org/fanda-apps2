@@ -1,15 +1,21 @@
-﻿namespace Fanda.Core.SqlClients
+﻿using System.Data.Common;
+using Microsoft.Data.Sqlite;
+
+namespace Fanda.Core.SqlClients
 {
     public class SqliteClient : IDbClient
     {
-        public System.Data.Common.DbConnection Connection { get; }
-
         public SqliteClient(string connectionString)
         {
             //Connection = new System.Data.SQLite.SQLiteConnection(connectionString);
-            Connection = new Microsoft.Data.Sqlite.SqliteConnection(connectionString);
+            Connection = new SqliteConnection(connectionString);
         }
 
-        public void Dispose() => Connection.Dispose();
+        public DbConnection Connection { get; }
+
+        public void Dispose()
+        {
+            Connection.Dispose();
+        }
     }
 }

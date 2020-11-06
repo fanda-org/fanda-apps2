@@ -2,7 +2,11 @@
 
 namespace Fanda.Accounting.Repository.Dto
 {
-    public class PartyCategoryDto : BaseDto { }
+    public class PartyCategoryDto : BaseDto
+    {
+    }
 
-    public class PartyCategoryListDto : BaseListDto { }
+    public class PartyCategoryListDto : BaseListDto
+    {
+    }
 }

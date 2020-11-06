@@ -7,9 +7,7 @@ namespace Fanda.Core
     // that can be caught and handled within the application
     public class BadRequestException : Exception
     {
-        public ValidationErrors ValidationErrors { get; }
-
-        public BadRequestException() : base()
+        public BadRequestException()
         {
         }
 
@@ -26,11 +24,13 @@ namespace Fanda.Core
         {
             ValidationErrors = validationErrors;
         }
+
+        public ValidationErrors ValidationErrors { get; }
     }
 
     public class NotFoundException : Exception
     {
-        public NotFoundException() : base()
+        public NotFoundException()
         {
         }
 
@@ -46,7 +46,7 @@ namespace Fanda.Core
 
     public class DuplicateException : Exception
     {
-        public DuplicateException() : base()
+        public DuplicateException()
         {
         }
 
@@ -62,7 +62,7 @@ namespace Fanda.Core
 
     public class UnauthorizedException : Exception
     {
-        public UnauthorizedException() : base()
+        public UnauthorizedException()
         {
         }
 

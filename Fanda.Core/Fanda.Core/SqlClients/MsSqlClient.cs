@@ -1,13 +1,16 @@
-﻿namespace Fanda.Core.SqlClients
+﻿using System.Data.Common;
+using Microsoft.Data.SqlClient;
+
+namespace Fanda.Core.SqlClients
 {
     public class MsSqlClient : IDbClient
     {
-        public System.Data.Common.DbConnection Connection { get; }
-
         public MsSqlClient(string connectionString)
         {
-            Connection = new Microsoft.Data.SqlClient.SqlConnection(connectionString);
+            Connection = new SqlConnection(connectionString);
         }
+
+        public DbConnection Connection { get; }
 
         public void Dispose() => Connection.Dispose();
     }

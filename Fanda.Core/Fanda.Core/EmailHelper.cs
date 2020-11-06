@@ -9,7 +9,7 @@ namespace Fanda.Core
         {
             try
             {
-                MailAddress m = new MailAddress(emailaddress);
+                var m = new MailAddress(emailaddress);
 
                 return true;
             }

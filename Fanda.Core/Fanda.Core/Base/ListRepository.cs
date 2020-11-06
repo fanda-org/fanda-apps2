@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fanda.Core.Base
 {
@@ -12,8 +12,8 @@ namespace Fanda.Core.Base
         where TListModel : class
     {
         private readonly DbContext _context;
-        private readonly IMapper _mapper;
         private readonly string _filterBySuperId;
+        private readonly IMapper _mapper;
 
         public ListRepository(DbContext context, IMapper mapper, string filterBySuperId)
         {
@@ -86,18 +86,17 @@ namespace Fanda.Core.Base
                     .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
                 return qry;
             }
-            else
+
+            if (superId == Guid.Empty)
             {
-                if (superId == Guid.Empty)
-                {
-                    throw new BadRequestException($"{nameof(superId)} is required");
-                }
-                qry = _context.Set<TEntity>()
-                    .AsNoTracking()
-                    .Where(_filterBySuperId, superId.ToString())
-                    .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
-                return qry;
+                throw new BadRequestException($"{nameof(superId)} is required");
             }
+
+            qry = _context.Set<TEntity>()
+                .AsNoTracking()
+                .Where(_filterBySuperId, superId.ToString())
+                .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
+            return qry;
         }
     }
 }

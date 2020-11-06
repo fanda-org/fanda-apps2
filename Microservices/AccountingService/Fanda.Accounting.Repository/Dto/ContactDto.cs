@@ -40,7 +40,6 @@ namespace Fanda.Accounting.Repository.Dto
         [StringLength(25, ErrorMessage = "Maximum allowed length is 25")]
         public string Mobile { get; set; }
 
-        [Display(Name = "Is Primary?")]
-        public bool IsPrimary { get; set; }
+        [Display(Name = "Is Primary?")] public bool IsPrimary { get; set; }
     }
 }

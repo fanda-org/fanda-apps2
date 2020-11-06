@@ -1,8 +1,7 @@
-﻿using Fanda.Core;
-using Fanda.Core.Base;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Fanda.Core;
+using Fanda.Core.Base;
 
 namespace Fanda.Inventory.Repository.Dto
 {

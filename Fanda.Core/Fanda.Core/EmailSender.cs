@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Fanda.Core
 {
@@ -25,8 +25,8 @@ namespace Fanda.Core
 
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
-            MailMessage message = new MailMessage();
-            SmtpClient smtp = new SmtpClient();
+            var message = new MailMessage();
+            var smtp = new SmtpClient();
             message.From = new MailAddress(_appSettings.MailSettings.Mail, _appSettings.MailSettings.DisplayName);
             message.To.Add(new MailAddress(mailRequest.ToEmail));
             message.Subject = mailRequest.Subject;
@@ -37,18 +37,21 @@ namespace Fanda.Core
             smtp.Host = _appSettings.MailSettings.Host;
             smtp.EnableSsl = true;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential(_appSettings.MailSettings.Mail, _appSettings.MailSettings.Password);
+            smtp.Credentials =
+                new NetworkCredential(_appSettings.MailSettings.Mail, _appSettings.MailSettings.Password);
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             await smtp.SendMailAsync(message);
         }
 
         public Task SendGridEmailAsync(string email, string subject, string message)
-            => Execute(_appSettings.FandaSettings.SendGridKey, subject, message, email);
+        {
+            return Execute(_appSettings.FandaSettings.SendGridKey, subject, message, email);
+        }
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
             var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            var msg = new SendGridMessage
             {
                 From = new EmailAddress("fanda@fanda.com", "Fanda"),
                 Subject = subject,

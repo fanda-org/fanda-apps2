@@ -1,7 +1,7 @@
-﻿using Fanda.Accounting.Domain.Context;
-using Fanda.Core;
-using System;
+﻿using System;
 using System.Text;
+using Fanda.Accounting.Domain.Context;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Repository
 {
@@ -58,9 +58,9 @@ namespace Fanda.Accounting.Repository
                 var serialNumber = _context.SerialNumbers
                     .Find(yearId, moduleString);
 
-                int firstIndex = serialNumber.SerialFormat.IndexOf('N');    // YYJJJNNNNN = 5
+                int firstIndex = serialNumber.SerialFormat.IndexOf('N'); // YYJJJNNNNN = 5
                 int lastIndex = serialNumber.SerialFormat.LastIndexOf('N'); // YYJJJNNNNN = 9
-                string nums = serialNumber.SerialFormat.Substring(firstIndex, lastIndex - firstIndex + 1);
+                string nums = serialNumber.SerialFormat.Substring(firstIndex, (lastIndex - firstIndex) + 1);
 
                 int nextNumber = serialNumber.LastNumber + 1;
                 //Interlocked.Increment(ref nextNumber);                      // 100000
@@ -73,6 +73,7 @@ namespace Fanda.Accounting.Repository
                             //Interlocked.Exchange(ref nextNumber, 1);
                             nextNumber = 1;
                         }
+
                         break;
 
                     case SerialNumberReset.Daily:
@@ -81,6 +82,7 @@ namespace Fanda.Accounting.Repository
                             //Interlocked.Exchange(ref nextNumber, 1);
                             nextNumber = 1;
                         }
+
                         break;
 
                     case SerialNumberReset.Monthly:
@@ -89,6 +91,7 @@ namespace Fanda.Accounting.Repository
                             //Interlocked.Exchange(ref nextNumber, 1);
                             nextNumber = 1;
                         }
+
                         break;
 
                     case SerialNumberReset.CalendarYear:
@@ -97,20 +100,22 @@ namespace Fanda.Accounting.Repository
                             //Interlocked.Exchange(ref nextNumber, 1);
                             nextNumber = 1;
                         }
+
                         break;
 
-                    case SerialNumberReset.AccountingYear:  // 01/04/2019 - 31/03/2020
-                                                            //var accountYear = await context.AccountYears
-                                                            //    .FindAsync(yearId);
+                    case SerialNumberReset.AccountingYear: // 01/04/2019 - 31/03/2020
+                        //var accountYear = await context.AccountYears
+                        //    .FindAsync(yearId);
                         if (DateTime.Today > yearEnd)
                         {
                             //Interlocked.Exchange(ref nextNumber, 1);
                             nextNumber = 1;
                         }
+
                         break;
                 }
 
-                StringBuilder sbSerialNumber =
+                var sbSerialNumber =
                     new StringBuilder($"{serialNumber.Prefix}{serialNumber.SerialFormat}{serialNumber.Suffix}");
 
                 sbSerialNumber.Replace("YYYY", DateTime.Today.ToString("yyyy"));
@@ -135,6 +140,7 @@ namespace Fanda.Accounting.Repository
                 //scope.Complete();
                 return nextValue;
             }
+
             //}
             //catch (Exception ex)
             //{

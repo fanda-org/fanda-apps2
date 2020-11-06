@@ -1,12 +1,4 @@
-﻿using AutoMapper;
-using Fanda.Authentication.Domain;
-using Fanda.Authentication.Repository.Dto;
-using Fanda.Authentication.Repository.ViewModels;
-using Fanda.Core;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -14,6 +6,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AutoMapper;
+using Fanda.Authentication.Domain;
+using Fanda.Authentication.Repository.Dto;
+using Fanda.Authentication.Repository.ViewModels;
+using Fanda.Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Fanda.Authentication.Repository
 {
@@ -36,11 +36,11 @@ namespace Fanda.Authentication.Repository
 
     public class AuthRepository : IAuthRepository
     {
+        private readonly AppSettings _appSettings;
         private readonly AuthContext _context;
+        private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        private readonly AppSettings _appSettings;
-        private readonly IEmailSender _emailSender;
 
         public AuthRepository(AuthContext context, IMapper mapper,
             IUserRepository userRepository,
@@ -91,7 +91,7 @@ namespace Fanda.Authentication.Repository
 
             UserDto userModel;
             {
-                User user = _mapper.Map<User>(model);
+                var user = _mapper.Map<User>(model);
                 user.DateCreated = DateTime.UtcNow;
                 user.DateModified = null;
                 user.PasswordHash = passwordHash;
@@ -134,7 +134,7 @@ namespace Fanda.Authentication.Repository
             }
 
             // authentication successful so generate jwt and refresh tokens
-            var jwtToken = GenerateJwtToken(user);
+            string jwtToken = GenerateJwtToken(user);
             var refreshToken = GenerateRefreshToken(ipAddress);
 
             // save refresh token
@@ -177,7 +177,7 @@ namespace Fanda.Authentication.Repository
             await _context.SaveChangesAsync();
 
             // generate new jwt
-            var jwtToken = GenerateJwtToken(user);
+            string jwtToken = GenerateJwtToken(user);
 
             var userDto = _mapper.Map<UserDto>(user);
             return new AuthenticateResponse(userDto, user.TenantId, jwtToken, newRefreshToken.Token, false);
@@ -258,16 +258,16 @@ namespace Fanda.Authentication.Repository
             var key = Encoding.ASCII.GetBytes(_appSettings.FandaSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}")
                     //JwtRegisteredClaimNames.Sub, JwtRegisteredClaimNames.NameId, JwtRegisteredClaimNames.Email
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(180),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);

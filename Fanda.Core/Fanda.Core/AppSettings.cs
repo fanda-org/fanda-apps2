@@ -17,7 +17,7 @@
         public string MsSqlConnection { get; set; }
         public string SqliteConnection { get; set; }
         public string SqlLocalDbConnection { get; set; }
-        public string DefaultConnection { get; set; }   // default = mysql/mariadb
+        public string DefaultConnection { get; set; } // default = mysql/mariadb
     }
 
     public class AuthService

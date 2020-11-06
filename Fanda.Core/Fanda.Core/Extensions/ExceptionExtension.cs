@@ -6,7 +6,7 @@ namespace Fanda.Core.Extensions
     {
         public static string InnerMessage(this Exception ex)
         {
-            Exception exception = ex;
+            var exception = ex;
             if (exception.InnerException != null)
             {
                 exception = exception.InnerException;

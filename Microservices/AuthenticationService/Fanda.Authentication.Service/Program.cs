@@ -1,3 +1,6 @@
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 using Fanda.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -5,9 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Service
 {
@@ -40,8 +40,9 @@ namespace Fanda.Authentication.Service
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseSerilog((builderContext, config) =>
                 {
                     config
@@ -58,6 +59,7 @@ namespace Fanda.Authentication.Service
                     webBuilder.UseStartup<Startup>();
                 })
                 .UseWindowsService();
+        }
 
         private static async Task CreateAndRunTasks(IHost host)
         {
@@ -70,7 +72,7 @@ namespace Fanda.Authentication.Service
                     //var configuration = services.GetRequiredService<IConfiguration>();
                     var options = services.GetRequiredService<IOptions<AppSettings>>();
 
-                    SeedDefault seed = new SeedDefault(serviceProvider/*, options*/);
+                    var seed = new SeedDefault(serviceProvider /*, options*/);
                     await seed.CreateFandaAppAsync();
                     await seed.CreateTenantAsync();
                 }

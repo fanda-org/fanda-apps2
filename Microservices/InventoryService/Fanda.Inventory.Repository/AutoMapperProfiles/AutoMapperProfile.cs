@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-
+﻿using System.Linq;
+using AutoMapper;
 using Fanda.Inventory.Domain;
 using Fanda.Inventory.Repository.Dto;
-
-using System.Linq;
 
 namespace Fanda.Inventory.Repository.AutoMapperProfiles
 {

@@ -7,16 +7,16 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ResourceTypeString",
-                table: "AppResources");
+                "ResourceTypeString",
+                "AppResources");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "ResourceTypeString",
-                table: "AppResources",
-                type: "longtext CHARACTER SET utf8mb4",
+                "ResourceTypeString",
+                "AppResources",
+                "longtext CHARACTER SET utf8mb4",
                 nullable: true);
         }
     }

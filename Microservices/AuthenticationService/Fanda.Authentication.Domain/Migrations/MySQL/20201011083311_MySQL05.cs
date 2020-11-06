@@ -7,16 +7,16 @@ namespace Fanda.Authentication.Domain.Migrations.MySQL
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "ResetPassword",
-                table: "Users",
+                "ResetPassword",
+                "Users",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ResetPassword",
-                table: "Users");
+                "ResetPassword",
+                "Users");
         }
     }
 }

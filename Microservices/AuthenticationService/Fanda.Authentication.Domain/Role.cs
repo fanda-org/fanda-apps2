@@ -1,5 +1,5 @@
-﻿using Fanda.Authentication.Domain.Base;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Fanda.Authentication.Domain.Base;
 
 namespace Fanda.Authentication.Domain
 {

@@ -1,7 +1,7 @@
-﻿using Fanda.Accounting.Domain.Base;
-using Fanda.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Fanda.Accounting.Domain.Base;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Domain
 {
@@ -15,11 +15,12 @@ namespace Fanda.Accounting.Domain
 
         public string GroupTypeString
         {
-            get { return GroupType.ToString(); }
-            set { GroupType = (LedgerGroupType)Enum.Parse(typeof(LedgerGroupType), value, true); }
+            get => GroupType.ToString();
+            set => GroupType = (LedgerGroupType)Enum.Parse(typeof(LedgerGroupType), value, true);
         }
 
         public Guid? ParentId { get; set; }
+
         public bool IsSystem { get; set; }
         //public Guid OrgId { get; set; }
         //public bool Active { get; set; }

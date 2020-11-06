@@ -1,9 +1,9 @@
-﻿using Fanda.Core.SqlClients;
+﻿using System;
+using Fanda.Core.SqlClients;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
-using System;
 
 namespace Fanda.Core.Extensions
 {
@@ -17,7 +17,7 @@ namespace Fanda.Core.Extensions
             {
                 case "MYSQL":
                     return services // .AddEntityFrameworkMySql()
-                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
+                        .AddDbContextPool<TDbContext>(options => // (sp, options)
                         {
                             MySqlOptions(options, settings.ConnectionStrings.MySqlConnection,
                                 migrationsAssemblyName, isDevelopmentEnvironment);
@@ -25,7 +25,7 @@ namespace Fanda.Core.Extensions
                         .AddTransient<IDbClient>(_ => new MySqlClient(settings.ConnectionStrings.MySqlConnection));
                 case "MARIADB":
                     return services // .AddEntityFrameworkMySql()
-                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
+                        .AddDbContextPool<TDbContext>(options => // (sp, options)
                         {
                             MariaDbOptions(options, settings.ConnectionStrings.MariaDbConnection,
                                 migrationsAssemblyName, isDevelopmentEnvironment);
@@ -33,7 +33,7 @@ namespace Fanda.Core.Extensions
                         .AddTransient<IDbClient>(_ => new MariaDbClient(settings.ConnectionStrings.MariaDbConnection));
                 case "PGSQL":
                     return services // .AddEntityFrameworkNpgsql()
-                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
+                        .AddDbContextPool<TDbContext>(options => // (sp, options)
                         {
                             PgSqlOptions(options, settings.ConnectionStrings.PgSqlConnection,
                                 migrationsAssemblyName, isDevelopmentEnvironment);
@@ -41,7 +41,7 @@ namespace Fanda.Core.Extensions
                         .AddTransient<IDbClient>(_ => new PgSqlClient(settings.ConnectionStrings.PgSqlConnection));
                 case "MSSQL":
                     return services // .AddEntityFrameworkSqlServer()
-                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
+                        .AddDbContextPool<TDbContext>(options => // (sp, options)
                         {
                             MsSqlOptions(options, settings.ConnectionStrings.MsSqlConnection,
                                 migrationsAssemblyName, isDevelopmentEnvironment);
@@ -49,7 +49,7 @@ namespace Fanda.Core.Extensions
                         .AddTransient<IDbClient>(_ => new MsSqlClient(settings.ConnectionStrings.MsSqlConnection));
                 case "SQLITE":
                     return services // .AddEntityFrameworkSqlite()
-                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
+                        .AddDbContextPool<TDbContext>(options => // (sp, options)
                         {
                             SqliteOptions(options, settings.ConnectionStrings.SqliteConnection,
                                 migrationsAssemblyName, isDevelopmentEnvironment);
@@ -57,7 +57,7 @@ namespace Fanda.Core.Extensions
                         .AddTransient<IDbClient>(_ => new SqliteClient(settings.ConnectionStrings.SqliteConnection));
                 case "SQLLOCALDB":
                     return services // .AddEntityFrameworkSqlServer()
-                        .AddDbContextPool<TDbContext>(options =>    // (sp, options)
+                        .AddDbContextPool<TDbContext>(options => // (sp, options)
                         {
                             MsSqlOptions(options, settings.ConnectionStrings.SqlLocalDbConnection,
                                 migrationsAssemblyName, isDevelopmentEnvironment);
@@ -65,7 +65,7 @@ namespace Fanda.Core.Extensions
                         .AddTransient<IDbClient>(_ => new MsSqlClient(settings.ConnectionStrings.SqlLocalDbConnection));
                 default:
                     return services // .AddEntityFrameworkMySql()
-                        .AddDbContextPool<TDbContext>(options =>   // (sp, options)
+                        .AddDbContextPool<TDbContext>(options => // (sp, options)
                         {
                             MySqlOptions(options, settings.ConnectionStrings.DefaultConnection,
                                 migrationsAssemblyName, isDevelopmentEnvironment);
@@ -150,17 +150,18 @@ namespace Fanda.Core.Extensions
                         migrationsAssemblyName, isDevelopmentEnvironment);
                     break;
             }
+
             return options;
         }
 
-        private static void MySqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+        private static void MySqlOptions( /*IServiceProvider sp,*/ DbContextOptionsBuilder options,
             string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseMySql(connectionString, mysqlOptions =>
-            {
-                mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
-                mysqlOptions.ServerVersion(new ServerVersion(new Version(8, 0), ServerType.MySql));
-            })
+                {
+                    mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
+                    mysqlOptions.ServerVersion(new ServerVersion(new Version(8, 0)));
+                })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
                 // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
@@ -169,14 +170,14 @@ namespace Fanda.Core.Extensions
                 .EnableServiceProviderCaching();
         }
 
-        private static void MariaDbOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+        private static void MariaDbOptions( /*IServiceProvider sp,*/ DbContextOptionsBuilder options,
             string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseMySql(connectionString, mysqlOptions =>
-            {
-                mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
-                mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5), ServerType.MariaDb));
-            })
+                {
+                    mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
+                    mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5), ServerType.MariaDb));
+                })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
                 // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
@@ -185,14 +186,14 @@ namespace Fanda.Core.Extensions
                 .EnableServiceProviderCaching();
         }
 
-        private static void PgSqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+        private static void PgSqlOptions( /*IServiceProvider sp,*/ DbContextOptionsBuilder options,
             string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseNpgsql(connectionString, pgsqlOptions =>
-            {
-                pgsqlOptions.MigrationsAssembly(migrationsAssemblyName);
-                pgsqlOptions.EnableRetryOnFailure();
-            })
+                {
+                    pgsqlOptions.MigrationsAssembly(migrationsAssemblyName);
+                    pgsqlOptions.EnableRetryOnFailure();
+                })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
                 // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
@@ -201,15 +202,15 @@ namespace Fanda.Core.Extensions
                 .EnableServiceProviderCaching();
         }
 
-        private static void MsSqlOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+        private static void MsSqlOptions( /*IServiceProvider sp,*/ DbContextOptionsBuilder options,
             string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseSqlServer(connectionString, sqlOptions =>
-            {
-                //sqlOptions.EnableRetryOnFailure();
-                //sqlopt.UseRowNumberForPaging();
-                sqlOptions.MigrationsAssembly(migrationsAssemblyName);
-            })
+                {
+                    //sqlOptions.EnableRetryOnFailure();
+                    //sqlopt.UseRowNumberForPaging();
+                    sqlOptions.MigrationsAssembly(migrationsAssemblyName);
+                })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
                 // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
@@ -218,13 +219,13 @@ namespace Fanda.Core.Extensions
                 .EnableServiceProviderCaching();
         }
 
-        private static void SqliteOptions(/*IServiceProvider sp,*/ DbContextOptionsBuilder options,
+        private static void SqliteOptions( /*IServiceProvider sp,*/ DbContextOptionsBuilder options,
             string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
             options.UseSqlite(connectionString, sqlOptions =>
-            {
-                sqlOptions.MigrationsAssembly(migrationsAssemblyName);
-            })
+                {
+                    sqlOptions.MigrationsAssembly(migrationsAssemblyName);
+                })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
                 // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)

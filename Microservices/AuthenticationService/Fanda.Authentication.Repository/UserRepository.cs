@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Fanda.Authentication.Domain;
@@ -6,12 +12,6 @@ using Fanda.Core;
 using Fanda.Core.Base;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Repository
 {
@@ -39,6 +39,7 @@ namespace Fanda.Authentication.Repository
             {
                 throw new BadRequestException("Id is required");
             }
+
             var user = await _context.Users
                 .AsNoTracking()
                 .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
@@ -47,6 +48,7 @@ namespace Fanda.Authentication.Repository
             {
                 throw new NotFoundException("User not found");
             }
+
             return user;
         }
 
@@ -84,10 +86,12 @@ namespace Fanda.Authentication.Repository
             {
                 throw new BadRequestException("Tenant id is required");
             }
+
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
                 throw new BadRequestException("Password is required");
             }
+
             var validationResult = await ValidateAsync(tenantId, dto);
             if (!validationResult.IsValid())
             {
@@ -113,6 +117,7 @@ namespace Fanda.Authentication.Repository
             {
                 throw new BadRequestException("User id mismatch");
             }
+
             if (string.IsNullOrWhiteSpace(dto.Password))
             {
                 throw new BadRequestException("Password", "Password is required");
@@ -123,6 +128,7 @@ namespace Fanda.Authentication.Repository
             {
                 throw new NotFoundException("User not found");
             }
+
             var validationResult = await ValidateAsync(dbUser.TenantId, dto);
             if (!validationResult.IsValid())
             {
@@ -147,6 +153,7 @@ namespace Fanda.Authentication.Repository
             {
                 throw new BadRequestException("Id is required");
             }
+
             var user = await _context.Users
                 .FindAsync(id);
             if (user == null)
@@ -165,11 +172,13 @@ namespace Fanda.Authentication.Repository
             {
                 throw new ArgumentNullException(nameof(id), "Id is required");
             }
+
             var entity = await _context.Users.FindAsync(id);
             if (entity == null)
             {
                 throw new NotFoundException("User not found");
             }
+
             entity.Active = active;
             entity.DateModified = DateTime.UtcNow;
             await _context.SaveChangesAsync();
@@ -213,6 +222,7 @@ namespace Fanda.Authentication.Repository
             {
                 model.Errors.AddError(nameof(model.Email), $"{model.Email} is not valid email format");
             }
+
             model.UserName = model.UserName.TrimExtraSpaces();
 
             #endregion Formatting: Cleansing and formatting
@@ -223,6 +233,7 @@ namespace Fanda.Authentication.Repository
             {
                 model.Errors.AddError(nameof(tenantId), "Tenant id is required");
             }
+
             bool foundTenant = await _context.Tenants
                 .AnyAsync(t => t.Id == tenantId);
             if (!foundTenant)
@@ -238,9 +249,11 @@ namespace Fanda.Authentication.Repository
             {
                 model.Errors.AddError(nameof(model.Email), $"{nameof(model.Email)} '{model.Email}' already exists");
             }
+
             if (await AnyAsync(tenantId, GetUserNamePredicate(model.UserName, model.Id)))
             {
-                model.Errors.AddError(nameof(model.UserName), $"{nameof(model.UserName)} '{model.UserName}' already exists");
+                model.Errors.AddError(nameof(model.UserName),
+                    $"{nameof(model.UserName)} '{model.UserName}' already exists");
             }
 
             #endregion Validation: Duplicate
@@ -257,6 +270,7 @@ namespace Fanda.Authentication.Repository
             {
                 emailExpression = emailExpression.And(e => e.Id != id);
             }
+
             return emailExpression;
         }
 
@@ -267,6 +281,7 @@ namespace Fanda.Authentication.Repository
             {
                 userNameExpression = userNameExpression.And(e => e.Id != id);
             }
+
             return userNameExpression;
         }
 

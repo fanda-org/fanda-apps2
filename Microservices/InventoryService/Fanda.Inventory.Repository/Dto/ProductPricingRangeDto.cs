@@ -1,6 +1,5 @@
-﻿using Fanda.Core;
-
-using System;
+﻿using System;
+using Fanda.Core;
 
 namespace Fanda.Inventory.Repository.Dto
 {

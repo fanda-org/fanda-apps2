@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Net.Mime;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fanda.Core.Base
 {
@@ -16,7 +16,8 @@ namespace Fanda.Core.Base
         #region Non action methods
 
         [NonAction]
-        private static InternalServerErrorResult InternalServerError(IMessageResponse value)   // [ActionResultObjectValueAttribute]
+        private static InternalServerErrorResult
+            InternalServerError(IMessageResponse value) // [ActionResultObjectValueAttribute]
         {
             return new InternalServerErrorResult(value);
         }
@@ -32,12 +33,11 @@ namespace Fanda.Core.Base
                 {
                     return BadRequest(MessageResponse.Failure(ex.Message));
                 }
-                else
-                {
-                    return BadRequest(MessageResponse.Failure(valErr));
-                }
+
+                return BadRequest(MessageResponse.Failure(valErr));
             }
-            else if (ex is NotFoundException)
+
+            if (ex is NotFoundException)
             {
                 //return NotFound(MessageResponse.Failure($"{modelName} not found"));
                 //var valErr = (ex as NotFoundException).ValidationErrors;
@@ -50,14 +50,13 @@ namespace Fanda.Core.Base
                 //    return BadRequest(MessageResponse.Failure(valErr));
                 //}
             }
-            else if (ex is ArgumentNullException || ex is ArgumentException)
+
+            if (ex is ArgumentNullException || ex is ArgumentException)
             {
                 return BadRequest(MessageResponse.Failure(ex.Message)); // $"Invalid {modelName.ToLower()} id"
             }
-            else
-            {
-                return InternalServerError(MessageResponse.Failure(ex.Message));
-            }
+
+            return InternalServerError(MessageResponse.Failure(ex.Message));
         }
 
         #endregion Non action methods

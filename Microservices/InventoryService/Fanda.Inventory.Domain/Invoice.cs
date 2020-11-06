@@ -1,8 +1,7 @@
-using Fanda.Core;
-using Fanda.Inventory.Domain.Base;
-
 using System;
 using System.Collections.Generic;
+using Fanda.Core;
+using Fanda.Inventory.Domain.Base;
 
 namespace Fanda.Inventory.Domain
 {
@@ -17,32 +16,32 @@ namespace Fanda.Inventory.Domain
 
         public string InvoiceTypeString
         {
-            get { return InvoiceType.ToString(); }
-            set { InvoiceType = (InvoiceType)Enum.Parse(typeof(InvoiceType), value, true); }
+            get => InvoiceType.ToString();
+            set => InvoiceType = (InvoiceType)Enum.Parse(typeof(InvoiceType), value, true);
         }
 
         public StockInvoiceType StockInvoiceType { get; set; }
 
         public string StockInvoiceTypeString
         {
-            get { return StockInvoiceType.ToString(); }
-            set { StockInvoiceType = (StockInvoiceType)Enum.Parse(typeof(StockInvoiceType), value, true); }
+            get => StockInvoiceType.ToString();
+            set => StockInvoiceType = (StockInvoiceType)Enum.Parse(typeof(StockInvoiceType), value, true);
         }
 
         public GstTreatment GstTreatment { get; set; }
 
         public string GstTreatmentString
         {
-            get { return GstTreatment.ToString(); }
-            set { GstTreatment = (GstTreatment)Enum.Parse(typeof(GstTreatment), value, true); }
+            get => GstTreatment.ToString();
+            set => GstTreatment = (GstTreatment)Enum.Parse(typeof(GstTreatment), value, true);
         }
 
         public InvoiceTaxPreference TaxPreference { get; set; }
 
         public string TaxPreferenceString
         {
-            get { return TaxPreference.ToString(); }
-            set { TaxPreference = (InvoiceTaxPreference)Enum.Parse(typeof(InvoiceTaxPreference), value, true); }
+            get => TaxPreference.ToString();
+            set => TaxPreference = (InvoiceTaxPreference)Enum.Parse(typeof(InvoiceTaxPreference), value, true);
         }
 
         public string Notes { get; set; }
@@ -60,6 +59,7 @@ namespace Fanda.Inventory.Domain
         public decimal TaxAmt { get; set; }
         public decimal MiscAddDesc { get; set; }
         public decimal MiscAddAmt { get; set; }
+
         public decimal GrandTotal { get; set; }
         //public Guid YearId { get; set; }
         //public DateTime DateCreated { get; set; }

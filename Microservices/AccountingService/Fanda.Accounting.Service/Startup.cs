@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using AutoMapper;
 using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository;
@@ -12,8 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Reflection;
+using Refit;
+using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 [assembly: ApiController]
 
@@ -21,14 +23,14 @@ namespace Fanda.Accounting.Service
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; }
-        private IWebHostEnvironment Env { get; }
-
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Env = env;
         }
+
+        private IConfiguration Configuration { get; }
+        private IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -42,7 +44,7 @@ namespace Fanda.Accounting.Service
             //services.Configure<AppSettings>(Configuration);
             //AppSettings appSettings = Configuration.Get<AppSettings>();
 
-            AppSettings appSettings = services.ConfigureAppSettings(Configuration);
+            var appSettings = services.ConfigureAppSettings(Configuration);
 
             //services.AddControllers();
             services.AddCustomControllers();
@@ -52,7 +54,8 @@ namespace Fanda.Accounting.Service
             //{
             //    options.UseMySql(Configuration.GetConnectionString("MySqlConnection"));
             //});
-            services.AddCustomDbContext<AcctContext>(appSettings, Assembly.GetAssembly(typeof(AcctContext)).GetName().Name, Env.IsDevelopment())
+            services.AddCustomDbContext<AcctContext>(appSettings,
+                    Assembly.GetAssembly(typeof(AcctContext)).GetName().Name, Env.IsDevelopment())
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AutoMapperProfile))
                 .AddSwagger("Fanda Accounting API");
@@ -63,10 +66,10 @@ namespace Fanda.Accounting.Service
             #region Other services
 
             services.AddHttpClient("auth_api", c =>
-            {
-                c.BaseAddress = new Uri(appSettings.AuthService.Url);
-            })
-                .AddTypedClient(c => Refit.RestService.For<IAuthClient>(c));
+                {
+                    c.BaseAddress = new Uri(appSettings.AuthService.Url);
+                })
+                .AddTypedClient(c => RestService.For<IAuthClient>(c));
 
             #endregion Other services
 
@@ -90,7 +93,7 @@ namespace Fanda.Accounting.Service
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            AutoMapper.IConfigurationProvider autoMapperConfigProvider, AcctContext acctDbContext)
+            IConfigurationProvider autoMapperConfigProvider, AcctContext acctDbContext)
         {
             //app.ConfigureStartup(env, autoMapperConfigProvider);
 

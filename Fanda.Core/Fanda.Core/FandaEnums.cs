@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace Fanda.Core
 {
@@ -90,9 +86,9 @@ namespace Fanda.Core
         Purchase = 2,
         PurchaseReturn = 3, //DebitNote
         Sales = 4,
-        SalesReturn = 5,    //CreditNote
+        SalesReturn = 5, //CreditNote
         Exchange = 6,
-        Transfer = 7,
+        Transfer = 7
     }
 
     // Billing Category : It is used to differentiate billing documents based on the requirements for invoice printing...etc
@@ -146,7 +142,8 @@ namespace Fanda.Core
         NoRoundOff = 0,
         NearestTo1 = 1,
         NearestTo5 = 2,
-        NearestTo10 = 3,
+
+        NearestTo10 = 3
         //NearestTo50 = 4,
         //NearestTo100 = 5,
         //Nearest500=6,
@@ -180,8 +177,8 @@ namespace Fanda.Core
         Journals = 5,
         Purchase = 6,
         Sales = 7,
-        PurchaseReturn = 8,     // DebitNote
-        SalesReturn = 9,        // CreditNote
+        PurchaseReturn = 8, // DebitNote
+        SalesReturn = 9, // CreditNote
         BatchNumber = 10
     }
 
@@ -229,8 +226,8 @@ namespace Fanda.Core
         Journals = 5,
         Purchase = 6,
         Sales = 7,
-        PurchaseReturn = 8,     // DebitNote
-        SalesReturn = 9         // CreditNote
+        PurchaseReturn = 8, // DebitNote
+        SalesReturn = 9 // CreditNote
     }
 
     public enum GoodsType

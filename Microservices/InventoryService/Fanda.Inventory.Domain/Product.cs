@@ -1,8 +1,7 @@
-using Fanda.Core;
-using Fanda.Inventory.Domain.Base;
-
 using System;
 using System.Collections.Generic;
+using Fanda.Core;
+using Fanda.Inventory.Domain.Base;
 
 namespace Fanda.Inventory.Domain
 {
@@ -16,8 +15,8 @@ namespace Fanda.Inventory.Domain
 
         public string ProductTypeString
         {
-            get { return ProductType.ToString(); }
-            set { ProductType = (ProductType)Enum.Parse(typeof(ProductType), value, true); }
+            get => ProductType.ToString();
+            set => ProductType = (ProductType)Enum.Parse(typeof(ProductType), value, true);
         }
 
         public Guid CategoryId { get; set; }
@@ -26,24 +25,8 @@ namespace Fanda.Inventory.Domain
         public Guid? VarietyId { get; set; }
         public Guid UnitId { get; set; }
 
-        #region Tax / GST
-
-        public string TaxCode { get; set; } //HSN code for Goods; SAC code for Service
-        public ProductTaxPreference TaxPreference { get; set; }
-
-        public string TaxPreferenceString
-        {
-            get { return TaxPreference.ToString(); }
-            set { TaxPreference = (ProductTaxPreference)Enum.Parse(typeof(ProductTaxPreference), value, true); }
-        }
-
-        public decimal CentralGstPct { get; set; }
-        public decimal StateGstPct { get; set; }
-        public decimal InterGstPct { get; set; }
-
-        #endregion Tax / GST
-
         public decimal CostPrice { get; set; }
+
         public decimal SellingPrice { get; set; }
         //public Guid OrgId { get; set; }
         //public bool Active { get; set; }
@@ -60,7 +43,26 @@ namespace Fanda.Inventory.Domain
         public virtual ICollection<Stock> Stocks { get; set; }
 
         public virtual ICollection<ProductPricing> ProductPricings { get; set; }
-        public virtual ICollection<ProductIngredient> ParentIngredients { get; set; }   // ProductIngredient.ProductId
-        public virtual ICollection<ProductIngredient> ChildIngredients { get; set; }    // ProductIngredient.IngredientProductId
+        public virtual ICollection<ProductIngredient> ParentIngredients { get; set; } // ProductIngredient.ProductId
+
+        public virtual ICollection<ProductIngredient>
+            ChildIngredients { get; set; } // ProductIngredient.IngredientProductId
+
+        #region Tax / GST
+
+        public string TaxCode { get; set; } //HSN code for Goods; SAC code for Service
+        public ProductTaxPreference TaxPreference { get; set; }
+
+        public string TaxPreferenceString
+        {
+            get => TaxPreference.ToString();
+            set => TaxPreference = (ProductTaxPreference)Enum.Parse(typeof(ProductTaxPreference), value, true);
+        }
+
+        public decimal CentralGstPct { get; set; }
+        public decimal StateGstPct { get; set; }
+        public decimal InterGstPct { get; set; }
+
+        #endregion Tax / GST
     }
 }

@@ -1,13 +1,13 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using LinqKit;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using LinqKit;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fanda.Core.Base
 {
@@ -41,9 +41,9 @@ namespace Fanda.Core.Base
         where TListModel : class
     {
         private readonly DbContext _context;
-        private readonly IMapper _mapper;
-        private readonly string _filterBySuperId;
         private readonly string _entityTypeName;
+        private readonly string _filterBySuperId;
+        private readonly IMapper _mapper;
 
         public SubRepository(DbContext context, IMapper mapper, string filterBySuperId)
             : base(context, mapper, filterBySuperId)
@@ -76,9 +76,10 @@ namespace Fanda.Core.Base
             return model;
         }
 
-        public virtual async Task<IEnumerable<TModel>> FindAsync(Guid superId, Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<IEnumerable<TModel>> FindAsync(Guid superId,
+            Expression<Func<TEntity, bool>> predicate)
         {
-            var newPredicate = PredicateBuilder.New<TEntity>(predicate);
+            var newPredicate = PredicateBuilder.New(predicate);
             newPredicate = newPredicate.And(GetSuperIdPredicate(superId));
 
             var models = await Entities
@@ -116,6 +117,7 @@ namespace Fanda.Core.Base
             {
                 throw new BadRequestException(validationResult);
             }
+
             var entity = _mapper.Map<TEntity>(model);
             SetSuperId(superId, entity);
             entity.DateCreated = DateTime.UtcNow;
@@ -130,17 +132,20 @@ namespace Fanda.Core.Base
             {
                 throw new ArgumentException("Id is mismatch", nameof(id));
             }
+
             var dbEntity = await Entities.FindAsync(id);
             if (dbEntity == null)
             {
                 throw new NotFoundException($"{_entityTypeName} not found");
             }
-            Guid superId = GetSuperId(dbEntity);
+
+            var superId = GetSuperId(dbEntity);
             var validationResult = await ValidateAsync(superId, model);
             if (!validationResult.IsValid())
             {
                 throw new BadRequestException(validationResult);
             }
+
             var entity = _mapper.Map<TEntity>(model);
             entity.DateModified = DateTime.UtcNow;
             _context.Entry(dbEntity).CurrentValues.SetValues(model);
@@ -154,11 +159,13 @@ namespace Fanda.Core.Base
             {
                 throw new ArgumentNullException(nameof(id), "Id is required");
             }
+
             var entity = await Entities.FindAsync(id);
             if (entity == null)
             {
                 throw new NotFoundException($"{_entityTypeName} not found");
             }
+
             Entities.Remove(entity);
             await _context.SaveChangesAsync();
             return true;
@@ -170,11 +177,13 @@ namespace Fanda.Core.Base
             {
                 throw new ArgumentNullException(nameof(id), "Id is required");
             }
+
             var entity = await Entities.FindAsync(id);
             if (entity == null)
             {
                 throw new NotFoundException($"{_entityTypeName} not found");
             }
+
             entity.Active = active;
             entity.DateModified = DateTime.UtcNow;
             //_context.Update(entity);
@@ -187,7 +196,7 @@ namespace Fanda.Core.Base
 
         public virtual async Task<bool> AnyAsync(Guid superId, Expression<Func<TEntity, bool>> predicate)
         {
-            var newPredicate = PredicateBuilder.New<TEntity>(predicate);
+            var newPredicate = PredicateBuilder.New(predicate);
             newPredicate = newPredicate.And(GetSuperIdPredicate(superId));
 
             return await Entities.AnyAsync(newPredicate);
@@ -221,6 +230,7 @@ namespace Fanda.Core.Base
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
+
             if (await AnyAsync(superId, GetNamePredicate(model.Name, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
@@ -239,6 +249,7 @@ namespace Fanda.Core.Base
             {
                 codeExpression = codeExpression.And(e => e.Id != id);
             }
+
             return codeExpression;
         }
 
@@ -250,6 +261,7 @@ namespace Fanda.Core.Base
             {
                 nameExpression = nameExpression.And(e => e.Id != id);
             }
+
             return nameExpression;
         }
 

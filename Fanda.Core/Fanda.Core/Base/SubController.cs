@@ -1,22 +1,20 @@
-﻿using Fanda.Core.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Specialized;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using Fanda.Core.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fanda.Core.Base
 {
     public abstract class SubController<TRepository, TEntity, TModel, TListModel> : BaseController
-            where TRepository : ISubRepository<TEntity, TModel, TListModel>
-            where TModel : BaseDto
-            where TListModel : BaseListDto
+        where TRepository : ISubRepository<TEntity, TModel, TListModel>
+        where TModel : BaseDto
+        where TListModel : BaseListDto
     {
-        private readonly TRepository _repository;
         private readonly string _moduleName;
+        private readonly TRepository _repository;
 
         public SubController(TRepository repository)
         {
@@ -25,20 +23,20 @@ namespace Fanda.Core.Base
         }
 
         // organizations?superId=5
-        [HttpGet()]
+        [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<List<TListModel>>)
         public async Task<IActionResult> GetAll([FromQuery] Guid superId)
         {
             try
             {
-                NameValueCollection queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
+                var queryString = HttpUtility.ParseQueryString(Request.QueryString.Value);
                 var query = new Query(queryString["pageIndex"], queryString["pageSize"])
                 {
                     Filter = queryString["filter"],
                     FilterArgs = queryString["filterArgs"]?.Split(','),
                     //Search = queryString["search"],
-                    Sort = queryString["sort"],
+                    Sort = queryString["sort"]
                 };
 
                 var response = await _repository.GetAll(superId, query);
@@ -55,7 +53,7 @@ namespace Fanda.Core.Base
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.OK)] // typeof(DataResponse<TModel>)
-        public async Task<IActionResult> GetById([Required, FromRoute] Guid id)
+        public async Task<IActionResult> GetById([Required] [FromRoute] Guid id)
         {
             try
             {
@@ -64,6 +62,7 @@ namespace Fanda.Core.Base
                 {
                     return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
                 }
+
                 return Ok(DataResponse<TModel>.Succeeded(dto));
             }
             catch (Exception ex)
@@ -75,13 +74,13 @@ namespace Fanda.Core.Base
         [HttpPost("{superId}")]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType((int)HttpStatusCode.Created)]    // typeof(DataResponse<TModel>)
+        [ProducesResponseType((int)HttpStatusCode.Created)] // typeof(DataResponse<TModel>)
         public async Task<IActionResult> Create(Guid superId, TModel model)
         {
             try
             {
                 var dto = await _repository.CreateAsync(superId, model);
-                return CreatedAtAction(nameof(GetById), new { id = dto.Id },
+                return CreatedAtAction(nameof(GetById), new {id = dto.Id},
                     DataResponse<TModel>.Succeeded(dto));
             }
             catch (Exception ex)
@@ -119,15 +118,14 @@ namespace Fanda.Core.Base
                 {
                     return BadRequest(MessageResponse.Failure($"{_moduleName} id is missing"));
                 }
-                var success = await _repository.DeleteAsync(id);
+
+                bool success = await _repository.DeleteAsync(id);
                 if (success)
                 {
                     return NoContent();
                 }
-                else
-                {
-                    return NotFound(MessageResponse.Failure($"{_moduleName} not found"));
-                }
+
+                return NotFound(MessageResponse.Failure($"{_moduleName} not found"));
             }
             catch (Exception ex)
             {
@@ -141,7 +139,8 @@ namespace Fanda.Core.Base
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType(typeof(MessageResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Active([Required, FromRoute] Guid id, [Required, FromQuery] Activate activate)
+        public async Task<IActionResult> Active([Required] [FromRoute] Guid id,
+            [Required] [FromQuery] Activate activate)
         {
             try
             {
@@ -150,6 +149,7 @@ namespace Fanda.Core.Base
                 {
                     return Ok(MessageResponse.Succeeded("Status changed successfully"));
                 }
+
                 return NotFound(MessageResponse.Failure($"{_moduleName} id '{id}' not found"));
             }
             catch (Exception ex)
@@ -173,6 +173,7 @@ namespace Fanda.Core.Base
                 {
                     return Ok(MessageResponse.Succeeded($"{_moduleName} exists"));
                 }
+
                 return NotFound(MessageResponse.Failure($"{_moduleName} not exists"));
             }
             catch (Exception ex)

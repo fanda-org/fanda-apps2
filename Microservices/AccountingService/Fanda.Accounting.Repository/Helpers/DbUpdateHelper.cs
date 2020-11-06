@@ -1,11 +1,11 @@
-using Fanda.Core.Base;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Fanda.Core.Base;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Fanda.Accounting.Repository.Helpers
 {
@@ -22,7 +22,7 @@ namespace Fanda.Accounting.Repository.Helpers
 
             foreach (var property in navigation)
             {
-                var propertyName = property.GetPropertyAccess().Name;
+                string propertyName = property.GetPropertyAccess().Name;
                 var dbItemsEntry = dbEntry.Collection(propertyName);
                 var accessor = dbItemsEntry.Metadata.GetCollectionAccessor();
 

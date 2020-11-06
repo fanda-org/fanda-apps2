@@ -1,6 +1,6 @@
-﻿using Fanda.Core;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Fanda.Core;
 
 namespace Fanda.Authentication.Repository.ViewModels
 {
@@ -18,7 +18,8 @@ namespace Fanda.Authentication.Repository.ViewModels
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+            MinimumLength = 6)]
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -32,7 +33,6 @@ namespace Fanda.Authentication.Repository.ViewModels
         [Display(Name = "Tenant ID")]
         public Guid TenantId { get; set; }
 
-        [RequiredTrue]
-        public bool AgreeTerms { get; set; }
+        [RequiredTrue] public bool AgreeTerms { get; set; }
     }
 }

@@ -1,4 +1,9 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using AutoMapper;
 using Fanda.Accounting.Domain;
 using Fanda.Accounting.Domain.Context;
 using Fanda.Accounting.Repository.ApiClients;
@@ -6,12 +11,6 @@ using Fanda.Accounting.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository
 {
@@ -22,9 +21,9 @@ namespace Fanda.Accounting.Repository
 
     public class OrgUserRepository : IOrgUserRepository
     {
+        private readonly IAuthClient _client;
         private readonly AcctContext _context;
         private readonly IMapper _mapper;
-        private readonly IAuthClient _client;
 
         public OrgUserRepository(AcctContext context, IMapper mapper, IAuthClient client)
         {
@@ -40,7 +39,7 @@ namespace Fanda.Accounting.Repository
 
         public async Task<OrgUserDto> CreateAsync(Guid orgId, OrgUserDto model)
         {
-            Guid? tenantId = await _context.Organizations
+            var tenantId = await _context.Organizations
                 .Where(o => o.Id == orgId)
                 .Select(o => o.TenantId)
                 .FirstOrDefaultAsync();
@@ -51,9 +50,11 @@ namespace Fanda.Accounting.Repository
 
             var res = await _client.CreateUserAsync((Guid)tenantId, model);
             if (res != null && res.Data != null)
+            {
                 return res.Data;
-            else
-                throw new BadRequestException(res.ErrorMessage);
+            }
+
+            throw new BadRequestException(res.ErrorMessage);
         }
 
         public Task UpdateAsync(Guid id, OrgUserDto model)

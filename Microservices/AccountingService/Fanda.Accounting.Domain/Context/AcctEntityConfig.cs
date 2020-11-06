@@ -133,7 +133,7 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("OrgContacts");
 
             // key
-            builder.HasKey(oc => new { oc.OrgId, oc.ContactId });
+            builder.HasKey(oc => new {oc.OrgId, oc.ContactId});
 
             // foreign key
             builder.HasOne(oc => oc.Organization)
@@ -155,7 +155,7 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("OrgAddresses");
 
             // key
-            builder.HasKey(oa => new { oa.OrgId, oa.AddressId });
+            builder.HasKey(oa => new {oa.OrgId, oa.AddressId});
 
             // foreign key
             builder.HasOne(oa => oa.Organization)
@@ -178,7 +178,7 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("OrgUsers");
 
             // key
-            builder.HasKey(ou => new { ou.OrgId, ou.UserId });
+            builder.HasKey(ou => new {ou.OrgId, ou.UserId});
 
             // foreign key
             builder.HasOne(ou => ou.Organization)
@@ -200,12 +200,12 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("OrgUserRoles");
 
             // key
-            builder.HasKey(o => new { o.OrgId, o.UserId, o.RoleId });
+            builder.HasKey(o => new {o.OrgId, o.UserId, o.RoleId});
 
             // foreign key
             builder.HasOne(o => o.OrgUser)
                 .WithMany(u => u.OrgUserRoles)
-                .HasForeignKey(o => new { o.OrgId, o.UserId })
+                .HasForeignKey(o => new {o.OrgId, o.UserId})
                 .OnDelete(DeleteBehavior.Cascade);
             //builder.HasOne(o => o.Role)
             //    .WithMany(r => r.OrgUserRoles)
@@ -248,9 +248,9 @@ namespace Fanda.Accounting.Domain.Context
             //builder.Property(u => u.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(g => new { g.Code, g.OrgId })
+            builder.HasIndex(g => new {g.Code, g.OrgId})
                 .IsUnique();
-            builder.HasIndex(g => new { g.Name, g.OrgId })
+            builder.HasIndex(g => new {g.Name, g.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -297,9 +297,9 @@ namespace Fanda.Accounting.Domain.Context
             //builder.Property(pc => pc.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
-            builder.HasIndex(p => new { p.Name, p.OrgId })
+            builder.HasIndex(p => new {p.Name, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -346,9 +346,9 @@ namespace Fanda.Accounting.Domain.Context
                 .HasMaxLength(255);
 
             // index
-            builder.HasIndex(pc => new { pc.Code, pc.OrgId })
+            builder.HasIndex(pc => new {pc.Code, pc.OrgId})
                 .IsUnique();
-            builder.HasIndex(pc => new { pc.Name, pc.OrgId })
+            builder.HasIndex(pc => new {pc.Name, pc.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -383,9 +383,9 @@ namespace Fanda.Accounting.Domain.Context
             //builder.Property(pc => pc.DateModified).ValueGeneratedOnUpdate();
 
             // index
-            builder.HasIndex(pc => new { pc.Code, pc.OrgId })
+            builder.HasIndex(pc => new {pc.Code, pc.OrgId})
                 .IsUnique();
-            builder.HasIndex(pc => new { pc.Name, pc.OrgId })
+            builder.HasIndex(pc => new {pc.Name, pc.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -563,7 +563,7 @@ namespace Fanda.Accounting.Domain.Context
                 .IsRequired();
 
             // index
-            builder.HasIndex(p => new { p.Code, p.OrgId })
+            builder.HasIndex(p => new {p.Code, p.OrgId})
                 .IsUnique();
 
             // foreign key
@@ -586,7 +586,7 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("LedgerBalances");
 
             // key
-            builder.HasKey(u => new { u.LedgerId, u.YearId });
+            builder.HasKey(u => new {u.LedgerId, u.YearId});
 
             // columns
             builder.Property(u => u.BalanceSign)
@@ -616,7 +616,7 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("SerialNumbers");
 
             // key
-            builder.HasKey(sn => new { sn.YearId, sn.ModuleString });
+            builder.HasKey(sn => new {sn.YearId, sn.ModuleString});
 
             // columns
             builder.Ignore(sn => sn.Module);
@@ -695,7 +695,7 @@ namespace Fanda.Accounting.Domain.Context
             builder.ToTable("JournalItems");
 
             // key
-            builder.HasKey(j => new { j.JournalItemId, j.JournalId });
+            builder.HasKey(j => new {j.JournalItemId, j.JournalId});
             builder.Property(j => j.JournalItemId).ValueGeneratedOnAdd();
 
             // columns

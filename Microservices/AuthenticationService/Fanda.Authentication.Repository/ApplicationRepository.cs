@@ -1,12 +1,12 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository.Dto;
 using Fanda.Core;
 using Fanda.Core.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Repository
 {
@@ -107,13 +107,14 @@ namespace Fanda.Authentication.Repository
         //    return mapper.Map<ApplicationDto>(app);
         //}
 
-        public async override Task UpdateAsync(Guid id, ApplicationDto model)
+        public override async Task UpdateAsync(Guid id, ApplicationDto model)
         {
             if (id != model.Id)
             {
                 throw new BadRequestException("Application id mismatch");
             }
-            Application dbApp = await context.Applications
+
+            var dbApp = await context.Applications
                 .Include(a => a.AppResources)
                 .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
@@ -123,14 +124,14 @@ namespace Fanda.Authentication.Repository
             }
 
             // copy current (incoming) values to db
-            Application app = mapper.Map<Application>(model);
+            var app = mapper.Map<Application>(model);
             app.DateModified = DateTime.UtcNow;
             context.Entry(dbApp).CurrentValues.SetValues(app);
 
             try
             {
                 // delete all app-resource that are no longer exists
-                foreach (AppResource dbAppResource in dbApp.AppResources)
+                foreach (var dbAppResource in dbApp.AppResources)
                 {
                     if (app.AppResources.All(ar => ar.Id != dbAppResource.Id))
                     {
@@ -143,10 +144,10 @@ namespace Fanda.Authentication.Repository
             #region Resources
 
             var resourcePairs = from curr in app.AppResources
-                                join db in dbApp.AppResources
-                                     on curr.Id equals db.Id into grp
-                                from db in grp.DefaultIfEmpty()
-                                select new { curr, db };
+                join db in dbApp.AppResources
+                    on curr.Id equals db.Id into grp
+                from db in grp.DefaultIfEmpty()
+                select new {curr, db};
             foreach (var pair in resourcePairs)
             {
                 if (pair.db != null)
@@ -179,6 +180,7 @@ namespace Fanda.Authentication.Repository
             {
                 model.Errors.AddError("AppResouce.Code", "App resource code already exists");
             }
+
             bool duplicateNameFound = model.AppResources
                 .GroupBy(x => x.Name)
                 .Any(g => g.Count() > 1);

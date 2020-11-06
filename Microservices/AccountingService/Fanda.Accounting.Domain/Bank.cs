@@ -1,5 +1,5 @@
-using Fanda.Core;
 using System;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Domain
 {
@@ -11,8 +11,8 @@ namespace Fanda.Accounting.Domain
 
         public string AccountTypeString
         {
-            get { return AccountType.ToString(); }
-            set { AccountType = (BankAccountType)Enum.Parse(typeof(BankAccountType), value, true); }
+            get => AccountType.ToString();
+            set => AccountType = (BankAccountType)Enum.Parse(typeof(BankAccountType), value, true);
         }
 
         public string IfscCode { get; set; }

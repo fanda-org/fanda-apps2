@@ -1,5 +1,5 @@
-using Fanda.Core.Base;
 using System;
+using Fanda.Core.Base;
 
 namespace Fanda.Authentication.Domain.Base
 {

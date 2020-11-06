@@ -10,8 +10,7 @@ namespace Fanda.Authentication.Repository.Dto
         //public Guid RoleId { get; set; }
 
         // AppResource
-        [Required]
-        public Guid AppResourceId { get; set; }
+        [Required] public Guid AppResourceId { get; set; }
 
         public bool Create { get; set; }
         public bool Update { get; set; }

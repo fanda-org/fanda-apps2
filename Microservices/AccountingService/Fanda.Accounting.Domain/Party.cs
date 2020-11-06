@@ -1,6 +1,5 @@
-using Fanda.Core;
 using System;
-using System.Collections.Generic;
+using Fanda.Core;
 
 namespace Fanda.Accounting.Domain
 {
@@ -14,8 +13,8 @@ namespace Fanda.Accounting.Domain
 
         public string PaymentTermString
         {
-            get { return PaymentTerm.ToString(); }
-            set { PaymentTerm = (PaymentTerm)Enum.Parse(typeof(PaymentTerm), value, true); }
+            get => PaymentTerm.ToString();
+            set => PaymentTerm = (PaymentTerm)Enum.Parse(typeof(PaymentTerm), value, true);
         }
 
         public decimal CreditLimit { get; set; }

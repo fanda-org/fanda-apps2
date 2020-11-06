@@ -1,13 +1,13 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using LinqKit;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using LinqKit;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fanda.Core.Base
 {
@@ -41,8 +41,8 @@ namespace Fanda.Core.Base
         where TListModel : class
     {
         private readonly DbContext _context;
-        private readonly IMapper _mapper;
         private readonly string _entityTypeName;
+        private readonly IMapper _mapper;
 
         public SuperRepository(DbContext context, IMapper mapper)
             : base(context, mapper, string.Empty)
@@ -103,6 +103,7 @@ namespace Fanda.Core.Base
             {
                 throw new BadRequestException(validationResult);
             }
+
             var entity = _mapper.Map<TEntity>(model);
             entity.DateCreated = DateTime.UtcNow;
             await Entities.AddAsync(entity);
@@ -116,16 +117,19 @@ namespace Fanda.Core.Base
             {
                 throw new ArgumentException("Id is mismatch", nameof(id));
             }
+
             var dbEntity = await Entities.FindAsync(id);
             if (dbEntity == null)
             {
                 throw new NotFoundException($"{_entityTypeName} not found");
             }
+
             var validationResult = await ValidateAsync(model);
             if (!validationResult.IsValid())
             {
                 throw new BadRequestException(validationResult);
             }
+
             var entity = _mapper.Map<TEntity>(model);
             entity.DateModified = DateTime.UtcNow;
             _context.Entry(dbEntity).CurrentValues.SetValues(model);
@@ -139,11 +143,13 @@ namespace Fanda.Core.Base
             {
                 throw new ArgumentNullException(nameof(id), "Id is required");
             }
+
             var entity = await Entities.FindAsync(id);
             if (entity == null)
             {
                 throw new NotFoundException($"{_entityTypeName} not found");
             }
+
             Entities.Remove(entity);
             await _context.SaveChangesAsync();
             return true;
@@ -155,11 +161,13 @@ namespace Fanda.Core.Base
             {
                 throw new ArgumentNullException(nameof(id), "Id is required");
             }
+
             var entity = await Entities.FindAsync(id);
             if (entity == null)
             {
                 throw new NotFoundException($"{_entityTypeName} not found");
             }
+
             entity.Active = active;
             entity.DateModified = DateTime.UtcNow;
             //_context.Update(entity);
@@ -197,6 +205,7 @@ namespace Fanda.Core.Base
             {
                 model.Errors.AddError(nameof(model.Code), $"{nameof(model.Code)} '{model.Code}' already exists");
             }
+
             if (await AnyAsync(GetNamePredicate(model.Name, model.Id)))
             {
                 model.Errors.AddError(nameof(model.Name), $"{nameof(model.Name)} '{model.Name}' already exists");
@@ -214,6 +223,7 @@ namespace Fanda.Core.Base
             {
                 codeExpression = codeExpression.And(e => e.Id != id);
             }
+
             return codeExpression;
         }
 
@@ -224,6 +234,7 @@ namespace Fanda.Core.Base
             {
                 nameExpression = nameExpression.And(e => e.Id != id);
             }
+
             return nameExpression;
         }
     }

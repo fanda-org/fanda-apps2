@@ -1,13 +1,9 @@
-using Fanda.Core;
 using Fanda.Core.Extensions;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -25,7 +21,7 @@ namespace Fanda.ApiGateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AppSettings appSettings = services.ConfigureAppSettings(Configuration);
+            var appSettings = services.ConfigureAppSettings(Configuration);
 
             services.AddCustomControllers();
             services.AddCustomCors();
@@ -39,15 +35,11 @@ namespace Fanda.ApiGateway
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 // app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
 
             //app.UseHttpsRedirection();
 
@@ -61,10 +53,7 @@ namespace Fanda.ApiGateway
 
             app.UseResponseCaching();
 
-            app.UseSwaggerForOcelotUI(opt =>
-            {
-                opt.PathToSwaggerGenerator = "/swagger/docs";
-            });
+            app.UseSwaggerForOcelotUI(opt => { opt.PathToSwaggerGenerator = "/swagger/docs"; });
 
             await app.UseOcelot();
         }

@@ -1,13 +1,20 @@
-﻿using Fanda.Accounting.Repository.Dto;
+﻿using System;
+using System.Threading.Tasks;
+using Fanda.Accounting.Repository.Dto;
 using Fanda.Core.Base;
 using Refit;
-using System;
-using System.Threading.Tasks;
 
 namespace Fanda.Accounting.Repository.ApiClients
 {
     public interface IAuthClient
     {
+        #region Roles
+
+        [Get("/roles/{roleID}")]
+        Task<DataResponse<OrgRoleDto>> GetRoleByIdAsync(Guid roleId);
+
+        #endregion Roles
+
         #region Users
 
         [Get("/users/{userId}")]
@@ -20,13 +27,6 @@ namespace Fanda.Accounting.Repository.ApiClients
         Task<DataResponse<OrgUserDto>> CreateUserAsync(Guid tenantId, OrgUserDto dto);
 
         #endregion Users
-
-        #region Roles
-
-        [Get("/roles/{roleID}")]
-        Task<DataResponse<OrgRoleDto>> GetRoleByIdAsync(Guid roleId);
-
-        #endregion Roles
     }
 
     //public class AuthUser

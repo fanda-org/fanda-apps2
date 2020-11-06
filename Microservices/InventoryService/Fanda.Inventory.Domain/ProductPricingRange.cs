@@ -1,6 +1,5 @@
-﻿using Fanda.Core;
-
-using System;
+﻿using System;
+using Fanda.Core;
 
 namespace Fanda.Inventory.Domain
 {
@@ -16,8 +15,8 @@ namespace Fanda.Inventory.Domain
 
         public string RoundOffOptionString
         {
-            get { return RoundOffOption.ToString(); }
-            set { RoundOffOption = (RoundOffOption)Enum.Parse(typeof(RoundOffOption), value, true); }
+            get => RoundOffOption.ToString();
+            set => RoundOffOption = (RoundOffOption)Enum.Parse(typeof(RoundOffOption), value, true);
         }
 
         public decimal FinalPrice { get; set; }

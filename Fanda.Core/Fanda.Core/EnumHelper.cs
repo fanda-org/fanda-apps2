@@ -14,26 +14,36 @@ namespace Fanda.Core
         {
             var enumValues = new List<T>();
 
-            foreach (FieldInfo fi in value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public))
+            foreach (var fi in value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public))
             {
                 enumValues.Add((T)Enum.Parse(value.GetType(), fi.Name, true));
             }
+
             return enumValues;
         }
 
-        public static T Parse(string value) => (T)Enum.Parse(typeof(T), value, true);
+        public static T Parse(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
 
-        public static int ParseInt(string value) => (int)Enum.Parse(typeof(T), value, true);
+        public static int ParseInt(string value)
+        {
+            return (int)Enum.Parse(typeof(T), value, true);
+        }
 
-        public static IList<string> GetNames(Enum value) => value.GetType()
+        public static IList<string> GetNames(Enum value)
+        {
+            return value.GetType()
                 .GetFields(BindingFlags.Static | BindingFlags.Public)
                 .Select(fi => fi.Name)
                 .ToList();
+        }
 
         public static IList<EnumListItem<T>> GetEnumList()
         {
             var enumList = new List<EnumListItem<T>>();
-            foreach (FieldInfo fi in typeof(T).GetFields(BindingFlags.Static | BindingFlags.Public))
+            foreach (var fi in typeof(T).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
                 #region Read Description and Display attributes
 
@@ -78,6 +88,7 @@ namespace Fanda.Core
                     DisplayText = displayText
                 });
             }
+
             return enumList;
         }
 
@@ -98,17 +109,17 @@ namespace Fanda.Core
                 return string.Empty;
             }
 
-            return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+            return descriptionAttributes.Length > 0 ? descriptionAttributes[0].Name : value.ToString();
         }
 
         private static string LookupResource(Type resourceManagerProvider, string resourceKey)
         {
-            foreach (PropertyInfo staticProperty in resourceManagerProvider
+            foreach (var staticProperty in resourceManagerProvider
                 .GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
             {
                 if (staticProperty.PropertyType == typeof(ResourceManager))
                 {
-                    ResourceManager resourceManager = (ResourceManager)staticProperty.GetValue(null, null);
+                    var resourceManager = (ResourceManager)staticProperty.GetValue(null, null);
                     return resourceManager.GetString(resourceKey);
                 }
             }
@@ -119,7 +130,10 @@ namespace Fanda.Core
 
     public static class EnumParserExtensions
     {
-        public static T Parse<T>(this Enum _, string value) => (T)Enum.Parse(typeof(T), value, true);
+        public static T Parse<T>(this Enum _, string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
 
         public static T ToEnum<T>(this string value, T defaultValue)
             where T : struct
@@ -128,6 +142,7 @@ namespace Fanda.Core
             {
                 return defaultValue;
             }
+
             return Enum.TryParse(value, true, out T result) ? result : defaultValue;
         }
     }

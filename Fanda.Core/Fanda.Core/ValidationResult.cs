@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Fanda.Core
 {
     public class ValidationError
     {
-        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Field { get; }
-
-        public string Message { get; }
-
         public ValidationError()
         {
         }
@@ -20,10 +15,27 @@ namespace Fanda.Core
             Field = field != string.Empty ? field : null;
             Message = message;
         }
+
+        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string Field { get; }
+
+        public string Message { get; }
     }
 
     public class ValidationErrors : List<ValidationError>
     {
+        //public void Clear() => Errors.Clear();
+
+        public void AddError(string field, string message)
+        {
+            Add(new ValidationError(field, message));
+        }
+
+        public bool IsValid()
+        {
+            return Count == 0;
+        }
+
         #region Constructors
 
         public ValidationErrors()
@@ -38,18 +50,12 @@ namespace Fanda.Core
         public ValidationErrors(ModelStateDictionary modelState)
         {
             AddRange(modelState.Keys
-                    .SelectMany(key => modelState[key].Errors.Select(x => new ValidationError(key, x.ErrorMessage)))
-                    .ToList()
-                    );
+                .SelectMany(key => modelState[key].Errors.Select(x => new ValidationError(key, x.ErrorMessage)))
+                .ToList()
+            );
         }
 
         #endregion Constructors
-
-        //public void Clear() => Errors.Clear();
-
-        public void AddError(string field, string message) => Add(new ValidationError(field, message));
-
-        public bool IsValid() => Count == 0;
     }
 
     //public class DtoErrors : Dictionary<string, List<string>>

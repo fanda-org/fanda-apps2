@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Fanda.Accounting.Domain.Migrations.MySQL
 {
@@ -8,20 +8,20 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<Guid>(
-                name: "JournalId",
-                table: "Transactions",
+                "JournalId",
+                "Transactions",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_JournalId",
-                table: "Transactions",
-                column: "JournalId");
+                "IX_Transactions_JournalId",
+                "Transactions",
+                "JournalId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Transactions_Journals_JournalId",
-                table: "Transactions",
-                column: "JournalId",
-                principalTable: "Journals",
+                "FK_Transactions_Journals_JournalId",
+                "Transactions",
+                "JournalId",
+                "Journals",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -29,16 +29,16 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Transactions_Journals_JournalId",
-                table: "Transactions");
+                "FK_Transactions_Journals_JournalId",
+                "Transactions");
 
             migrationBuilder.DropIndex(
-                name: "IX_Transactions_JournalId",
-                table: "Transactions");
+                "IX_Transactions_JournalId",
+                "Transactions");
 
             migrationBuilder.DropColumn(
-                name: "JournalId",
-                table: "Transactions");
+                "JournalId",
+                "Transactions");
         }
     }
 }

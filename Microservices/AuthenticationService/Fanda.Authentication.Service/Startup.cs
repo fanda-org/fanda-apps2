@@ -1,3 +1,4 @@
+using System.Reflection;
 using AutoMapper;
 using Fanda.Authentication.Domain;
 using Fanda.Authentication.Repository;
@@ -10,20 +11,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
+using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 namespace Fanda.Authentication.Service
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; }
-        private IWebHostEnvironment Env { get; }
-
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Env = env;
         }
+
+        private IConfiguration Configuration { get; }
+        private IWebHostEnvironment Env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -31,13 +32,13 @@ namespace Fanda.Authentication.Service
             services.AddCustomHealthChecks<AuthContext>();
 
             //AppSettings appSettings = Configuration.Get<AppSettings>();
-            AppSettings appSettings = services.ConfigureAppSettings(Configuration);
+            var appSettings = services.ConfigureAppSettings(Configuration);
 
             services.AddCustomControllers();
             //services.AddResponseCaching();
 
             services.AddCustomDbContext<AuthContext>(appSettings,
-                Assembly.GetAssembly(typeof(AuthContext)).GetName().Name, Env.IsDevelopment())
+                    Assembly.GetAssembly(typeof(AuthContext)).GetName().Name, Env.IsDevelopment())
                 .AddCustomCors()
                 .AddAutoMapper(typeof(AuthProfile))
                 .AddSwagger("Fanda Authentication API");
@@ -59,7 +60,7 @@ namespace Fanda.Authentication.Service
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            AutoMapper.IConfigurationProvider autoMapperConfigProvider, AuthContext authDbContext)
+            IConfigurationProvider autoMapperConfigProvider, AuthContext authDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -92,20 +93,20 @@ namespace Fanda.Authentication.Service
                 // .RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapControllerRoute(
-                    name: "areaRoute",
-                    pattern: "{area:exists}/{controller}/{action}",
-                    defaults: new { action = "Index" });
+                    "areaRoute",
+                    "{area:exists}/{controller}/{action}",
+                    new {action = "Index"});
                 //.RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "Home", action = "Index" });
+                    "default",
+                    "{controller}/{action}/{id?}",
+                    new {controller = "Home", action = "Index"});
                 //.RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapControllerRoute(
-                    name: "api",
-                    pattern: "api/{controller}/{id?}");
+                    "api",
+                    "api/{controller}/{id?}");
                 //.RequireCors("_MyAllowedOrigins");
 
                 endpoints.MapHealthChecks("/health");
