@@ -10,15 +10,21 @@ namespace Fanda.Accounting.Repository.Dto
     {
         public Guid LedgerId { get; set; }
 
-        [Display(Name = "Regn.No.")]
-        public string RegdNum { get; set; }
+        //[Display(Name = "Regn.No.")]
+        //public string RegdNum { get; set; }
 
-        public string PAN { get; set; }
-        public string TAN { get; set; }
-        public string GSTIN { get; set; }
+        //public string PAN { get; set; }
+        //public string TAN { get; set; }
+        //public string GSTIN { get; set; }
+
+        public OrganizationDto PartyOrg { get; set; }
 
         [Display(Name = "Contact Type")]
-        public PartyType PartyType { get; set; }
+        public Guid TypeId { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please select contact category")]
+        [Display(Name = "Contact Category")]
+        public Guid CategoryId { get; set; }
 
         [Display(Name = "Payment Term")]
         public PaymentTerm PaymentTerm { get; set; }
@@ -26,12 +32,8 @@ namespace Fanda.Accounting.Repository.Dto
         [Display(Name = "Credit Limit")]
         public decimal CreditLimit { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Please select contact category")]
-        [Display(Name = "Contact Category")]
-        public Guid CategoryId { get; set; }
-
-        public ICollection<ContactDto> Contacts { get; set; }
-        public ICollection<AddressDto> Addresses { get; set; }
+        //public ICollection<ContactDto> Contacts { get; set; }
+        //public ICollection<AddressDto> Addresses { get; set; }
     }
 
     public class PartyListDto : BaseListDto { }

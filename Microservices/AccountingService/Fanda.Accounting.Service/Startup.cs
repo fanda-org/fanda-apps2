@@ -8,6 +8,7 @@ using Fanda.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -89,7 +90,7 @@ namespace Fanda.Accounting.Service
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            AutoMapper.IConfigurationProvider autoMapperConfigProvider)
+            AutoMapper.IConfigurationProvider autoMapperConfigProvider, AcctContext acctDbContext)
         {
             //app.ConfigureStartup(env, autoMapperConfigProvider);
 
@@ -100,6 +101,8 @@ namespace Fanda.Accounting.Service
                 app.UseDeveloperExceptionPage();
             }
 
+            // migrate any database changes on startup (includes initial db creation)
+            acctDbContext.Database.Migrate();
             autoMapperConfigProvider.AssertConfigurationIsValid();
             //app.UseHttpsRedirection();
             app.UseSwagger();

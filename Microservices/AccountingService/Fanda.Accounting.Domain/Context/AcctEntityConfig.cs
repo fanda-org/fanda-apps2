@@ -324,6 +324,41 @@ namespace Fanda.Accounting.Domain.Context
 
     #region Party
 
+    public class PartyTypeConfig : IEntityTypeConfiguration<PartyType>
+    {
+        public void Configure(EntityTypeBuilder<PartyType> builder)
+        {
+            // table
+            builder.ToTable("PartyTypes");
+
+            // key
+            builder.HasKey(pt => pt.Id);
+            builder.Property(pt => pt.Id).ValueGeneratedOnAdd();
+
+            // columns
+            builder.Property(pc => pc.Code)
+                .IsRequired()
+                .HasMaxLength(16);
+            builder.Property(pc => pc.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+            builder.Property(pc => pc.Description)
+                .HasMaxLength(255);
+
+            // index
+            builder.HasIndex(pc => new { pc.Code, pc.OrgId })
+                .IsUnique();
+            builder.HasIndex(pc => new { pc.Name, pc.OrgId })
+                .IsUnique();
+
+            // foreign key
+            builder.HasOne(pc => pc.Organization)
+                .WithMany(o => o.PartyTypes)
+                .HasForeignKey(pc => pc.OrgId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+    }
+
     public class PartyCategoryConfig : IEntityTypeConfiguration<PartyCategory>
     {
         public void Configure(EntityTypeBuilder<PartyCategory> builder)
@@ -372,20 +407,6 @@ namespace Fanda.Accounting.Domain.Context
             builder.HasKey(c => c.LedgerId);
 
             // columns
-            builder.Ignore(pc => pc.PartyType);
-            builder.Property(pc => pc.PartyTypeString)
-                .HasColumnName("PartyType")
-                .IsUnicode(false)
-                .IsRequired()
-                .HasMaxLength(16);
-            builder.Property(o => o.RegdNum)
-                .HasMaxLength(25);
-            builder.Property(o => o.PAN)
-                .HasMaxLength(25);
-            builder.Property(o => o.TAN)
-                .HasMaxLength(25);
-            builder.Property(o => o.GSTIN)
-                .HasMaxLength(25);
             builder.Ignore(s => s.PaymentTerm);
             builder.Property(s => s.PaymentTermString)
                 .HasColumnName("PaymentTerm")
@@ -394,10 +415,21 @@ namespace Fanda.Accounting.Domain.Context
             // index
 
             // foreign key
+
+            // Ledger - Parent
             builder.HasOne(p => p.Ledger)
-                .WithOne(o => o.Party)
+                .WithOne(l => l.Party)
                 .HasForeignKey<Party>(p => p.LedgerId)
                 .OnDelete(DeleteBehavior.Cascade);
+            // Organization - One to one
+            builder.HasOne(p => p.PartyOrg)
+                .WithOne(o => o.OrgParty)
+                .HasForeignKey<Party>(p => p.PartyOrgId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(p => p.Type)
+                .WithMany(pc => pc.Parties)
+                .HasForeignKey(p => p.PartyTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.Category)
                 .WithMany(pc => pc.Parties)
@@ -406,51 +438,51 @@ namespace Fanda.Accounting.Domain.Context
         }
     }
 
-    public class PartyContactConfig : IEntityTypeConfiguration<PartyContact>
-    {
-        public void Configure(EntityTypeBuilder<PartyContact> builder)
-        {
-            // table
-            builder.ToTable("PartyContacts");
+    //public class PartyContactConfig : IEntityTypeConfiguration<PartyContact>
+    //{
+    //    public void Configure(EntityTypeBuilder<PartyContact> builder)
+    //    {
+    //        // table
+    //        builder.ToTable("PartyContacts");
 
-            // key
-            builder.HasKey(oc => new { oc.PartyId, oc.ContactId });
+    //        // key
+    //        builder.HasKey(oc => new { oc.PartyId, oc.ContactId });
 
-            // foreign key
-            builder.HasOne(oc => oc.Party)
-                .WithMany(b => b.PartyContacts)
-                .HasForeignKey(oc => oc.PartyId)
-                .OnDelete(DeleteBehavior.Cascade);
+    //        // foreign key
+    //        builder.HasOne(oc => oc.Party)
+    //            .WithMany(b => b.PartyContacts)
+    //            .HasForeignKey(oc => oc.PartyId)
+    //            .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(oc => oc.Contact)
-                .WithMany(c => c.PartyContacts)
-                .HasForeignKey(oc => oc.ContactId)
-                .OnDelete(DeleteBehavior.Cascade);
-        }
-    }
+    //        builder.HasOne(oc => oc.Contact)
+    //            .WithMany(c => c.PartyContacts)
+    //            .HasForeignKey(oc => oc.ContactId)
+    //            .OnDelete(DeleteBehavior.Cascade);
+    //    }
+    //}
 
-    public class PartyAddressConfig : IEntityTypeConfiguration<PartyAddress>
-    {
-        public void Configure(EntityTypeBuilder<PartyAddress> builder)
-        {
-            // table
-            builder.ToTable("PartyAddresses");
+    //public class PartyAddressConfig : IEntityTypeConfiguration<PartyAddress>
+    //{
+    //    public void Configure(EntityTypeBuilder<PartyAddress> builder)
+    //    {
+    //        // table
+    //        builder.ToTable("PartyAddresses");
 
-            // key
-            builder.HasKey(oa => new { oa.PartyId, oa.AddressId });
+    //        // key
+    //        builder.HasKey(oa => new { oa.PartyId, oa.AddressId });
 
-            // foreign key
-            builder.HasOne(oa => oa.Party)
-                .WithMany(b => b.PartyAddresses)
-                .HasForeignKey(oa => oa.PartyId)
-                .OnDelete(DeleteBehavior.Cascade);
+    //        // foreign key
+    //        builder.HasOne(oa => oa.Party)
+    //            .WithMany(b => b.PartyAddresses)
+    //            .HasForeignKey(oa => oa.PartyId)
+    //            .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(oa => oa.Address)
-                .WithMany(c => c.PartyAddresses)
-                .HasForeignKey(oa => oa.AddressId)
-                .OnDelete(DeleteBehavior.Cascade);
-        }
-    }
+    //        builder.HasOne(oa => oa.Address)
+    //            .WithMany(c => c.PartyAddresses)
+    //            .HasForeignKey(oa => oa.AddressId)
+    //            .OnDelete(DeleteBehavior.Cascade);
+    //    }
+    //}
 
     #endregion Party
 

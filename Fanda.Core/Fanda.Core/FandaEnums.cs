@@ -6,73 +6,20 @@ using System.Runtime.Serialization;
 
 namespace Fanda.Core
 {
-    public static class FandaEnums
-    {
-        //public static IEnumerable<RoleType> GetRoleTypes() =>
-        //Enum.GetValues(typeof(RoleType)) as IEnumerable<RoleType>;
-        public static IEnumerable<AddressType> GetAddressTypes() =>
-            Enum.GetValues(typeof(AddressType)) as IEnumerable<AddressType>;
-
-        public static IEnumerable<BankAccountType> GetBankAccountTypes() =>
-            Enum.GetValues(typeof(BankAccountType)) as IEnumerable<BankAccountType>;
-
-        public static IEnumerable<PaymentTerm> GetPaymentTerms() =>
-            Enum.GetValues(typeof(PaymentTerm)) as IEnumerable<PaymentTerm>;
-
-        public static IEnumerable<PartyType> GetPartyTypes() =>
-            Enum.GetValues(typeof(PartyType)) as IEnumerable<PartyType>;
-
-        public static IEnumerable<ProductType> GetProductTypes() =>
-            Enum.GetValues(typeof(ProductType)) as IEnumerable<ProductType>;
-
-        public static IEnumerable<InvoiceType> GetInvoiceTypes() =>
-            Enum.GetValues(typeof(InvoiceType)) as IEnumerable<InvoiceType>;
-
-        public static IEnumerable<StockInvoiceType> GetStockInvoiceTypes() =>
-            Enum.GetValues(typeof(StockInvoiceType)) as IEnumerable<StockInvoiceType>;
-
-        public static IEnumerable<Status> GetStatus() =>
-            Enum.GetValues(typeof(Status)) as IEnumerable<Status>;
-
-        public static IEnumerable<RoundOffOption> GetRoundOffOptions() =>
-            Enum.GetValues(typeof(RoundOffOption)) as IEnumerable<RoundOffOption>;
-    }
-
-    //public enum RoleType
-    //{
-    //    Guest = 0,
-    //    User = 1,
-    //    PowerUser = 2,
-    //    Manager = 4,
-    //    Administrator = 8,
-    //    SuperAdmin = 16
-    //}
-
-    //public enum AccountOwner
-    //{
-    //    None = 0,
-    //    Organization = 1,
-    //    Party = 2
-    //}
-
-    [Flags]
+    // [Flags]
     public enum AddressType
     {
-        [Display(Name = "Default Address Type", Description = "Default desc"),
-            Description("Desc Default")]
-        Default = 0x0,
+        [Display(Name = "Default Address Type")]
+        Default = 0,
 
-        [Display(Name = "Billing Address Type", Description = "Billing desc"),
-            Description("Desc Billing")]
-        Billing = 0x1,
+        [Display(Name = "Billing Address Type")]
+        Billing = 1,
 
-        [Display(Name = "Shipping Address Type", Description = "Shipping desc"),
-            Description("Desc Shipping")]
-        Shipping = 0x2,
+        [Display(Name = "Shipping Address Type")]
+        Shipping = 2,
 
-        [Display(Name = "Remittance Address Type", Description = "Remittance desc"),
-            Description("Desc Remittance")]
-        Remittance = 0x3
+        [Display(Name = "Remittance Address Type")]
+        Remittance = 3
     }
 
     public enum BankAccountType
@@ -98,20 +45,20 @@ namespace Fanda.Core
         OnDate = 8
     }
 
-    public enum PartyType
-    {
-        [EnumMember(Value = "Customer")]
-        Customer = 1,
+    //public enum PartyType
+    //{
+    //    [EnumMember(Value = "Customer")]
+    //    Customer = 1,
 
-        [EnumMember(Value = "Supplier")]
-        Supplier = 2,
+    //    [EnumMember(Value = "Supplier")]
+    //    Supplier = 2,
 
-        [EnumMember(Value = "Buyer")]
-        Buyer = 3,
+    //    [EnumMember(Value = "Buyer")]
+    //    Buyer = 3,
 
-        [EnumMember(Value = "Other")]
-        Other = 4
-    }
+    //    [EnumMember(Value = "Other")]
+    //    Other = 4
+    //}
 
     //public enum PartyCategory
     //{
@@ -292,3 +239,52 @@ namespace Fanda.Core
         RawMaterial = 2
     }
 }
+
+//public static class FandaEnums
+//{
+//    //public static IEnumerable<RoleType> GetRoleTypes() =>
+//    //Enum.GetValues(typeof(RoleType)) as IEnumerable<RoleType>;
+//    public static IEnumerable<AddressType> GetAddressTypes() =>
+//        Enum.GetValues(typeof(AddressType)) as IEnumerable<AddressType>;
+
+//    public static IEnumerable<BankAccountType> GetBankAccountTypes() =>
+//        Enum.GetValues(typeof(BankAccountType)) as IEnumerable<BankAccountType>;
+
+//    public static IEnumerable<PaymentTerm> GetPaymentTerms() =>
+//        Enum.GetValues(typeof(PaymentTerm)) as IEnumerable<PaymentTerm>;
+
+//    public static IEnumerable<PartyType> GetPartyTypes() =>
+//        Enum.GetValues(typeof(PartyType)) as IEnumerable<PartyType>;
+
+//    public static IEnumerable<ProductType> GetProductTypes() =>
+//        Enum.GetValues(typeof(ProductType)) as IEnumerable<ProductType>;
+
+//    public static IEnumerable<InvoiceType> GetInvoiceTypes() =>
+//        Enum.GetValues(typeof(InvoiceType)) as IEnumerable<InvoiceType>;
+
+//    public static IEnumerable<StockInvoiceType> GetStockInvoiceTypes() =>
+//        Enum.GetValues(typeof(StockInvoiceType)) as IEnumerable<StockInvoiceType>;
+
+//    public static IEnumerable<Status> GetStatus() =>
+//        Enum.GetValues(typeof(Status)) as IEnumerable<Status>;
+
+//    public static IEnumerable<RoundOffOption> GetRoundOffOptions() =>
+//        Enum.GetValues(typeof(RoundOffOption)) as IEnumerable<RoundOffOption>;
+//}
+
+//public enum RoleType
+//{
+//    Guest = 0,
+//    User = 1,
+//    PowerUser = 2,
+//    Manager = 4,
+//    Administrator = 8,
+//    SuperAdmin = 16
+//}
+
+//public enum AccountOwner
+//{
+//    None = 0,
+//    Organization = 1,
+//    Party = 2
+//}
