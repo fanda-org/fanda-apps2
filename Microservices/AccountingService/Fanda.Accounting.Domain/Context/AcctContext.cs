@@ -15,6 +15,7 @@ namespace Fanda.Accounting.Domain.Context
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<LedgerGroup> LedgerGroups { get; set; }
         public DbSet<Ledger> Ledgers { get; set; }
+        public DbSet<PartyType> PartyTypes { get; set; }
         public DbSet<PartyCategory> PartyCategories { get; set; }
         public DbSet<AccountYear> AccountYears { get; set; }
         public DbSet<Journal> Journals { get; set; }
@@ -37,10 +38,11 @@ namespace Fanda.Accounting.Domain.Context
 
             modelBuilder.ApplyConfiguration(new LedgerGroupConfig());
             modelBuilder.ApplyConfiguration(new LedgerConfig());
+            modelBuilder.ApplyConfiguration(new PartyTypeConfig());
             modelBuilder.ApplyConfiguration(new PartyCategoryConfig());
             modelBuilder.ApplyConfiguration(new PartyConfig());
-            modelBuilder.ApplyConfiguration(new PartyContactConfig());
-            modelBuilder.ApplyConfiguration(new PartyAddressConfig());
+            //modelBuilder.ApplyConfiguration(new PartyContactConfig());
+            //modelBuilder.ApplyConfiguration(new PartyAddressConfig());
             modelBuilder.ApplyConfiguration(new BankConfig());
             modelBuilder.ApplyConfiguration(new AccountYearConfig());
 

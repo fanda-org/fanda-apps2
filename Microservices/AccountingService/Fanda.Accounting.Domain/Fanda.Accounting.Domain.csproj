@@ -2,6 +2,10 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="PartyAddress.cs" />
+	  <Compile Remove="PartyContact.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
