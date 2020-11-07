@@ -341,10 +341,7 @@ namespace Fanda.Accounting.Repository
         }
 
         public override Expression<Func<Organization, bool>> GetSuperIdPredicate(Guid? superId)
-        {
-            // return o => o.UserId = superId;
-            return o => true;
-        }
+            => o => true;
 
         //public virtual async Task<bool> ActivateAsync(Guid id, bool active)
         //{

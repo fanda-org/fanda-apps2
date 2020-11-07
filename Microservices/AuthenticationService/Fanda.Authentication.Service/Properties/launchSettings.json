@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:51000",
-      "sslPort": 0
+      "sslPort": 44380
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -19,12 +19,11 @@
     },
     "Fanda.AuthenticationService": {
       "commandName": "Project",
-      "launchBrowser": false,
       "launchUrl": "openapi",
-      "applicationUrl": "http://localhost:5100",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5100"
     }
   }
 }

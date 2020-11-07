@@ -300,8 +300,6 @@ namespace Fanda.Accounting.Repository
 
         public virtual Expression<Func<Journal, bool>> GetSuperIdPredicate(Guid? yearId)
         {
-            //var numExpression = PredicateBuilder.New<Journal>(j => j.Number == journalNumber);
-            // numExpression = numExpression.And(j => j.YearId == superId);
             return j => j.YearId == yearId;
         }
 

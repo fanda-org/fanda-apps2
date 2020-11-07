@@ -101,20 +101,10 @@ namespace Fanda.Core.Base
             //    throw new BadRequestException($"{nameof(superId)} is required");
             //}
 
-            var predicate = GetSuperIdPredicate(superId);
-            if (predicate == null)
-            {
-                qry = _context.Set<TEntity>()
-                    .AsNoTracking()
-                    .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
-            }
-            else
-            {
-                qry = _context.Set<TEntity>()
-                    .AsNoTracking()
-                    .Where(predicate)
-                    .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
-            }
+            qry = _context.Set<TEntity>()
+                .AsNoTracking()
+                .Where(GetSuperIdPredicate(superId))
+                .ProjectTo<TListModel>(_mapper.ConfigurationProvider);
 
             return qry;
         }

@@ -82,11 +82,7 @@ namespace Fanda.Core.Base
             Expression<Func<TEntity, bool>> predicate)
         {
             var newPredicate = PredicateBuilder.New(predicate);
-            var superIdPredicate = GetSuperIdPredicate(superId);
-            if (superIdPredicate != null)
-            {
-                newPredicate = newPredicate.And(superIdPredicate);
-            }
+            newPredicate = newPredicate.And(GetSuperIdPredicate(superId));
 
             var models = await Entities
                 .AsNoTracking()
@@ -204,11 +200,7 @@ namespace Fanda.Core.Base
         public virtual async Task<bool> AnyAsync(Guid superId, Expression<Func<TEntity, bool>> predicate)
         {
             var newPredicate = PredicateBuilder.New(predicate);
-            var superIdPredicate = GetSuperIdPredicate(superId);
-            if (superIdPredicate != null)
-            {
-                newPredicate = newPredicate.And(superIdPredicate);
-            }
+            newPredicate = newPredicate.And(GetSuperIdPredicate(superId));
 
             return await Entities.AnyAsync(newPredicate);
         }

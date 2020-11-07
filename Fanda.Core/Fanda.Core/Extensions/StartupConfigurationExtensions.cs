@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -171,7 +172,7 @@ namespace Fanda.Core.Extensions
                     options.JsonSerializerOptions.AllowTrailingCommas = true;
                     //options.JsonSerializerOptions.Converters.Add(new JsonStringTrimConverter());
                 })
-                //.SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 //.AddSessionStateTempDataProvider()
                 //.AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();

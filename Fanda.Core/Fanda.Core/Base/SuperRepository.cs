@@ -217,7 +217,7 @@ namespace Fanda.Core.Base
         }
 
         public override Expression<Func<TEntity, bool>> GetSuperIdPredicate(Guid? superId)
-            => null;
+            => x => true;
 
         private static ExpressionStarter<TEntity> GetCodePredicate(string code, Guid id = default)
         {

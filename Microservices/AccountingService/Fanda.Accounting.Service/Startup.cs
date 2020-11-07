@@ -97,10 +97,6 @@ namespace Fanda.Accounting.Service
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             IConfigurationProvider autoMapperConfigProvider, AcctContext acctDbContext, IHost host)
         {
-            //app.ConfigureStartup(env, autoMapperConfigProvider);
-
-            #region Startup configure
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -111,16 +107,10 @@ namespace Fanda.Accounting.Service
             SeedDataAsync(host);
             autoMapperConfigProvider.AssertConfigurationIsValid();
 
-            //app.UseHttpsRedirection();
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Application API v1");
-                c.RoutePrefix = "openapi";
-            });
+            app.UseHttpsRedirection();
 
-            app.UseCors("_MyAllowedOrigins");
             app.UseRouting();
+            app.UseCors("_MyAllowedOrigins");
             app.UseAuthentication();
             app.UseAuthorization();
             //app.UseResponseCaching();
@@ -131,8 +121,12 @@ namespace Fanda.Accounting.Service
                 //.RequireCors("_MyAllowedOrigins");
                 endpoints.MapHealthChecks("/health");
             });
-
-            #endregion Startup configure
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Application API v1");
+                c.RoutePrefix = "openapi";
+            });
         }
 
         private static /*async*/ void SeedDataAsync(IHost host)

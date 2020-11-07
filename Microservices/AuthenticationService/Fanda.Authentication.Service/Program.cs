@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Fanda.Authentication.Service
 {
-    //#pragma warning disable CS1591
+    // #pragma warning disable CS1591
 
     public class Program
     {
@@ -57,5 +57,5 @@ namespace Fanda.Authentication.Service
         }
     }
 
-    //#pragma warning restore CS1591
+    // #pragma warning restore CS1591
 }
