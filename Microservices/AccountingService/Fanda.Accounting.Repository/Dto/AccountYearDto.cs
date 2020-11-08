@@ -9,7 +9,7 @@ namespace Fanda.Accounting.Repository.Dto
         public DateTime YearEnd { get; set; }
     }
 
-    public class YearListDto : BaseListDto
+    public class AccountYearListDto : BaseListDto
     {
     }
 }

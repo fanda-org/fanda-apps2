@@ -144,7 +144,7 @@ namespace Fanda.Accounting.Repository.AutoMapperProfiles
 
             #region List mappings
 
-            CreateMap<AccountYear, YearListDto>();
+            CreateMap<AccountYear, AccountYearListDto>();
             CreateMap<Organization, OrgListDto>();
             CreateMap<Organization, OrgYearListDto>()
                 .ForMember(vm => vm.SelectedYearId, opt => opt.Ignore())

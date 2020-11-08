@@ -12,7 +12,6 @@ namespace Fanda.Accounting.Repository.Dto
         public Guid LedgerId { get; set; }
 
         public virtual ICollection<JournalItemDto> JournalItems { get; set; }
-        public virtual ICollection<TransactionDto> Transactions { get; set; }
     }
 
     public class JournalListDto : BaseYearListDto

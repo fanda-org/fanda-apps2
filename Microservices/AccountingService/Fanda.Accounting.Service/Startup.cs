@@ -85,6 +85,7 @@ namespace Fanda.Accounting.Service
             services.AddScoped<ILedgerRepository, LedgerRepository>();
             services.AddScoped<IJournalRepository, JournalRepository>();
             services.AddScoped<IOrgUserRepository, OrgUserRepository>();
+            services.AddScoped<IAccountYearRepository, AccountYearRepository>();
             //services.AddScoped<IOrgRoleRepository, OrgRoleRepository>();
             //services.AddScoped<ISerialNumberRepository, SerialNumberRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
@@ -101,6 +102,12 @@ namespace Fanda.Accounting.Service
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Application API v1");
+                c.RoutePrefix = "openapi";
+            });
 
             // migrate any database changes on startup (includes initial db creation)
             acctDbContext.Database.Migrate();
@@ -121,15 +128,9 @@ namespace Fanda.Accounting.Service
                 //.RequireCors("_MyAllowedOrigins");
                 endpoints.MapHealthChecks("/health");
             });
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Application API v1");
-                c.RoutePrefix = "openapi";
-            });
         }
 
-        private static /*async*/ void SeedDataAsync(IHost host)
+        private static void SeedDataAsync(IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {

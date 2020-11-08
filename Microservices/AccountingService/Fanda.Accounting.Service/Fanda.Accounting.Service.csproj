@@ -3,13 +3,16 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
+
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
+
 	<ItemGroup>
-	  <Compile Remove="Controllers\OrgRolesController.cs" />
+		<Compile Remove="Controllers\OrgRolesController.cs" />
 	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
 			<PrivateAssets>all</PrivateAssets>

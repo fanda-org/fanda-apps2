@@ -66,21 +66,26 @@ namespace Fanda.Authentication.Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             IConfigurationProvider autoMapperConfigProvider, AuthContext authDbContext, IHost host)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Authentication API v1");
+                c.RoutePrefix = "openapi";
+            });
 
             // migrate any database changes on startup (includes initial db creation)
             authDbContext.Database.Migrate();
-            await SeedDataAsync(host);
+            SeedDataAsync(host);
             autoMapperConfigProvider.AssertConfigurationIsValid();
 
-            //app.UseHttpsRedirection();
-
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("_MyAllowedOrigins");
             app.UseAuthentication();
@@ -93,16 +98,9 @@ namespace Fanda.Authentication.Service
                 //.RequireCors("_MyAllowedOrigins");
                 endpoints.MapHealthChecks("/health");
             });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Fanda Authentication API v1");
-                c.RoutePrefix = "openapi";
-            });
         }
 
-        private static async Task SeedDataAsync(IHost host)
+        private static void SeedDataAsync(IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {
@@ -114,8 +112,8 @@ namespace Fanda.Authentication.Service
                     var options = services.GetRequiredService<IOptions<AppSettings>>();
 
                     var seed = new SeedDefault(serviceProvider /*, options*/);
-                    await seed.CreateFandaAppAsync();
-                    await seed.CreateTenantAsync();
+                    seed.CreateFandaAppAsync().ConfigureAwait(false);
+                    seed.CreateTenantAsync().ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {

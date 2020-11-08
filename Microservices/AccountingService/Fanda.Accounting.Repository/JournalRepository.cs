@@ -90,8 +90,29 @@ namespace Fanda.Accounting.Repository
             }
 
             var journal = _mapper.Map<Journal>(model);
+
             journal.YearId = superId;
             journal.DateCreated = DateTime.UtcNow;
+            // Construct Transactions
+            journal.Transactions = new List<Transaction>();
+            foreach (var ji in journal.JournalItems)
+            {
+                journal.Transactions.Add(new Transaction
+                {
+                    Journal = journal,
+                    Date = journal.Date,
+                    DebitLedgerId = journal.JournalSign == "D" ? journal.LedgerId : ji.LedgerId,
+                    CreditLedgerId = journal.JournalSign == "C" ? journal.LedgerId : ji.LedgerId,
+                    Quantity = ji.Quantity,
+                    Amount = ji.Amount,
+                    Description = ji.Description,
+                    Number = journal.Number,
+                    ReferenceNumber = ji.ReferenceNumber,
+                    ReferenceDate = ji.ReferenceDate,
+                    YearId = journal.YearId
+                });
+            }
+
             await _context.Journals.AddAsync(journal);
             await _context.SaveChangesAsync();
             return _mapper.Map<JournalDto>(journal);

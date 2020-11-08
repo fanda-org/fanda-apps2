@@ -46,7 +46,7 @@ namespace Fanda.Accounting.Repository.Dto
         public bool IsSelected { get; set; }
         public Guid SelectedYearId { get; set; }
 
-        [Display(Name = "Accounting Years")] public virtual List<YearListDto> AccountYears { get; set; }
+        [Display(Name = "Accounting Years")] public virtual List<AccountYearListDto> AccountYears { get; set; }
     }
 
     //public class OrgChildrenDto

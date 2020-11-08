@@ -20,9 +20,7 @@ namespace Fanda.Authentication.Service
             try
             {
                 Log.Information("Fanda Authentication Service starting up");
-                var host = CreateHostBuilder(args).Build();
-                // await CreateAndRunTasks(host);
-                host.Run();
+                CreateHostBuilder(args).Build().Run();
                 Log.Information("Fanda Authentication Service shut down successfully");
             }
             catch (Exception ex)
@@ -44,7 +42,7 @@ namespace Fanda.Authentication.Service
                         .MinimumLevel.Information()
                         .Enrich.FromLogContext()
                         .Enrich.WithMachineName()
-                        .Enrich.WithProperty("Authentication", Assembly.GetExecutingAssembly().FullName)
+                        //.Enrich.WithProperty("Authentication", Assembly.GetExecutingAssembly().FullName)
                         .Enrich.WithEnvironmentUserName()
                         .Enrich.WithThreadId()
                         .WriteTo.Console();

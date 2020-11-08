@@ -11,9 +11,7 @@ using System.Threading.Tasks;
 
 namespace Fanda.Authentication.Service.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase //: BaseController
+    public class AuthController : BaseController
     {
         private const string ModuleName = "User";
         private readonly IAuthRepository _repository;
@@ -43,8 +41,8 @@ namespace Fanda.Authentication.Service.Controllers
             }
             catch (Exception ex)
             {
-                //return ExceptionResult(ex, ModuleName);
-                return BadRequest();
+                return ExceptionResult(ex, ModuleName);
+                //return BadRequest();
             }
         }
 
@@ -74,8 +72,8 @@ namespace Fanda.Authentication.Service.Controllers
             }
             catch (Exception ex)
             {
-                //return ExceptionResult(ex, ModuleName);
-                return BadRequest();
+                return ExceptionResult(ex, ModuleName);
+                //return BadRequest();
             }
         }
 
@@ -106,8 +104,8 @@ namespace Fanda.Authentication.Service.Controllers
             }
             catch (Exception ex)
             {
-                //return ExceptionResult(ex, ModuleName);
-                return BadRequest();
+                return ExceptionResult(ex, ModuleName);
+                //return BadRequest();
             }
         }
 
@@ -139,8 +137,8 @@ namespace Fanda.Authentication.Service.Controllers
             }
             catch (Exception ex)
             {
-                //return ExceptionResult(ex, ModuleName);
-                return BadRequest();
+                return ExceptionResult(ex, ModuleName);
+                //return BadRequest();
             }
         }
 

@@ -9,12 +9,12 @@ using System.Linq.Expressions;
 namespace Fanda.Accounting.Repository
 {
     public interface IAccountYearRepository :
-        ISubRepository<AccountYear, AccountYearDto, YearListDto>
+        ISubRepository<AccountYear, AccountYearDto, AccountYearListDto>
     {
     }
 
     public class AccountYearRepository :
-        SubRepository<AccountYear, AccountYearDto, YearListDto>, IAccountYearRepository
+        SubRepository<AccountYear, AccountYearDto, AccountYearListDto>, IAccountYearRepository
     {
         //private readonly FandaContext _context;
         //private readonly IMapper _mapper;
