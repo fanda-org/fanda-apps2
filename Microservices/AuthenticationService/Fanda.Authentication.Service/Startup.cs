@@ -82,7 +82,9 @@ namespace Fanda.Authentication.Service
 
             // migrate any database changes on startup (includes initial db creation)
             authDbContext.Database.Migrate();
+            // seed data into database
             SeedDataAsync(host);
+            // validate automapper configuration
             autoMapperConfigProvider.AssertConfigurationIsValid();
 
             app.UseHttpsRedirection();
@@ -112,8 +114,8 @@ namespace Fanda.Authentication.Service
                     var options = services.GetRequiredService<IOptions<AppSettings>>();
 
                     var seed = new SeedDefault(serviceProvider /*, options*/);
-                    seed.CreateFandaAppAsync().ConfigureAwait(false);
-                    seed.CreateTenantAsync().ConfigureAwait(false);
+                    seed.CreateFandaAppAsync().GetAwaiter().GetResult();
+                    seed.CreateTenantAsync().GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
