@@ -11,7 +11,7 @@ namespace Fanda.Accounting.Domain.Base
     public class YearAcctEntity : BaseYearEntity
     {
         public string ReferenceNumber { get; set; }
-        public DateTime ReferenceDate { get; set; }
+        public DateTime? ReferenceDate { get; set; }
 
         public virtual AccountYear AccountYear { get; set; }
     }

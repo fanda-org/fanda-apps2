@@ -109,7 +109,8 @@ namespace Fanda.Accounting.Repository
                     Number = journal.Number,
                     ReferenceNumber = ji.ReferenceNumber,
                     ReferenceDate = ji.ReferenceDate,
-                    YearId = journal.YearId
+                    YearId = journal.YearId,
+                    DateCreated = DateTime.UtcNow
                 });
             }
 

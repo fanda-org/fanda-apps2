@@ -3,14 +3,16 @@ using System;
 using Fanda.Accounting.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fanda.Accounting.Domain.Migrations.MySQL
 {
     [DbContext(typeof(AcctContext))]
-    partial class AcctContextModelSnapshot : ModelSnapshot
+    [Migration("20201108055320_AcctMySQL05")]
+    partial class AcctMySQL05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,7 +298,7 @@ namespace Fanda.Accounting.Domain.Migrations.MySQL
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18, 4)");
 
-                    b.Property<DateTime?>("ReferenceDate")
+                    b.Property<DateTime>("ReferenceDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("ReferenceNumber")
