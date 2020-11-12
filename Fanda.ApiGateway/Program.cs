@@ -35,7 +35,12 @@ namespace Fanda.ApiGateway
                         .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddJsonFile("ocelot.json", false, true);
                 })
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder
+                        //.UseUrls("http://0.0.0.0:80")
+                        .UseStartup<Startup>();
+                })
                 .UseWindowsService();
         }
     }

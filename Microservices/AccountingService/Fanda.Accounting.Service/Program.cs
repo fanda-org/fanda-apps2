@@ -48,7 +48,9 @@ namespace Fanda.Accounting.Service
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                        //.UseUrls("http://0.0.0.0:80")
+                        .UseStartup<Startup>();
                 })
                 .UseWindowsService();
         }

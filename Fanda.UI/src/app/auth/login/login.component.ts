@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
     error = '';
-    promptMessage: string = '';
+    promptMessage = '';
 
     constructor(
         private formBuilder: FormBuilder,
@@ -103,10 +103,12 @@ export class LoginComponent implements OnInit {
             });
     }
 
-    validateAllFormFields(formGroup: FormGroup) {
-        for (const i in formGroup.controls) {
-            formGroup.controls[i].markAsDirty();
-            formGroup.controls[i].updateValueAndValidity();
+    validateAllFormFields(formGroup: FormGroup): void {
+        for (const key in formGroup.controls) {
+            if (formGroup.controls[key]) {
+                formGroup.controls[key].markAsDirty();
+                formGroup.controls[key].updateValueAndValidity();
+            }
         }
     }
 

@@ -102,7 +102,8 @@
         "template-banana-in-box": true,
         "template-no-negated-async": true,
         "use-lifecycle-interface": true,
-        "use-pipe-transform-interface": true
+        "use-pipe-transform-interface": true,
+        "nz-secondary-entry-imports": true
     },
-    "rulesDirectory": ["codelyzer"]
+    "rulesDirectory": ["codelyzer", "node_modules/nz-tslint-rules"]
 }
