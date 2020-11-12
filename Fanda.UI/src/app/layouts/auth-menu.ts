@@ -7,7 +7,7 @@ export const authMenus: Menu[] = [
         icon: 'dashboard',
         path: ['/', 'pages'],
         open: false,
-        selected: true,
+        selected: false,
         disabled: false,
         children: null
     },
