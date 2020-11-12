@@ -157,10 +157,12 @@ namespace Fanda.Core.Extensions
         private static void MySqlOptions( /*IServiceProvider sp,*/ DbContextOptionsBuilder options,
             string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
-            options.UseMySql(connectionString, mysqlOptions =>
+            options.UseMySql(connectionString,
+                new MySqlServerVersion(new Version(8, 0, 21)),
+                mysqlOptions =>
                 {
                     mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
-                    mysqlOptions.ServerVersion(new ServerVersion(new Version(8, 0)));
+                    //mysqlOptions.ServerVersion(new ServerVersion(new Version(8, 0)));
                 })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()
@@ -173,10 +175,12 @@ namespace Fanda.Core.Extensions
         private static void MariaDbOptions( /*IServiceProvider sp,*/ DbContextOptionsBuilder options,
             string connectionString, string migrationsAssemblyName, bool isDevelopmentEnvironment)
         {
-            options.UseMySql(connectionString, mysqlOptions =>
+            options.UseMySql(connectionString,
+                new MariaDbServerVersion(new Version(10, 5, 4)),
+                mysqlOptions =>
                 {
                     mysqlOptions.MigrationsAssembly(migrationsAssemblyName);
-                    mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5), ServerType.MariaDb));
+                    //mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5), ServerType.MariaDb));
                 })
                 // .UseInternalServiceProvider(sp);
                 // .UseSnakeCaseNamingConvention()

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Data.Common;
 
 namespace Fanda.Core.SqlClients
@@ -12,6 +13,10 @@ namespace Fanda.Core.SqlClients
 
         public DbConnection Connection { get; }
 
-        public void Dispose() => Connection.Dispose();
+        public void Dispose()
+        {
+            Connection.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }

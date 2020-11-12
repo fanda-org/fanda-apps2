@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data.Common;
 
 namespace Fanda.Core.SqlClients
@@ -15,6 +16,7 @@ namespace Fanda.Core.SqlClients
         public void Dispose()
         {
             Connection.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
