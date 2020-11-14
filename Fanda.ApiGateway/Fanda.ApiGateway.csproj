@@ -2,7 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-	</PropertyGroup>
+	  <UserSecretsId>7173972c-13e1-4f11-a2ae-450877566edf</UserSecretsId>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MMLib.SwaggerForOcelot" Version="2.6.1" />
@@ -16,6 +17,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Fanda.Core\Fanda.Core\Fanda.Core.csproj" />
+	  <ProjectReference Include="..\Fanda.Core\Fanda.Core.csproj" />
 	</ItemGroup>
 </Project>

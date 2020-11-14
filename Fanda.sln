@@ -33,8 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fanda.Inventory.Repository"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{9BD44F8B-1537-4419-BFEB-EF3F69DF0E98}"
 	ProjectSection(SolutionItems) = preProject
+		add-secrets.cmd = add-secrets.cmd
 		Deployment.txt = Deployment.txt
 		Migration.txt = Migration.txt
+		Secrets.json = Secrets.json
+		Secrets.txt = Secrets.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{48341EEE-DEE1-4B2E-A5A4-96753923BA69}"

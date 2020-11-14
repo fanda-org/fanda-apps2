@@ -5,6 +5,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Fanda.Core\Fanda.Core\Fanda.Core.csproj" />
+	  <ProjectReference Include="..\..\..\Fanda.Core\Fanda.Core.csproj" />
 	</ItemGroup>
 </Project>

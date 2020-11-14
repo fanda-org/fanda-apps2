@@ -4,7 +4,7 @@
     {
         public string DatabaseType { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
-        public AuthService AuthService { get; set; }
+        public Services Services { get; set; }
         public FandaSettings FandaSettings { get; set; }
         public MailSettings MailSettings { get; set; }
     }
@@ -20,9 +20,9 @@
         public string DefaultConnection { get; set; } // default = mysql/mariadb
     }
 
-    public class AuthService
+    public class Services
     {
-        public string Url { get; set; }
+        public string AuthServiceUrl { get; set; }
     }
 
     public class FandaSettings

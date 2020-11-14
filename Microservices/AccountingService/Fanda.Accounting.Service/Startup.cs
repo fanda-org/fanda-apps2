@@ -69,7 +69,7 @@ namespace Fanda.Accounting.Service
 
             services.AddHttpClient("auth_api", c =>
                 {
-                    c.BaseAddress = new Uri(appSettings.AuthService.Url);
+                    c.BaseAddress = new Uri(appSettings.Services.AuthServiceUrl);
                 })
                 .AddTypedClient(c => RestService.For<IAuthClient>(c));
 

@@ -28,7 +28,7 @@ namespace Fanda.ApiGateway
             services.AddCustomControllers();
             services.AddCustomCors();
             services.AddOcelot(Configuration);
-            services.AddResponseCaching();
+            // services.AddResponseCaching();
             services.AddJwtAuthentication(appSettings.FandaSettings.Secret);
             services.AddSwaggerForOcelot(Configuration);
         }
@@ -53,7 +53,7 @@ namespace Fanda.ApiGateway
 
             app.UseAuthorization();
 
-            app.UseResponseCaching();
+            // app.UseResponseCaching();
 
             app.UseSwaggerForOcelotUI(opt => { opt.PathToSwaggerGenerator = "/swagger/docs"; });
 
