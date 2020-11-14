@@ -54,3 +54,7 @@ h5,
 h6 {
     margin-bottom: 0;
 }
+
+.ant-card-body {
+    padding: 18px;
+}
