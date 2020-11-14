@@ -33,7 +33,10 @@
                             "src/styles.css"
                         ],
                         "scripts": [],
-                        "allowedCommonJsDependencies": ["@ant-design/colors"]
+                        "allowedCommonJsDependencies": [
+                            "@ant-design/colors",
+                            "tinycolor2"
+                        ]
                     },
                     "configurations": {
                         "production": {
